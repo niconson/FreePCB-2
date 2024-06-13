@@ -785,14 +785,17 @@ BOOL CFreePcbDoc::FileOpen( LPCTSTR fn, BOOL bLibrary )
 			pMain->DrawStatus( 3, &str );
 
 			// make path to library folder and index libraries
-			if( m_full_lib_dir.Compare("") == 0 )
+			struct _stat buf;
+			int err = _stat(m_full_lib_dir, &buf);
+			if (err)
 			{
-				CString fullpath;
-				char full[MAX_PATH];
-				fullpath = _fullpath( full, (LPCSTR)m_lib_dir, MAX_PATH );
-				if( fullpath[fullpath.GetLength()-1] == '\\' )	
-					fullpath = fullpath.Left(fullpath.GetLength()-1);
-				m_full_lib_dir = fullpath;
+				int isep = m_app_dir.ReverseFind('\\');
+				if (isep == -1)
+					isep = m_app_dir.ReverseFind(':');
+				if (isep == -1)
+					ASSERT(0);		// unable to parse filename
+				CString app = m_app_dir.Left(isep + 1);
+				m_full_lib_dir = app + "fp_lib\\lib";
 			}
 			MakeLibraryMaps( &m_full_lib_dir );
 		}
