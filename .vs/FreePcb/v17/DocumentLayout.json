@@ -3,24 +3,12 @@
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\DlgAddCode.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:DlgAddCode.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\DlgAddHole.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:DlgAddHole.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FootprintView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\Shape.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:Shape.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\Dlg_OpenScad.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:Dlg_OpenScad.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,68 +18,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FreePcbDoc.cpp",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
-              "RelativeDocumentMoniker": "FreePcbDoc.cpp",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
-              "RelativeToolTip": "FreePcbDoc.cpp",
-              "ViewState": "AQIAAAkDAAAAAAAAAAAYwBYDAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-06-13T08:46:17.438Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DlgAddHole.cpp",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\DlgAddHole.cpp",
-              "RelativeDocumentMoniker": "DlgAddHole.cpp",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\DlgAddHole.cpp",
-              "RelativeToolTip": "DlgAddHole.cpp",
-              "ViewState": "AQIAABgAAAAAAAAAAAAIwCUAAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-20T16:44:07.521Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "DlgAddCode.cpp",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\DlgAddCode.cpp",
-              "RelativeDocumentMoniker": "DlgAddCode.cpp",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\DlgAddCode.cpp",
-              "RelativeToolTip": "DlgAddCode.cpp",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAIwCkAAAAnAAAA",
+              "Title": "Dlg_OpenScad.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\Dlg_OpenScad.cpp",
+              "RelativeDocumentMoniker": "Dlg_OpenScad.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\Dlg_OpenScad.cpp",
+              "RelativeToolTip": "Dlg_OpenScad.cpp",
+              "ViewState": "AQIAAKEBAAAAAAAAAAArwLYBAAB2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-20T13:18:49.13Z",
+              "WhenOpened": "2024-07-03T11:10:14.281Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FootprintView.cpp",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp",
-              "RelativeDocumentMoniker": "FootprintView.cpp",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp",
-              "RelativeToolTip": "FootprintView.cpp",
-              "ViewState": "AQIAAOwQAAAAAAAAAAAIwPMQAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-19T12:22:22.938Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Shape.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\Shape.cpp",
               "RelativeDocumentMoniker": "Shape.cpp",
               "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\Shape.cpp",
               "RelativeToolTip": "Shape.cpp",
-              "ViewState": "AQIAAOcPAAAAAAAAAAAIwPMPAAABAAAA",
+              "ViewState": "AQIAAA4SAAAAAAAAAAArwBQSAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-05-19T11:40:56.226Z",
               "EditorCaption": ""

@@ -417,13 +417,27 @@ CString * CDlg_OpenScad::GenerateOpenscadData( CString * Separator )
 	}
 	//---------------------
 	// linear extrude
+	BOOL invertCap = 0;
 	if( m_extrusion_val > BY_ZERO || m_extrusion_val < -BY_ZERO )
 	{
 		if( m_like_cap )
 		{
 			s.Format( "// %s( %.3f, scale= %.3f )%s%s", L_EXTRUDE, m_extrusion_val, m_extrusion_scale, sep, new_string ); //!!! данные должны оставаться
 			m_openscad_data += s;
-			s.Format( "hull()%s%sfor(ang=[0:%d:90.5])%s%s%s( %.3f*(ang>0.5?sin(ang):sin(%d)/3.0), convexity=Convexity )%s%soffset(r=%.3f*(cos(ang)-1))%s%s{%s", sep, new_string, (200/m_resolution), sep, new_string, L_EXTRUDE, m_extrusion_val, (200/m_resolution), sep, new_string, (m_extrusion_val*m_extrusion_scale), sep, new_string, sep );
+			if( m_extrusion_val > 0 )
+				s.Format( "render(convexity=2) hull()%s%sfor(ang=[0:%d:90.5])%s%s%s( %.3f*(ang>0.5?sin(ang):sin(%d)/3.0), convexity=Convexity )%s%soffset(r=%.3f*(cos(ang)-1))%s%s{%s", sep, new_string, (200/m_resolution), sep, new_string, L_EXTRUDE, m_extrusion_val, (200/m_resolution), sep, new_string, (m_extrusion_val*m_extrusion_scale), sep, new_string, sep );
+			else
+			{
+				s.Format("$fn = %d;%s", m_resolution, sep);
+				m_openscad_data += s;
+				m_openscad_data += new_string;
+				s.Format("render(convexity=2) %s%sfor(ang=[0:%d:90.5])hull(){%s%stranslate([0,0,%.3f*(ang?sin(ang):-0.05)])%s%s    %s( 0.1, convexity=Convexity )%s%s        offset(r=%.3f*(1-cos(ang)))%s%s", sep, new_string, (200 / m_resolution), sep, new_string, abs(m_extrusion_val), sep, new_string, L_EXTRUDE, sep, new_string, abs(m_extrusion_val * m_extrusion_scale), sep, new_string);
+				m_openscad_data += s;
+				m_openscad_data += new_string + ddSPACE;
+				m_openscad_data += ("polygon([ *content* ]);");
+				m_openscad_data += sep;
+				s.Format("%s%stranslate([0,0,%.3f*((ang+%d)>=90?1:sin(ang+%d))])%s%s    %s( 0.1, convexity=Convexity )%s%s        offset(r=%.3f*(1-cos(ang+%d)))%s%s", sep, new_string, abs(m_extrusion_val), (200 / m_resolution), (200 / m_resolution), sep, new_string, L_EXTRUDE, sep, new_string, abs(m_extrusion_val * m_extrusion_scale), (200 / m_resolution), sep, new_string);
+			}
 		}
 		else
 			s.Format( "%s( %.3f, scale= %.3f, convexity=Convexity )%s%s{%s", L_EXTRUDE, m_extrusion_val, m_extrusion_scale, sep, new_string, sep );
@@ -803,13 +817,13 @@ void CDlg_OpenScad::OnEnChangeExtrusionValue()
 			else
 			{
 				wnd2->EnableWindow(1);
-				CWnd * wnd4 = this->GetDlgItem( IDC_LIKE_CAP );
-				CButton * u4 = (CButton*)wnd4;
-				if( u4 )
-				{
-					u4->SetCheck(0);
-					u4->EnableWindow(0);
-				}
+				//CWnd * wnd4 = this->GetDlgItem( IDC_LIKE_CAP );
+				//CButton * u4 = (CButton*)wnd4;
+				//if( u4 )
+				//{
+				//	u4->SetCheck(0);
+				//	u4->EnableWindow(0);
+				//}
 			}
 		}
 	}

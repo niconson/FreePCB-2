@@ -7009,6 +7009,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			{
 				str.Format( "    color( \"green\" )\n" );
 				file.WriteString( str );
+				str.Format("     render( convexity=3 )\n");
+				file.WriteString(str);
 				str.Format( "      translate([ 0.0, 0.0, -board_h/2.0 ])\n" );
 				file.WriteString( str );
 				str.Format( "        difference()\n        {\n" );

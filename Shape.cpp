@@ -4111,7 +4111,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		double mu = (doc->m_units==MM?NM_PER_MM:NM_PER_MIL);
 		str = "//============================================\n";
 		str += "// Code builder for OpenScad via Freepcb-2 app\n";
-		str += "// Author: duxahtech © 2014-2023\n";
+		str += "// Author: duxahtech © 2014-2024\n";
+		str += "// Site: https://github.com/niconson\n";
 		str += "//============================================\n\n\n\n";
 		file.WriteString( str );
 
@@ -4610,7 +4611,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		// закрываем UNION
 		//
 		sp.Truncate(sp.GetLength() - ddSPACE.GetLength());
-		str.Format("%s// end of union\n%s", sp + ddSPACE, sp);
+		str.Format("// end of union\n%s", sp);
 		file.WriteString(str);
 		str.Format("}\n%s", sp);
 		file.WriteString(str);
@@ -4629,7 +4630,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		// закрываем DIFFERENCE
 		//
 		sp.Truncate(sp.GetLength() - ddSPACE.GetLength());
-		str.Format("%s// end of difference\n%s", sp + ddSPACE, sp);
+		str.Format("// end of difference\n%s", sp);
 		file.WriteString(str);
 		str.Format("}\n%s", sp);
 		file.WriteString(str);
