@@ -2732,6 +2732,8 @@ void CPolyLine::GetOpenscadCube(	int *minx,
 {
 	if( m_ncorners == 0 )
 		return;
+
+	extrude = abs(extrude);
 	CPoint Zero( 0, 0 );
 	int cx = corner[0].x;
 	int cy = corner[0].y;
