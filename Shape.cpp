@@ -4524,7 +4524,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					double ang = (double)ps->angle + 22.5;
 
 					// (если пада нет то не рисуем отверстие вообще)
-					if( hPresent && padPresent && stp == 0 )
+					if( hPresent && padPresent && stp == 0 && ps->hole_size )
 					{
 						str.Format("%s([ %.3f, %.3f, -board_h/2.0 ])\n %srotate(22.5)\n  %scylinder( h=%s, d1=%.3f, d2=%.3f, center=true );\n%s", dlg.TRANSLATE, psx, psy, sp, sp, bhh, hsz, hsz, sp );
 						file.WriteString( str );
@@ -4571,12 +4571,15 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 							break;
 						ph = "-(" + bh + ")";
 					} 
-					if( hPresent && padPresent && stp )
+					if( hPresent && padPresent && stp && ps->hole_size )
 					{
 						// рисуем цилиндр чуть меньше отв. (hole)
 						double p2h = hsz - (2*h);
-						str.Format("%s([ %.3f, %.3f, -board_h/2.0 ])\n %srotate(22.5)\n  %scylinder( h=board_h*2.0, d1=%.3f, d2=%.3f, center=true );\n%s", dlg.TRANSLATE, psx, psy, sp, sp, p2h, p2h, sp );
-						file.WriteString( str );
+						if (p2h > 0)
+						{
+							str.Format("%s([ %.3f, %.3f, -board_h/2.0 ])\n %srotate(22.5)\n  %scylinder( h=board_h*2.0, d1=%.3f, d2=%.3f, center=true );\n%s", dlg.TRANSLATE, psx, psy, sp, sp, p2h, p2h, sp);
+							file.WriteString(str);
+						}
 					}
 				}
 			}
