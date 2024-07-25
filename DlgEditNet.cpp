@@ -44,7 +44,10 @@ void CDlgEditNet::DoDataExchange(CDataExchange* pDX)
 		if( m_name.GetLength() > MAX_NET_NAME_SIZE )
 		{
 			CString mess;
-			mess.Format( "Max length of net name is %d characters", MAX_NET_NAME_SIZE ); 
+			mess.Format(G_LANGUAGE == 0 ? 
+				"Max length of net name is %d characters":
+				"Максимальная длина имени сети — %d символов.", 
+				MAX_NET_NAME_SIZE);
 			AfxMessageBox( mess );
 			pDX->Fail();
 		}
@@ -52,7 +55,7 @@ void CDlgEditNet::DoDataExchange(CDataExchange* pDX)
 		DDX_Text(pDX,IDC_COMBO_WIDTH,s);
 		if( s.Left(1) == "-" )
 		{
-			AfxMessageBox( "illegal trace width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "illegal trace width":"Недопустимая ширина для трассы");
 			pDX->Fail();
 		}
 		m_def_w = my_atof(&s);
@@ -60,7 +63,7 @@ void CDlgEditNet::DoDataExchange(CDataExchange* pDX)
 		DDX_Text( pDX, IDC_EDIT_VIA_PAD_W, s );
 		if( s.Left(1) == "-" )
 		{
-			AfxMessageBox( "illegal via width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "illegal via width":"Недопустимый диаметр площадки переходного отверстия");
 			pDX->Fail();
 		}
 		m_def_v_w = my_atof(&s);
@@ -68,7 +71,7 @@ void CDlgEditNet::DoDataExchange(CDataExchange* pDX)
 		DDX_Text( pDX, IDC_EDIT_VIA_HOLE_W, s );
 		if( s.Left(1) == "-" )
 		{
-			AfxMessageBox( "illegal hole width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "illegal hole width":"Недопустимый диаметр для переходного отверстия");
 			pDX->Fail();
 		}
 		m_def_v_h_w = my_atof(&s); 
@@ -77,13 +80,13 @@ void CDlgEditNet::DoDataExchange(CDataExchange* pDX)
 		{
 			if( m_name == (*m_nl)[in].name && m_in != in && !(*m_nl)[in].deleted )
 			{
-				AfxMessageBox( "duplicate net name" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "duplicate net name":"Дублирование имени эл.цепи");
 				pDX->Fail();
 			}
 		}
 	    if (m_name.Find("\"",0) >= 0)
 		{
-			AfxMessageBox( "Illegal net name" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal net name":"Недопустимый символ в имени");
 			pDX->Fail();
 		}
 
@@ -262,7 +265,7 @@ void CDlgEditNet::OnBnClickedButtonDelete()
 	}
 	if( m_nlist_lock == 0 || Flag )
 	{
-		int ret = IDOK;//AfxMessageBox( "Delete pin(s) from net?", MB_OKCANCEL );
+		int ret = IDOK;
 		if( ret == IDOK )
 		{
 			// Get the indexes of all the selected pins and delete them
@@ -279,7 +282,7 @@ void CDlgEditNet::OnBnClickedButtonDelete()
 		}
 	}
 	else
-		AfxMessageBox( "Netlist protected!", MB_ICONERROR );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Netlist protected!":"Установлена защита эл.цепей в настройках проекта", MB_ICONERROR);
 }
 
 void CDlgEditNet::OnBnClickedButtonAdd()
@@ -293,7 +296,7 @@ void CDlgEditNet::OnBnClickedButtonAdd()
 	int len = str.GetLength();
 	if( len < 3 )
 	{
-		AfxMessageBox( "Illegal pin" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal pin":"Сомнительное имя пина");
 		return;
 	}
 	else
@@ -301,7 +304,7 @@ void CDlgEditNet::OnBnClickedButtonAdd()
 		int test = m_list_pins.FindStringExact( 0, str );
 		if( test != -1 )
 		{
-			AfxMessageBox( "Pin already in this net" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Pin already in this net":"Пин уже подключен к этой эл.цепи");
 			return;
 		}
 		int dot_pos = str.FindOneOf( "." );
@@ -311,7 +314,7 @@ void CDlgEditNet::OnBnClickedButtonAdd()
 			cpart * part = m_plist->GetPart( refstr );
 			if( !part )
 			{
-				str.Format( "Part \"%s\" does not exist", refstr );
+				str.Format(G_LANGUAGE == 0 ? "Part \"%s\" does not exist":"Детали «%s» не существует.", refstr);
 				AfxMessageBox( str );
 				return;
 			}
@@ -322,12 +325,20 @@ void CDlgEditNet::OnBnClickedButtonAdd()
 				str	+= "Followed by zero or more numbers\n";
 				str	+= "For example: 1, 23, A12, SOURCE are legal\n";
 				str	+= "while 1A, A2B3 are not\n";
+				if (G_LANGUAGE)
+				{
+					str = "Имя пина должно состоять из нуля или более букв, ";
+					str += "за которыми следует ноль или любое положительное число. \n\n";
+					str += "Символы «\" .,;:/!@#$%^&*(){}[]|<>?\\~\'\"» недопустимы\n\n";
+					str += "Например имена пинов типа: 1, 23, A12, SOURCE являются общепринятыми, ";
+					str += "в то время как 1A, A2B3, A:3 не применяются\n";
+				}
 				AfxMessageBox( str );
 				return;
 			}
 			if( !part->shape )
 			{
-				str.Format( "Part \"%s\" does not have a footprint", refstr );
+				str.Format(G_LANGUAGE == 0 ? "Part \"%s\" does not have a footprint":"Деталь «%s» не имеет футпринта", refstr);
 				int ret = AfxMessageBox( str, MB_OKCANCEL );
 				if( ret != IDOK )
 					return;
@@ -337,8 +348,10 @@ void CDlgEditNet::OnBnClickedButtonAdd()
 				int pin_index = part->shape->GetPinIndexByName( pinstr, -1 );
 				if( pin_index == -1 )
 				{
-					str.Format( "Pin \"%s\" not found in footprint \"%s\"", pinstr, 
-						part->shape->m_name );
+					str.Format(G_LANGUAGE == 0 ? 
+						"Pin \"%s\" not found in footprint \"%s\"":
+						"Пин \"%s\" не найден в футпринте \"%s\"", 
+						pinstr, part->shape->m_name );
 					AfxMessageBox( str );
 					return;
 				}
@@ -364,13 +377,15 @@ void CDlgEditNet::OnBnClickedButtonAdd()
 			{
 				if( i_found == m_in )
 				{
-					AfxMessageBox( "Pin already in this net" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "Pin already in this net" : "Пин уже подключен к этой эл.цепи");
 					return;
 				}
 				else
 				{
 					CString mess;
-					mess.Format( "Pin %s.%s is assigned to net \"%s\"\nRemove it from \"%s\"? ",
+					mess.Format(G_LANGUAGE == 0 ? 
+						"Pin %s.%s is assigned to net \"%s\"\nRemove it from \"%s\"? ":
+						"Пин %s.%s сейчас подключен к эл.цепи \"%s\"\n\nОтключить его от эл.цепи \"%s\"?",
 						refstr, pinstr, (*m_nl)[i_found].name, (*m_nl)[i_found].name );
 					int ret = AfxMessageBox( mess, MB_OKCANCEL );
 					if( ret != IDOK )

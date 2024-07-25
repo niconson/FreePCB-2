@@ -33,7 +33,7 @@ typedef mod_padstack ps;
 
 ps * current_ps;
 
-// FreePCB shape
+// PCB shape
 
 // this is the main conversion function
 //

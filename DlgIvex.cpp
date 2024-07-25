@@ -144,7 +144,7 @@ void CivexDlg::OnBnClickedConvert()
 	{
 		// error opening file
 		CString mess;
-		mess.Format( "Unable to open file %s", in_pathname );
+		mess.Format(G_LANGUAGE == 0 ? "Unable to open file %s":"Невозможно открыть файл %s", in_pathname);
 		AfxMessageBox( mess );
 		return;
 	}
@@ -153,7 +153,7 @@ void CivexDlg::OnBnClickedConvert()
 	{
 		// error opening file
 		CString mess;
-		mess.Format( "Unable to open file %s", out_pathname );
+		mess.Format(G_LANGUAGE == 0 ? "Unable to open file %s":"Невозможно открыть файл %s", out_pathname);
 		AfxMessageBox( mess );
 		return;
 	}

@@ -331,9 +331,9 @@ void CDlgNetlist::OnBnClickedButtonEdit()
 {
 	int n_sel = m_list_ctrl.GetSelectedCount();
 	if( n_sel == 0 )
-		AfxMessageBox( "You have no net selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You have no net selected":"У вас не выбрана эл.цепь");
 	else if( n_sel > 1 )
-		AfxMessageBox( "You have more than one net selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You have more than one net selected":"У вас выбрано более одной эл.цепи");
 	else
 	{
 		POSITION pos = m_list_ctrl.GetFirstSelectedItemPosition();
@@ -397,7 +397,7 @@ void CDlgNetlist::OnBnClickedButtonDelete()
 	int n_sel = m_list_ctrl.GetSelectedCount();
 	if( n_sel == 0 )
 	{
-		AfxMessageBox( "You have no net(s) selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You have no net(s) selected":"У вас не выбрано ни одной эл.цепи");
 	}
 	else
 	{
@@ -419,7 +419,7 @@ void CDlgNetlist::OnBnClickedButtonNLWidth()
 	int n_sel = m_list_ctrl.GetSelectedCount();
 	if( n_sel == 0 )
 	{
-		AfxMessageBox( "You have no net(s) selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You have no net(s) selected" : "У вас не выбрано ни одной эл.цепи");
 		return;
 	}
 	CFreePcbView * view = theApp.m_View; 

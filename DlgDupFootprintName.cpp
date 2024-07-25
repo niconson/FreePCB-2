@@ -43,14 +43,14 @@ void CDlgDupFootprintName::DoDataExchange(CDataExchange* pDX)
 			if( m_new_name_str.GetLength() == 0 )
 			{
 				// blank name
-				AfxMessageBox( "You must enter a new footprint name" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "You must enter a new footprint name":"Вы должны ввести новое имя футпринта");
 				pDX->Fail();
 			}
 			void * ptr;
 			if( m_footprint_cache_map->Lookup( m_new_name_str, ptr ) )
 			{
 				// blank name
-				AfxMessageBox( "New footprint name is already in use" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "New footprint name is already in use":"Новое имя футпринта уже используется");
 				pDX->Fail();
 			}
 		}

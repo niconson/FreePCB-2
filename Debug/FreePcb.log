@@ -1,4 +1,26 @@
-﻿  Shape.cpp
-  Создание кода
-  Создание кода завершено
+﻿clibpdf.lib(adler32.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(adler32.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(compress.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(compress.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfAnnot.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfAnnot.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfArc.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfArc.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfAxis.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfAxis.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfColor.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfColor.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfDomain.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfDomain.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfDomPlot.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfDomPlot.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfFont.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfFont.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfGstate.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfGstate.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfImage.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfImage.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfInit.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfInit.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfMemBuf.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfMemBuf.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfOutline.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfOutline.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfRawPlot.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfRawPlot.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfReadPFB.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfReadPFB.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfReadPFM.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfReadPFM.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfText.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfText.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfTicInt.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfTicInt.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfTime.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfTime.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(cpdfUtil.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(cpdfUtil.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(deflate.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(deflate.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(jpegsize.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(jpegsize.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(trees.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(trees.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
+clibpdf.lib(zutil.obj) : warning LNK4099: "vc70.pdb" PDB не найден с "clibpdf.lib(zutil.obj)" или на "D:\FreePCBDev\FreePCB-2\Debug\vc70.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
   FreePcb.vcxproj -> D:\FreePCBDev\FreePCB-2\.\Debug\FreePcb.exe

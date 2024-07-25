@@ -569,7 +569,7 @@ CString CFreePcbDoc::RunFileDialog( BOOL bMODE, CString format )
 					Sleep(50);
 					if( ITERATOR > 50 )
 					{
-						AfxMessageBox( "Unable to open global configuration file \"file_dialog.pth\"\nYou installed FreePcb-2 in a protected folder, so the application will not work correctly. Remove the read-only attribute to continue." );
+						AfxMessageBox( "Unable to open global configuration file \"file_dialog.pth\"\nYou installed this program in a protected folder, so the application will not work correctly. Remove the read-only attribute to continue." );
 						return Path;
 					}
 				}
@@ -625,6 +625,12 @@ void CFreePcbDoc::OnFileOpen()
 			CString mess = "You are opening a file with extension \".fpl\"\n";
 			mess += "which is usually a FreePCB footprint library.\n\n";
 			mess += "Would you like to load this library as a project?";
+			if (G_LANGUAGE)
+			{
+				mess = "Вы открываете файл с расширением \".fpl\"\n";
+				mess += "который хранит библиотеку футпринтов.\n\n";
+				mess += "Хотите его открыть как проект ПлатФорм?";
+			}
 			int ret = AfxMessageBox( mess, MB_YESNOCANCEL );
 			if( ret == IDCANCEL )
 				return;
@@ -651,6 +657,12 @@ void CFreePcbDoc::OnFileAutoOpen( LPCTSTR fn )
 		CString mess = "You are opening a file with extension \".fpl\"\n";
 		mess += "which is usually a FreePCB footprint library.\n\n";
 		mess += "Would you like to load this library as a project?";
+		if (G_LANGUAGE)
+		{
+			mess = "Вы открываете файл с расширением \".fpl\"\n";
+			mess += "который хранит библиотеку футпринтов.\n\n";
+			mess += "Хотите его открыть как проект ПлатФорм?";
+		}
 		int ret = AfxMessageBox( mess, MB_YESNOCANCEL );
 		if( ret == IDCANCEL )
 			return;
@@ -723,13 +735,16 @@ BOOL CFreePcbDoc::FileOpen( LPCTSTR fn, BOOL bLibrary )
 			if( m_file_version < 1.3 )
 			{
 				pcb_file.Close();
-				AfxMessageBox("File version too old. Try to save your file to FreePcb-1.3xx and then try again");
+				if(G_LANGUAGE==0)
+					AfxMessageBox("File version too old. Try to save your file to FreePcb-1.3xx and then try again");
+				else
+					AfxMessageBox("Версия файла очень старая. Не поддерживается");
 				return FALSE;
 			}
 			if( m_file_version > m_version )
 			{
 				CString mess;
-				mess.Format( "Warning: the file version is %5.3f\n\nYou are running an earlier FreePCB version %5.3f", 
+				mess.Format( "Warning: the file version is %5.3f\n\nYou are running an earlier program version %5.3f", 
 					m_file_version, m_version );
 				mess += "\n\nErrors may occur\n\nClick on OK to continue reading or CANCEL to cancel";
 				int ret = AfxMessageBox( mess, MB_OKCANCEL );
@@ -1064,7 +1079,10 @@ void CFreePcbDoc::OnFileSave()
 	}
 	if( m_file_version < 2.0 )
 	{
-		AfxMessageBox("This project file was created in the previous version of FREEPCB. Use the SAVE AS menu item to avoid overwriting the file and to be able to open it with the old version of the program in the future.");
+		if(G_LANGUAGE==0)
+			AfxMessageBox("This project file was created in the previous version of FREEPCB. Use the SAVE AS menu item to avoid overwriting the file and to be able to open it with the old version of the program in the future.");
+		else 
+			AfxMessageBox("Этот проект был создан в предыдущей версии ПлатФорм. Используйте меню СОХРАНИТЬ_КАК чтобы создать копию данного файла и сохранить его в текущей версии программы.");
 		return;
 	}
 	// clear clipboard
@@ -1318,7 +1336,10 @@ void CFreePcbDoc::ReadMerges( CStdioFile * pcb_file, Merge * merge_list )
 		if( !err )
 		{
 			// error reading pcb file
-			AfxMessageBox("This project file was created in the previous version of FREEPCB.");
+			if (G_LANGUAGE == 0)
+				AfxMessageBox("This project file was created in the previous version of FREEPCB.");
+			else 
+				AfxMessageBox("Этот проект был создан в предыдущей версии ПлатФорм.");
 			break;
 		}
 		in_str.Trim();
@@ -1534,7 +1555,7 @@ void CFreePcbDoc::OnAddPart()
 		S2 = S2.MakeUpper();
 		if( m_plist->GetPart( S1 ) || m_plist->GetPart( S2 ) )
 		{
-			AfxMessageBox( "A bad tone in the design of printed circuit boards, when the designations of parts differ only in the case of letters (Uppercase/Lowercase). It is recommended to rename, otherwise there will be problems with external FreePcb-2 applications." );
+			AfxMessageBox( "A bad tone in the design of printed circuit boards, when the designations of parts differ only in the case of letters (Uppercase/Lowercase). It is recommended to rename, otherwise there will be problems with external applications." );
 		}
 		m_plist->ImportPartListInfo( &pl, 0 );
 		cpart * part = m_plist->GetPart( pl[n_parts-1].ref_des );
@@ -2421,6 +2442,7 @@ void CFreePcbDoc::ReadGraphics( CStdioFile * pcb_file, CArray<CPolyLine> * ssm )
 int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropData )
 {
 	int err, pos, np;
+	int layer_info_number = 0;
 	CArray<CString> p;
 	CString in_str, key_str;
 	BOOL m_org_changed = FALSE;
@@ -3067,6 +3089,7 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 						if( file_layer_name == layer_string )
 						{
 							layer = il;
+							layer_info_number = -1;
 							break;
 						}
 					}
@@ -3077,10 +3100,16 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 						if( file_layer_name == layer_string )
 						{
 							layer = il;
+							layer_info_number = -1;
 							break;
 						}
 					}
-				if( layer < 0 )
+				if (layer < 0 && layer_info_number >= 0)
+				{
+					layer = layer_info_number;
+					layer_info_number++;
+				}
+				if( layer < 0 || layer >= MAX_LAYERS )
 				{
 					//AfxMessageBox( "Warning: layer \"" + file_layer_name + "\" not supported" );
 				}
@@ -6452,7 +6481,7 @@ void CFreePcbDoc::PasteFromFile( CString pathname, BOOL bwDialog )
 				ver = atof( in_str.Right( in_str.GetLength()-13 ) );
 				if( ver < 2.022 )
 				{
-					AfxMessageBox( "You are trying to insert data from a file created in a previous version of FREEPCB. File version should not be lower than 2.022. Save this file in the latest version of FREEPCB-2 and try again.", MB_OK );
+					AfxMessageBox( "You are trying to insert data from a file created in a previous version of this program. File version should not be lower than 2.022. Save this file in the latest version of this program and try again.", MB_OK );
 					pcb_file.Close();
 					return;
 				}
@@ -6463,6 +6492,12 @@ void CFreePcbDoc::PasteFromFile( CString pathname, BOOL bwDialog )
 			CString mess = "The group file that you are pasting has more layers than the current project.\n\n";
 			mess += "This is not allowed.\n\n";
 			mess += "You can reduce the number of layers in the group file by editing it in FreePCB.";
+			if (G_LANGUAGE)
+			{
+				mess = "Вставляемый групповой файл содержит больше слоев, чем текущий проект..\n\n";
+				mess += "Это является недопустимым.\n\n";
+				mess += "Вы можете уменьшить количество слоев в групповом файле, отредактировав его в ПлатФорм.";
+			}
 			AfxMessageBox( mess, MB_OK );
 			pcb_file.Close();
 			return;
@@ -6547,6 +6582,14 @@ void CFreePcbDoc::PasteFromFile( CString pathname, BOOL bwDialog )
 			mess += shift_footprints;
 			mess += "\n\nThe file will be inserted into the project, but FreePcb-2 does not guarantee the correct location of these parts on the board!";
 			mess += "\n\n(You can prepare this (or that) project for panelizing using the 'Edit Libraries' application from the Infobox menu.)";
+			if (G_LANGUAGE)
+			{
+				mess = "Внимание! Групповой файл содержит изменённые футпринты. ";
+				mess += "А именно: ";
+				mess += shift_footprints;
+				mess += "\n\nФайл будет вставлен в проект, но ПлатФорм не гарантирует правильное расположение этих деталей на плате!";
+				mess += "\n\n(Подготовить тот (или другой) проект к панелизации можно с помощью приложения \"Редактировать библиотеки\" из меню \"Инфобокс\"..)";
+			}
 			AfxMessageBox( mess, MB_OK );
 		}
 		// read board outline
@@ -6654,8 +6697,13 @@ void CFreePcbDoc::OnFileGerbV(CString G, CString app)
     info.nShow = SW_SHOW;//SW_MAXIMIZE; //SW_HIDE
     info.hInstApp = NULL;
 	int INF = ShellExecuteEx(&info);
-	if( INF == 0 )  
-		AfxMessageBox("There is a 'Shortcut' folder in the FreePcb directory. Put there a shortcut *.lnk referring to a Gerber file viewer program (for example Pentalogix's ViewMate).");
+	if (INF == 0)
+	{
+		if (G_LANGUAGE == 0)
+			AfxMessageBox("There is a 'Shortcut' folder in the FreePcb directory. Put there a shortcut *.lnk referring to a Gerber file viewer program (for example Pentalogix's ViewMate).");
+		else 
+			AfxMessageBox("В каталоге ПлатФорм есть папка с названием \"Shortcut\". Поместите туда ярлык *.lnk, ссылающийся на программу просмотра файлов Gerber (например, ViewMate от Pentalogix).");
+	}
 }
 
 void CFreePcbDoc::OnFileExportDsn()
@@ -7776,7 +7824,10 @@ void CFreePcbDoc::FileLoadLibrary( LPCTSTR pathname )
 			m_pcb_filename = m_pcb_filename + ".fpc";
 			m_pcb_full_path = *pathname + ".fpc";
 		}
-		m_window_title = "FreePCB library project - " + m_pcb_filename;
+		if(G_LANGUAGE==0)
+			m_window_title = "FreePCB library project - " + m_pcb_filename;
+		else 
+			m_window_title = "Библиотека ПлатФорм - " + m_pcb_filename;
 		CWnd* pMain = AfxGetMainWnd();
 		pMain->SetWindowText( m_window_title );
 		m_view->OnViewAllElements();
@@ -12220,7 +12271,7 @@ int CFreePcbDoc::CheckUpdates()
 		if( f > 0 )
 		{
 			f += 4;
-			Mess = "Warning" + Mess.Right(Mess.GetLength()-f) + "\r\nCheck your internet connection otherwise you will not be able to receive news from the site.\r\n(Proxy settings are in the user.cfg file in the FreePcb folder)";
+			Mess = "Warning" + Mess.Right(Mess.GetLength()-f) + "\r\nCheck your internet connection otherwise you will not be able to receive news from the site.\r\n(Proxy settings are in the user.cfg file in the Application folder)";
 		}
 		f = Mess.Find("data::");
 		if( f > 0 )
@@ -12251,14 +12302,11 @@ int CFreePcbDoc::CheckUpdates()
 			CString new_data = m_get_upd.Right(8);
 			CString old_data = m_last_upd.Right(8);
 			if( my_atoi(&new_data) <  my_atoi(&old_data) )
-				 AfxMessageBox("You have a newer version of FreePcb-2 installed than on the website. You will receive a notification when the FreePcb-2 version on the site is updated.");
+				 AfxMessageBox("You have a newer version of this program installed than on the website. You will receive a notification when this version on the site is updated.");
 			else if( my_atoi(&old_data) == 0 )
 				OK = 1;
 			else 
 			{
-				///Mess += "\n\nDirect links to exe files:";
-				///Mess += "\nhttps://freepcb.dev/FreePcb-2/bin/FreePcb.exe";
-				///Mess += "\nhttps://freepcb.dev/FreePcb-2/bin/FreeCds.exe";
 				Mess += "\n\nWant to go to the download page now?";
 				if( AfxMessageBox(Mess, MB_YESNO) == IDYES )
 					OK = 2;

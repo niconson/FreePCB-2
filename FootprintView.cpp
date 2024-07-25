@@ -385,13 +385,13 @@ void CFootprintView::OnDraw(CDC* pDC)
 		}
 	}
 	CRect r( x_off, NUM_FP_LAYERS*VSTEP+y_off, x_off+120, NUM_FP_LAYERS*VSTEP+12+y_off );
-	pDC->DrawText( "* Use numeric", -1, &r, DT_TOP );
+	pDC->DrawText(G_LANGUAGE==0?"* Use numeric":"* Используйте", -1, &r, DT_TOP);
 	r.bottom += VSTEP;
 	r.top += VSTEP;
-	pDC->DrawText( "keys to display", -1, &r, DT_TOP );
+	pDC->DrawText(G_LANGUAGE==0?"keys to display":"цифры для выбора", -1, &r, DT_TOP);
 	r.bottom += VSTEP;
 	r.top += VSTEP;
-	pDC->DrawText( "layer on top", -1, &r, DT_TOP );
+	pDC->DrawText(G_LANGUAGE==0?"layer on top":"верхнего слоя", -1, &r, DT_TOP);
 
 	// draw function keys on bottom pane
 	DrawBottomPane();
@@ -724,7 +724,10 @@ void CFootprintView::DuplicateGroup()
 	if(num_sel_items && bFirst)
 	{
 		bFirst = 0;
-		AfxMessageBox("Warning! All pin names remain the same (created multipins). Then you can manually change the pin names at your discretion.");
+		if(G_LANGUAGE==0)
+			AfxMessageBox("Warning! All pin names remain the same (created multipins). Then you can manually change the pin names at your discretion.");
+		else
+			AfxMessageBox("Предупреждение! В новой группе все имена пинов останутся прежними (создадутся так называемые мультиконтакты). Далее вы сможете вручную изменить названия пинов по своему усмотрению.");
 	}
 	m_fp.m_padstack.SetSize(num_items+num_sel_items);
 	num_sel_items = 0;
@@ -1734,7 +1737,7 @@ void CFootprintView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else if( fk == FK_FP_SET_POSITION )
 		{
 			DlgEditBoardCorner dlg;
-			CString str = "Shift Position";
+			CString str = G_LANGUAGE==0?"Shift Position":"Сместить позицию";
 			dlg.Init( &str, m_units, 0, 0 );
 			int ret = dlg.DoModal();
 			if( ret == IDOK )

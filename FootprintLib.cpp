@@ -51,6 +51,8 @@ void CFootLibFolder::IndexLib( CString * file_name, CDlgLog * dlog )
 	{
 		CDlgMyMessageBox dlg;
 		CString mess = "Unable to open library file\n\n \"" + m_footlib[nlib].m_full_path + "\"";
+		if (G_LANGUAGE)
+			mess = "Невозможно открыть библиотечный файл\n\n \"" + m_footlib[nlib].m_full_path + "\"";
 		dlg.Initialize( mess );
 		dlg.DoModal();
 		bDisableMessageIfFileNotFound = dlg.bDontShowBoxState;
@@ -146,7 +148,10 @@ void CFootLibFolder::IndexAllLibs( CString * full_path, CDlgLog * dlg_log )
 	{
 		m_full_path_to_folder = *full_path;
 		CString mess;
-		mess.Format( "Unable to open library folder \"%s\"", m_full_path_to_folder );
+		if(G_LANGUAGE==0)
+			mess.Format( "Unable to open library folder \"%s\"", m_full_path_to_folder );
+		else
+			mess.Format("Невозможно прочитать папку библиотек: \"%s\"", m_full_path_to_folder);
 		AfxMessageBox( mess );
 		*full_path = "";
 	}
@@ -171,8 +176,8 @@ void CFootLibFolder::IndexAllLibs( CString * full_path, CDlgLog * dlg_log )
 				IndexLib( &fn );
 			}
 		}
+		finder.Close();
 	}
-	finder.Close();
 }
 
 // clear all data
@@ -362,12 +367,21 @@ CFootLibFolderMap::~CFootLibFolderMap()
 // add CFootLibFolder to map
 // if folder == NULL, the folder will be created on the first call to GetFolder
 //
-void CFootLibFolderMap::AddFolder( CString * full_path, CFootLibFolder * folder  )
+CFootLibFolder* CFootLibFolderMap::AddFolder( CString * full_path, CFootLibFolder * folder  )
 {
 	CString str = full_path->MakeLower();
 	void * ptr;
-	if( !m_folder_map.Lookup( str, ptr ) )
-		m_folder_map.SetAt( str, folder );
+	if (!m_folder_map.Lookup(str, ptr))
+	{
+		m_folder_map.SetAt(str, folder);
+		return folder;
+	}
+	else if (!ptr)
+	{
+		m_folder_map.SetAt(str, folder);
+		return folder;
+	}
+	return (CFootLibFolder*)ptr;
 }
 
 CFootLibFolder * CFootLibFolderMap::GetFolder( CString * full_path, CDlgLog * log )
@@ -380,6 +394,7 @@ CFootLibFolder * CFootLibFolderMap::GetFolder( CString * full_path, CDlgLog * lo
 	if( !B || ptr == NULL )
 	{
 		folder = new CFootLibFolder();// ok
+		
 		CString mess;
 		mess.Format( "Indexing library folder \"%s\"\r\n", str );
 		log->AddLine( mess );
@@ -387,7 +402,8 @@ CFootLibFolder * CFootLibFolderMap::GetFolder( CString * full_path, CDlgLog * lo
 		if( str.GetLength() == 0 )
 			str = *GetDefaultFolder();
 		log->AddLine( "\r\n" );
-		m_folder_map.SetAt( str, folder );
+		
+		folder = AddFolder(&str, folder);
 		log->AddLine( "\r\n" );
 	}
 	else

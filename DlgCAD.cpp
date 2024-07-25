@@ -306,14 +306,14 @@ void CDlgCAD::OnBnClickedGo()
 	if( err )
 	{
 		CString str;
-		str.Format( "Folder \"%s\" doesn't exist, create it ?", m_folder );
+		str.Format(G_LANGUAGE == 0 ? "Folder \"%s\" doesn't exist, create it ?":"ѕапка Ђ%sї не существует, создать ее?", m_folder);
 		int ret = AfxMessageBox( str, MB_YESNO );
 		if( ret == IDYES )
 		{
 			err = _mkdir( m_folder );
 			if( err )
 			{
-				str.Format( "Unable to create folder \"%s\"", m_folder );
+				str.Format(G_LANGUAGE == 0 ? "Unable to create folder \"%s\"":"Ќевозможно создать папку Ђ%sї", m_folder);
 				AfxMessageBox( str, MB_OK );
 				return;
 			}
@@ -713,12 +713,24 @@ void CDlgCAD::OnBnClickedGo()
 				log_message.Format( "Writing file: \"%s\"\r\n", f_str );
 				m_dlg_log->AddLine( log_message );
 				CString line;
-				line.Format( "G04 FreePCB MFC Application*\n" );
-				f.WriteString( line );
-				line.Format( "G04 Version: FreePCB-%5.3f*\n", m_version );
-				f.WriteString( line );
-				line.Format( "G04 WebSite: https://github.com/Duxah/FreePCB-2/blob/master/Download.md *\n" );
-				f.WriteString( line );
+				if (G_LANGUAGE == 0)
+				{
+					line.Format("G04 FreePCB MFC Application*\n");
+					f.WriteString(line);
+					line.Format("G04 Version: FreePCB-%5.3f*\n", m_version);
+					f.WriteString(line);
+					line.Format("G04 WebSite: https://github.com/Duxah/FreePCB-2/blob/master/Download.md *\n");
+					f.WriteString(line);
+				}
+				else
+				{
+					line.Format("G04 \"ѕлат‘орм\" на русском*\n");
+					f.WriteString(line);
+					line.Format("G04 Version: ѕлат‘орм %5.3f*\n", m_version);
+					f.WriteString(line);
+					line.Format("G04 WebSite: плат-форм.рф *\n");
+					f.WriteString(line);
+				}
 				line.Format( "G04 %s*\n", f_str );
 				f.WriteString( line );
 				::WriteGerberFile( &f, m_flags, layer, 

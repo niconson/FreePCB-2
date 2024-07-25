@@ -83,7 +83,7 @@ void CDlgAddArea::DoDataExchange(CDataExchange* pDX)
 		m_net = m_nlist->GetNetPtrByName( &m_net_name );
 		if( !m_net )
 		{
-			AfxMessageBox( "Illegal net name" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal net name":"Недопустимое имя эл.цепи");
 			pDX->Fail();
 		}
 		m_area_width.GetWindowText( str );
@@ -100,7 +100,7 @@ void CDlgAddArea::DoDataExchange(CDataExchange* pDX)
 		{
 			if( m_width <= NM_PER_MIL )
 			{
-				AfxMessageBox( "Illegal fill width" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Illegal fill width":"Недопустимое значение толщины контурной линии");
 				pDX->Fail();
 			}
 			m_hatch = CPolyLine::DIAGONAL_FULL;
@@ -146,29 +146,42 @@ void CDlgAddArea::Initialize( CNetList * nl, int nlayers,
 void CDlgAddArea::OnBnClickedQ1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	AfxMessageBox("This type of copper area is a contour line that needs to be filled. "\
-		"It does not interact with any project objects. Select the side of this area and press F4 to fill it.");
+	if(G_LANGUAGE==0)
+		AfxMessageBox("This type of copper area is a contour line that needs to be filled. "\
+			"It does not interact with any project objects. Select the side of this area and press F4 to fill it.", MB_ICONINFORMATION);
+	else
+		AfxMessageBox("Этот тип полигона представляет собой контурную линию для будущей заливки. Он не взаимодействует ни с какими объектами проекта. Выберите сторону этого полигона и нажмите F4, чтобы залить его", MB_ICONINFORMATION);
 }
 
 
 void CDlgAddArea::OnBnClickedQ2()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	AfxMessageBox("This type of copper area takes on its final appearance in gerber files. "\
+	if (G_LANGUAGE == 0)
+		AfxMessageBox("This type of copper area takes on its final appearance in gerber files. "\
 				  "In the project, it is displayed as a contour line of the copper area. "\
 				  "It is convenient to use where there are fewer copper traces and other objects, "\
 				  "for example, in the inner layers of a printed circuit board. Copper area "\
 				  "side width of this type can be any value, including 0. \nIf you are using this "\
 				  "type of copper area, then at the end, do a test \n(DRC >> Check Copper Areas) "\
-				  "for tearing into pieces.");
+				  "for tearing into pieces.", MB_ICONINFORMATION);
+	else
+		AfxMessageBox("Этот тип полигонов приобретает свой окончательный вид в файлах Gerber, где присутствуют все необходимые зазоры. "\
+			"В проекте он отображается в виде контурной линии участка меди. Удобно использовать там, "\
+			"где меньше медных дорожек и других предметов, например, во внутренних слоях печатной платы. "\
+			"Толщина контурной линии полигона этого типа может иметь любое значение, включая 0. \nЕсли вы "\
+			"используете этот тип медной области, то в конце выполните проверку (Тестирование >> Проверка медных полигонов) для предупреждения разрыва на островки из-за зазоров, присутствующих в гербер-файле.", MB_ICONINFORMATION);
 }
 
 
 void CDlgAddArea::OnBnClickedQ3()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	AfxMessageBox("Copper fill object. In Freepcb-2 you can add it manually, or create it automatically "\
-		"from a copper area like \"Ghost\".");
+	if (G_LANGUAGE == 0)
+		AfxMessageBox("Copper fill object. You can add it manually, or create it automatically "\
+			"from a copper area like \"Ghost\".", MB_ICONINFORMATION);
+	else
+		AfxMessageBox("Объект медной заливки. Можно добавлять его вручную или создавать автоматически из полигона типа «Призрак».", MB_ICONINFORMATION);
 }
 
 

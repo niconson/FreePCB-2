@@ -228,6 +228,13 @@ void DlgDRC::CheckDesign()
 		mess += "exceeds the default annular ring width in the CAM dialog.\n";
 		mess += "This will probably create DRC errors.\n\n";
 		mess += "Do you want to set the CAM parameter to match the design rule?";
+		if (G_LANGUAGE)
+		{
+			mess = "Внимание: ваше правило проектирования для минимальной ширины кольцевого поля пинов ";
+			mess += "превышает ширину кольцевого поля по умолчанию в диалоговом окне ГЕРБЕР. ";
+			mess += "Возможно, это приведет к ошибкам тестирования\n\n";
+			mess += "Хотите установить параметры ГЕРБЕР в соответствии с правилом проектирования?";
+		}
 		int ret = AfxMessageBox( mess, MB_YESNOCANCEL );
 		if( ret == IDCANCEL )
 			return;
@@ -243,6 +250,13 @@ void DlgDRC::CheckDesign()
 		mess += "exceeds the default annular ring width in the CAM dialog.\n";
 		mess += "This will probably create DRC errors.\n\n";
 		mess += "Do you want to set the CAM parameter to match the design rule?";
+		if (G_LANGUAGE)
+		{
+			mess = "Внимание: ваше правило проектирования для минимальной ширины кольцевого поля переходных отверстий ";
+			mess += "превышает ширину кольцевого поля по умолчанию в диалоговом окне ГЕРБЕР. ";
+			mess += "Возможно, это приведет к ошибкам тестирования\n\n";
+			mess += "Хотите установить параметры ГЕРБЕР в соответствии с правилом проектирования?";
+		}
 		int ret = AfxMessageBox( mess, MB_YESNOCANCEL );
 		if( ret == IDCANCEL )
 			return;

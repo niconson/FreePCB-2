@@ -134,7 +134,7 @@ void CDlgReport::OnBnClickedOk()
 		AfxMessageBox( mess, MB_OK ); 
 		OnCancel();
 	}
-	file.WriteString( "FreePCB project report (default units = " + str_units + ")\n" );   
+	file.WriteString( "Project report (default units = " + str_units + ")\n" );   
 	file.WriteString( "============================================\n" );
 	file.WriteString( "Project name: " + m_doc->m_name + "\n" );
 	file.WriteString( "Project file: " + m_doc->m_pcb_full_path + "\n" );

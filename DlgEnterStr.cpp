@@ -35,12 +35,16 @@ void CDlgEnterStr::DoDataExchange(CDataExchange* pDX)
 		m_edit.GetWindowText(m_str);
 		if (m_str.Find("\"",0) >= 0)
 		{
-			AfxMessageBox( "Illegal name. The name can not contain the quote character!" );
+			AfxMessageBox(G_LANGUAGE == 0 ? 
+				"Illegal name. The name can not contain the quote character!":
+				"Неверное имя. Имя не может содержать кавычку!");
 			pDX->Fail();
 		}
 		if (m_str.Find(" ",0) >= 0)
 		{
-			AfxMessageBox( "Illegal name. The name can not contain a space character!" );
+			AfxMessageBox(G_LANGUAGE == 0 ? 
+				"Illegal name. The name can not contain a space character!":
+				"Неверное имя. Имя не может содержать символ пробела!");
 			pDX->Fail();
 		}
 		m_str = m_str.Left(CShape::MAX_NAME_SIZE);

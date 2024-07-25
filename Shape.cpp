@@ -4109,11 +4109,22 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		CArray<CString> t_OpenScadData;
 		t_OpenScadData.SetSize(0);
 		double mu = (doc->m_units==MM?NM_PER_MM:NM_PER_MIL);
-		str = "//============================================\n";
-		str += "// Code builder for OpenScad via Freepcb-2 app\n";
-		str += "// Author: duxahtech © 2014-2024\n";
-		str += "// Site: https://github.com/niconson\n";
-		str += "//============================================\n\n\n\n";
+		if (G_LANGUAGE == 0)
+		{
+			str = "//============================================\n";
+			str += "// Code builder for OpenScad via Freepcb-2 app\n";
+			str += "// Author: duxahtech © 2014-2024\n";
+			str += "// Site: https://github.com/niconson\n";
+			str += "//============================================\n\n\n\n";
+		}
+		else 
+		{
+			str = "//============================================\n";
+			str += "// Построитель кода для OpenScad\n";
+			str += "// Author: duxahtech © 2014-2024\n";
+			str += "// Site: https://плат-форм.рф\n";
+			str += "//============================================\n\n\n\n";
+		}
 		file.WriteString( str );
 
 		// board

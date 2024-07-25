@@ -492,6 +492,14 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 			str	+= "The characters \" .,;:/!@#$%^&*(){}[]|<>?\\~\'\" are illegal\n";
 			str	+= "For example: 1, 23, A12, SOURCE are legal\n";
 			str	+= "while 1A, A2B3, A:3 are not\n";
+			if (G_LANGUAGE)
+			{
+				str = "Имя пина должно состоять из нуля или более букв, ";
+				str += "за которыми следует ноль или любое положительное число. \n\n";
+				str += "Символы «\" .,;:/!@#$%^&*(){}[]|<>?\\~\'\"» недопустимы\n\n";
+				str += "Например имена пинов типа: 1, 23, A12, SOURCE являются общепринятыми, ";
+				str += "в то время как 1A, A2B3, A:3 не применяются\n";
+			}
 			AfxMessageBox( str );
 			pDX->Fail();
 		}
@@ -501,7 +509,7 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 			{
 				if( m_row_spacing == 0 )
 				{
-					AfxMessageBox( "illegal row spacing" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "illegal row spacing":"Недопустимое расстояние между рядами");
 					pDX->Fail();
 				}
 				if( nstr.GetLength() == 0 ) 
@@ -510,22 +518,22 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 		}
 		if( m_padstack_type == 1 && m_hole_diam <= 0 )
 		{
-			AfxMessageBox( "For through-hole pin, hole diameter must be > 0" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "For through-hole pin, hole diameter must be > 0":"Для пина с отверстием укажите диаметр отверстия");
 			pDX->Fail();
 		}
 		if( m_top_shape != PAD_NONE && m_top_width <= 0 )
 		{
-			AfxMessageBox( "Illegal top pad width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal top pad width":"Недопустимая ширина верхней площадки");
 			pDX->Fail();
 		}
 		if( m_padstack_type == 1 && m_inner_shape != PAD_NONE && m_inner_width <= 0 )
 		{
-			AfxMessageBox( "Illegal inner pad width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal inner pad width":"Недопустимая ширина внутренней колодки");
 			pDX->Fail();
 		}
 		if( m_bottom_shape != PAD_NONE && m_bottom_width <= 0 )
 		{
-			AfxMessageBox( "Illegal bottom pad width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal bottom pad width":"Недопустимая ширина нижней площадки");
 			pDX->Fail();
 		}
 		if( m_padstack_type == 0 ) 
@@ -536,7 +544,7 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 				if( m_bottom_shape == PAD_NONE && ( m_bottom_paste_shape == PAD_NONE || m_bottom_paste_shape == PAD_DEFAULT) && 
 												  ( m_bottom_mask_shape == PAD_NONE || m_bottom_mask_shape == PAD_DEFAULT ) ) 
 				{
-					AfxMessageBox( "SMT pad shape can't be \"none\"" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "SMT pad shape can't be \"none\"":"Форма площадки SMT не может быть «none»");
 					pDX->Fail();
 				} 
 			}
@@ -544,49 +552,49 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 		if (( m_top_paste_shape != PAD_NONE && m_top_paste_shape != PAD_DEFAULT && m_top_paste_width <= 0 ) ||
 			( m_bottom_paste_shape != PAD_NONE && m_bottom_paste_shape != PAD_DEFAULT && m_bottom_paste_width <= 0 ))
 		{
-			AfxMessageBox( "Illegal paste width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal paste width":"Недопустимая ширина пасты");
 			pDX->Fail();
 		}
 		if (( m_top_mask_shape != PAD_NONE && m_top_mask_shape != PAD_DEFAULT && m_top_mask_width <= 0 ) ||
 			( m_bottom_mask_shape != PAD_NONE && m_bottom_mask_shape != PAD_DEFAULT && m_bottom_mask_width <= 0 ))
 		{
-			AfxMessageBox( "Illegal mask width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal mask width":"Недопустимая ширина маски");
 			pDX->Fail();
 		}
 		if( m_top_shape == PAD_RRECT && 
 			(( m_top_radius > m_top_length/2 ) || ( m_top_radius > m_top_width/2 )) )
 		{
-			AfxMessageBox( "Radius of top rounded-rect pad > length/2 or width/2" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Radius of top rounded-rect pad > length/2 or width/2":"Радиус верхней закруглённо-прямоугольной площадки слишком большой. Негодится!");
 			pDX->Fail();
 		}
 		if( m_top_mask_shape == PAD_RRECT && 
 			(( m_top_mask_radius > m_top_mask_length/2 ) || ( m_top_mask_radius > m_top_mask_width/2 )) )
 		{
-			AfxMessageBox( "Radius of top mask rounded-rect pad > length/2 or width/2" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Radius of top mask rounded-rect pad > length/2 or width/2":"Радиус закруглённо-прямоугольной площадки верхней маски слишком большой. Негодится!");
 			pDX->Fail();
 		}
 		if( m_top_paste_shape == PAD_RRECT && 
 			(( m_top_paste_radius > m_top_paste_length/2 ) || ( m_top_paste_radius > m_top_paste_width/2 )) )
 		{
-			AfxMessageBox( "Radius of top paste rounded-rect pad > length/2 or width/2" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Radius of top paste rounded-rect pad > length/2 or width/2":"Радиус закруглённо-прямоугольной площадки верхней пасты слишком большой. Негодится!");
 			pDX->Fail();
 		}
 		if( m_bottom_shape == PAD_RRECT && 
 			(( m_bottom_radius > m_bottom_length/2 ) || ( m_bottom_radius > m_bottom_width/2 )) )
 		{
-			AfxMessageBox( "Radius of bottom rounded-rect pad > length/2 or width/2" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Radius of bottom rounded-rect pad > length/2 or width/2":"Радиус нижней закруглённо-прямоугольной площадки слишком большой. Негодится!");
 			pDX->Fail();
 		}
 		if( m_bottom_mask_shape == PAD_RRECT && 
 			(( m_bottom_mask_radius > m_bottom_mask_length/2 ) || ( m_bottom_mask_radius > m_bottom_mask_width/2 )) )
 		{
-			AfxMessageBox( "Radius of bottom mask rounded-rect pad > length/2 or width/2" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Radius of bottom mask rounded-rect pad > length/2 or width/2":"Радиус закруглённо-прямоугольной площадки нижней маски слишком большой. Негодится!");
 			pDX->Fail();
 		}
 		if( m_bottom_paste_shape == PAD_RRECT && 
 			(( m_bottom_paste_radius > m_bottom_paste_length/2 ) || ( m_bottom_paste_radius > m_bottom_paste_width/2 )) )
 		{
-			AfxMessageBox( "Radius of bottom paste rounded-rect pad > length/2 or width/2" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Radius of bottom paste rounded-rect pad > length/2 or width/2":"Радиус закруглённо-прямоугольной площадки нижней пасты слишком большой. Негодится!");
 			pDX->Fail();
 		}
 		if( m_padstack_type == 1 )
@@ -594,13 +602,15 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 			if( m_inner_shape == PAD_RRECT && 
 				(( m_inner_radius > m_inner_length/2 ) || ( m_inner_radius > m_inner_width/2 )) )
 			{
-				AfxMessageBox( "Radius of inner rounded-rect pad > length/2 or width/2" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Radius of inner rounded-rect pad > length/2 or width/2":"Радиус внутренней закругленной прямоугольной площадки слишком большой. Негодится!");
 				pDX->Fail();
 			}
 		}
 		if( m_top_shape != PAD_NONE && m_bottom_shape != PAD_NONE && m_hole_diam == 0 )
 		{
-			if( AfxMessageBox( "Warning: there is no hole connecting the pads of the top and bottom layers!", MB_OKCANCEL ) == IDCANCEL )
+			if( AfxMessageBox(	G_LANGUAGE==0?
+								"Warning: there is no hole connecting the pads of the top and bottom layers!":
+								"Внимание: нет отверстия, соединяющего площадки верхнего и нижнего слоев!", MB_OKCANCEL ) == IDCANCEL )
 				pDX->Fail();
 		}
 		// now check for conflicts
@@ -651,10 +661,14 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 		if( conflict )
 		{
 			if( m_num_pins == 1 )
-				str.Format( "Pin name \"%s\" conflicts with an existing pin\nCreate multipin?", m_pin_name );
+				str.Format(G_LANGUAGE == 0 ? 
+					"Pin name \"%s\" conflicts with an existing pin\nCreate multipin?":
+					"Имя контакта «%s» конфликтует с существующим контактом.\nСоздать мультиконтакт?", m_pin_name);
 			else
-				str.Format( "Pin names \"%s%d\" through \"%s%d\" conflict with existing pins\nCreate multipins?", 
-				astr, n, astr, n+(m_num_pins-1)*m_increment );
+				str.Format(G_LANGUAGE == 0 ? 
+					"Pin names \"%s%d\" through \"%s%d\" conflict with existing pins\nCreate multipins?":
+					"Имена контактов от «%s%d» до «%s%d» конфликтуют с существующими контактами.\nСоздать мультиконтакты?",
+					astr, n, astr, n+(m_num_pins-1)*m_increment );
 			int ret = IDYES;
 			if( m_mode == ADD || m_pin_name.Compare(m_fp->m_padstack[m_pin_num].name) )
 				ret = AfxMessageBox( str, MB_YESNOCANCEL );
@@ -776,6 +790,13 @@ void CDlgAddPin::DoDataExchange(CDataExchange* pDX)
 				mess += "on both top and bottom layers.\n\n";
 				mess += "Click YES to preserve the layers of these pads,\n";
 				mess += "or NO to set them all to the layer of the new pad";
+				if (G_LANGUAGE)
+				{
+					mess = "Вы применяете новые параметры к контактным площадкам SMT ";
+					mess += "как на верхнем, так и на нижнем слоях.\n\n";
+					mess += "Нажмите ДА, чтобы сохранить слои этих контактных площадок, ";
+					mess += "или НЕТ, чтобы установить их все на слой новой площадки";
+				}
 				int ret = AfxMessageBox( mess, MB_YESNO );
 				if( ret == IDYES )
 					bPreserveLayer = TRUE;

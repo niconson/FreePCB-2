@@ -544,7 +544,7 @@ void CFreePcbView::OnDraw(CDC* pDC)
 		r.left = x_off;
 		r.bottom += VSTEP*2;
 		r.top += VSTEP*2;
-		pDC->DrawText( "SELECTION MASK", -1, &r, DT_TOP );
+		pDC->DrawText( G_LANGUAGE==0?"SELECTION MASK":"МАСКА ВЫБОРА", -1, &r, DT_TOP);
 		y_off = r.bottom;
 		for( int i=0; i<NUM_SEL_MASKS; i++ )
 		{
@@ -574,16 +574,16 @@ void CFreePcbView::OnDraw(CDC* pDC)
 			r.bottom += 5;
 			pDC->DrawText( sel_mask_str[i], -1, &r, DT_TOP );
 		}
-		r.left = x_off;
+		r.left = G_LANGUAGE == 0 ? x_off : x_off-3;
 		r.bottom += VSTEP*2;
 		r.top += VSTEP*2;
-		pDC->DrawText( "* Use these", -1, &r, DT_TOP );
+		pDC->DrawText(G_LANGUAGE == 0 ? "* Use these":"* Используйте эти", -1, &r, DT_TOP);
 		r.bottom += VSTEP;
 		r.top += VSTEP;
-		pDC->DrawText( "keys to change", -1, &r, DT_TOP );
+		pDC->DrawText(G_LANGUAGE == 0 ? "keys to change":" кнопки для смены", -1, &r, DT_TOP);
 		r.bottom += VSTEP;
 		r.top += VSTEP;
-		pDC->DrawText( "active layer", -1, &r, DT_TOP );
+		pDC->DrawText(G_LANGUAGE == 0 ? "active layer":"   активного слоя", -1, &r, DT_TOP);
 		MAXIMUM_Y = r.bottom;
 
 		// draw function keys on bottom pane
@@ -10417,7 +10417,7 @@ void CFreePcbView::OnPartGlue()
 //
 void CFreePcbView::OnPartUnglue()
 {
-	if( AfxMessageBox( " Unglue part?", MB_YESNO ) == IDYES )
+	if( AfxMessageBox(G_LANGUAGE==0?" Unglue part?":" Разблокировать деталь?", MB_YESNO) == IDYES)
 	{
 		SaveUndoInfoForPart( m_sel_part, CPartList::UNDO_PART_MODIFY, NULL, TRUE, m_Doc->m_undo_list );
 		m_sel_part->glued = 0;
@@ -15647,7 +15647,9 @@ BOOL CFreePcbView::ThisGroupContainsGluedParts()
 {
 	if( GluedPartsInGroup() )
 	{
-		int ret = AfxMessageBox( "This group contains glued parts. It is recommended to unselect all glued objects and continue.", MB_YESNOCANCEL );
+		int ret =	G_LANGUAGE==0?
+					AfxMessageBox( "This group contains glued parts. It is recommended to unselect all glued objects and continue.", MB_YESNOCANCEL ):
+					AfxMessageBox("Эта группа содержит зафиксированные детали. Снять выделение этих деталей перед выполнением перемещения?", MB_YESNOCANCEL);
 		if( ret == IDCANCEL )
 			return FALSE;
 		else if( ret == IDNO )
@@ -17657,7 +17659,9 @@ void CFreePcbView::RotateGroup( int angle, BOOL unroute, int x, int y )
 			//При повороте на  угол не кратный 90 градусов 
 			//линия может отображаться некорректно. 
 			//Конвертировать арк линии с помощью аппроксиматора?
-			if( AfxMessageBox( "This group contains arc elements. When turning at an angle not a multiple of 90 degrees, the line may not be displayed correctly. Convert an arc line using an approximator?", MB_YESNO ) == IDYES )
+			if( AfxMessageBox(	G_LANGUAGE==0? 
+								"This group contains arc elements. When turning at an angle not a multiple of 90 degrees, the line may not be displayed correctly. Convert an arc line using an approximator?":
+								"Эта группа содержит эллиптические дуги. Когда происходит вращение группы на угол не кратный 90°, дуги искажаются. Хотите преобразовать дуги в короткие линии, используя аппроксиматор?", MB_YESNO ) == IDYES )
 				conv_ARC = TRUE;
 		}
 		

@@ -254,7 +254,7 @@ void CDlgNetCombine::OnBnClickedOk()
 	int n = m_list_ctrl.GetSelectedCount();
 	if( n == 0 )
 	{
-		AfxMessageBox( "No nets selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "No nets selected":"Нет выбранных эл.цепей");
 		return;
 	}
 	m_names.SetSize(n);

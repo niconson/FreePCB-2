@@ -62,18 +62,20 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_font.CreateFont( 14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET,
 		OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, 
-		DEFAULT_PITCH | FF_DONTCARE, "Arial" );
+		DEFAULT_PITCH | FF_DONTCARE, "Arial" ); 
+
 	SetFont( &m_font );
 
 	RECT rect;
 	GetItemRect( 12, &rect );
 	rect.top += 5;
 	rect.left += 5;
-	m_ctlStaticUnits.Create( "   Units", WS_VISIBLE, rect, this, IDC_STATIC_VISIBLE_GRID );
+	m_ctlStaticUnits.Create(G_LANGUAGE==0?"   Units":"Ед.изм", WS_VISIBLE, rect, this, IDC_STATIC_VISIBLE_GRID );
 	m_ctlStaticUnits.SetFont( &m_font );
 
 	GetItemRect( 13, &rect );
 	rect.bottom = rect.top + 300;
+	rect.left += 5;
 	m_ctlComboUnits.Create( WS_CHILD | WS_VISIBLE | WS_VSCROLL |
 		CBS_DROPDOWNLIST, rect, this, IDC_COMBO_UNITS );
 	m_ctlComboUnits.SetFont( &m_font );
@@ -85,7 +87,7 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetItemRect( 14, &rect );
 	rect.top += 5;
 	rect.left += 5;
-	m_ctlStaticVisibleGrid.Create( "   Grids: Visible", WS_VISIBLE, rect, this, IDC_STATIC_VISIBLE_GRID );
+	m_ctlStaticVisibleGrid.Create(G_LANGUAGE==0?"   Grids: Visible":"   Сетка: Вид", WS_VISIBLE, rect, this, IDC_STATIC_VISIBLE_GRID);
 	m_ctlStaticVisibleGrid.SetFont( &m_font );
 
 	GetItemRect( 15, &rect );
@@ -97,7 +99,7 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetItemRect( 16, &rect );
 	rect.top += 5;
 	rect.left += 5;
-	m_ctlStaticPlacementGrid.Create( "  Placement", WS_VISIBLE, rect, this, IDC_STATIC_PLACEMENT_GRID );
+	m_ctlStaticPlacementGrid.Create(G_LANGUAGE==0?"  Placement":"   Детали", WS_VISIBLE, rect, this, IDC_STATIC_PLACEMENT_GRID);
 	m_ctlStaticPlacementGrid.SetFont( &m_font );
 
 	GetItemRect( 17, &rect );
@@ -109,11 +111,13 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetItemRect( 18, &rect );
 	rect.top += 5;
 	rect.left += 5;
-	m_ctlStaticRoutingGrid.Create( "  Routing", WS_VISIBLE, rect, this, IDC_STATIC_ROUTING_GRID );
+	m_ctlStaticRoutingGrid.Create(G_LANGUAGE==0?"   Routing":" Трассы", WS_VISIBLE, rect, this, IDC_STATIC_ROUTING_GRID);
 	m_ctlStaticRoutingGrid.SetFont( &m_font );
 
 	GetItemRect( 19, &rect );
 	rect.bottom = rect.top + 300;
+	rect.left += 5;
+	rect.right += 5;
 	m_ctlComboRoutingGrid.Create( WS_CHILD | WS_VISIBLE | WS_VSCROLL |
 		CBS_DROPDOWNLIST, rect, this, IDC_COMBO_ROUTING_GRID );
 	m_ctlComboRoutingGrid.SetFont( &m_font );
@@ -121,7 +125,7 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetItemRect( 20, &rect );
 	rect.top += 5;
 	rect.left += 5;
-	m_ctlStaticSnapAngle.Create( "  Angle", WS_VISIBLE, rect, this, IDC_STATIC_SNAP_ANGLE );
+	m_ctlStaticSnapAngle.Create(G_LANGUAGE==0?"  Angle":"   Угол", WS_VISIBLE, rect, this, IDC_STATIC_SNAP_ANGLE);
 	m_ctlStaticSnapAngle.SetFont( &m_font );
 
 	GetItemRect( 21, &rect );

@@ -122,7 +122,9 @@ void CBoardOutlineImage::UpdateBoardOutline()
 	if( m_rect.left == INT_MAX )
 	{
 		Clear();
-		AfxMessageBox("The photo can only be uploaded to the board outline. First add the board outline through the menu \n\nAddition -> Mechanical lines");
+		AfxMessageBox(	G_LANGUAGE == 0 ? 
+						"The photo can only be uploaded to the board outline. First add the board outline through the menu \n\nAddition -> Mechanical lines":
+						"Фото можно загрузить только на контур платы. Сначала добавьте контур платы через меню \n\nДобавление -> Механические линии.");
 	}
 }
 //------------------------------------------------------------

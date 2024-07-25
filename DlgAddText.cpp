@@ -51,12 +51,12 @@ void CDlgAddText::DoDataExchange(CDataExchange* pDX)
 		m_str = m_str.Trim();
 		if( m_str.GetLength() == 0 && m_bNewText )
 		{
-			AfxMessageBox( "Invalid text string" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Invalid text string":"Пустая строка недопустима");
 			pDX->Fail();
 		}
 		if( m_str.Find( '\"' ) != -1 )
 		{
-			AfxMessageBox( "Text string can't contain \"" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Text string can't contain \"":"Текстовая строка не может содержать: \"");
 			pDX->Fail();
 		}
 		GetFields();

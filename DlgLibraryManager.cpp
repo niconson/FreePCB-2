@@ -62,12 +62,6 @@ END_MESSAGE_MAP()
 
 void CDlgLibraryManager::OnBnClickedButtonMakePdf()
 {
-#if 0
-	//** temporarily disabled
-	AfxMessageBox( "Sorry, this function is currently disabled" );
-	return;
-#endif
-//#if 0
 	// set page size
 	double PageWidth;	
 	double PageHeight;	
@@ -1095,7 +1089,9 @@ void CDlgLibraryManager::OnBnClickedButtonMakePdf()
 		{
 			if( !m_dlg_log )
 			{
-				AfxMessageBox( "Error: Unable to write file\nIt may be read-only or open in another application", MB_OK );
+				AfxMessageBox(G_LANGUAGE == 0 ? 
+					"Error: Unable to write file\nIt may be read-only or open in another application":
+					"Ошибка: невозможно записать файл.\nВозможно, он доступен только для чтения или открыт в другом приложении.", MB_OK);
 			}
 			else
 			{
@@ -1105,7 +1101,6 @@ void CDlgLibraryManager::OnBnClickedButtonMakePdf()
 		}
 		cpdf_close(pdf);			/* shut down */
 	}
-//#endif
 }
 
 void CDlgLibraryManager::Initialize( CFootLibFolderMap * foldermap, CDlgLog * log )

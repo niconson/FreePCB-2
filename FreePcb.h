@@ -29,7 +29,6 @@ enum
 #define _2540		2540
 // define world units for CDisplayList
 #define m_pcbu_per_wu 1270
-
 #define NM_PER_MIL	25400
 #define NM_PER_MM	1000000
 #define DEFAULT		999999999
@@ -46,8 +45,9 @@ enum
 // conversion factors
 #define PCBU_PER_MIL	NM_PER_MIL
 #define PCBU_PER_MM		NM_PER_MM
-
 #define PCB_BOUND	32000*PCBU_PER_MIL	// boundary
+
+
 
 // custom messages
 enum {

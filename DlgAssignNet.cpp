@@ -54,12 +54,12 @@ void DlgAssignNet::DoDataExchange(CDataExchange* pDX)
 		pDX->PrepareCtrl( IDC_COMBO_NET );
 		if( m_net_str.GetLength()  == 0 )
 		{
-			AfxMessageBox( "Illegal net name" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal net name":"Недопустимое имя" );
 			pDX->Fail();
 		}
 		else if (m_net_str.Find("\"",0) >= 0)
 		{
-			AfxMessageBox( "Illegal net name" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal net name":"Недопустимое имя");
 			pDX->Fail();
 		}
 		void * ptr;
@@ -91,9 +91,13 @@ void DlgAssignNet::DoDataExchange(CDataExchange* pDX)
 			}
 			if( !m_map->Lookup( m_net_str, ptr ) )
 			{
-				CString str = "Net \"" + m_net_str + "\" not found in netlist\nCreate it ?"; 
+				CString str = G_LANGUAGE == 0 ? 
+					"Net \"" + m_net_str + "\" not found in netlist\nCreate it ?":
+					"Эл.цепь \"" + m_net_str + "\" отсутствует в проекте\nСоздать её?";
 				if( str.Find(".") > 0 )
-					str = "Neither pin nor net \"" + m_net_str + "\" was found in netlist\nCreate this net ?";
+					str = G_LANGUAGE == 0 ? 
+					"Neither pin nor net \"" + m_net_str + "\" was found in netlist\nCreate this net ?":
+					"Ни контакт, ни эл.цепь \"" + m_net_str + "\" не найдены в проекте. Создать эл.цепь с этим именем?";
 				int ret = AfxMessageBox( str, MB_YESNO );
 				if( ret == IDNO )
 				{

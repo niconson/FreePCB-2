@@ -360,6 +360,8 @@ void CFreePcbApp::OnHelpFAQ()
 {
 	SHELLEXECUTEINFO ShExecInfo;
 	CString fn = "https://github.com/Duxah/FreePCB-2/blob/master/How_to.md";
+	if (G_LANGUAGE)
+		fn = "https://плат-форм.рф";
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = NULL;
@@ -378,6 +380,8 @@ void CFreePcbApp::OnHelpGotoWebsite()
 {
     SHELLEXECUTEINFO ShExecInfo;
 	CString fn = "https://github.com/Duxah/FreePCB-2/blob/master/README.md";
+	if (G_LANGUAGE)
+		fn = "https://плат-форм.рф";
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = NULL;

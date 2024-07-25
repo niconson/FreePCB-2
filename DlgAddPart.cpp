@@ -81,17 +81,20 @@ void CDlgAddPart::DoDataExchange(CDataExchange* pDX)
 		{
 			if( ref_des_str.GetLength() == 0 )
 			{
-				CString mess;
-				mess.Format( "Illegal reference designator" );
-				AfxMessageBox( mess );
+				//CString mess;
+				//mess.Format(G_LANGUAGE == 0 ? "Illegal reference designator":"Недопустимое условное обозначение");
+				AfxMessageBox(G_LANGUAGE == 0 ? "Illegal reference designator" : "Недопустимое условное обозначение");
 				pDX->PrepareEditCtrl( IDC_PART_REF );
 				pDX->Fail();
 			}
 			if( ref_des_str.FindOneOf( ",. #\\/" ) != -1 )
 			{
 				CString mess;
-				mess.Format( "Illegal reference designator \"%s\"", ref_des_str );
-				AfxMessageBox( mess );
+				if(G_LANGUAGE==0)
+					mess.Format( "Illegal reference designator \"%s\"", ref_des_str );
+				else
+					mess.Format("Недопустимое условное обозначение \"%s\"", ref_des_str);
+				AfxMessageBox(mess);
 				pDX->PrepareEditCtrl( IDC_PART_REF );
 				pDX->Fail();
 			}
@@ -118,7 +121,9 @@ void CDlgAddPart::DoDataExchange(CDataExchange* pDX)
 					if( FLAG == 0 )
 					{
 						FLAG = 1;
-						mess.Format( " Duplicate reference! %s already used. Determine free index value and rename REF automatically?", (*m_pl)[i].ref_des);//, (*m_pl)[i].ref_des, label );
+						mess.Format(G_LANGUAGE == 0 ? 
+									" Duplicate reference! %s already used. Determine free index value and rename REF automatically?":
+									" Дублирование обозначения! %s уже используется. \n\nНайти свободный индекс и автоматически переименовать REF?", (*m_pl)[i].ref_des);//
 						int ret = AfxMessageBox( mess, MB_YESNOCANCEL );
 						if( ret == IDNO )
 						{
@@ -156,8 +161,11 @@ void CDlgAddPart::DoDataExchange(CDataExchange* pDX)
 						}
 					}
 					else
-					{		
-						mess.Format( "Part %s already exists and will also be renamed to \"%s%s\"!", (*m_pl)[i].ref_des, (*m_pl)[i].ref_des, label );
+					{	
+						if (G_LANGUAGE == 0)
+							mess.Format( "Part %s already exists and will also be renamed to \"%s%s\"!", (*m_pl)[i].ref_des, (*m_pl)[i].ref_des, label );
+						else
+							mess.Format("Деталь %s уже существует и также будет переименована в \"%s%s\"!", (*m_pl)[i].ref_des, (*m_pl)[i].ref_des, label);
 						AfxMessageBox( mess, MB_OK );
 						CPY_ref_des_str = (*m_pl)[i].ref_des + label;
 						(*m_pl)[i].ref_des = (*m_pl)[i].ref_des + label;
@@ -175,7 +183,10 @@ void CDlgAddPart::DoDataExchange(CDataExchange* pDX)
 		if( value_str.Find( "@" ) != -1 )
 		{
 			CString mess;
-			mess.Format( "Value cannot contain \"@\"" );
+			if (G_LANGUAGE == 0)
+				mess.Format( "Value cannot contain «@»" );
+			else
+				mess.Format("Название не должно содержать «@»");
 			AfxMessageBox( mess );
 			pDX->PrepareEditCtrl( IDC_EDIT_VALUE );
 			pDX->Fail();
@@ -249,13 +260,17 @@ void CDlgAddPart::DoDataExchange(CDataExchange* pDX)
 					int ret;
 					if( !m_n_list_locked )
 					{
-						mess.Format( "Warning: %s has fewer pins than %s\nDo you really want to replace it ? ",
+						mess.Format(G_LANGUAGE == 0 ? 
+							"Warning: %s has fewer pins than %s \nDo you really want to replace it ? ":
+							"Внимание: у %s меньше контактов, чем у %s. \nВы действительно хотите его заменить? ",
 							foot_str, (*m_pl)[m_ip].shape->m_name );
 						ret = AfxMessageBox( mess, MB_YESNO );
 					}
 					else
 					{
-						mess.Format( "Warning: %s has fewer pins than %s,and since the netlist is protected, no continuation is possible. \n(Unlock netlist: Project -> Nets -> Netlist_Protected)",
+						mess.Format(G_LANGUAGE == 0 ? 
+							"Warning: %s has fewer pins than %s,and since the netlist is protected, no continuation is possible. \n(Unlock netlist: Project -> Nets -> Netlist_Protected)":
+							"Предупреждение: у %s меньше контактов, чем у %s, и поскольку список соединений защищен, заменить футпринт не удастся. \n(Разблокировать список соединений: Проект -> Список эл.цепей -> Эл.цепи защищены)",
 							foot_str, (*m_pl)[m_ip].shape->m_name );
 						ret = AfxMessageBox( mess, MB_OK );
 					}
@@ -357,7 +372,7 @@ void CDlgAddPart::DoDataExchange(CDataExchange* pDX)
 				{
 					if( old_sh == NULL )
 					{
-						AfxMessageBox( "Error: No footprint selected" );
+						AfxMessageBox(G_LANGUAGE == 0 ? "Error: No footprint selected":"Ошибка: футпринт не выбран. Нужно выбрать футпринт");
 						pDX->Fail();
 					}
 					m_shape.Copy( old_sh );
@@ -747,7 +762,10 @@ void CDlgAddPart::InitPartLibTree( CString Filter )
 	tvInsert.hParent = NULL;
 	tvInsert.hInsertAfter = NULL;
 	tvInsert.item.mask = TVIF_TEXT | TVIF_PARAM;
-	tvInsert.item.pszText = _T("local cache");
+	if(G_LANGUAGE==0)
+		tvInsert.item.pszText = _T("local cache");
+	else
+		tvInsert.item.pszText = _T("Локальный кэш");
 	tvInsert.item.lParam = -1;
 	HTREEITEM hLocal = pCtrl->InsertItem(&tvInsert);
 
@@ -897,7 +915,7 @@ void CDlgAddPart::OnTvnSelchangedPartLibTree(NMHDR *pNMHDR, LRESULT *pResult)
 			BOOL found = m_footprint_cache_map->Lookup( m_footprint_name, ptr );
 			if( !found )
 			{
-				AfxMessageBox( "Warning: Library was changed!" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Warning: Library was changed!":"Внимание: библиотека была изменена извне! Производим перезагрузку");
 				CString * last_folder_path = m_footlibfoldermap->GetLastFolder();
 				m_folder->IndexAllLibs( last_folder_path, m_dlg_log );
 				m_folder = m_footlibfoldermap->GetFolder( last_folder_path, m_dlg_log );
@@ -914,7 +932,7 @@ void CDlgAddPart::OnTvnSelchangedPartLibTree(NMHDR *pNMHDR, LRESULT *pResult)
 			int err = m_shape.MakeFromFile( NULL, m_footprint_name, *lib_file_name, offset ); 
 			if( err )
 			{
-				AfxMessageBox( "Warning: Library was changed!" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Warning: Library was changed!":"Внимание: библиотека была изменена извне! Производим перезагрузку");
 				// unable to make shape
 				CString * last_folder_path = m_footlibfoldermap->GetLastFolder();
 				m_folder->IndexAllLibs( last_folder_path, m_dlg_log );

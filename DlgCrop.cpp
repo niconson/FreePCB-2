@@ -393,7 +393,7 @@ void CDlgCrop::OnBnClickedDelete()
 {
 	if( m_combo_settings.GetCount() > 1 )
 	{
-		int r = AfxMessageBox("Confirm deletion...", MB_YESNO );
+		int r = AfxMessageBox(G_LANGUAGE == 0 ? "Confirm deletion...":"Подтвердите удаление...", MB_YESNO);
 		if( r == IDYES )
 		{
 			int isel = m_combo_settings.GetCurSel();
@@ -403,7 +403,7 @@ void CDlgCrop::OnBnClickedDelete()
 		}
 	}
 	else
-		AfxMessageBox("You can't delete all of them", MB_ICONERROR );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You can't delete all of them":"Вы не можете удалить их все", MB_ICONERROR);
 }
 
 void CDlgCrop::OnBnClickedSave()
@@ -411,15 +411,15 @@ void CDlgCrop::OnBnClickedSave()
 	CString s;
 	m_edit_new_name.GetWindowTextA(s);
 	if( s.GetLength() == 0 )
-		AfxMessageBox("First enter new name", MB_ICONERROR );
+		AfxMessageBox(G_LANGUAGE == 0 ? "First enter new name":"Сначала введите новое имя", MB_ICONERROR);
 	else
 	{
 		if( m_combo_settings.FindStringExact(-1,s) >= 0 )
-			AfxMessageBox("This name already used", MB_ICONERROR );
+			AfxMessageBox(G_LANGUAGE == 0 ? "This name already used":"Это имя уже использовалось", MB_ICONERROR);
 		else
 		{
 			SaveCropData(TRUE);
-			AfxMessageBox("Setting saved successfully", MB_ICONINFORMATION );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Setting saved successfully":"Настройка успешно сохранена", MB_ICONINFORMATION);
 		}
 	}
 }

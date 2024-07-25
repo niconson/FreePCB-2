@@ -67,7 +67,7 @@ void CDlgAddPoly::DoDataExchange(CDataExchange* pDX)
 		if( m_width < 0 || m_width > 999*NM_PER_MIL )
 		{
 			pDX->PrepareEditCtrl( IDC_EDIT_WIDTH );
-			AfxMessageBox( "Width out of range (1 to 999 mils)" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Width out of range (1 to 999 mils)":"Ширина вне диапазона (от 1 до 999 мил)");
 			pDX->Fail();
 		}
 	}

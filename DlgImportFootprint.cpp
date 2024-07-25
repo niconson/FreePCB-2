@@ -192,7 +192,10 @@ void CDlgImportFootprint::InitPartLibTree()
 	tvInsert.hParent = NULL;
 	tvInsert.hInsertAfter = NULL;
 	tvInsert.item.mask = TVIF_TEXT | TVIF_PARAM;
-	tvInsert.item.pszText = _T("local cache");
+	if (G_LANGUAGE == 0)
+		tvInsert.item.pszText = _T("local cache");
+	else
+		tvInsert.item.pszText = _T("Локальный кэш");
 	tvInsert.item.lParam = -1;
 	HTREEITEM hLocal = pCtrl->InsertItem(&tvInsert);
 

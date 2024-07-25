@@ -32,12 +32,12 @@ void CDlgAddMerge::DoDataExchange(CDataExchange* pDX)
 		m_edit.GetWindowText(m_merge_name);
 		if (m_merge_name.Find("\"",0) >= 0)
 		{
-			AfxMessageBox( "Illegal merge name. The name can not contain the quote character!" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal merge name. The name can not contain the quote character!":"Недопустимое имя слияния. Имя не может содержать символ кавычки!");
 			pDX->Fail();
 		}
 		if (m_merge_name.Find(" ",0) >= 0)
 		{
-			AfxMessageBox( "Illegal merge name. The name can not contain a space character!" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal merge name. The name can not contain a space character!":"Недопустимое имя слияния. Имя не может содержать пробел!");
 			pDX->Fail();
 		}
 		m_merge_name = m_merge_name.Left(CShape::MAX_NAME_SIZE);

@@ -26,13 +26,24 @@
 //#define getbit(reg,bit) ((reg & (1<<bit)) ? 1 : 0) //проверить состо€ние бита в регистре
 #define DISABLE_CHANGE_DRAW_LAYER -1
 #define ENABLE_CHANGE_DRAW_LAYER 0
+
+
+
+#if G_LANGUAGE == 0
 #define NETLIST_UPDATED "The netlist was updated but was not loaded into the PCB editor." /*this phrase must be the same in both PCB and CDS*/
 #define NETLIST_WARNING "The netlist was loaded into FreePcb-2, but after that the file was not saved!" /*this phrase must be the same in both PCB and CDS*/
+#define PROGRAM_CAP "FreePCB - "
+#define PROGRAM_CAP2 "Schematic Constructor - "
+#else
+#define NETLIST_UPDATED "Ќетлист был обновлЄн через редактор схем, но пока не был загружен в редактор плат." /*this phrase must be the same in both PCB and CDS*/
+#define NETLIST_WARNING "ќбновлЄнный нетлист загружали в редактор плат, но изменени€ не сохранили." /*this phrase must be the same in both PCB and CDS*/
+#define PROGRAM_CAP "ѕлат‘орм - "
+#define PROGRAM_CAP2 "ѕлат‘орм(схема) - "
+#endif
 #define freeasy_netlist "\\related_files\\CDS_netlist\\"
 #define FILE_PROTECTED "Protected"
 #define FOOTPRINT_ERR "_ERR"
-#define PROGRAM_CAP "FreePCB - "
-#define PROGRAM_CAP2 "Schematic Constructor - "
+
 
 class CFreePcbDoc;
 class CFreePcbView;
@@ -150,7 +161,7 @@ protected:
 	  
 public:
 	double m_version;			// version number, such as "1.105"
-	double m_file_version;		// the oldest version of FreePCB that can read
+	double m_file_version;		// the oldest version of this program that can read
 								// files created with this version
 	double m_read_version;		// the version from the project file
 	BOOL bNoFilesOpened;		// TRUE if no files have been opened

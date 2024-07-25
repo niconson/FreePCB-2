@@ -44,12 +44,12 @@ void CDlgFpText::DoDataExchange(CDataExchange* pDX)
 		// leaving the dialog
 		if( m_str.GetLength() == 0 )
 		{
-			AfxMessageBox( "Invalid text string" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Invalid text string":"Неверная текстовая строка");
 			pDX->Fail();
 		}
 		if( m_str.Find( '\"' ) != -1 )
 		{
-			AfxMessageBox( "Text string can't contain \"" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Text string can't contain \"":"Текстовая строка не может содержать \"");
 			pDX->Fail();
 		}
 		GetFields();

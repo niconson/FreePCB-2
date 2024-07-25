@@ -67,7 +67,7 @@ class CFootLibFolderMap
 public:
 	CFootLibFolderMap();
 	~CFootLibFolderMap();
-	void AddFolder( CString * full_path, CFootLibFolder * folder );
+	CFootLibFolder* AddFolder( CString * full_path, CFootLibFolder * folder );
 	CFootLibFolder * GetFolder( CString * full_path, CDlgLog * log );
 	BOOL FolderIndexed( CString * full_path );
 	void SetDefaultFolder( CString * def_full_path );
