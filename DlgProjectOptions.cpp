@@ -96,19 +96,19 @@ void CDlgProjectOptions::DoDataExchange(CDataExchange* pDX)
 		if( m_name.GetLength() == 0 )
 		{
 			pDX->PrepareEditCtrl( IDC_EDIT_NAME );
-			AfxMessageBox( "Please enter name for project" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Please enter name for project":"Введите имя проекта");
 			pDX->Fail();
 		}
 		else if( m_path_to_folder.GetLength() == 0 )
 		{
 			pDX->PrepareEditCtrl( IDC_EDIT_FOLDER );
-			AfxMessageBox( "Please enter project folder" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Please enter project folder":"Пожалуйста, укажите папку проекта");
 			pDX->Fail();
 		}
 		else if( m_lib_folder.GetLength() == 0 )
 		{
 			pDX->PrepareEditCtrl( IDC_EDIT_LIBRARY_FOLDER );
-			AfxMessageBox( "Please enter library folder" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Please enter library folder":"Пожалуйста, укажите папку библиотеки");
 			pDX->Fail();
 		}
 		else
@@ -345,7 +345,7 @@ void CDlgProjectOptions::OnBnClickedButtonAdd()
 	{
 		if( dlg.m_width[0] == '\0' )
 		{
-			AfxMessageBox( "Illegal trace width." );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal trace width.":"Недопустимая ширина трассы");
 			return;
 		}
 		CString str;
@@ -382,7 +382,9 @@ void CDlgProjectOptions::OnBnClickedButtonAdd()
 	}
 	else
 		return;
-	AfxMessageBox( "Illegal values (After the numbers you need to write units of measurement. For example: 1.0mm or 40mil)" );
+	AfxMessageBox(G_LANGUAGE == 0 ? 
+		"Illegal values (After the numbers you need to write units of measurement. For example: 1.0mm or 40mil)":
+		"Недопустимые значения (После чисел необходимо указать единицы измерения. Например: 1,0mm или 40mil)");
 }
 
 void CDlgProjectOptions::OnBnClickedButtonEdit()
@@ -391,7 +393,7 @@ void CDlgProjectOptions::OnBnClickedButtonEdit()
 	int i_sel = m_list_menu.GetNextSelectedItem( pos );
 	if( i_sel < 0 )
 	{
-		AfxMessageBox( "no menu item selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "no menu item selected" : "пункт меню не выбран");
 	}
 	else
 	{
@@ -456,7 +458,7 @@ void CDlgProjectOptions::OnBnClickedButtonDelete()
 	POSITION pos = m_list_menu.GetFirstSelectedItemPosition();
 	int i_sel = m_list_menu.GetNextSelectedItem( pos );
 	if( i_sel < 0 )
-		AfxMessageBox( "no menu item selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "no menu item selected":"пункт меню не выбран");
 	else
 		m_list_menu.DeleteItem( i_sel );
 	if( i_sel > 0 )

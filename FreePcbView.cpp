@@ -991,12 +991,12 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 						net_name2 = net2->name;
 					if( net1 == NULL && net2 == NULL )
 					{
-						AfxMessageBox( "No connections to swap" );
+						AfxMessageBox(G_LANGUAGE == 0 ? "No connections to swap":"Нет трасс для обмена");
 						return;
 					}
 					else if( net1 == net2 )
 					{
-						AfxMessageBox( "Both pins have the same net name" );
+						AfxMessageBox(G_LANGUAGE == 0 ? "Both pins have the same net name":"Оба вывода имеют одинаковое имя эл.цепи");
 						return;
 					}
 					//
@@ -1031,7 +1031,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 								}
 								else
 								{
-									mess.Format( "Swap %s.%s (\"%s\") and %s.%s (\"%s\") ?",
+									mess.Format(G_LANGUAGE == 0 ? 
+										"Swap %s.%s (\"%s\") and %s.%s (\"%s\") ?":
+										"Поменять местами %s.%s (\"%s\") и %s.%s (\"%s\") ?",
 										part1->ref_des, pin_name1, net_name1,
 										part2->ref_des, pin_name2, net_name2 );
 									ret = AfxMessageBox( mess, MB_OKCANCEL );
@@ -1044,7 +1046,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 								if( modified )
 								{
 									if( modified == 2 )
-										AfxMessageBox( "Found updated netlist file from schematic editor. Load it first (File >> ReloadNetlist) and then save the project to sync the schematic and PCB netlists" );
+										AfxMessageBox(G_LANGUAGE == 0 ? 
+											"Found updated netlist file from schematic editor. Load it first (File >> ReloadNetlist) and then save the project to sync the schematic and PCB netlists":
+											"Обнаружен обновленный файл списка эл.цепей из редактора схем. Сначала загрузите его (Файл >> Перезагрузить список эл.цепей), а затем сохраните проект, чтобы синхронизировать схему с печатной платой");
 									ret = IDCANCEL;
 								}
 								else if( modified == 0 )
@@ -1052,18 +1056,26 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 									SchematicFound = 1;
 									if( part1 == part2 )
 									{
-										mess.Format("Found a schematic file. FreePcb2 will check to see "\
-													"if these pins can be swapped directly in the schema file. "\
-													"Click OK to continue\n\nSwap %s.%s (\"%s\") and %s.%s (\"%s\")",
-										part1->ref_des, pin_name1, net_name1,
-										part2->ref_des, pin_name2, net_name2 );
+										mess.Format(G_LANGUAGE == 0 ? 
+											("Found a schematic file. FreePcb2 will check to see "\
+											"if these pins can be swapped directly in the schema file. "\
+											"Click OK to continue\n\nSwap %s.%s (\"%s\") and %s.%s (\"%s\")"):
+											("Найден файл схемы. ПлатФорм проверит "\
+											"можно ли поменять местами эти контакты непосредственно в файле схемы. "\
+											"Нажмите OK, чтобы продолжить и поменять местами %s.%s (\"%s\") и %s.%s (\"%s\")"),
+											part1->ref_des, pin_name1, net_name1,
+											part2->ref_des, pin_name2, net_name2 );
 										//
 										ret = AfxMessageBox( mess, MB_OKCANCEL );
 										if( ret == IDOK )
 										{
-											mess.Format("Failed! The original schematic file has "\
-														"been modified. Save changes or close "\
-														"the file and try again");
+											mess.Format(G_LANGUAGE == 0 ? 
+												("Failed! The original schematic file has "\
+												"been modified. Save changes or close "\
+												"the file and try again"):
+												("Ошибка! Исходный файл схемы был "\
+												"изменен. Сохраните изменения или закройте "\
+												"файл и попробуйте еще раз"));
 											//
 											CWnd * FindWin = FindWindow(NULL, Header);
 											if( FindWin == NULL )
@@ -1201,7 +1213,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 													if( ( desc1.GetLength() == 0 && desc2.GetLength() ) ||
 														( desc1.GetLength() && desc2.GetLength() == 0 ) )
 													{
-														ret = AfxMessageBox( "Warning! One of the pins does not have a description attribute. In the next dialog box, you can enter the pin description text" );
+														ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+															"Warning! One of the pins does not have a description attribute. In the next dialog box, you can enter the pin description text":
+															"Внимание! Один из пинов не имеет атрибута описания (description). В следующем диалоговом окне вы можете ввести текст описания пина");
 														CDlgEnterStr dlg;
 														CString win_str, ini_str;
 														if( desc1.GetLength() == 0 )
@@ -1223,7 +1237,7 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 													}
 													if( p1_count == 0 && p2_count == 0 )
 													{
-														AfxMessageBox(	"Failed! Pins not found" );
+														AfxMessageBox(G_LANGUAGE == 0 ? "Failed! Pins not found":"Не удалось! Пины не найдены");
 														ret = IDCANCEL;
 													}
 													if( ret == IDOK )
@@ -1339,7 +1353,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 																						else
 																							NewStr += ","+allPins[gp];
 																					if( pinFound == 0 )
-																						AfxMessageBox("Invalid pin name, check the correct pin designation in your schematic file. It is allowed to list pins separated by commas, or specify a range of pins using a dash. For example 10,11,15-17",MB_ICONERROR);
+																						AfxMessageBox(G_LANGUAGE == 0 ? 
+																							"Invalid pin name, check the correct pin designation in your schematic file. It is allowed to list pins separated by commas, or specify a range of pins using a dash. For example 10,11,15-17":
+																							"Неверное имя пина, проверьте правильное обозначение контакта в файле схемы. Разрешается перечислять имена, разделенные запятыми, или указывать диапазон пинов, используя тире. Например, 10,11,15-17", MB_ICONERROR);
 																					arr[0] = NewStr;
 																				}
 																				get_str.Replace( OldArr0, arr[0] );
@@ -1396,7 +1412,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 									}
 									else
 									{
-										mess.Format("This action cannot be automatically synchronized with the schematic file because the selected pins belong to different parts.");
+										mess.Format(G_LANGUAGE == 0 ? 
+											"This action cannot be automatically synchronized with the schematic file because the selected pins belong to different parts.":
+											"Это действие невозможно автоматически синхронизировать с файлом схемы, поскольку выбранные контакты принадлежат разным деталям.");
 										AfxMessageBox( mess, MB_ICONERROR );
 										ret = IDCANCEL;
 									}
@@ -1436,7 +1454,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 					SetDrawLayer( DISABLE_CHANGE_DRAW_LAYER );  // Swap
 					cnet * n2 = (cnet*)	ptr;
 					CString mess;
-					mess.Format( "Swap connect %d (\"%s\") and connect %d (\"%s\") ?",
+					mess.Format(G_LANGUAGE == 0 ? 
+						"Swap connect %d (\"%s\") and connect %d (\"%s\") ?":
+						"Поменять местами соединение %d (\"%s\") и соединение %d (\"%s\") ?",
 								m_sel_ic, m_sel_net->name, 
 								sid.i, n2->name );
 					int ret = AfxMessageBox( mess, MB_OKCANCEL );
@@ -2271,7 +2291,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 				if( ret == -1 )
 				{
 					// error
-					AfxMessageBox( "Error: Unable to clip polygon due to intersecting arc" );
+					AfxMessageBox(G_LANGUAGE == 0 ?
+						"Error: Unable to clip polygon due to intersecting arc" :
+						"Ошибка: невозможно обрезать полигон из-за пересекающейся дуги");
 					CancelSelection();
 					m_Doc->OnEditUndo();
 				}
@@ -2298,7 +2320,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 				if( ret == -1 )
 				{
 					// error
-					AfxMessageBox( "Error: Unable to clip polygon due to intersecting arc" );
+					AfxMessageBox(G_LANGUAGE == 0 ?
+						"Error: Unable to clip polygon due to intersecting arc" :
+						"Ошибка: невозможно обрезать полигон из-за пересекающейся дуги");
 					CancelSelection();
 					m_Doc->OnEditUndo();
 				}
@@ -2385,7 +2409,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 					if( ret == -1 )
 					{
 						// error
-						AfxMessageBox( "Error: Unable to clip polygon due to intersecting arc" );
+						AfxMessageBox(G_LANGUAGE == 0 ?
+							"Error: Unable to clip polygon due to intersecting arc" :
+							"Ошибка: невозможно обрезать полигон из-за пересекающейся дуги");
 						////m_Doc->OnEditUndo();
 					}
 					else
@@ -2574,7 +2600,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 							{
 								// pin assigned to different net, can't connect it
 								CString mess;
-								mess.Format( "You are trying to connect a trace to a pin on a different net\nYou must detach the pin from the net first" );
+								mess.Format(G_LANGUAGE == 0 ? 
+									"You are trying to connect a trace to a pin on a different net\nYou must detach the pin from the net first":
+									"Вы пытаетесь подключить трассировку к пину другой эл.цепи. Сначала необходимо отсоединить пин от той сети.");
 								AfxMessageBox( mess );
 							}
 							else if( m_sel_con.end_pin == cconnect::NO_END
@@ -2700,7 +2728,9 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 								if( m_Doc->m_netlist_completed == 0 )
 								{
 									CString mess;
-									mess.Format( "You are trying to connect pins on different nets.\nCombine this nets?\nWARNING! This operation has no undo action." );
+									mess.Format(G_LANGUAGE == 0 ? 
+										"You are trying to connect pins on different nets.\nCombine this nets?\nWARNING! This operation has no undo action.":
+										"Вы пытаетесь соединить выводы в разных сетях. \nОбъединить эти сети? \nВНИМАНИЕ! Эта операция не имеет отмены.");
 									ret = AfxMessageBox( mess, MB_YESNO );
 								}
 								else
@@ -2994,7 +3024,7 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 										m_Doc->m_nlist->ReconcileVia( m_sel_net, m_sel_ic, m_sel_con.nsegs, 1, via_w, via_hole_w );
 										m_Doc->m_nlist->DrawConnection( m_sel_net, m_sel_ic );
 										m_dlist->StopDragging();
-										AfxMessageBox( "Branch created" );
+										AfxMessageBox(G_LANGUAGE == 0 ? "Branch created" : "Новая ветка прикреплена к трассе");
 										m_sel_ic = m_Doc->m_nlist->OptimizeConnections( m_sel_net, m_sel_ic, m_Doc->m_auto_ratline_disable,
 																		 m_Doc->m_auto_ratline_min_pins, TRUE  );
 										if( m_sel_ic >= 0 )
@@ -3075,11 +3105,11 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 										//m_sel_id = ID;
 										//m_sel_net = net;
 										//m_Doc->ProjectModified( TRUE );
-										AfxMessageBox( "Two branches combined" );
+										AfxMessageBox(G_LANGUAGE == 0 ? "Two branches combined":"Две ветви объединены");
 										SetDrawLayer( DISABLE_CHANGE_DRAW_LAYER );
 										goto goodbye;
 									}
-									AfxMessageBox( "Branch created" );
+									AfxMessageBox(G_LANGUAGE == 0 ? "Branch created" : "Новая ветка прикреплена к трассе");
 									m_sel_ic = m_Doc->m_nlist->OptimizeConnections( m_sel_net, m_sel_ic, m_Doc->m_auto_ratline_disable,
 																	 m_Doc->m_auto_ratline_min_pins, TRUE  );
 									if( m_sel_ic >= 0 )
@@ -3156,11 +3186,11 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 											//m_sel_id = ID;
 											//m_sel_net = net;
 											//m_Doc->ProjectModified( TRUE );
-											AfxMessageBox( "Two branches combined" );
+											AfxMessageBox(G_LANGUAGE == 0 ? "Two branches combined" : "Две ветви объединены");
 											SetDrawLayer( DISABLE_CHANGE_DRAW_LAYER );
 											goto goodbye;
 										}
-										int ret = AfxMessageBox( "Branch created" );
+										int ret = AfxMessageBox(G_LANGUAGE == 0 ? "Branch created":"Новая ветка прикреплена к трассе");
 										m_sel_ic = m_Doc->m_nlist->OptimizeConnections( m_sel_net, m_sel_ic, m_Doc->m_auto_ratline_disable,
 																		 m_Doc->m_auto_ratline_min_pins, TRUE  );
 										if( m_sel_ic >= 0 )
@@ -3214,7 +3244,7 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 								{
 									// pin assigned to different net, can't connect it
 									CString mess;
-									mess.Format( "You are trying to connect to a pin on a different net" );
+									mess.Format(G_LANGUAGE == 0 ? "You are trying to connect to a pin on a different net":"Вы пытаетесь подключиться к пину другой эл.цепи");
 									AfxMessageBox( mess );
 									return;
 								}
@@ -3709,7 +3739,9 @@ void CFreePcbView::OnRButtonDown(UINT nFlags, CPoint point)
 		if( ret == -1 )
 		{
 			// error
-			AfxMessageBox( "Error: Unable to clip polygon due to intersecting arc" );
+			AfxMessageBox(G_LANGUAGE == 0 ?
+				"Error: Unable to clip polygon due to intersecting arc" :
+				"Ошибка: невозможно обрезать полигон из-за пересекающейся дуги");
 			////m_Doc->OnEditUndo();
 		}
 		CancelSelection();
@@ -4112,7 +4144,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 				// routing forward
 				if( m_sel_net->connect[m_sel_ic].vtx[m_sel_is].tee_ID )
 				{
-					AfxMessageBox( "tee-vertex reached" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "tee-vertex reached":"Вершина тройника достигнута");
 				}
 				else
 				{
@@ -4146,7 +4178,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 				// routing backward, not at end of stub trace
 				if( m_sel_net->connect[m_sel_ic].vtx[m_sel_is+1].tee_ID )
 				{
-					AfxMessageBox( "tee-vertex reached" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "tee-vertex reached" : "Вершина тройника достигнута");
 				}
 				else
 				{
@@ -4177,7 +4209,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 				if( m_sel_net->connect[m_sel_ic].vtx[m_sel_is-1].tee_ID )
 				{
-					AfxMessageBox( "tee-vertex reached" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "tee-vertex reached" : "Вершина тройника достигнута");
 				}
 				else
 				{
@@ -4205,7 +4237,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 				if( m_sel_net->connect[m_sel_ic].vtx[m_sel_is].tee_ID )
 				{
-					AfxMessageBox( "tee-vertex reached" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "tee-vertex reached" : "Вершина тройника достигнута");
 				}
 				else
 				{
@@ -4467,7 +4499,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 				{
 					if( new_active_layer<LAY_TOP_COPPER )
 					{
-						int ret = AfxMessageBox( "To copy the copper area to solder mask layer?", MB_YESNO );
+						int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+							"To copy the copper area to solder mask layer?":
+							"Переместить полигон на слой паяльной маски?", MB_YESNO);
 						if( ret == IDYES )
 						{
 							MoveAreaToLayer(new_active_layer);
@@ -4484,7 +4518,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 						if( ret == -1 )
 						{
 							// error
-							AfxMessageBox( "Error: Unable to clip polygon due to intersecting arc" );
+							AfxMessageBox(G_LANGUAGE == 0 ?
+								"Error: Unable to clip polygon due to intersecting arc" :
+								"Ошибка: невозможно обрезать полигон из-за пересекающейся дуги");
 							m_Doc->OnEditUndo();
 						}
 						else
@@ -4683,7 +4719,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 				if( m_sel_part->glued )
 				{
-					int ret = AfxMessageBox( "This part is glued, do you want to unglue it ?  ", MB_YESNO );
+					int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+						"This part is glued, do you want to unglue it ?":
+						"Эта деталь зафиксирована, хотите ее разблокировать?", MB_YESNO);
 					if( ret == IDYES )
 					{
 						m_sel_part->glued = 0;
@@ -4929,7 +4967,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{	
 			if( m_Doc->m_project_modified )
 			{
-				AfxMessageBox( "The operation of bifurcating net is not possible to return, so now you need to save the file" );
+				AfxMessageBox(G_LANGUAGE == 0 ? 
+					"The operation of bifurcating net is not possible to return, so now you need to save the file":
+					"Операцию разделения эл.цепи на 2 части невозможно будет отменить, поэтому сейчас нужно сохранить файл");
 			}
 			else
 			{
@@ -6036,7 +6076,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 				//
 				if( m_sel_net->nareas <= mem_n_areas )
 				{
-					AfxMessageBox("There is no copper fill that meets all the criteria");
+					AfxMessageBox(G_LANGUAGE == 0 ? 
+						"There is no copper fill that meets all the criteria":
+						"Не существует медной заливки, которая бы соответствовала всем критериям");
 					CancelSelection();
 					m_Doc->CancelBoardHoles();
 					m_Doc->OnEditUndo(); // undo fill copper
@@ -6218,7 +6260,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 				m_Doc->m_plist->m_part_line_visible = 1;
 			else
 			{
-				AfxMessageBox("This option will be applied to the silk lines of the parts of the entire project.");
+				AfxMessageBox(G_LANGUAGE == 0 ? 
+					"This option will be applied to the silk lines of the parts of the entire project.":
+					"Эта опция будет применена к шелкографии деталей всего проекта.");
 				m_Doc->m_plist->m_part_line_visible = 0;
 			}
 			for( cpart * p=m_Doc->m_plist->GetFirstPart(); p; p=m_Doc->m_plist->GetNextPart(p) )
@@ -6356,7 +6400,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			{
 				CString str,wid;
 				::MakeCStringFromDimension( &wid, m_Doc->m_min_silkscreen_stroke_wid, m_Doc->m_units, TRUE, FALSE, FALSE, 3 );
-				str.Format( "Set the width of outlines in footprints %s ?", wid );
+				str.Format(G_LANGUAGE == 0 ? "Set the width of outlines in footprints %s ?":"Установить ширину полилиний в футпринтах %s ?", wid);
 				int ret = AfxMessageBox( str, MB_YESNO );
 				if( ret == IDYES )
 				{
@@ -10128,7 +10172,7 @@ void CFreePcbView::OnAddArea()
 		if( !dlg.m_net )
 		{
 			CString str;
-			str.Format( "Net \"%s\" not found", dlg.m_net_name );
+			str.Format(G_LANGUAGE == 0 ? "Net \"%s\" not found":"Эл.цепь \"%s\" не найдена", dlg.m_net_name);
 			AfxMessageBox( str, MB_OK );
 		}
 		else if( m_cursor_mode == CUR_NET_SELECTED )
@@ -10262,7 +10306,9 @@ void CFreePcbView::OnPartMove()
 	// check for glue
 	if( m_sel_part->glued )
 	{
-		int ret = AfxMessageBox( "This part is glued, do you want to unglue it ?  ", MB_YESNO );
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ?
+			"This part is glued, do you want to unglue it ?" :
+			"Эта деталь зафиксирована, хотите ее разблокировать?", MB_YESNO );
 		if( ret != IDYES )
 			return;
 	}
@@ -10479,9 +10525,9 @@ void CFreePcbView::OnPartRemoveMerge()
 		m_Doc->m_nlist->SetAreaConnections(m_sel_net,m_sel_id.i);
 		if( m_sel_net->area[m_sel_id.i].poly->GetMerge() >= 0 && mem == -1 )
 		{
-			AfxMessageBox("This polygon cannot be detached from the merge, \
-since all pins inside this polygon belong to this merge. \
-You can disconnect only the polygon that is connected independently.");
+			AfxMessageBox(G_LANGUAGE == 0 ? 
+				"This polygon cannot be detached from the merge, since all pins inside this polygon belong to this merge. You can disconnect only the polygon that is connected independently.":
+				"Этот полигон не может быть отсоединен от слияния, так как все пины внутри этого полигона принадлежат этому слиянию. Вы можете отсоединить только полигон, который присоединен независимо.");
 		}
 	}
 	else if( m_sel_id.type == ID_TEXT && m_sel_text )
@@ -10657,7 +10703,7 @@ void CFreePcbView::OnPadAddToNet()
 				else
 				{
 					// blank net name
-					AfxMessageBox( "Illegal net name" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "Illegal net name":"Недопустимое имя эл.цепи");
 					return;
 				}
 			}
@@ -10699,7 +10745,7 @@ void CFreePcbView::OnPadDetachFromNet()
 {
 	if( m_Doc->m_netlist_completed == 0 || m_sel_part->shape->GetNumPins() == 1 )
 	{
-		int ret = AfxMessageBox( "Detach this pin from net?", MB_OKCANCEL );
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? "Detach this pin from net?":"Отсоединить этот пин от сети?", MB_OKCANCEL);
 		if( ret == IDOK )
 		{
 			cnet * pin_net = (cnet*)m_sel_part->pin[m_sel_id.i].net;
@@ -10873,7 +10919,9 @@ void CFreePcbView::OnSegmentDelete()
 {
 	if( m_sel_con.locked && m_sel_con.nsegs == 1 )
 	{
-		int ret = AfxMessageBox( "You are trying to delete a locked connection.\nAre you sure ? ",
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+			"You are trying to delete a locked connection.\nAre you sure ?":
+			"Вы пытаетесь удалить заблокированную эл.связь. Вы уверены?",
 			MB_YESNO );
 		if( ret == IDNO )
 			return;
@@ -11086,7 +11134,9 @@ void CFreePcbView::OnVertexSize()
 						if( c->vtx[ii].selected )
 						{
 							if( ok == -1 && c->vtx[ii].via_w == 0 )
-								ok = AfxMessageBox( "Do you want to create new vias where there were none?", MB_YESNO | MB_ICONQUESTION );
+								ok = AfxMessageBox(G_LANGUAGE == 0 ? 
+									"Do you want to create new vias where there were none?":
+									"Хотите ли вы создать новые переходные отверстия там, где их нет?", MB_YESNO | MB_ICONQUESTION);
 							if( ok == IDYES || c->vtx[ii].via_w )
 							{
 								c->vtx[ii].via_w = dlg.m_via_w;
@@ -11381,7 +11431,9 @@ void CFreePcbView::OnRatlineDeleteConnection()
 {
 	if( m_sel_con.locked )
 	{
-		int ret = AfxMessageBox( "You are trying to delete a locked connection.\nAre you sure ? ",
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+			"You are trying to delete a locked connection.\nAre you sure ?":
+			"Вы пытаетесь удалить заблокированную эл.связь. Вы уверены?",
 			MB_YESNO );
 		if( ret == IDNO )
 			return;
@@ -11411,7 +11463,7 @@ void CFreePcbView::OnRatlineLockConnection()
 //===============================================================================================
 void CFreePcbView::OnRatlineUnlockConnection()
 {
-	if( AfxMessageBox( " Unlock connect?", MB_YESNO ) == IDYES )
+	if( AfxMessageBox(G_LANGUAGE == 0 ? " Unlock connect?":"Разблокировать эл.цепь?", MB_YESNO) == IDYES)
 	{
 		SaveUndoInfoForNetAndConnections( m_sel_net, CNetList::UNDO_NET_MODIFY, TRUE, m_Doc->m_undo_list );
 		m_sel_con.locked = 0;
@@ -11527,14 +11579,16 @@ void CFreePcbView::OnOPCornerEdit()
 		if( gm >= 0 )
 		{
 			CString ps;
-			ps.Format("This polyline is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?", m_Doc->m_mlist->GetMerge( gm ) );
+			ps.Format(G_LANGUAGE == 0 ? 
+				"This polyline is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?":
+				"Эта полилиния связана с другими объектами через свойство \"СЛИЯНИЕ\". Переместить все объекты группы %s?", m_Doc->m_mlist->GetMerge(gm));
 			if( AfxMessageBox( ps, MB_YESNO ) == IDNO )
 				gm = -1;
 		}
 		if( gm == -1 )
 		{
 			CString ps;
-			ps.Format("Move entire contour?");
+			ps.Format(G_LANGUAGE == 0 ? "Move entire contour?" : "Переместить весь контур полилинии?");
 			if( AfxMessageBox( ps, MB_YESNO ) == IDYES )
 			{
 				//NewSelect( NULL, &m_sel_id, 0, 0 );
@@ -11576,7 +11630,7 @@ void CFreePcbView::OnOPCornerDelete()
 		cc--;
 	if( m_Doc->m_outline_poly[m_sel_id.i].GetNumCorners() < cc )
 	{
-		AfxMessageBox( "Outline has too few corners" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Outline has too few corners":"У полилинии слишком мало вершин");
 		return;
 	}
 	SaveUndoInfoForOutlinePoly( UNDO_OP, TRUE, m_Doc->m_undo_list );
@@ -12313,7 +12367,7 @@ void CFreePcbView::OnAreaCornerProperties()
 		SaveUndoInfoForArea( m_sel_net, m_sel_ia, CNetList::UNDO_AREA_MODIFY, TRUE, m_Doc->m_undo_list );
 //		SaveUndoInfoForNetAndConnectionsAndArea( m_sel_net, m_sel_ia, CNetList::UNDO_AREA_MODIFY, TRUE, m_Doc->m_undo_list );
 		CString ps;
-		ps.Format("Move entire contour?");
+		ps.Format(G_LANGUAGE == 0 ? "Move entire contour?" : "Переместить весь контур полилинии?");
 		if( AfxMessageBox( ps, MB_YESNO ) == IDYES )
 		{
 			SelectContour();
@@ -12701,7 +12755,7 @@ int CFreePcbView::SaveUndoInfoForGroup( int type, CUndoList * list, BOOL wMerge,
 			{
 				// delete part		
 				CString mess;
-				mess.Format( "Delete selected parts? (%d)", n_sel_count );
+				mess.Format(G_LANGUAGE == 0 ? "Delete selected parts? (%d)":"Удалить выбранные части? (%d)", n_sel_count);
 				int ret = IDOK;
 				if( bMessageBox )
 					ret = AfxMessageBox( mess, MB_YESNOCANCEL );
@@ -12892,7 +12946,9 @@ int CFreePcbView::SaveUndoInfoForGroup( int type, CUndoList * list, BOOL wMerge,
 									{
 										if( type == UNDO_GROUP_MODIFY && iu >= m_sel_count )
 										{
-											AfxMessageBox( "Error function SaveUndoInfoForGroup.cpp ( iu > m_sel_count )" );
+											AfxMessageBox(G_LANGUAGE == 0 ? 
+												"Error function SaveUndoInfoForGroup.cpp ( iu > m_sel_count )":
+												"Ошибка функции SaveUndoInfoForGroup.cpp ( iu > m_sel_count )");
 											m_Doc->m_nlist->CancelNextNet();
 											delete undo;
 											return IDCANCEL;
@@ -12906,7 +12962,9 @@ int CFreePcbView::SaveUndoInfoForGroup( int type, CUndoList * list, BOOL wMerge,
 									{
 										if( type == UNDO_GROUP_MODIFY && iu >= m_sel_count )
 										{
-											AfxMessageBox( "Error function SaveUndoInfoForGroup.cpp ( iu > m_sel_count )" );
+											AfxMessageBox(G_LANGUAGE == 0 ?
+												"Error function SaveUndoInfoForGroup.cpp ( iu > m_sel_count )" :
+												"Ошибка функции SaveUndoInfoForGroup.cpp ( iu > m_sel_count )");
 											m_Doc->m_nlist->CancelNextNet();
 											delete undo;
 											return IDCANCEL;
@@ -13475,7 +13533,7 @@ void CFreePcbView::OnViewEntireBoard()
 	}
 	if( max_x == INT_MIN )
 	{
-		AfxMessageBox( "Board outline does not exist" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Board outline does not exist":"Контур платы не существует");
 		return;
 	}
 	// reset window to enclose board outline
@@ -13699,7 +13757,9 @@ void CFreePcbView::OnPartEditThisFootprint()
 void CFreePcbView::OnExternalChangeFootprint( CShape * fp )
 {
 	CString str;
-	str.Format( "Do you wish to replace the footprint of part \"%s\"\nwith the new footprint \"%s\" ?",
+	str.Format(G_LANGUAGE == 0 ? 
+		"Do you wish to replace the footprint of part \"%s\" with the new footprint \"%s\" ?":
+		"Хотите ли вы заменить футпринт детали \"%s\" на новый \"%s\"?",
 		m_sel_part->ref_des, fp->m_name );
 	int ret = AfxMessageBox( str, MB_YESNO );
 	if( ret == IDYES )
@@ -13810,12 +13870,12 @@ void CFreePcbView::OnViewFindpart()
 			}
 			else
 			{
-				AfxMessageBox( "Sorry, this part doesn't have a footprint" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Sorry, this part doesn't have a footprint":"Обратите внимание, у этой детали нет футпринта!");
 			}
 		}
 		else
 		{
-			AfxMessageBox( "Sorry, this part doesn't exist" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Sorry, this part doesn't exist":"Этой детали не существует");
 		}
 		OnRangeCmds( NULL );
 	}
@@ -13988,7 +14048,7 @@ int CFreePcbView::OPSetWidth()
 			{
 				if( dlg.GetWidth() == 0 )
 				{
-					AfxMessageBox("The board outline width cannot be zero");
+					AfxMessageBox(G_LANGUAGE == 0 ? "The board outline width cannot be zero":"Ширина линии контура платы не может быть равна нулю.");
 					if( m_polyline_width < NM_PER_MIL*2 )
 						m_polyline_width = NM_PER_MIL*10;
 				}
@@ -14219,7 +14279,7 @@ void CFreePcbView::ChangeTraceLayer( int mode, int old_layer )
 				err = m_Doc->m_nlist->ChangeSegmentLayer( m_sel_net,
 							m_sel_id.i, m_sel_id.ii, dlg.m_new_layer,vw, vh );
 				if( err )
-					AfxMessageBox( "Unable to change layer for this segment" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "Unable to change layer for this segment":"Невозможно изменить слой для этого сегмента");
 			}
 			else
 			{
@@ -14231,7 +14291,7 @@ void CFreePcbView::ChangeTraceLayer( int mode, int old_layer )
 										iconn, iseg, dlg.m_new_layer, vw, vh, FALSE );
 				//
 				if( err )
-					AfxMessageBox( "Unable to change layer for some segments" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "Unable to change layer for some segments":"Невозможно изменить слой для некоторых сегментов");
 				for( cnet * m_n=m_Doc->m_nlist->GetFirstNet(); m_n; m_n=m_Doc->m_nlist->GetNextNet(/*LABEL*/) )
 					for( int iconn=0; iconn<m_n->nconnects; iconn++ )
 						for( int iseg=0; iseg<m_n->connect[iconn].nsegs; iseg++ )
@@ -14264,7 +14324,7 @@ void CFreePcbView::ChangeTraceLayer( int mode, int old_layer )
 			}
 			if( err )
 			{
-				AfxMessageBox( "Unable to change layer for all segments" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Unable to change layer for all segments":"Невозможно изменить слой для всех сегментов");
 			}
 		}
 		else if( dlg.m_apply_to == 2 )
@@ -14299,7 +14359,7 @@ void CFreePcbView::ChangeTraceLayer( int mode, int old_layer )
 			}
 			if( err )
 			{
-				AfxMessageBox( "Unable to change layer for all segments" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "Unable to change layer for all segments" : "Невозможно изменить слой для всех сегментов");
 			}
 		}
 		m_Doc->ProjectModified( TRUE );
@@ -16211,7 +16271,9 @@ void CFreePcbView::OnAreaEdit()
 			if( ret == -1 )
 			{
 				// error
-				AfxMessageBox( "Error: Unable to clip polygon due to intersecting arc" );			
+				AfxMessageBox(G_LANGUAGE == 0 ? 
+					"Error: Unable to clip polygon due to intersecting arc":
+					"Ошибка: невозможно обрезать полигон из-за пересекающейся дуги");
 				m_Doc->OnEditUndo();
 			}
 			m_Doc->ProjectModified( TRUE );
@@ -16495,7 +16557,9 @@ void CFreePcbView::OnGroupCopy()
 	if( !fn && !g_pl->GetFirstPart() 
 		&& !g_op->GetSize() && !g_tl->GetNumTexts() )
 	{
-		AfxMessageBox( "Nothing copied !\nRemember that traces must be connected\nto a part in the group to be copied" );
+		AfxMessageBox(G_LANGUAGE == 0 ? 
+			"Nothing copied !\nRemember that traces must be connected\nto a part in the group to be copied":
+			"Ничего не скопировано! Обратите внимание, что трассы должны быть подключены к детали в группе, которую нужно скопировать.");
 		CWnd* pMain = AfxGetMainWnd();
 		if (pMain != NULL)
 		{
@@ -16604,7 +16668,9 @@ void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
 		static int wwm = 0;
 		if( !wwm )
 		{
-			AfxMessageBox("When a netlist is protected (Project->Nets->Netlist Protected), only parts, texts and polylines can be inserted into the project.");
+			AfxMessageBox(G_LANGUAGE == 0 ? 
+				"When a netlist is protected (Project->Nets->Netlist Protected), only parts, texts and polylines can be inserted into the project.":
+				"Если список эл.цепей защищен (Проект->список эл.цепей->Эл.цепи защищены), в проект можно вставлять только детали без эл.связей, тексты и полилинии.");
 			wwm = 1;
 		}
 	}
@@ -16797,9 +16863,17 @@ void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
 				// ref in group conflicts with ref in project
 				CString mess = "Part \"";
 				mess += conflicted_ref;
-				mess += "\" already exists in project.\nIt will be renamed \" ";
+				mess += "\" already exists in project.\nIt will be renamed \"";
 				mess += new_ref;
-				mess += " \"";
+				mess += "\"";
+				if (G_LANGUAGE)
+				{
+					mess = "Деталь \"";
+					mess += conflicted_ref;
+					mess += "\" уже существует в проекте.\nЭта деталь будет переименована в \"";
+					mess += new_ref;
+					mess += "\"";
+				}
 				AfxMessageBox( mess );
 				bConflict = TRUE;
 			}
@@ -17310,7 +17384,7 @@ void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
 				if( NoItems == 0 )
 				{
 					NoItems = 1;
-					AfxMessageBox( "Objects will be pasted from the clipboard" );
+					AfxMessageBox(G_LANGUAGE == 0 ? "Objects will be pasted from the clipboard":"Объекты будут вставлены из буфера обмена.");
 					m_Doc->PasteFromFile( (m_Doc->m_app_dir + "\\buf.fpc"), 0 );
 				}
 				else
@@ -17462,7 +17536,7 @@ void CFreePcbView::SaveToFile( CString * filename )
 	{
 		// error opening partlist file
 		CString mess;
-		mess.Format( "Unable to save file %s", pathname );
+		mess.Format(G_LANGUAGE == 0 ? "Unable to save file %s":"Не удалось сохранить файл %s", pathname);
 		AfxMessageBox( mess );
 	}
 	else
@@ -19435,7 +19509,7 @@ void CFreePcbView::OnSetClearance ()
 		setbit( el->map_orig_layer, m_active_layer );
 	}
 	if( bMess )
-		AfxMessageBox("Unable to align colinear segments!");
+		AfxMessageBox(G_LANGUAGE == 0 ? "Unable to align colinear segments!":"Невозможно выровнять коллинеарные сегменты!");
 	m_seg_clearance = cl;
 	m_page = 2;
 	SetFKText(m_cursor_mode);
@@ -20693,7 +20767,7 @@ void CFreePcbView::MergeGroup()
 	{	
 		if( m_sel_merge_name.GetLength() )
 		{
-			AfxMessageBox("Some parts already have a Merge name.");
+			AfxMessageBox(G_LANGUAGE == 0 ? "Some parts already have a Merge name.":"Некоторые детали уже состоят в слиянии.");
 			int ipos = m_sel_merge_name.Find("(");
 			if( ipos > 0 )
 				dlg.m_merge_name = m_sel_merge_name.Left(ipos);
@@ -20708,7 +20782,7 @@ void CFreePcbView::MergeGroup()
 	else
 	{
 		dlg.m_merge_name = m_Doc->m_mlist->GetMerge(merge0); 
-		AfxMessageBox("Some parts already have a Merge name.");
+		AfxMessageBox(G_LANGUAGE == 0 ? "Some parts already have a Merge name." : "Некоторые детали уже состоят в слиянии.");
 		ret = dlg.DoModal();
 	}
 	if (ret == IDOK)
@@ -20738,7 +20812,7 @@ void CFreePcbView::MergeGroup()
 //===============================================================================================
 void CFreePcbView::ExplodeGroup()
 {
-	if( AfxMessageBox(" Delete this merger?", MB_YESNO ) == IDYES )
+	if( AfxMessageBox(G_LANGUAGE == 0 ? "Delete this merger?":"Удалить это слияние?", MB_YESNO) == IDYES)
 	{
 		MergeGroup(-1);
 		m_sel_merge_name = "";
@@ -22604,7 +22678,9 @@ void CFreePcbView::OnAlignment( int xpt, int ypt )
 		if( merge >= 0 )
 		{
 			CString ps;
-			ps.Format("This trace is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?", m_Doc->m_mlist->GetMerge( merge ) );
+			ps.Format(G_LANGUAGE == 0 ? 
+				"This trace is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?":
+				"Эта трассировка связана с другими объектами через свойство \"СЛИЯНИЕ\". Переместить все объекты группы %s?", m_Doc->m_mlist->GetMerge(merge));
 			if( AfxMessageBox( ps, MB_YESNO ) == IDNO )
 			{
 				merge = -1;
@@ -22635,7 +22711,9 @@ void CFreePcbView::OnAlignment( int xpt, int ypt )
 		if( merge >= 0 )
 		{
 			CString ps;
-			ps.Format("This part is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?", m_Doc->m_mlist->GetMerge( merge ) );
+			ps.Format(G_LANGUAGE == 0 ? 
+				"This part is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?":
+				"Эта деталь связана с другими объектами через свойство \"СЛИЯНИЕ\". Переместить все объекты группы %s?", m_Doc->m_mlist->GetMerge(merge));
 			if( AfxMessageBox( ps, MB_YESNO ) == IDNO )
 			{
 				merge = -1;
@@ -22686,7 +22764,9 @@ void CFreePcbView::OnAlignment( int xpt, int ypt )
 		if( mer >= 0 )
 		{
 			CString ps;
-			ps.Format("This polyline is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?", m_Doc->m_mlist->GetMerge( mer ) );
+			ps.Format(G_LANGUAGE == 0 ? 
+				"This polyline is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?":
+				"Эта полилиния связана с другими объектами через свойство \"СЛИЯНИЕ\". Переместить все объекты группы %s?", m_Doc->m_mlist->GetMerge(mer));
 			if( AfxMessageBox( ps, MB_YESNO ) == IDNO )
 			{
 				mer = -1;
@@ -22697,7 +22777,7 @@ void CFreePcbView::OnAlignment( int xpt, int ypt )
 		if( mer == -1 )
 		{
 			CString ps;
-			ps.Format("Move entire contour?");
+			ps.Format(G_LANGUAGE == 0 ? "Move entire contour?" : "Переместить весь контур полилинии?");
 			if( AfxMessageBox( ps, MB_YESNO ) == IDYES )
 			{
 				//NewSelect( NULL, &m_sel_id, 0, 0 );
@@ -22727,7 +22807,9 @@ void CFreePcbView::OnAlignment( int xpt, int ypt )
 		if( merge >= 0 )
 		{
 			CString ps;
-			ps.Format("This copper area is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?", m_Doc->m_mlist->GetMerge( merge ) );
+			ps.Format(G_LANGUAGE == 0 ? 
+				"This copper area is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?":
+				"Эта медная область связана с другими объектами через свойство \"СЛИЯНИЕ\". Переместить все объекты группы %s?", m_Doc->m_mlist->GetMerge(merge));
 			if( AfxMessageBox( ps, MB_YESNO ) == IDNO )
 			{
 				merge = -1;
@@ -22763,7 +22845,9 @@ void CFreePcbView::OnAlignment( int xpt, int ypt )
 		if( merge >= 0 )
 		{
 			CString ps;
-			ps.Format("This text is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?", m_Doc->m_mlist->GetMerge( merge ) );
+			ps.Format(G_LANGUAGE == 0 ? 
+				"This text is connected to other objects through the \"MERGE\" property. Move all objects of the group %s?":
+				"Этот текст связан с другими объектами через свойство \"СЛИЯНИЕ\". Переместить все объекты группы %s?", m_Doc->m_mlist->GetMerge(merge));
 			if( AfxMessageBox( ps, MB_YESNO ) == IDNO )
 			{
 				merge = -1;

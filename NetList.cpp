@@ -4169,7 +4169,9 @@ int CNetList::PartFootprintChanged( cpart * part, CString * PINS )
 							{
 								*PINS += pTest;
 								CString question;
-								question.Format("Detected pin name change from %s to %s. Make a correction to the netlist? (If you click NO, then the connections will be lost)", pin_name1, pin_name_mod );
+								question.Format(G_LANGUAGE == 0 ?
+									"Detected pin name change from %s to %s. Make a correction to the netlist? (If you click NO, then the connections will be lost)" :
+									"Обнаружено изменение имени пина с %s на %s. Внести исправление в список соединений? (Если нажать НЕТ, то соединения будут потеряны)", pin_name1, pin_name_mod );
 								int ret1 = AfxMessageBox( question, MB_YESNO );
 								if( ret1 == IDNO )
 								{
@@ -4188,7 +4190,9 @@ int CNetList::PartFootprintChanged( cpart * part, CString * PINS )
 							{
 								// no, remove connection
 								CString mess;
-								mess.Format(" Warning! This pin already used (net name %s)", p_net->name );
+								mess.Format(G_LANGUAGE == 0 ? 
+									"Warning! This pin already used (net name %s)":
+									"Внимание! Этот пин уже используется (имя эл.цепи %s)", p_net->name);
 								AfxMessageBox(mess);
 								RemoveNetConnect( net, ic, FALSE );
 								continue;
@@ -4270,7 +4274,9 @@ int CNetList::PartFootprintChanged( cpart * part, CString * PINS )
 							{
 								*PINS += pTest;
 								CString question;
-								question.Format("Detected pin name change from %s to %s. Make a correction to the netlist? (If you click NO, then the connections will be lost)", pin_name2, pin_name_mod );
+								question.Format(G_LANGUAGE == 0 ? 
+									"Detected pin name change from %s to %s. Make a correction to the netlist? (If you click NO, then the connections will be lost)":
+									"Обнаружено изменение имени пина с %s на %s. Внести исправление в список соединений? (Если нажать НЕТ, то соединения будут потеряны)", pin_name2, pin_name_mod);
 								int ret2 = AfxMessageBox( question, MB_YESNO );
 								if( ret2 == IDNO )
 								{
@@ -4289,7 +4295,9 @@ int CNetList::PartFootprintChanged( cpart * part, CString * PINS )
 							{
 								// no, remove connection
 								CString mess;
-								mess.Format(" Warning! This pin already used (net name %s)", p_net->name );
+								mess.Format(G_LANGUAGE == 0 ?
+									"Warning! This pin already used (net name %s)" :
+									"Внимание! Этот пин уже используется (имя эл.цепи %s)", p_net->name );
 								AfxMessageBox(mess);
 								RemoveNetConnect( net, ic, FALSE );
 								continue;
@@ -6499,7 +6507,7 @@ int CNetList::ReadNets( CStdioFile * pcb_file, double read_version, int * InLaye
 		{
 			// error reading pcb file
 			CString mess;
-			mess.Format( "Unable to find [nets] section in file" );
+			mess.Format(G_LANGUAGE == 0 ? "Unable to find [nets] section in file":"Не удалось найти раздел [nets] в файле");
 			AfxMessageBox( mess );
 			return 0;
 		}
@@ -8722,7 +8730,9 @@ int CNetList::TestAreaPolygon( cnet * net, int iarea, int test_contour, int test
 				if( (now - 5) > gnow )
 				{
 					CString s;
-					s.Format("This procedure, as it turned out, takes a lot of time. Proceed ? (%s, area %d)", net->name, iarea+1 );
+					s.Format(G_LANGUAGE == 0 ? 
+						"This procedure, as it turned out, takes a lot of time. Proceed ? (%s, area %d)":
+						"Эта процедура, как оказалось, занимает много времени. Продолжить? (%s, полигон %d)", net->name, iarea + 1);
 					answ = AfxMessageBox( s, MB_ICONERROR|MB_YESNO );
 					if( answ == IDNO )
 						return INT_MAX;
@@ -9093,6 +9103,13 @@ int CNetList::CombineAllAreasInNet( cnet * net, BOOL bMessageBox, BOOL bUseUtili
 									ia1+1, ia2+1, net->name );
 								str += "If they are complex, this may take a few seconds.\n";
 								str += "Combine these copper areas?";
+								if (G_LANGUAGE)
+								{
+									str.Format("Полигоны %d и %d принадлежащие эл.цепи \"%s\" пересекаются и могут быть объединены. ",
+										ia1 + 1, ia2 + 1, net->name);
+									str += "Если они сложные, это может занять несколько секунд.\n";
+									str += "Объединить эти медные области?";
+								}
 								int qw = AfxMessageBox( str, MB_YESNO );
 								if( qw != IDYES)
 									ret = 0;

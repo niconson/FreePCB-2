@@ -71,14 +71,14 @@ void CDlgVia::DoDataExchange(CDataExchange* pDX)
 		m_via_w = my_atof( &str );
 		if( m_via_w <= 0 )
 		{
-			AfxMessageBox( "Illegal via width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal via width" : "Ќедопустимый диаметр площадки переходного отверсти€");
 			pDX->Fail();
 		}
 		m_edit_hole_w.GetWindowText( str );
 		m_via_hole_w = my_atof( &str );
 		if( m_via_hole_w <= 0 )
 		{
-			AfxMessageBox( "Illegal via hole width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal via hole width" : "Ќедопустимый диаметр переходного отверсти€");
 			pDX->Fail();
 		}
 	}

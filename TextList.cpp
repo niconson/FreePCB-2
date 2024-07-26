@@ -452,7 +452,7 @@ void CTextList::ReadTexts( CStdioFile * pcb_file, double read_version )
 		{
 			// error reading pcb file
 			CString mess;
-			mess.Format( "Unable to find [texts] section in file" );
+			mess.Format(G_LANGUAGE == 0 ? "Unable to find [texts] section in file":"Не удалось найти раздел [тексты] в файле");
 			AfxMessageBox( mess );
 			return;
 		}

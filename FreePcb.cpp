@@ -86,7 +86,9 @@ BOOL CFreePcbApp::InitInstance()
 	CWinApp::LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 	if( CWinApp::m_pRecentFileList == NULL)
 	{
-		AfxMessageBox( "NOTE: The recent file list is disabled on your system.\nUse the system policy editor to re-enable." );
+		AfxMessageBox(G_LANGUAGE == 0 ? 
+			"NOTE: The recent file list is disabled on your system.\nUse the system policy editor to re-enable.":
+			"ПРИМЕЧАНИЕ: Список последних файлов отключен в вашей системе. Используйте редактор системной политики для повторного включения.");
 	}
 	//else
 	//	CWinApp::m_pRecentFileList->m_nSize = _AFX_MRU_COUNT;
@@ -607,7 +609,9 @@ BOOL CFreePcbApp::OnUtils( UINT CMD )
 		 CMD==ID_RUN_EXP_DXF))
 	{
 		// WARNING
-		int ret = AfxMessageBox( "The current file is modified!\n\nUtilities are external programs that read a PCB-file from a directory. Save the current file before using these applications.", MB_ICONERROR );
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+			"The current file is modified!\n\nUtilities are external programs that read a PCB-file from a directory. Save the current file before using these applications.":
+			"Текущий файл изменен!\n\nУтилиты — это внешние программы, которые считывают PCB-файл из каталога, поэтому сохраните текущий файл перед использованием этих приложений.", MB_ICONERROR);
 		//if( ret == IDYES )
 			return 0;
 	}

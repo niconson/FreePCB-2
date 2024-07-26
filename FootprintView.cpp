@@ -628,7 +628,9 @@ void CFootprintView::RotateGroup( int ang )
 void CFootprintView::MirrorGroup()
 {
 	int bLayer = 0;
-	int ret = AfxMessageBox("Flip group with layers? When you press the NO key, the pads and lines will be mirrored, but the layer will remain the same, be careful!", MB_YESNOCANCEL);
+	int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+		"Flip group with layers? When you press the NO key, the pads and lines will be mirrored, but the layer will remain the same, be careful!":
+		"Перевернуть группу со слоями? Обратите внимание, при нажатии клавиши НЕТ площадки и линии будут зеркально отражены, но слой останется прежним", MB_YESNOCANCEL);
 	if( ret == IDYES )
 		bLayer = TRUE;
 	else if( ret == IDCANCEL )
@@ -1901,7 +1903,7 @@ void CFootprintView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{
 			PushUndo();
 			CString ps;
-			ps.Format("Move entire contour?");
+			ps.Format(G_LANGUAGE == 0 ? "Move entire contour?":"Переместить весь контур полилинии?");
 			int x0 = m_fp.m_outline_poly[m_sel_id.i].GetX( m_sel_id.ii );
 			if( AfxMessageBox( ps, MB_YESNO ) == IDYES )
 			{
@@ -1923,7 +1925,7 @@ void CFootprintView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{
 			PushUndo();
 			CString ps;
-			ps.Format("Move entire contour?");
+			ps.Format(G_LANGUAGE == 0 ? "Move entire contour?" : "Переместить весь контур полилинии?");
 			int y0 = m_fp.m_outline_poly[m_sel_id.i].GetY( m_sel_id.ii );
 			if( AfxMessageBox( ps, MB_YESNO ) == IDYES )
 			{
@@ -3196,7 +3198,7 @@ void CFootprintView::OnPolylineCornerEdit()
 		int dx = dlg.GetX() - x;
 		int dy = dlg.GetY() - y;
 		CString ps;
-		ps.Format("Move entire contour?");
+		ps.Format(G_LANGUAGE == 0 ? "Move entire contour?" : "Переместить весь контур полилинии?");
 		int y0 = m_fp.m_outline_poly[m_sel_id.i].GetY( m_sel_id.ii );
 		if( AfxMessageBox( ps, MB_YESNO ) == IDYES )
 		{
@@ -3237,7 +3239,7 @@ void CFootprintView::OnPolylineCornerDelete()
 	CPolyLine * poly = &m_fp.m_outline_poly[m_sel_id.i];
 	if( poly->GetNumCorners() < 3 )
 	{
-		AfxMessageBox( "Polyline has too few corners" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Polyline has too few corners":"У полилинии слишком мало вершин");
 		return;
 	}
 	m_fp.m_outline_poly[m_sel_id.i].DeleteCorner( m_sel_id.ii );
@@ -3633,7 +3635,7 @@ void CFootprintView::OnFootprintFileSaveAs()
 	BOOL bOK = m_fp.GenerateSelectionRectangle( &r );
 	if( !bOK )
 	{
-		AfxMessageBox( "Unable to save: empty footprint", MB_OK );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Unable to save: empty footprint":"Невозможно сохранить пустое место", MB_OK);
 		return;
 	}
 	m_fp.Draw( m_dlist, m_Doc->m_smfontutil );
@@ -3830,7 +3832,7 @@ void CFootprintView::OnFootprintFileClose()
 
 	if( m_Doc->m_footprint_modified )
 	{
-		int ret = AfxMessageBox( "Save footprint before exiting ?", MB_YESNOCANCEL );
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? "Save footprint before exiting?":"Сохранить футпринт перед выходом?", MB_YESNOCANCEL);
 		m_Doc->m_file_close_ret = ret;
 		if( ret == IDCANCEL )
 			return;
@@ -3846,7 +3848,7 @@ void CFootprintView::OnFootprintFileNew()
 {
 	if( m_Doc->m_footprint_modified ) 
 	{
-		int ret = AfxMessageBox( "Save footprint ?", MB_YESNOCANCEL );
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? "Save footprint?":"Сохранить футпринт?", MB_YESNOCANCEL);
 		if( ret == IDCANCEL )
 			return;
 		else if( ret == IDYES )
@@ -4045,7 +4047,9 @@ void CFootprintView::OnFpToolsFootprintwizard()
 	// ask about saving
 	if( m_Doc->m_footprint_modified )
 	{
-		int ret = AfxMessageBox( "Save footprint before launching Wizard ?", MB_YESNOCANCEL );
+		int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+			"Save footprint before launching Wizard?":
+			"Сохранить след перед запуском мастер-генератора?", MB_YESNOCANCEL);
 		m_Doc->m_file_close_ret = ret;
 		if( ret == IDCANCEL )
 			return;

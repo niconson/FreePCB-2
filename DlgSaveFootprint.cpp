@@ -119,7 +119,7 @@ void CDlgSaveFootprint::OnBnClickedOk()
 		if( ret == -1 )
 		{
 			// folder doesn't exist
-			CString mess = "Folder \"" + m_folder_name + "\" doesn't exist\n";
+			CString mess = G_LANGUAGE == 0 ? ("Folder \"" + m_folder_name + "\" doesn't exist\n"):("Папка \"" + m_folder_name + "\" не существует\n");
 			mess += "Create it ?";
 			ret = AfxMessageBox( mess, MB_YESNO );
 			if( ret == IDNO )
@@ -129,7 +129,7 @@ void CDlgSaveFootprint::OnBnClickedOk()
 			if( ret == -1 )
 			{
 				// can't create folder
-				CString mess = "Unable to create folder \"";
+				CString mess = G_LANGUAGE == 0 ? "Unable to create folder ":"Неполучилось создать папку ";
 				mess += m_folder_name;
 				AfxMessageBox( mess );
 				return;
@@ -156,7 +156,9 @@ void CDlgSaveFootprint::OnBnClickedOk()
 	if( m_name.GetLength() > CShape::MAX_NAME_SIZE )
 	{
 		CString mess;
-		mess.Format( "Name too long, can't exceed %d characters",
+		mess.Format(G_LANGUAGE == 0 ? 
+			"Name too long, can't exceed %d characters":
+			"Длина имени не должна превышать %d символов",
 			CShape::MAX_NAME_SIZE );
 		AfxMessageBox( mess );
 		return;
@@ -196,7 +198,9 @@ void CDlgSaveFootprint::OnBnClickedOk()
 	{
 		// footprint name already exists in this file
 		CString mess;
-		mess.Format( "Footprint \"%s\" already exists in file \"%s\"\nOverwrite ?",
+		mess.Format(G_LANGUAGE == 0 ? 
+			"Footprint \"%s\" already exists in file \"%s\"\nOverwrite ?": 
+			"Футпринт \"%s\" уже существует в файле \"%s\"\nПерезаписать?",
 			m_name, fn );
 		int ret = AfxMessageBox( mess, MB_OKCANCEL );
 		if( ret == IDOK )
@@ -210,7 +214,9 @@ void CDlgSaveFootprint::OnBnClickedOk()
 	{
 		// footprint name already exists in another file
 		CString mess;
-		mess.Format( "Footprint \"%s\" already exists in another library file \"%s\"\nDo you want to change the name?",
+		mess.Format(G_LANGUAGE == 0 ? 
+			"Footprint \"%s\" already exists in another library file \"%s\"\nDo you want to change the name?":
+			"Футпринт \"%s\" уже существует в другом библиотечном файле \"%s\" Вы хотите изменить имя?",
 			m_name, fn );
 		int ret = AfxMessageBox( mess, MB_YESNO );
 		if( ret == IDYES )
@@ -228,7 +234,7 @@ void CDlgSaveFootprint::OnBnClickedOk()
 		BOOL ok = f.Open( file_path, CFile::modeCreate | CFile::modeWrite );
 		if( !ok )
 		{
-			AfxMessageBox( "Unable to open file " + file_path );
+			AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file " + file_path):("Невозможно открыть файл " + file_path) );
 			return;
 		}
 		m_footprint->WriteFootprint( &f );
@@ -269,6 +275,12 @@ void CDlgSaveFootprint::OnBnClickedOk()
 			CString str = "File system error: Unable to modify library file\n";
 			str += "File could be read-only or you don't have permission to modify it\n";
 			str += "The modified file has been saved as \"temp.txt\"";
+			if (G_LANGUAGE)
+			{
+				str = "Ошибка файловой системы: невозможно изменить файл библиотеки. "\
+					"Файл может быть доступен только для чтения или у вас нет прав на его изменение. "\
+					"Измененный файл был сохранен как \"temp.txt\"";
+			}
 			AfxMessageBox( str );
 			return;
 		}
@@ -280,6 +292,12 @@ void CDlgSaveFootprint::OnBnClickedOk()
 				CString str = "File system error: Unable to modify library file\n";
 				str += "The original file has been deleted but can't be rewritten\n";
 				str += "The modified file has been saved as \"temp.txt\"";
+				if (G_LANGUAGE)
+				{
+					str = "Ошибка файловой системы: невозможно изменить файл библиотеки. "\
+						"Исходный файл был удален, но не может быть перезаписан. "\
+						"Измененный файл был сохранен как \"temp.txt\"";
+				}
 				AfxMessageBox( str );
 				return;
 			}
@@ -338,6 +356,12 @@ void CDlgSaveFootprint::OnBnClickedOk()
 			CString str = "File system error: Unable to modify library file\n";
 			str += "File could be read-only or you don't have permission to modify it\n";
 			str += "The modified file has been saved as \"temp.txt\"";
+			if (G_LANGUAGE)
+			{
+				str = "Ошибка файловой системы: невозможно изменить файл библиотеки. "\
+					"Файл может быть доступен только для чтения или у вас нет прав на его изменение. "\
+					"Измененный файл был сохранен как \"temp.txt\"";
+			}
 			AfxMessageBox( str );
 			return;
 		}
@@ -349,6 +373,12 @@ void CDlgSaveFootprint::OnBnClickedOk()
 				CString str = "File system error: Unable to modify library file\n";
 				str += "The original file has been deleted but can't be rewritten\n";
 				str += "The modified file has been saved as \"temp.txt\"";
+				if (G_LANGUAGE)
+				{
+					str = "Ошибка файловой системы: невозможно изменить файл библиотеки. "\
+						"Исходный файл был удален, но не может быть перезаписан. "\
+						"Измененный файл был сохранен как \"temp.txt\"";
+				}
 				AfxMessageBox( str );
 				return;
 			}

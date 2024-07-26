@@ -84,7 +84,9 @@ void CDlgProtection::DoDataExchange(CDataExchange* pDX)
 		}
 		if( ch == 0 )
 		{
-			AfxMessageBox("There is no synchronization with the netlist of the compatible editor \"Schematic Constructor\"", MB_ICONWARNING );
+			AfxMessageBox(G_LANGUAGE == 0 ? 
+				"There is no synchronization with the netlist of the compatible editor \"Schematic Constructor\"":
+				"Нет синхронизации с нетлистом совместимого редактора «СхемАтор»", MB_ICONWARNING );
 			pDX->Fail();
 		}
 		else if( ch == CFreePcbDoc::PROTECT )

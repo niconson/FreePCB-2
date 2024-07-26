@@ -178,7 +178,9 @@ void CDlg_OpenScad::DoDataExchange(CDataExchange* pDX)
 		m_extrusion_rot = my_atof( &s_extrusion_rot );
 		if( abs(m_extrusion_val) < BY_ZERO && abs(m_extrusion_rot) < BY_ZERO )
 		{
-			int ret = AfxMessageBox("You have not entered an extrusion value!\n\nDo you really want to remove the extrusion of this polyline ? ", MB_ICONQUESTION|MB_YESNO);
+			int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+				"You have not entered an extrusion value!\n\nDo you really want to remove the extrusion of this polyline?":
+				"Вы не ввели значение выдавливания!\n\nВы действительно хотите удалить выдавливание этой полилинии?", MB_ICONQUESTION | MB_YESNO);
 			if( ret == IDNO )
 				pDX->Fail();
 		}
@@ -683,7 +685,7 @@ void CDlg_OpenScad::OnEnChangeMatrixX()
 			int cnt = my_atoi(&str);
 			if( cnt < 1 )
 			{
-				AfxMessageBox("This value cannot be null");
+				AfxMessageBox(G_LANGUAGE == 0 ? "This value cannot be null":"Это значение не может быть нулевым.");
 				u->SetWindowTextA( "1" );
 				cnt = 1;
 			}
@@ -723,7 +725,7 @@ void CDlg_OpenScad::OnEnChangeMatrixY()
 			int cnt = my_atoi(&str);
 			if( cnt < 1 )
 			{
-				AfxMessageBox("This value cannot be null");
+				AfxMessageBox(G_LANGUAGE == 0 ? "This value cannot be null":"Это значение не может быть нулевым.");
 				u->SetWindowTextA( "1" );
 				cnt = 1;
 			}
@@ -763,7 +765,7 @@ void CDlg_OpenScad::OnEnChangeMatrixZ()
 			int cnt = my_atoi(&str);
 			if( cnt < 1 )
 			{
-				AfxMessageBox("This value cannot be null");
+				AfxMessageBox(G_LANGUAGE == 0 ? "This value cannot be null":"Это значение не может быть нулевым.");
 				u->SetWindowTextA( "1" );
 				cnt = 1;
 			}

@@ -150,7 +150,9 @@ void LoadSpeedFiles( CFreePcbDoc * doc )
 				}
 			}
 			if( win >= 0 )
-				AfxMessageBox("Project folder and file names cannot contain the reserved word <Windows>");
+				AfxMessageBox(G_LANGUAGE == 0 ? 
+					"Project folder and file names cannot contain the reserved word <Windows>":
+					"Имена папок и файлов проекта не могут содержать зарезервированное слово <Windows>");
 		}
 	}
 	

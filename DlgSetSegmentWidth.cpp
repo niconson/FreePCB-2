@@ -59,19 +59,19 @@ void DlgSetSegmentWidth::DoDataExchange(CDataExchange* pDX)
 		m_hole_width = my_atof( &m_via_hole_w_str );
 		if( !(m_tv == 3 || m_width > 0) )
 		{
-			AfxMessageBox( "illegal trace width" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "illegal trace width":"Ќедопустима€ ширина трассы");
 			pDX->Fail();
 		}
 		if( m_tv != 2 && rb_set_via.GetCheck() != 0 )
 		{
 			if( m_via_width <= 0 )
 			{
-				AfxMessageBox( "illegal via width" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "illegal via width" : "Ќедопустимый диаметр площадки переходного отверсти€");
 				pDX->Fail();
 			}
 			if( m_hole_width <= 0 )
 			{
-				AfxMessageBox( "illegal hole width" );
+				AfxMessageBox(G_LANGUAGE == 0 ? "illegal hole width" : "Ќедопустимый диаметр отверсти€");
 				pDX->Fail();
 			}
 		}

@@ -793,80 +793,80 @@ BOOL CDlgWizQuad::MakeFootprint()
 	m_str_name.Trim();
 	if( m_str_name.GetLength() == 0 )
 	{
-		AfxMessageBox( "Illegal name" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal name":"Недопустимое имя");
 		return FALSE;
 	}
 	if( m_npins < 1 )
 	{
-		AfxMessageBox( "Illegal number of pins" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal number of pins":"Недопустимое количество пинов");
 		return FALSE;
 	}
 	if( m_npins > MAX_PINS )
 	{
-		AfxMessageBox( "Too many pins" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Too many pins":"Слишком много пинов");
 		return FALSE;
 	}
 	if( m_type == HDR1 || m_type == HDR2 || m_type == BGA )
 	{
 		if( m_npins != m_hpins*m_vpins )
 		{
-			AfxMessageBox( "Illegal number of pins" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal number of pins":"Недопустимое количество пинов");
 			return FALSE;
 		}
 	}
 	if( m_hpins < 1 || m_hpins > m_npins )
 	{
-		AfxMessageBox( "Illegal number of pins per horizontal row" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal number of pins per horizontal row":"Недопустимое количество пинов в горизонтальном ряду");
 		return FALSE;
 	}
 	if( m_vpins < 0 || m_vpins > m_npins )
 	{
-		AfxMessageBox( "Illegal number of pins per vertical row" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal number of pins per vertical row":"Недопустимое количество пинов в вертикальном ряду");
 		return FALSE;
 	}
 	if( m_vpins > MAX_BGA_ROWS && m_type == BGA )
 	{
-		AfxMessageBox( "Too many rows" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Too many rows":"Слишком много строк");
 		return FALSE;
 	}
 	if( m_x <= 0 && m_shape != NONE ) 
 	{
-		AfxMessageBox( "Illegal pad width (X)" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal pad width (X)":"Недопустимая ширина площадки (X)");
 		return FALSE;
 	}
 	if( m_y <= 0  && (m_shape == RECT || m_shape == RRECT || m_shape == OVAL ) )
 	{
-		AfxMessageBox( "Illegal pad length (Y)" ); 
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal pad length (Y)":"Недопустимая длина пада (Y)");
 		return FALSE;
 	}
 	if( m_r <= 0  && m_shape == RRECT )
 	{
-		AfxMessageBox( "Illegal pad corner radius" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal pad corner radius":"Недопустимый радиус скругления площадки");
 		return FALSE;
 	}
 	if( m_r > 0.5*min(m_y,m_x) && m_shape == RRECT )
 	{
-		AfxMessageBox( "Pad corner radius too large" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Pad corner radius too large":"Радиус угла колодки слишком большой");
 		return FALSE;
 	}
 	if( m_shape == NONE && m_hd == 0 )
 	{
-		AfxMessageBox( "Pad shape \"None\" requires a non-zero hole width" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Pad shape \"None\" requires a non-zero hole width":"Для формы площадки \"none\" требуется ненулевая ширина отверстия");
 		return FALSE;
 	}
 	if( m_e <= 0 && m_hpins != 1 )
 	{
-		AfxMessageBox( "Illegal pad spacing (E)" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal pad spacing (E)":"Недопустимое расстояние между контактными площадками (E)");
 		return FALSE;
 	}
 	if( (m_type == QUAD || m_type == DIP) && m_g1 <= 0 )
 	{
-		AfxMessageBox( "Illegal distance between top and bottom rows" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal distance between top and bottom rows":"Недопустимое расстояние между верхним и нижним рядами");
 		return FALSE;
 	}
 	if( m_type == QUAD && m_g2 <= 0 )
 	{
-		AfxMessageBox( "Illegal distance between left and right rows" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Illegal distance between left and right rows":"Недопустимое расстояние между левым и правым рядами");
 		return FALSE;
 	}
 
@@ -882,7 +882,9 @@ BOOL CDlgWizQuad::MakeFootprint()
 			pad_type = PAD_OVAL;
 		else
 		{
-			AfxMessageBox( "Illegal pad shape for edge connector\nUse rectangle, rounded-rect or oval" );
+			AfxMessageBox(G_LANGUAGE == 0 ? 
+				"Illegal pad shape for edge connector\nUse rectangle, rounded-rect or oval":
+				"Недопустимая форма площадки для краевого соединителя. Используйте прямоугольник, скругленный прямоугольник или овал");
 			return FALSE;
 		}
 

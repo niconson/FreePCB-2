@@ -230,7 +230,7 @@ void CDlgPartlist::OnBnClickedButtonEdit()
 	int n_sel = m_list_ctrl.GetSelectedCount();
 	if( n_sel == 0 )
 	{
-		AfxMessageBox( "You have no part selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You have no part selected":"У вас не выбрано ни одной детали");
 		return;
 	}
 	BOOL bMultiple = FALSE;
@@ -258,7 +258,9 @@ void CDlgPartlist::OnBnClickedButtonEdit()
 				{
 					if( ::pl[ip].shape->m_name.Compare(prev_f) )
 				 	{
-						int ret = AfxMessageBox("You want to select the same footprint for parts with different footprints! Proceed?", MB_YESNO);
+						int ret = AfxMessageBox(G_LANGUAGE == 0 ? 
+							"You want to select the same footprint for parts with different footprints! Proceed?":
+							"Вы хотите сделать одинаковый футпринт для деталей с разными футпринтами! Продолжить?", MB_YESNO);
 						if( ret == IDNO )
 							return;
 						else
@@ -276,7 +278,7 @@ void CDlgPartlist::OnBnClickedButtonEdit()
 					  + MSK_VALUE		* m_check_value.GetCheck(); 
 	if( bMultiple && multiple_mask == 0 )
 	{
-		AfxMessageBox( "To edit multiple parts, please select Footprint or Value" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "To edit multiple parts, please select Footprint or Value":"Чтобы редактировать несколько деталей, выберите Footprint или Value");
 		return;
 	}
 	dlg.Initialize( &::pl, i, FALSE, FALSE, bMultiple, multiple_mask, m_lock_netlist,
@@ -334,7 +336,7 @@ void CDlgPartlist::OnBnClickedButtonDelete()
 {
 	int n_sel = m_list_ctrl.GetSelectedCount();
 	if( n_sel == 0 )
-		AfxMessageBox( "You have no part selected" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "You have no part selected":"У вас не выбрано ни одной детали");
 	else
 	{
 		while( m_list_ctrl.GetSelectedCount() )

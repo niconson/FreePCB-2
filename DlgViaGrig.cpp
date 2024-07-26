@@ -58,7 +58,7 @@ void CDlgViaGrig::DoDataExchange(CDataExchange* pDX)
 		GetFields();
 		if ( m_out_x < m_def_via_w || m_out_y < m_def_via_w || m_def_via_w < NM_PER_MIL*5 || m_def_hole_w < NM_PER_MIL )
 		{
-			AfxMessageBox( "Illegal value." );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Illegal value":"Недопустимое значение параметра");
 			pDX->Fail();
 		}
 		as_part = m_as_part.GetCheck();

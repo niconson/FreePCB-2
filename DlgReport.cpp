@@ -130,7 +130,7 @@ void CDlgReport::OnBnClickedOk()
 	int ok = file.Open( fn, CFile::modeCreate | CFile::modeWrite ); 
 	if( !ok )     
 	{ 
-		CString mess = "Unable to open file \" " + fn + "\""; 
+		CString mess = G_LANGUAGE == 0 ? ("Unable to open file \" " + fn + "\""):("Не открывается файл \" " + fn + "\"");
 		AfxMessageBox( mess, MB_OK ); 
 		OnCancel();
 	}

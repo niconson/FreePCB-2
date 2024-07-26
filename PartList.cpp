@@ -81,7 +81,7 @@ cpart * CPartList::Add()
 {
 	if(m_size >= (m_max_size-1) )
 	{
-		AfxMessageBox( "Maximum number of parts exceeded" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Maximum number of parts exceeded":"ѕревышено максимальное количество деталей");
 		return 0;
 	}
 
@@ -105,7 +105,7 @@ cpart * CPartList::Add( CShape * shape, CString * ref_des,
 {
 	if(m_size >= m_max_size )
 	{
-		AfxMessageBox( "Maximum number of parts exceeded" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Maximum number of parts exceeded" : "ѕревышено максимальное количество деталей");
 		return 0;
 	}
 
@@ -1929,7 +1929,9 @@ int CPartList::DrawPart( cpart * part )
 		if( part->m_ref_vis == 0 || part->m_ref_size != NM_PER_MIL*50 )
 		{
 			CString strp;
-			strp.Format("  The Part %s has no visibility, so visibility will be set for reference designator", part->ref_des );
+			strp.Format(G_LANGUAGE == 0 ? 
+				"  The Part %s has no visibility, so visibility will be set for reference designator":
+				"  ƒеталь %s не имеет видимости, поэтому видимость будет установлена дл€ позиционного обозначени€", part->ref_des);
 			part->m_ref_vis = 1;
 			part->m_ref_size = NM_PER_MIL*50;
 			part->m_ref_w = NM_PER_MIL*5;
@@ -2736,7 +2738,7 @@ int CPartList::ReadParts( CStdioFile * pcb_file )
 		{
 			// error reading pcb file
 			CString mess;
-			mess.Format( "Unable to find [parts] section in file" );
+			mess.Format(G_LANGUAGE == 0 ? "Unable to find [parts] section in file":"Ќе удалось найти раздел [parts] в файле");
 			AfxMessageBox( mess );
 			return 0;
 		}
@@ -3073,7 +3075,7 @@ void CPartList::ImportPartListInfo( partlist_info * pl, int flags, CDlgLog * log
 		}
 		if( PartRef_Changed == 0 && Duplicate )
 		{
-			AfxMessageBox( "Sorry: Parts can't be renumbered :-(" );
+			AfxMessageBox(G_LANGUAGE == 0 ? "Sorry: Parts can't be renumbered :-(" : "  сожалению детали не могут быть перенумерованы (см. трактат о недопустимости дублировани€ поз.обозначений)");
 			return;
 		}
 	}while( Duplicate );
@@ -5366,7 +5368,9 @@ void CPartList::ChannelDuplication( CString * Suffix, CArray<CPolyLine> * po, CT
 							if( m_nlist->PartRouted( p2 ) )
 							{
 								CString mess;
-								mess.Format("Part %s has copper routes and cannot be moved. To successfully complete channel duplication, free the parts of other channel from copper traces", p2->ref_des );
+								mess.Format(G_LANGUAGE == 0 ? 
+									"Part %s has copper routes and cannot be moved. To successfully complete channel duplication, free the parts of other channel from copper traces":
+									"ƒеталь %s уже трассирована и не может быть перемещена. ƒл€ успешного завершени€ освободите эту деталь от всех медных трасс", p2->ref_des);
 								AfxMessageBox( mess, MB_ICONERROR );
 								return;
 							}

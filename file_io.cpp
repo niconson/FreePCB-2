@@ -132,7 +132,7 @@ int ParseKeyString( CString * str, CString * key_str, CArray<CString> * param_st
 		np++;
 	}
 	if( np > param_str->GetSize() )
-		AfxMessageBox("Warning: error of ParseKeyString.cpp");
+		AfxMessageBox(G_LANGUAGE == 0 ? "Warning: error of ParseKeyString.cpp":"Предупреждение: ошибка ParseKeyString.cpp");
 	return np+1;
 }
 
@@ -177,11 +177,18 @@ int ParseMultiPin( CString * pin, CArray<CString> * ar )
 			int end = ParsePin( &s2, &Pref2 );
 			if( Pref1.Compare(Pref2) || s1.GetLength() == 0 || s2.GetLength() == 0 )
 			{
-				AfxMessageBox("Unable to get list of pins from row "+ar->GetAt(i)+\
+				if(G_LANGUAGE==0)
+					AfxMessageBox(("Unable to get list of pins from row "+ar->GetAt(i)+\
 							  "\n\nYou cannot use the characters 'comma' or 'dash' in the pin name. "\
 							  "These symbols are used to bind several pins to one polyline. "\
-							  "For example, you can use it like this: 1, 3, 10 or set the range of pins: "\
-							  "7-10 or use in combination like this: 1, 2, 3, 7-10, 15",MB_ICONERROR);
+							  "For example, you can use it like this: 1,3,10 or set the range of pins: "\
+							  "7-10 or use in combination like this: 1,2,3,7-10,15"),MB_ICONERROR);
+				else
+					AfxMessageBox(("Невозможно получить список пинов из строки " + ar->GetAt(i) + \
+						"\n\nВ имени пина нельзя использовать символы ЗАПЯТАЯ или ТИРЕ. "\
+						"Эти символы используются для привязки нескольких пинов к одной полилинии. "\
+						"Например, можно использовать так: 1,3,10 или задать диапазон пинов: "\
+						"7-10 или использовать в комбинации так: 1,2,3,7-10,15"), MB_ICONERROR);
 				return 0;
 			}
 			ar->RemoveAt(i);
@@ -227,7 +234,9 @@ int my_atoi( CString * in_str )
 			if( !( c == '+' || c == '-' || ( c >= '0' ) ) )
 			{
 				CString err_str;// throw
-				err_str.Format( "Unable to convert string \"%s\" to int", *in_str );
+				err_str.Format(G_LANGUAGE == 0 ? 
+					"Unable to convert string \"%s\" to int":
+					"Невозможно преобразовать строку \"%s\" в целое число", *in_str);
 				AfxMessageBox( err_str );
 			}
 		}
@@ -269,7 +278,9 @@ double my_atof( CString * in_str )
 			if( !( c == '.' || c == '+' || c == '-' || c == '0' || c == ' ' ) )
 			{
 				CString err_str;// throw
-				err_str.Format( "Unable to convert string \"%s\" to double", *in_str );
+				err_str.Format(G_LANGUAGE == 0 ? 
+					"Unable to convert string \"%s\" to double":
+					"Невозможно преобразовать строку \"%s\" в число с плавающей точкой", *in_str);
 				AfxMessageBox( err_str );
 			}
 		}

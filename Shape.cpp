@@ -1167,7 +1167,9 @@ int CShape::MakeFromFile( CStdioFile * in_file, CString name,
 		if( p[0].GetLength() > MAX_NAME_SIZE )
 		{
 			CString mess;
-			mess.Format( "Footprint name \"%s\" too long\nTruncated to \"%s\"",
+			mess.Format(G_LANGUAGE == 0 ? 
+				"Footprint name \"%s\" too long\nTruncated to \"%s\"":
+				"Имя футпринта \"%s\" слишком длинное\nУсечено до \"%s\"",
 				p[0], p[0].Left(MAX_NAME_SIZE) );
 			AfxMessageBox( mess );
 		}
@@ -1389,7 +1391,9 @@ int CShape::MakeFromFile( CStdioFile * in_file, CString name,
 				if( pin_name.GetLength() > MAX_PIN_NAME_SIZE )
 				{
 					CString mess;
-					mess.Format( "Footprint \"%s\": pin name \"%s\" too long\nTruncated to \"%s\"",
+					mess.Format(G_LANGUAGE == 0 ? 
+						"Footprint \"%s\": pin name \"%s\" too long\nTruncated to \"%s\"":
+						"Футпринт \"%s\": имя пина \"%s\" слишком длинное\nУсечено до \"%s\"",
 						m_name, pin_name, pin_name.Left(MAX_PIN_NAME_SIZE) );
 					AfxMessageBox( mess );
 					pin_name = pin_name.Left(MAX_PIN_NAME_SIZE);
@@ -2104,7 +2108,9 @@ int CShape::WriteFootprint( CStdioFile * file )
 				|| (p->bottom_mask.shape < PAD_DEFAULT && p->bottom_mask.shape > PAD_OCTAGON)
 				|| (p->bottom_paste.shape < PAD_DEFAULT && p->bottom_paste.shape > PAD_OCTAGON) )
 			{
-				AfxMessageBox( "Error: Trying to write bad pad shape in footprint" );
+				AfxMessageBox(G_LANGUAGE == 0 ? 
+					"Error: Trying to write bad pad shape in footprint":
+					"Ошибка: попытка записать неправильную форму контактной площадки в отпечаток");
 			}
 			//** end
 			if( p->hole_size || p->top.shape != PAD_NONE )
@@ -4143,7 +4149,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		CString color_str = "";
 		if( ::RemoveColinearSegments( &m_outline_poly ) )
 			if( bPreview )
-				AfxMessageBox("Some segments were removed due to collinearity");
+				AfxMessageBox(G_LANGUAGE == 0 ? "Some segments were removed due to collinearity":"Некоторые сегменты были удалены из-за коллинеарности");
 		for( int i=0; i<m_outline_poly.GetSize(); i++ )
 		{
 			// get Openscad parameters

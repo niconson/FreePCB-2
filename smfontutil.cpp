@@ -136,7 +136,7 @@ int SMFontUtil::LoadFontData(void)
 	CString full_path = smfpath + "\\" + smffile;
 	if(!(infile = fopen(full_path,"rb")))
 	{
-		AfxMessageBox( "Font stroke file was not found" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Font stroke file was not found":"Файл штриховки шрифта не найден");
 		return 1;
 	}
 	else
@@ -187,7 +187,7 @@ int SMFontUtil::LoadXlationData(void)
 	CString full_path = smfpath + "\\" + xtbfile;
 	if(!(infile = fopen(full_path,"rb")))
 	{
-		AfxMessageBox( "Font translation file was not found" );
+		AfxMessageBox(G_LANGUAGE == 0 ? "Font translation file was not found":"Файл перевода шрифта не найден");
 		return 1;
 	}
 	else
