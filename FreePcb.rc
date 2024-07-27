@@ -178,19 +178,19 @@ BEGIN
         MENUITEM "Сохранить моментальную копию", ID_FILE_SAVE_VERSION
         MENUITEM "Закрыть файл",                ID_FILE_CLOSE
         MENUITEM SEPARATOR
-        MENUITEM "Импортировать нетлист",    ID_FILE_IMPORTNETLIST
-        MENUITEM "Перезагрузить нетлист",    ID_FILE_RELOADNETLIST
+        MENUITEM "Импортировать нетлист",       ID_FILE_IMPORTNETLIST
+        MENUITEM "Перезагрузить нетлист",       ID_FILE_RELOADNETLIST
         MENUITEM SEPARATOR
         MENUITEM "Сохранить проект как библиотеку", ID_FILE_SAVEPROJECTASLIBRARY
-        MENUITEM "Конвертировать библиотеку", ID_FILE_CONVERT
+        MENUITEM "Конвертировать библиотеку",   ID_FILE_CONVERT
         MENUITEM SEPARATOR
         MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
-        MENUITEM "Генерировать отчёт",       ID_FILE_GENERATEREPORTFILE
+        MENUITEM "Генерировать отчёт",          ID_FILE_GENERATEREPORTFILE
         MENUITEM SEPARATOR
         MENUITEM "Открыть редактор футпринтов", ID_FILE_OPENFOOTPRINTEDITOR
         MENUITEM SEPARATOR
         MENUITEM "Импортировать SES-файл",      ID_SES_FILE_IMPORT, GRAYED
-        MENUITEM "Экспортировать DSN-файл",  ID_DSN_FILE_EXPORT, GRAYED
+        MENUITEM "Экспортировать DSN-файл",     ID_DSN_FILE_EXPORT, GRAYED
         MENUITEM SEPARATOR
         MENUITEM "Печатать в PDF-файл\tCtrl+P", ID_FILE_PRINT
         MENUITEM SEPARATOR
@@ -208,8 +208,8 @@ BEGIN
         MENUITEM "Копировать\tCtrl+C",          ID_EDIT_COPY
         MENUITEM "Вставить\tCtrl+V",            ID_EDIT_PASTE
         MENUITEM SEPARATOR
-        MENUITEM "Сохранить объекты в файл", ID_EDIT_SAVEGROUPTOFILE
-        MENUITEM "Вставить объекты из файла", ID_EDIT_PASTEFROMFILE
+        MENUITEM "Сохранить объекты в файл",    ID_EDIT_SAVEGROUPTOFILE
+        MENUITEM "Вставить объекты из файла",   ID_EDIT_PASTEFROMFILE
         MENUITEM SEPARATOR
         MENUITEM "Выделить всё",                ID_SELECTALL
     END
@@ -230,8 +230,8 @@ BEGIN
         MENUITEM "Настройки",                   ID_PROJECT_OPTIONS
         MENUITEM "Доступ к редактированию",     ID_PROTECTION
         MENUITEM SEPARATOR
-        MENUITEM "Список деталей",                   ID_VIEW_PARTLIST
-        MENUITEM "Список эл.цепей",       ID_VIEW_NETLIST
+        MENUITEM "Список деталей",              ID_VIEW_PARTLIST
+        MENUITEM "Список эл.цепей",             ID_VIEW_NETLIST
         MENUITEM SEPARATOR
         MENUITEM "Объединить цепи",             ID_PROJECT_COMBINENETS
         MENUITEM "Объединить пересекающиеся полилинии", ID_PROJECT_COMBINEBOARD
@@ -308,8 +308,8 @@ BEGIN
         BEGIN
             MENUITEM "Приложение",                  ID_RUN_RND_CORNERS
             MENUITEM SEPARATOR
-            MENUITEM "Выделить элементы дуг",    ID_SEL_ARC_EL
-            MENUITEM "Выделить элементы виа",    ID_SEL_VIA_EL
+            MENUITEM "Выделить элементы дуг",       ID_SEL_ARC_EL
+            MENUITEM "Выделить элементы виа",       ID_SEL_VIA_EL
         END
         MENUITEM "Замена",                      ID_RUN_REPLACE
         MENUITEM "Показ электрических цепей",   ID_RUN_SHOW_NET
@@ -344,7 +344,7 @@ BEGIN
     POPUP "Файл"
     BEGIN
         MENUITEM "Новый футпринт",              ID_FOOTPRINT_FILE_NEW
-        MENUITEM "Импорт футпринта",         ID_FOOTPRINT_FILE_IMPORT
+        MENUITEM "Импорт футпринта",            ID_FOOTPRINT_FILE_IMPORT
         MENUITEM "Сохранить как...",            ID_FOOTPRINT_FILE_SAVE_AS
         MENUITEM SEPARATOR
         MENUITEM "Вернуться в PCB редактор",    ID_FOOTPRINT_FILE_CLOSE
@@ -380,7 +380,7 @@ BEGIN
     BEGIN
         MENUITEM "Переместить начало координат", ID_TOOLS_MOVEORIGIN_FP
         MENUITEM SEPARATOR
-        MENUITEM "Генератор футпринтов",     ID_FP_TOOLS_FOOTPRINTWIZARD
+        MENUITEM "Генератор футпринтов",        ID_FP_TOOLS_FOOTPRINTWIZARD
         MENUITEM "Сделать PDF из библиотечного файла", ID_TOOLS_FOOTPRINTLIBRARYMANAGER
         MENUITEM SEPARATOR
         MENUITEM "Вернуться в PCB редактор",    ID_FP_TOOLS_RETURN
@@ -410,11 +410,11 @@ BEGIN
     POPUP "Part"
     BEGIN
         MENUITEM "Перекинуть на противоположную сторону", ID_PART_CHANGESIDE
-        MENUITEM "Изменить размер обозначения",         ID_PART_SET_REF
-        MENUITEM "Изменить размер названия",       ID_PART_EDITVALUE
+        MENUITEM "Изменить размер обозначения", ID_PART_SET_REF
+        MENUITEM "Изменить размер названия",    ID_PART_EDITVALUE
         MENUITEM SEPARATOR
-        MENUITEM "Выделить подобные корпуса",  ID_SELECT_SIMILAR_P
-        MENUITEM "Выделить подобные названия",    ID_SELECT_SIMILAR
+        MENUITEM "Выделить подобные корпуса",   ID_SELECT_SIMILAR_P
+        MENUITEM "Выделить подобные названия",  ID_SELECT_SIMILAR
         MENUITEM SEPARATOR
         MENUITEM "Режим статической подсветки", ID_STATIC_HIGHLIGHT
         MENUITEM SEPARATOR
@@ -586,7 +586,7 @@ BEGIN
         MENUITEM "Преобразовать в дугу (CW)",   ID_FP_CONVERTTOARC
         MENUITEM "Преобразовать в дугу (CCW)",  ID_FP_CONVERTTOARC32778
         MENUITEM SEPARATOR
-            MENUITEM "Параметры 3D-объекта (OpenSCAD)", ID_FP_OPENSCAD
+        MENUITEM "Параметры 3D-объекта (OpenSCAD)", ID_FP_OPENSCAD
         MENUITEM "Установить начало координат", ID_FP_SET_ORIGIN
         MENUITEM SEPARATOR
         MENUITEM "Удалить полилинию",           ID_FP_DELETEOUTLINE
@@ -883,7 +883,7 @@ BEGIN
     PUSHBUTTON      "Выбрать",IDC_BUTTON_ADD_PART_BROWSE,13,84,34,12
     LTEXT           "Сторона",IDC_STATIC,184,80,32,8
     LTEXT           "Угол",IDC_STATIC,272,80,19,8
-    LTEXT           "Обозн.-е",IDC_STATIC1,12,10,39,8
+    LTEXT           "Обозн.",IDC_STATIC1,12,10,39,8
     GROUPBOX        "Позиция",IDC_STATIC,179,38,177,71
     LTEXT           "Корпус",IDC_STATIC3,12,55,32,8
     CONTROL         "",IDC_PREVIEW,"Static",SS_ENHMETAFILE | WS_BORDER,178,113,179,161,WS_EX_CLIENTEDGE
@@ -913,20 +913,20 @@ BEGIN
     LTEXT           "Имя цепи",IDC_STATIC,7,9,34,8
 END
 
-IDD_ADD_MERGE DIALOGEX 0, 0, 186, 100
+IDD_ADD_MERGE DIALOGEX 0, 0, 298, 101
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Добавить слияние"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_MERGE_NAME,45,7,134,60,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Готово",IDOK,35,72,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,105,72,50,14
-    LTEXT           "Имя",IDC_STATIC,14,9,28,8
-    EDITTEXT        IDC_MERGE_AREA_CLEARANCE,98,28,35,12,ES_AUTOHSCROLL
-    LTEXT           "Зазор на медные области",IDC_STATIC,14,30,82,8
-    LTEXT           "Исп. 0.0 для зазора по умолчанию",IDC_STATIC,14,43,146,8
-    LTEXT           "( см.окно Файл->Генерировать гербера )",IDC_STATIC,14,56,146,8
-    LTEXT           "Ед.изм MIL",IDC_DLG_MERGE_UNITS,140,30,36,8
+    COMBOBOX        IDC_MERGE_NAME,41,7,248,60,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Готово",IDOK,87,77,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,157,77,50,14
+    LTEXT           "Имя",IDC_STATIC,14,9,24,8
+    EDITTEXT        IDC_MERGE_AREA_CLEARANCE,113,28,71,12,ES_AUTOHSCROLL
+    LTEXT           "Зазор на медные полигоны",IDC_STATIC,14,30,97,8
+    LTEXT           "Исп. 0.0 для зазора по умолчанию, указанного в настройках ГЕРБЕР-файлов",IDC_STATIC,14,49,267,8
+    LTEXT           "( см.окно Файл->Генерировать гербера )",IDC_STATIC,14,60,146,8
+    LTEXT           "Ед.изм MIL",IDC_DLG_MERGE_UNITS,191,30,36,8
 END
 
 IDD_ASSIGN_NET DIALOGEX 0, 0, 208, 96
@@ -947,30 +947,33 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Задать ширину трасс и параметры виа"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Модифицировать трассы и параметры виа",IDC_RADIO_MOD_TV,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,6,104,10
-    CONTROL         "Модифицировать только ширину трасс",IDC_RADIO_MOD_T,"Button",BS_AUTORADIOBUTTON,12,18,91,10
-    CONTROL         "Модифицировать только параметры виа",IDC_RADIO_MOD_V,"Button",BS_AUTORADIOBUTTON,12,30,87,10
+    CONTROL         "Модифицировать трассы и параметры виа",IDC_RADIO_MOD_TV,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,6,162,10
+    CONTROL         "Модифицировать только ширину трасс",IDC_RADIO_MOD_T,
+                    "Button",BS_AUTORADIOBUTTON,12,18,150,10
+    CONTROL         "Модифицировать только параметры виа",IDC_RADIO_MOD_V,
+                    "Button",BS_AUTORADIOBUTTON,12,30,160,10
     COMBOBOX        IDC_COMBO_WIDTH,93,58,69,118,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Использовать default виа для этой ширины трасс",IDC_RADIO_DEF_VIA,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,93,127,10
-    CONTROL         "Задать параметры виа",IDC_RADIO_SET_VIA,"Button",BS_AUTORADIOBUTTON,12,108,61,10
-    EDITTEXT        IDC_EDIT_VIA_PAD,118,106,24,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_VIA_HOLE,166,106,24,12,ES_AUTOHSCROLL
-    CONTROL         "Для этой эл.цепи",IDC_DEF_NET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,144,123,10
-    CONTROL         "Для этого сегмента",IDC_APPLY_SEG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,180,68,10
-    CONTROL         "Для этой трассы",IDC_APPLY_CON,"Button",BS_AUTORADIOBUTTON,12,192,57,10
-    CONTROL         "Для этой эл.цепи",IDC_APPLY_NET,"Button",BS_AUTORADIOBUTTON,12,204,51,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,95,183,10
+    CONTROL         "Задать параметры виа",IDC_RADIO_SET_VIA,"Button",BS_AUTORADIOBUTTON,12,109,93,10
+    EDITTEXT        IDC_EDIT_VIA_PAD,124,108,24,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_VIA_HOLE,168,108,24,12,ES_AUTOHSCROLL
+    CONTROL         "Для этой эл.цепи",IDC_DEF_NET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,144,94,10
+    CONTROL         "Для этого сегмента",IDC_APPLY_SEG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,180,99,10
+    CONTROL         "Для этой трассы",IDC_APPLY_CON,"Button",BS_AUTORADIOBUTTON,12,192,98,10
+    CONTROL         "Для этой эл.цепи",IDC_APPLY_NET,"Button",BS_AUTORADIOBUTTON,12,204,90,10
     DEFPUSHBUTTON   "Готово",IDOK,24,228,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,126,228,50,14
     GROUPBOX        "Установить как default",IDC_STATIC,6,132,192,30
     GROUPBOX        "Применить к уже разведённым трассам",IDC_STATIC,6,168,192,54
     GROUPBOX        "Параметры виа",IDC_STATIC,6,84,192,40
-    LTEXT           "Пад",IDC_STATIC,100,108,13,8
-    LTEXT           "Отв.",IDC_STATIC,148,108,14,8
+    LTEXT           "Пад",IDC_STATIC,108,110,13,8
+    LTEXT           "Отв.",IDC_STATIC,152,110,14,8
     GROUPBOX        "Ширина трассы",IDC_STATIC,6,48,192,30
 END
 
-IDD_ADD_TEXT DIALOGEX 0, 0, 177, 298
+IDD_ADD_TEXT DIALOGEX 0, 0, 193, 312
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Текстовая строка"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -978,78 +981,78 @@ BEGIN
     EDITTEXT        IDC_EDIT_TEXT,32,10,134,12,ES_AUTOHSCROLL
     CONTROL         "Отзеркалить",IDC_CHECK_MIRROR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,30,55,10
     CONTROL         "Негативный след (copper layers only)",IDC_CHECK_NEGATIVE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,42,126,10
-    COMBOBOX        IDC_COMBO_ADD_TEXT_UNITS,63,61,36,65,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT_HEIGHT,100,79,53,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию для этой высоты букв",IDC_DEF_WIDTH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,27,105,86,10
-    CONTROL         "Задать толщину пера",IDC_SET_WIDTH,"Button",BS_AUTORADIOBUTTON,27,118,46,10
-    EDITTEXT        IDC_EDIT_WIDTH,78,116,49,12,ES_AUTOHSCROLL
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,42,142,10
+    COMBOBOX        IDC_COMBO_ADD_TEXT_UNITS,89,61,52,65,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_HEIGHT,88,79,54,12,ES_AUTOHSCROLL
+    CONTROL         "По умолчанию для этой высоты букв",IDC_DEF_WIDTH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,27,105,138,10
+    CONTROL         "Задать толщину пера",IDC_SET_WIDTH,"Button",BS_AUTORADIOBUTTON,27,118,86,10
+    EDITTEXT        IDC_EDIT_WIDTH,116,116,49,12,ES_AUTOHSCROLL
     LISTBOX         IDC_LIST_LAYER,45,145,108,66,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Перемещать",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,229,67,10
-    CONTROL         "Задать позицию",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,24,241,53,10
-    EDITTEXT        IDC_X,35,253,48,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_Y,98,253,49,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Готово",IDOK,24,279,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,108,279,50,14
+    CONTROL         "Перемещать",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,28,231,67,10
+    CONTROL         "Задать позицию",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,28,244,94,10
+    EDITTEXT        IDC_X,37,259,48,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_Y,100,259,49,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Готово",IDOK,24,288,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,108,288,50,14
     GROUPBOX        "Толщина пера",IDC_STATIC,6,94,168,40
-    GROUPBOX        "Позиция",IDC_STATIC,6,217,168,54
+    GROUPBOX        "Позиция",IDC_STATIC,6,217,168,64
     LTEXT           "Текст:",IDC_STATIC,9,12,18,8
-    LTEXT           "Высота букв",IDC_STATIC,39,80,57,8
+    LTEXT           "Высота букв",IDC_STATIC,40,80,46,8
     LTEXT           "Слой",IDC_STATIC,20,144,19,8
-    LTEXT           "X",IDC_STATIC,27,255,8,8
-    LTEXT           "Y",IDC_STATIC,89,255,8,8
-    LTEXT           "Ед.изм",IDC_STATIC,39,63,17,8
+    LTEXT           "X",IDC_STATIC,29,261,8,8
+    LTEXT           "Y",IDC_STATIC,91,261,8,8
+    LTEXT           "Ед.изм",IDC_STATIC,59,63,24,8
 END
 
-IDD_NET_LIST DIALOGEX 0, 0, 401, 295
+IDD_NET_LIST DIALOGEX 0, 0, 456, 296
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Список электрических цепей"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_LIST_NET,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,98,7,296,253
-    PUSHBUTTON      "Выделить всё",IDC_BUTTON_SELECT_ALL,6,6,83,12
-    PUSHBUTTON      "Сделать видимым/невидимым",IDC_BUTTON_VISIBLE,6,24,84,12
-    PUSHBUTTON      "Добавить новую эл.цепь",IDC_BUTTON_ADD,6,42,84,12
-    PUSHBUTTON      "Редактировать",IDC_BUTTON_EDIT,30,114,36,12
-    PUSHBUTTON      "Изменить ширины",IDC_BUTTON_NL_WIDTH,18,168,60,12
-    PUSHBUTTON      "Удалить эл.цепи с 0 пинами",IDC_BUTTON_DELETE_NOPINS,6,60,84,13
-    DEFPUSHBUTTON   "Готово",IDOK,71,274,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,231,274,50,14
-    GROUPBOX        "Единичная эл.цепь",IDC_STATIC,7,102,84,48
-    GROUPBOX        "Несколько эл.цепей",IDC_STATIC,6,156,84,48
-    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE2,30,132,36,13
-    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE,18,186,60,13
-    PUSHBUTTON      "Удалить эл.цепи с 1 пином",IDC_BUTTON_DELETE_1PIN,6,78,84,13
-    CONTROL         "Эл.цепи защищены",IDC_CHECK_NL_COMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,249,71,10
+    CONTROL         "",IDC_LIST_NET,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,120,7,329,282
+    PUSHBUTTON      "Выделить всё",IDC_BUTTON_SELECT_ALL,6,6,106,12
+    PUSHBUTTON      "Видимые/невидимые",IDC_BUTTON_VISIBLE,6,24,107,12
+    PUSHBUTTON      "Добавить новую эл.цепь",IDC_BUTTON_ADD,6,42,106,12
+    PUSHBUTTON      "Редактировать",IDC_BUTTON_EDIT,19,114,83,14
+    PUSHBUTTON      "Изменить ширины",IDC_BUTTON_NL_WIDTH,18,168,84,14
+    PUSHBUTTON      "Удалить эл.цепи с 0 пинами",IDC_BUTTON_DELETE_NOPINS,6,60,106,13
+    DEFPUSHBUTTON   "Готово",IDOK,7,275,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,63,275,50,14
+    GROUPBOX        "Единичная эл.цепь",IDC_STATIC,7,102,105,48
+    GROUPBOX        "Несколько эл.цепей",IDC_STATIC,6,156,106,48
+    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE2,19,132,83,13
+    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE,18,186,84,13
+    PUSHBUTTON      "Удалить эл.цепи с 1 пином",IDC_BUTTON_DELETE_1PIN,6,78,107,13
+    CONTROL         "Эл.цепи защищены",IDC_CHECK_NL_COMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,211,87,10
 END
 
-IDD_EDIT_NET DIALOGEX 0, 0, 226, 242
+IDD_EDIT_NET DIALOGEX 0, 0, 227, 317
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Добавить/редактировать эл.цепь"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_NAME,48,8,126,12,ES_AUTOHSCROLL
-    CONTROL         "Видимая",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,183,9,36,10
-    COMBOBOX        IDC_COMBO_WIDTH,57,36,62,142,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_NAME,74,8,91,12,ES_AUTOHSCROLL
+    CONTROL         "Видимая",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,9,42,10
+    COMBOBOX        IDC_COMBO_WIDTH,74,36,107,142,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Использовать default виа для этой ширины трасс",IDC_RADIO_DEF_WIDTH,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,53,127,10
-    CONTROL         "Задать параметры виа",IDC_RADIO_SET_WIDTH,"Button",BS_AUTORADIOBUTTON,12,67,61,10
-    EDITTEXT        IDC_EDIT_VIA_PAD_W,94,66,47,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_VIA_HOLE_W,164,66,48,12,ES_AUTOHSCROLL
-    CONTROL         "Применить к уже разведённым трассам",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,81,114,10
-    LISTBOX         IDC_LIST_PIN,12,114,100,96,LBS_SORT | LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Удалить пин(ы)",IDC_BUTTON_DELETE,120,138,53,12
-    PUSHBUTTON      "Добавить пин",IDC_BUTTON_ADD,120,167,37,12
-    EDITTEXT        IDC_EDIT_ADD_PIN,165,167,48,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Готово",ID_MY_OK,30,222,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,138,222,50,14
-    LTEXT           "Имя эл.цепи",IDC_STATIC,12,9,32,8
-    LTEXT           "Ширина трассы",IDC_STATIC,12,38,38,8
-    GROUPBOX        "Ширина трасс и виа по умолчанию",IDC_STATIC,6,24,210,72
-    LTEXT           "Пад",IDC_STATIC,78,68,13,8
-    LTEXT           "Отв.",IDC_STATIC,146,68,14,8
-    GROUPBOX        "Список пинов",IDC_STATIC,6,102,210,114
-    LTEXT           "(Исп. ""0"" для уст. по умолчанию)",IDC_STATIC,126,38,90,8
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,65,188,10
+    CONTROL         "Задать параметры виа",IDC_RADIO_SET_WIDTH,"Button",BS_AUTORADIOBUTTON,12,80,107,10
+    EDITTEXT        IDC_EDIT_VIA_PAD_W,75,94,39,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_VIA_HOLE_W,141,94,40,12,ES_AUTOHSCROLL
+    CONTROL         "Применить к уже разведённым трассам",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,114,188,10
+    LISTBOX         IDC_LIST_PIN,12,149,100,130,LBS_SORT | LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Удалить пин(ы)",IDC_BUTTON_DELETE,117,190,66,12
+    PUSHBUTTON      "Добавить пин",IDC_BUTTON_ADD,117,219,56,12
+    EDITTEXT        IDC_EDIT_ADD_PIN,176,219,34,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Готово",ID_MY_OK,49,294,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,128,294,50,14
+    LTEXT           "Имя эл.цепи",IDC_STATIC,12,9,45,8
+    LTEXT           "Ширина трассы",IDC_STATIC,12,38,56,8
+    GROUPBOX        "Ширина трасс и виа по умолчанию",IDC_STATIC,6,24,210,106
+    LTEXT           "Пад",IDC_STATIC,56,96,13,8
+    LTEXT           "Отв.",IDC_STATIC,121,96,14,8
+    GROUPBOX        "Список пинов",IDC_STATIC,6,135,210,150
+    LTEXT           "(Исп. ""0"" для уст. по умолчанию)",IDC_STATIC,73,50,121,8
 END
 
 IDD_EDIT_BOARD_CORNER DIALOGEX 0, 0, 119, 90
@@ -1057,14 +1060,14 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Редактировать вершину"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_COMBO_CORNER_UNITS,48,6,36,54,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_CORNER_UNITS,52,6,36,54,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_X,38,24,51,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_Y,38,42,51,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "Готово",IDOK,18,72,36,14
     PUSHBUTTON      "Отмена",IDCANCEL,72,72,30,14
     LTEXT           "X",IDC_STATIC,26,25,8,8
     LTEXT           "Y",IDC_STATIC,26,43,8,8
-    LTEXT           "Ед.изм",IDC_STATIC,24,8,17,8
+    LTEXT           "Ед.изм",IDC_STATIC,24,8,25,8
 END
 
 IDD_ADD_AREA DIALOGEX 0, 0, 271, 120
@@ -1072,14 +1075,14 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Добавить/редактировать медный полигон"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Призрак",IDC_RADIO_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,30,22,35,10
+    CONTROL         "Призрак",IDC_RADIO_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,30,22,43,10
     CONTROL         "G36",IDC_RADIO_EDGE,"Button",BS_AUTORADIOBUTTON,30,36,29,10
     CONTROL         "Заливка",IDC_RADIO_FULL,"Button",BS_AUTORADIOBUTTON,30,50,40,10
     COMBOBOX        IDC_COMBO_NET,144,11,116,168,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LISTBOX         IDC_LIST_LAYER,144,30,116,63,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,144,98,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,210,98,50,14
-    LTEXT           "Эл.цепь",IDC_STATIC,122,13,12,8
+    LTEXT           "Эл.цепь",IDC_STATIC,112,13,28,8
     LTEXT           "Слой",IDC_STATIC,121,31,19,8
     GROUPBOX        "Тип",IDC_STATIC,13,7,86,64
     EDITTEXT        IDC_AREA_WIDTH,29,89,55,12,ES_AUTOHSCROLL
@@ -1094,46 +1097,48 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Опции проекта"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_NAME,61,6,126,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_FOLDER,61,24,380,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_LIBRARY_FOLDER,61,42,380,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NAME,75,7,126,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_FOLDER,74,24,367,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_LIBRARY_FOLDER,74,42,367,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_LIB,447,42,18,12
-    EDITTEXT        IDC_EDIT_NUM_LAYERS,140,65,32,12,ES_AUTOHSCROLL
-    CONTROL         "Разрешить контакт SMT-падов с полигонами",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,85,128,10
-    EDITTEXT        IDC_EDIT_GLUE_W,193,119,38,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_DEF_TRACE_W,36,148,38,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_DEF_VIA_W,110,148,39,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NUM_LAYERS,121,69,32,12,ES_AUTOHSCROLL
+    CONTROL         "Разрешить контакт SMT-падов с полигонами",IDC_CHECK1,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,86,181,10
+    EDITTEXT        IDC_EDIT_GLUE_W,187,119,38,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DEF_TRACE_W,51,148,38,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DEF_VIA_W,119,148,39,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_DEF_VIA_HOLE,187,148,39,12,ES_AUTOHSCROLL
-    CONTROL         "",IDC_LIST_WIDTH_MENU,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,255,75,198,131
-    PUSHBUTTON      "Добавить",IDC_BUTTON_ADD,273,215,24,12
-    PUSHBUTTON      "Редактировать",IDC_BUTTON_EDIT,345,215,24,12
-    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE,412,215,29,12
-    CONTROL         "Разрешить",IDC_CHECK_AUTOSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,209,37,10
-    EDITTEXT        IDC_EDIT_AUTO_INTERVAL,154,207,32,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_LIST_WIDTH_MENU,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,255,79,198,131
+    PUSHBUTTON      "Добавить",IDC_BUTTON_ADD,255,217,52,12
+    PUSHBUTTON      "Редактировать",IDC_BUTTON_EDIT,319,217,76,12
+    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE,409,217,43,12
+    CONTROL         "Разрешить",IDC_CHECK_AUTOSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,209,60,10
+    EDITTEXT        IDC_EDIT_AUTO_INTERVAL,166,207,32,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "Готово",IDOK,58,231,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,142,231,50,14
-    LTEXT           "Имя",IDC_STATIC,31,8,19,8
-    LTEXT           "Папка проектов",IDC_STATIC,13,26,46,8
-    LTEXT           "Кол-во медных слоёв",IDC_STATIC,44,67,88,8
+    CONTROL         "Имя проекта",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,14,9,57,8
+    CONTROL         "Папка проектов",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,13,26,57,8
+    CONTROL         "Кол-во медных слоёв",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,42,72,75,8
     GROUPBOX        "Ширина трасс и виа по умолчанию",IDC_STATIC,9,137,222,30
-    LTEXT           "Трасса",IDC_STATIC,15,150,18,8
-    LTEXT           "Виа пад",IDC_STATIC,84,150,24,8
-    LTEXT           "Виа отв.",IDC_STATIC,159,150,26,8
+    CONTROL         "Трасса",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,18,150,28,8
+    CONTROL         "Виа",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,98,150,18,8
+    CONTROL         "Отв.",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,165,150,18,8
     GROUPBOX        "Меню трасс и параметров виа",IDC_STATIC,243,66,222,172
-    LTEXT           "Папка библиотек",IDC_STATIC,13,44,45,8
-    LTEXT           "Интервал (минуты)",IDC_STATIC,93,209,58,8
+    CONTROL         "Папка библиотек",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,13,44,59,8
+    CONTROL         "Интервал (минуты)",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,90,210,67,8
     GROUPBOX        "Автосохранение",IDC_STATIC,10,198,222,27
-    LTEXT           "Диаметр клеевой точки по умолчанию для SMT деталей (mils)",IDC_STATIC,15,120,162,8
+    CONTROL         "Диаметр клеевой точки для SMT деталей (mils)",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,15,120,166,8
     GROUPBOX        "Автоматический пересчёт связей эл.цепей",IDC_STATIC,10,169,222,27
     CONTROL         "Запретить для эл.цепей, с более чем ",IDC_CHECK_AUTORAT_DISABLE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,181,118,10
-    EDITTEXT        IDC_EDIT_MIN_PINS,153,180,32,12,ES_AUTOHSCROLL
-    LTEXT           "пинами",IDC_STATIC,194,182,14,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,181,140,10
+    EDITTEXT        IDC_EDIT_MIN_PINS,166,180,32,12,ES_AUTOHSCROLL
+    CONTROL         "конт.",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,202,182,25,8
     PUSHBUTTON      "...",IDC_BUTTON_PRF,447,24,18,12
-    CONTROL         "Отображать имена слияний",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,100,104,10
+    CONTROL         "Отображать имена слияний",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,100,146,10
 END
 
-IDD_ADD_WIDTH_MENU_ITEM DIALOGEX 0, 0, 267, 95
+IDD_ADD_WIDTH_MENU_ITEM DIALOGEX 0, 0, 284, 96
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Пункты меню ширины трасс"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1141,34 +1146,35 @@ BEGIN
     EDITTEXT        IDC_EDIT_WIDTH,89,11,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_VIA_W,89,29,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_HOLE_W,89,47,40,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Готово",IDOK,68,74,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,146,74,50,14
-    LTEXT           "Ширина трасс",IDC_STATIC,18,13,38,8
-    LTEXT           "Размер виа",IDC_STATIC,18,31,44,8
-    LTEXT           "Отверстие виа",IDC_STATIC,18,49,56,8
-    LTEXT           "Исп. '0' для задания по умолчанию",IDC_STATIC,144,32,116,8
-    LTEXT           "Исп. '0' для задания по умолчанию",IDC_STATIC,144,49,116,8
-    LTEXT           "Введите 'mm' или 'mil' после значения",IDC_STATIC,144,14,116,8
+    DEFPUSHBUTTON   "Готово",IDOK,68,75,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,163,75,50,14
+    LTEXT           "Ширина трасс",IDC_STATIC,18,13,61,8
+    LTEXT           "Размер виа",IDC_STATIC,18,31,60,8
+    LTEXT           "Отверстие виа",IDC_STATIC,18,49,61,8
+    LTEXT           "Исп. '0' для задания по умолчанию",IDC_STATIC,140,32,128,8
+    LTEXT           "Исп. '0' для задания по умолчанию",IDC_STATIC,140,49,128,8
+    LTEXT           "Введите 'mm' или 'mil' после значения",IDC_STATIC,140,14,127,8
 END
 
-IDD_SET_TRACE_WIDTHS DIALOGEX 0, 0, 256, 202
+IDD_SET_TRACE_WIDTHS DIALOGEX 0, 0, 263, 208
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ширины трасс и параметры виа для эл.цепей"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Модифицировать ширину трасс",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,12,79,10
-    CONTROL         "Исп. по умолчанию",IDC_RADIO_REVERT_TRACES,"Button",BS_AUTORADIOBUTTON | WS_GROUP,42,33,77,10
-    CONTROL         "Задать ширину",IDC_RADIO_SET_TRACE_WIDTH,"Button",BS_AUTORADIOBUTTON,42,51,46,10
-    COMBOBOX        IDC_COMBO_WIDTH,95,49,48,122,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Модифицировать размер виа",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,78,71,10
-    CONTROL         "Исп. по умолчанию",IDC_RADIO_REVERT_VIAS,"Button",BS_AUTORADIOBUTTON | WS_GROUP,42,99,77,10
-    RADIOBUTTON     "Установите виа по умолчанию для ширины трассы, указанной выше",IDC_RADIO_DEF,171,115,66,30,BS_PUSHLIKE | BS_MULTILINE
-    CONTROL         "Задать размер виа",IDC_RADIO_SET,"Button",BS_AUTORADIOBUTTON,42,116,61,10
+    CONTROL         "Модифицировать ширину трасс",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,12,132,10
+    CONTROL         "Исп. по умолчанию проекта",IDC_RADIO_REVERT_TRACES,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,30,33,117,10
+    CONTROL         "Задать ширину",IDC_RADIO_SET_TRACE_WIDTH,"Button",BS_AUTORADIOBUTTON,30,51,67,10
+    COMBOBOX        IDC_COMBO_WIDTH,99,50,48,122,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Модифицировать размер виа",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,78,121,10
+    CONTROL         "Исп. по умолчанию проекта",IDC_RADIO_REVERT_VIAS,"Button",BS_AUTORADIOBUTTON | WS_GROUP,31,99,115,10
+    RADIOBUTTON     "По умолчанию ширины трассы, указанной выше",IDC_RADIO_DEF,173,115,78,30,BS_PUSHLIKE | BS_MULTILINE
+    CONTROL         "Задать размер виа",IDC_RADIO_SET,"Button",BS_AUTORADIOBUTTON,31,116,67,10
     EDITTEXT        IDC_EDIT_VIA_W,130,116,34,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_HOLE_W,130,132,34,12,ES_AUTOHSCROLL
-    CONTROL         "Применить к уже разведённым трассам",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,165,114,10
-    DEFPUSHBUTTON   "Готово",IDOK,48,181,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,161,181,50,14
+    CONTROL         "Применить к уже разведённым трассам",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,165,163,10
+    DEFPUSHBUTTON   "Готово",IDOK,63,187,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,146,187,50,14
     LTEXT           "Пад",IDC_STATIC,109,117,13,8
     LTEXT           "Отв.",IDC_STATIC,110,134,14,8
 END
@@ -1263,23 +1269,23 @@ BEGIN
     DEFPUSHBUTTON   "Готово",IDOK,11,205,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,67,205,50,14
     LTEXT           "Вид.",IDC_STATIC,12,15,28,8
-    LTEXT           "Имя механических слоёв",IDC_STATIC,48,15,76,8
+    LTEXT           "Имя механических слоёв",IDC_STATIC,44,15,91,8
     LTEXT           "Цвет",IDC_STATIC,153,15,18,8
     LTEXT           "Ред.",IDC_STATIC,182,15,13,8
-    LTEXT           "Контур платы",IDC_STATIC,44,83,44,8
-    LTEXT           "Шелкогр.верх",IDC_STATIC,44,138,46,8
+    LTEXT           "Контур платы",IDC_STATIC,44,83,60,8
+    LTEXT           "Шелкогр.верх",IDC_STATIC,44,138,63,8
     LTEXT           "Шелкогр.низ",IDC_STATIC,44,149,57,8
-    LTEXT           "Эл.связи",IDC_STATIC,44,127,23,8
+    LTEXT           "Эл.связи",IDC_STATIC,44,127,44,8
     LTEXT           "Медь верх",IDC_STATIC,251,27,38,8
     LTEXT           "Медь низ",IDC_STATIC,251,38,49,8
-    LTEXT           "Внутр. 1",IDC_STATIC,251,49,24,8
-    LTEXT           "Внутр. 2",IDC_STATIC,251,61,24,8
-    LTEXT           "Внутр. 3",IDC_STATIC,251,72,24,8
-    LTEXT           "Внутр. 4",IDC_STATIC,251,83,24,8
-    LTEXT           "Внутр. 5",IDC_STATIC,251,94,24,8
-    LTEXT           "Внутр. 6",IDC_STATIC,251,105,24,8
-    LTEXT           "Перемещение",IDC_STATIC,44,27,30,8
-    LTEXT           "Фон",IDC_STATIC,44,38,38,8
+    LTEXT           "Внутр. 1",IDC_STATIC,251,49,40,8
+    LTEXT           "Внутр. 2",IDC_STATIC,251,61,37,8
+    LTEXT           "Внутр. 3",IDC_STATIC,251,72,50,8
+    LTEXT           "Внутр. 4",IDC_STATIC,251,83,43,8
+    LTEXT           "Внутр. 5",IDC_STATIC,251,94,38,8
+    LTEXT           "Внутр. 6",IDC_STATIC,251,105,42,8
+    LTEXT           "Перемещение",IDC_STATIC,44,27,50,8
+    LTEXT           "Фон доски",IDC_STATIC,44,38,60,8
     GROUPBOX        "",IDC_STATIC,7,20,30,180
     GROUPBOX        "",IDC_STATIC,36,20,110,180
     GROUPBOX        "",IDC_STATIC,145,20,29,180
@@ -1287,27 +1293,27 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,36,9,110,16
     GROUPBOX        "",IDC_STATIC,145,9,29,16
     LTEXT           "Защитная маска низ",IDC_STATIC,44,184,90,8
-    LTEXT           "Видимая сетка",IDC_STATIC,44,49,35,8
+    LTEXT           "Видимая сетка",IDC_STATIC,44,49,56,8
     GROUPBOX        "",IDC_STATIC,173,20,29,180
     GROUPBOX        "",IDC_STATIC,173,9,29,16
-    LTEXT           "Метки ошибок",IDC_STATIC,44,72,33,8
-    LTEXT           "Подсветка",IDC_STATIC,44,60,28,8
-    LTEXT           "Отверстия",IDC_STATIC,43,161,80,8
+    LTEXT           "Метки ошибок",IDC_STATIC,44,72,62,8
+    LTEXT           "Подсветка",IDC_STATIC,44,60,61,8
+    LTEXT           "Отверстия",IDC_STATIC,44,161,80,8
     LTEXT           "Защитная маска верх",IDC_STATIC,44,172,90,8
-    LTEXT           "Внутр. 7",IDC_STATIC,251,117,24,8
-    LTEXT           "Внутр. 8",IDC_STATIC,251,128,24,8
-    LTEXT           "Внутр. 9",IDC_STATIC,251,139,24,8
-    LTEXT           "Внутр. 10",IDC_STATIC,251,150,28,8
-    LTEXT           "Внутр. 11",IDC_STATIC,251,161,28,8
-    LTEXT           "Внутр. 12",IDC_STATIC,251,173,28,8
-    LTEXT           "Внутр. 13",IDC_STATIC,251,184,28,8
-    LTEXT           "Внутр. 14",IDC_STATIC,251,195,28,8
+    LTEXT           "Внутр. 7",IDC_STATIC,251,117,39,8
+    LTEXT           "Внутр. 8",IDC_STATIC,251,128,42,8
+    LTEXT           "Внутр. 9",IDC_STATIC,251,139,38,8
+    LTEXT           "Внутр. 10",IDC_STATIC,251,150,42,8
+    LTEXT           "Внутр. 11",IDC_STATIC,251,161,44,8
+    LTEXT           "Внутр. 12",IDC_STATIC,251,173,43,8
+    LTEXT           "Внутр. 13",IDC_STATIC,251,184,42,8
+    LTEXT           "Внутр. 14",IDC_STATIC,251,195,41,8
     GROUPBOX        "",IDC_STATIC,214,9,30,16
     GROUPBOX        "",IDC_STATIC,243,9,110,16
     GROUPBOX        "",IDC_STATIC,352,9,29,16
     GROUPBOX        "",IDC_STATIC,380,9,29,16
     LTEXT           "Вид.",IDC_STATIC,219,14,28,8
-    LTEXT           "Имя медного слоя",IDC_STATIC,255,14,64,8
+    LTEXT           "Имя медного слоя",IDC_STATIC,252,14,75,8
     LTEXT           "Цвет",IDC_STATIC,360,14,18,8
     LTEXT           "Ред.",IDC_STATIC,389,14,13,8
     GROUPBOX        "",IDC_STATIC,380,20,29,192
@@ -1317,7 +1323,7 @@ BEGIN
     CONTROL         "",IDC_CHECK_LAYER_7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,94,16,8
     LTEXT           "COLOR",IDC_STATIC_LAYER_7,151,94,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_7,182,94,11,9
-    LTEXT           "Скрайбинг (V-cut)",IDC_STATIC,44,94,26,8
+    LTEXT           "Скрайбинг (V-cut)",IDC_STATIC,44,94,73,8
     CONTROL         "",IDC_CHECK_LAYER_8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,105,16,8
     LTEXT           "COLOR",IDC_STATIC_LAYER_8,151,105,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_8,182,105,11,9
@@ -1326,7 +1332,7 @@ BEGIN
     LTEXT           "COLOR",IDC_STATIC_LAYER_9,151,116,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_9,182,116,11,9
     LTEXT           "Заметки низ",IDC_STATIC,44,116,70,8
-    CONTROL         "Системный режим",IDC_CHECK_LAYER_SYS_CLRS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,134,208,71,8
+    CONTROL         "Системный режим",IDC_CHECK_LAYER_SYS_CLRS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,208,76,8
 END
 
 IDD_PARTLIST DIALOGEX 0, 0, 491, 314
@@ -1334,42 +1340,43 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Список деталей"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,92,12,386,276
-    PUSHBUTTON      "Добавить новую деталь",IDC_BUTTON_ADD,12,24,66,14
-    PUSHBUTTON      "Редактировать",IDC_BUTTON_EDIT,16,66,54,12
-    CONTROL         "Футпринт",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,84,45,10
-    CONTROL         "Название",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,97,33,10
-    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE,16,127,54,12
-    PUSHBUTTON      "Название видимо",IDC_BUTTON_VAL_VIS,16,145,54,12
-    PUSHBUTTON      "Название невидимо",IDC_BUTTON_VAL_INVIS,16,163,54,12
-    DEFPUSHBUTTON   "Готово",IDOK,115,294,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,324,294,50,14
-    GROUPBOX        "Для выделенных деталей",IDC_STATIC,6,48,74,138
+    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,112,7,372,300
+    PUSHBUTTON      "Добавить новую деталь",IDC_BUTTON_ADD,8,24,96,14
+    PUSHBUTTON      "Редактировать",IDC_BUTTON_EDIT,13,66,85,12
+    CONTROL         "Футпринт",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,84,57,10
+    CONTROL         "Название",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,97,48,10
+    PUSHBUTTON      "Удалить",IDC_BUTTON_DELETE,14,127,83,12
+    PUSHBUTTON      "Название видимо",IDC_BUTTON_VAL_VIS,14,145,83,12
+    PUSHBUTTON      "Название невидимо",IDC_BUTTON_VAL_INVIS,14,163,83,12
+    DEFPUSHBUTTON   "Готово",IDOK,7,293,47,14
+    PUSHBUTTON      "Отмена",IDCANCEL,59,293,46,14
+    GROUPBOX        "Для выделенных деталей",IDC_STATIC,6,48,97,138
 END
 
-IDD_REF_TEXT DIALOGEX 0, 0, 370, 125
+IDD_REF_TEXT DIALOGEX 0, 0, 406, 126
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Параметры «обозначения»"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_REF_ID,73,15,93,12,ES_AUTOHSCROLL
-    CONTROL         "Видимость",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,52,35,10
-    EDITTEXT        IDC_EDIT_CHAR_HEIGHT,155,71,36,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_REF_TEXT_UNITS,46,71,36,75,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Задать",IDC_RADIO_SET,"Button",BS_AUTORADIOBUTTON | WS_GROUP,196,27,27,10
-    EDITTEXT        IDC_EDIT_WIDTH,234,25,30,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию для этой высоты букв = ",IDC_RADIO_DEF,"Button",BS_AUTORADIOBUTTON,196,41,90,10
-    EDITTEXT        IDC_EDIT_DEF_WIDTH,291,40,41,12,ES_AUTOHSCROLL
+    CONTROL         "Видимость",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,53,66,10
+    EDITTEXT        IDC_EDIT_CHAR_HEIGHT,145,71,36,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_REF_TEXT_UNITS,51,71,36,75,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Задать",IDC_RADIO_SET,"Button",BS_AUTORADIOBUTTON | WS_GROUP,203,27,40,10
+    EDITTEXT        IDC_EDIT_WIDTH,247,26,30,12,ES_AUTOHSCROLL
+    CONTROL         "По умолчанию для этой высоты букв = ",IDC_RADIO_DEF,
+                    "Button",BS_AUTORADIOBUTTON,203,41,146,10
+    EDITTEXT        IDC_EDIT_DEF_WIDTH,351,40,41,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "Готово",IDOK,245,71,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,302,71,50,14
-    LTEXT           "Высота букв",IDC_STATIC,97,72,55,8
-    GROUPBOX        "Толщина пера",IDC_STATIC,184,14,156,44
+    LTEXT           "Высота букв",IDC_STATIC,97,73,45,8
+    GROUPBOX        "Толщина пера",IDC_STATIC,191,14,209,44
     LTEXT           "Обозначение",IDC_STATIC,17,17,48,8
-    LTEXT           "Ед.изм",IDC_STATIC,22,73,17,8
+    LTEXT           "Ед.изм",IDC_STATIC,22,73,23,8
     CONTROL         "Позиция по умолчанию (центр футпринта)",IDC_CHECK_DEF_POS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,38,133,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,38,164,10
     CONTROL         "Не применять эту опцию к тем частям, для которых текущая высота REF равна нулю",IDC_CHECK_REF_NOT_USE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,98,337,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,103,317,10
 END
 
 IDD_IMPORT DIALOGEX 0, 0, 284, 116
@@ -1395,7 +1402,7 @@ BEGIN
     PUSHBUTTON      "Выборать...",IDC_BUTTON_INFILE,240,18,50,14
     EDITTEXT        IDC_EDIT_OUTFILE,24,60,192,14,ES_AUTOHSCROLL
     PUSHBUTTON      "Выборать...",IDC_BUTTON_OUTFILE,240,60,50,14
-    PUSHBUTTON      "Конвертировать",ID_CONVERT,70,252,50,16
+    PUSHBUTTON      "Конвертировать",ID_CONVERT,70,252,77,16
     PUSHBUTTON      "Выйти",IDCANCEL,201,252,50,16
     GROUPBOX        "Путь к входному файлу (Ivex .mod file)",IDC_STATIC,12,6,294,36
     GROUPBOX        "Путь к выходному файлу (ПлатФорм .fpl file)",IDC_STATIC,12,48,294,36
@@ -1416,15 +1423,15 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Генерировать гербера и файлы сверления"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Отверстия",IDC_CHECK_DRILL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,39,10
-    CONTROL         "Контур платы",IDC_CHECK_BD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,27,58,10
+    CONTROL         "Отверстия",IDC_CHECK_DRILL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,61,10
+    CONTROL         "Контур платы",IDC_CHECK_BD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,27,63,10
     CONTROL         "Шёлк верх",IDC_CHECK_TOP_SILK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,36,61,10
     CONTROL         "Шёлк низ",IDC_CHECK_BOTTOM_SILK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,45,71,11
     CONTROL         "Маска верх",IDC_CHECK_TOP_SOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,54,67,11
     CONTROL         "Маска низ",IDC_CHECKBOTTOM_SOLDER_MASK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,64,78,10
-    CONTROL         "Паста верх",IDC_CHECK_TOP_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,73,69,9
+    CONTROL         "Паста верх",IDC_CHECK_TOP_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,74,69,9
     CONTROL         "Паста низ",IDC_CHECK_BOTTOM_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,82,82,11
-    CONTROL         "Медь верх",IDC_CHECK_TOP_COPPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,92,52,8
+    CONTROL         "Медь верх",IDC_CHECK_TOP_COPPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,93,52,8
     CONTROL         "Медь низ",IDC_CHECK_BOTTOM_COPPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,101,63,10
     CONTROL         "Внутр. 1",IDC_CHECK_INNER1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,110,63,10
     CONTROL         "Внутр. 2",IDC_CHECK_INNER2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,119,63,11
@@ -1440,22 +1447,20 @@ BEGIN
     CONTROL         "Внутр. 12",IDC_CHECK_INNER12,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,211,67,11
     CONTROL         "Внутр. 13",IDC_CHECK_INNER13,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,221,67,10
     CONTROL         "Внутр. 14",IDC_CHECK_INNER14,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,230,67,10
-    CONTROL         "Добавить контур платы",IDC_BOARD_OUTLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,73,73,10
-    CONTROL         "Добавить муар",IDC_MOIRES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,85,51,10
-    CONTROL         "Добавить имя слоя",IDC_LAYER_DESC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,97,99,10
-    CONTROL         "Накернить места сверления",IDC_CHECK_CAD_PILOT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,109,120,10
+    CONTROL         "Добавить контур платы",IDC_BOARD_OUTLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,73,132,10
+    CONTROL         "Добавить муар",IDC_MOIRES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,85,81,10
+    CONTROL         "Добавить имя слоя",IDC_LAYER_DESC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,97,128,10
+    CONTROL         "Накернить места сверления",IDC_CHECK_CAD_PILOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,109,120,10
     CONTROL         "Исп. термобарьер для SMT падов",IDC_CHECK_SMT_THERMALS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,121,119,10
-    CONTROL         "Исп. термобарьер для пинов с отв.",IDC_CHECK1,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,133,145,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,121,139,10
+    CONTROL         "Исп. термобарьер для пинов с отв.",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,133,145,10
     CONTROL         "Исп. термобарьер для виа",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,145,101,10
     CONTROL         "Открыть маску для виа",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,157,131,10
     CONTROL         "90° термобарьеры",IDC_CHECK_90,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,169,79,10
-    CONTROL         "Рендеринг всех Герберов в формате PNG",IDC_CHECK_ALL_GERBERS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,181,115,10
+    CONTROL         "Рендеринг Герберов в формате PNG",IDC_CHECK_ALL_GERBERS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,181,141,10
     CONTROL         "Зеркалить нижние слои в файлах PNG",IDC_CHECK_MIRROR_BOTTOM,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,151,210,118,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,210,145,10
     EDITTEXT        IDC_EDIT_N_X,210,243,30,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_N_Y,246,243,30,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_SP_X,210,259,30,12,ES_AUTOHSCROLL
@@ -1473,7 +1478,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_FOLDER,144,38,251,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_FOLDER,405,36,18,14
     PUSHBUTTON      "По умолчанию",IDC_BUTTON_DEF,431,36,34,14
-    PUSHBUTTON      "Создать файлы",ID_GO,307,7,50,14
+    PUSHBUTTON      "Создать файлы",ID_GO,282,7,73,14
     PUSHBUTTON      "Готово",IDC_BUTTON_DONE,365,7,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,423,7,50,14
     GROUPBOX        "Файлы",IDC_STATIC,6,7,120,272
@@ -1481,30 +1486,30 @@ BEGIN
     LTEXT           "Расширить пады под маску",IDC_STATIC,301,131,111,8
     LTEXT           "Ед.изм",IDC_STATIC,435,67,17,8
     LTEXT           "Зазор полигонов на медь",IDC_STATIC,301,99,114,8
-    LTEXT           "Диаметр кёрна",IDC_STATIC,301,147,60,8
-    LTEXT           "Ширина линии термобарьера",IDC_STATIC,300,195,76,8
-    LTEXT           "Мин. толщина линии шёлка",IDC_STATIC,301,163,92,8
+    LTEXT           "Диаметр кёрна",IDC_STATIC,301,147,112,8
+    LTEXT           "Ширина линии термобарьера",IDC_STATIC,301,195,116,8
+    LTEXT           "Мин. толщина линии шёлка",IDC_STATIC,301,163,116,8
     LTEXT           "Зазор полигонов на отв.",IDC_STATIC,301,115,118,8
-    LTEXT           "Ширина колец пинов",IDC_STATIC,301,228,79,8
-    LTEXT           "Ширина колец виа",IDC_STATIC,301,244,79,8
+    LTEXT           "Ширина колец пинов",IDC_STATIC,301,228,115,8
+    LTEXT           "Ширина колец виа",IDC_STATIC,301,244,111,8
     GROUPBOX        "Размеры в файле Gerber",IDC_STATIC,293,61,180,218
     GROUPBOX        "Выходная папка",IDC_STATIC,132,24,341,36
     LTEXT           "Сузить SMT-пады под пасту",IDC_STATIC,301,260,115,8
     GROUPBOX        "Панелизация",IDC_STATIC,132,227,156,52
     LTEXT           "Количество плат",IDC_STATIC,138,244,64,8
-    LTEXT           "Зазор от края до края",IDC_STATIC,138,259,62,8
+    LTEXT           "Зазор край-край",IDC_STATIC,138,259,62,8
     LTEXT           "X",IDC_STATIC,224,233,8,8
     LTEXT           "Y",IDC_STATIC,260,234,8,8
-    LTEXT           "Зазор термобарьера",IDC_STATIC,300,211,59,8
+    LTEXT           "Зазор термобарьера",IDC_STATIC,301,211,119,8
     EDITTEXT        IDC_EDIT_CAD_THERMALCL,424,209,37,12,ES_AUTOHSCROLL
-    LTEXT           "Ширина линии подсветки",IDC_STATIC,301,179,60,8
+    LTEXT           "Ширина линии подсветки",IDC_STATIC,301,179,111,8
     EDITTEXT        IDC_EDIT_CAD_HIGH_W,424,177,37,12,ES_AUTOHSCROLL
-    CONTROL         "Скрайбинг (V-cut)",IDC_CHECK_SCRIBING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,239,64,11
-    CONTROL         "Заметки верх",IDC_CHECK_REFINETOP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,248,53,11
+    CONTROL         "Скрайбинг (V-cut)",IDC_CHECK_SCRIBING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,239,92,11
+    CONTROL         "Заметки верх",IDC_CHECK_REFINETOP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,248,92,11
     CONTROL         "Заметки низ",IDC_CHECK_REFINEBOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,258,64,10
-    LTEXT           "DPI",IDC_STATIC,152,196,16,8
-    LTEXT           "Сглаживание",IDC_STATIC,209,196,40,8
-    EDITTEXT        IDC_EDIT_DPI,172,194,29,12,ES_AUTOHSCROLL
+    LTEXT           "DPI",IDC_STATIC,147,196,16,8
+    LTEXT           "Сглаживание",IDC_STATIC,203,196,48,8
+    EDITTEXT        IDC_EDIT_DPI,165,194,29,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PNG_AA,252,194,29,12,ES_AUTOHSCROLL
     CONTROL         "Слой подсветки",IDC_CHECK_HILITE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,267,64,10
 END
@@ -1526,15 +1531,15 @@ BEGIN
     EDITTEXT        IDC_EDIT_WIZ_NAME,36,10,102,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_WIZ_TYPE,174,10,54,92,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO_WIZ_UNITS,264,10,36,56,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT_WIZ_NPINS,48,40,24,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_WIZ_HPINS,144,40,24,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_PIN1,72,58,114,74,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_WIZ_SHAPE,48,94,102,118,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT_WIZ_HD,270,94,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WIZ_NPINS,68,40,24,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WIZ_HPINS,183,40,24,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_PIN1,92,58,114,74,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_WIZ_SHAPE,52,94,102,118,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_WIZ_HD,292,94,36,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_WIZ_X,60,112,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_WIZ_Y,138,112,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WIZ_Y,140,112,36,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_E,222,112,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_RAD,369,112,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_RAD,365,112,36,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_G1,102,148,36,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_C1,102,162,36,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_Z1,102,176,36,12,ES_AUTOHSCROLL
@@ -1545,31 +1550,31 @@ BEGIN
     PUSHBUTTON      "Выйти",ID_WIZ_BUTTON_EXIT,171,264,50,14
     PUSHBUTTON      "Просмотр",IDC_BUTTON2,341,263,50,14
     LTEXT           "Имя",IDC_STATIC,12,12,19,8
-    LTEXT           "Ед.изм",IDC_STATIC,240,12,17,8
-    GROUPBOX        "Кол-во пинов",IDC_STATIC,12,30,414,48
-    LTEXT           "Полный",IDC_STATIC,24,42,18,8
-    LTEXT           "В горизонтальном ряду",IDC_STATIC,84,42,59,8
-    LTEXT           "В вертикальном ряду",IDC_STATIC,174,42,51,8
-    EDITTEXT        IDC_EDIT_WIZ_VPINS,228,40,24,12,ES_AUTOHSCROLL | ES_READONLY
-    LTEXT           "Позиция пина №1",IDC_STATIC,24,60,43,8
-    GROUPBOX        "Пады",IDC_STATIC,12,84,414,48
-    LTEXT           "Диаметр отв. (пусто или 0 для SMD)",IDC_STATIC,156,96,110,8
-    LTEXT           "Форма",IDC_STATIC,24,96,21,8
+    LTEXT           "Ед.изм",IDC_STATIC,237,12,22,8
+    GROUPBOX        "Кол-во пинов",IDC_STATIC,12,30,413,48
+    CONTROL         "Всего пинов",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,24,42,41,8
+    CONTROL         "В горизонтальном ряду",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,99,42,82,8
+    CONTROL         "В вертикальном ряду",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,217,42,75,8
+    EDITTEXT        IDC_EDIT_WIZ_VPINS,296,40,24,12,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "Позиция пина №1",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,24,60,63,8
+    GROUPBOX        "Пады",IDC_STATIC,12,84,413,48
+    CONTROL         "Диаметр отв. (пусто или 0 для SMD)",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,161,96,127,8
+    LTEXT           "Форма",IDC_STATIC,24,96,26,8
     LTEXT           "Ширина (X)",IDC_STATIC,24,114,31,8
     LTEXT           "Длина (Y)",IDC_STATIC,102,114,34,8
-    LTEXT           "Зазор (E)",IDC_STATIC,180,114,37,8
-    GROUPBOX        "Расстояние между верхними и нижними рядами",IDC_STATIC,12,138,138,55
-    CONTROL         "внутр-внутр (G1)",IDC_RADIO_G1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,150,68,10
-    CONTROL         "центр-центр (C1)",IDC_RADIO_C1,"Button",BS_AUTORADIOBUTTON,24,164,77,10
+    LTEXT           "Зазор (E)",IDC_STATIC,185,114,33,8
+    GROUPBOX        "Расстояние верхний-нижний ряд",IDC_STATIC,12,138,138,55
+    CONTROL         "внутр-внутр (G1)",IDC_RADIO_G1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,150,73,10
+    CONTROL         "центр-центр (C1)",IDC_RADIO_C1,"Button",BS_AUTORADIOBUTTON,24,164,74,10
     CONTROL         "внешн-внешн (Z1)",IDC_RADIO_Z1,"Button",BS_AUTORADIOBUTTON,24,178,70,10
-    GROUPBOX        "Расстояние между левым и правым рядами",IDC_STATIC,12,198,138,54
-    CONTROL         "внутр-внутр (G2)",IDC_RADIO_G2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,210,68,10
-    CONTROL         "центр-центр (C2)",IDC_RADIO_C2,"Button",BS_AUTORADIOBUTTON,24,224,77,10
-    CONTROL         "внешн-внешн (Z2)",IDC_RADIO_Z2,"Button",BS_AUTORADIOBUTTON,24,238,70,10
+    GROUPBOX        "Расстояние левый правый ряд",IDC_STATIC,12,198,138,54
+    CONTROL         "внутр-внутр (G2)",IDC_RADIO_G2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,210,72,10
+    CONTROL         "центр-центр (C2)",IDC_RADIO_C2,"Button",BS_AUTORADIOBUTTON,24,224,74,10
+    CONTROL         "внешн-внешн (Z2)",IDC_RADIO_Z2,"Button",BS_AUTORADIOBUTTON,24,238,76,10
     CONTROL         "",IDC_BMP_QUAD,"Static",SS_BITMAP | SS_REALSIZEIMAGE,159,144,15,13
     LTEXT           "Тип",IDC_STATIC,150,12,17,8
-    CONTROL         "",IDC_STATIC_WIZ_PREVIEW,"Static",SS_ENHMETAFILE | SS_SUNKEN,300,144,126,108
-    LTEXT           "Радиус скругления",IDC_STATIC,270,114,99,8
+    CONTROL         "",IDC_STATIC_WIZ_PREVIEW,"Static",SS_ENHMETAFILE | SS_SUNKEN,298,144,126,108
+    CONTROL         "Радиус скругления",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,293,114,67,8
 END
 
 IDD_SAVE_FOOTPRINT DIALOGEX 0, 0, 463, 174
@@ -1581,23 +1586,23 @@ BEGIN
     EDITTEXT        IDC_EDIT_AUTHOR,54,54,210,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_SOURCE,54,36,166,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_DESC,54,72,210,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_FP_SAVE_FOLDER,42,108,164,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Обзор",IDC_BUTTON_SAVE_FP_BROWSE,216,108,36,12
-    COMBOBOX        IDC_COMBO_LIBS,42,126,210,217,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Готово",IDOK,179,153,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,240,153,50,14
+    EDITTEXT        IDC_EDIT_FP_SAVE_FOLDER,53,108,164,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Обзор",IDC_BUTTON_SAVE_FP_BROWSE,227,108,36,12
+    COMBOBOX        IDC_COMBO_LIBS,53,126,210,217,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Готово",IDOK,172,153,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,233,153,50,14
     CONTROL         "",IDC_PREVIEW2,"Static",SS_ENHMETAFILE | SS_SUNKEN | WS_BORDER,279,21,168,123
     LTEXT           "Имя",IDC_STATIC,12,20,19,8
-    LTEXT           "Файл",IDC_STATIC,12,128,12,8
+    LTEXT           "Файл",IDC_STATIC,23,128,24,8
     LTEXT           "Автор",IDC_STATIC,12,57,23,8
     LTEXT           "Корпус",IDC_STATIC,12,39,33,8
     LTEXT           "Описание",IDC_STATIC,12,75,36,8
     GROUPBOX        "Библиотека",IDC_STATIC,6,96,264,48
-    LTEXT           "Папка",IDC_STATIC,12,109,22,8
+    LTEXT           "Папка",IDC_STATIC,22,110,22,8
     GROUPBOX        "Футпринт",IDC_STATIC,6,6,264,84
     LTEXT           "Просмотр",IDC_STATIC,280,10,26,8
-    LTEXT           "Ед.изм",IDC_STATIC,225,20,17,8
-    LTEXT           "Static",IDC_STATIC_UNITS,245,19,19,11,SS_CENTERIMAGE,WS_EX_CLIENTEDGE
+    LTEXT           "Ед.изм",IDC_STATIC,224,20,23,8
+    LTEXT           "Static",IDC_STATIC_UNITS,249,19,15,11,SS_CENTERIMAGE,WS_EX_CLIENTEDGE
 END
 
 IDD_ADD_PIN DIALOGEX 0, 0, 513, 405
@@ -1605,7 +1610,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Добавить/редактировать пин"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Одиночный пин",IDC_RADIO_ADD_PIN,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,62,46,10
+    CONTROL         "Одиночный пин",IDC_RADIO_ADD_PIN,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,62,73,10
     EDITTEXT        IDC_EDIT_PIN_NAME,63,17,155,12,ES_AUTOHSCROLL
     CONTROL         "Ряд пинов",IDC_RADIO_ADD_ROW,"Button",BS_AUTORADIOBUTTON,24,77,53,10
     EDITTEXT        IDC_EDIT_NUM_PINS,159,45,59,12,ES_AUTOHSCROLL
@@ -1614,8 +1619,8 @@ BEGIN
     EDITTEXT        IDC_EDIT_ROW_SPACING,159,91,59,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_PIN_UNITS,439,50,44,45,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO_SAME_AS_PIN,351,83,143,293,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "SMT",IDC_RADIO_SMT,"Button",BS_AUTORADIOBUTTON | WS_GROUP,260,52,29,10
-    CONTROL         "Под отверстие, диаметр:",IDC_RADIO_TH,"Button",BS_AUTORADIOBUTTON,260,69,91,10
+    CONTROL         "SMT",IDC_RADIO_SMT,"Button",BS_AUTORADIOBUTTON | WS_GROUP,271,52,29,10
+    CONTROL         "С отверстием:",IDC_RADIO_TH,"Button",BS_AUTORADIOBUTTON,270,69,66,10
     EDITTEXT        IDC_EDIT_HOLE_DIAM,351,68,51,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_TOP_PAD_SHAPE,102,133,65,118,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_TOP_PAD_W,180,133,40,12,ES_AUTOHSCROLL
@@ -1629,19 +1634,19 @@ BEGIN
     EDITTEXT        IDC_EDIT_TOP_PAD_W3,180,165,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_TOP_PAD_L3,234,165,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_TOP_PAD_RAD3,288,165,40,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию",IDC_RADIO_1_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,105,183,39,10
-    CONTROL         "Нет",IDC_RADIO_1_2,"Button",BS_AUTORADIOBUTTON,145,183,51,10
-    CONTROL         "Термобарьер",IDC_RADIO_1_3,"Button",BS_AUTORADIOBUTTON,199,183,40,10
-    CONTROL         "Напрямую",IDC_RADIO_1_4,"Button",BS_AUTORADIOBUTTON,242,183,50,10
+    CONTROL         "По умолчанию",IDC_RADIO_1_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,105,183,63,10
+    CONTROL         "Нет",IDC_RADIO_1_2,"Button",BS_AUTORADIOBUTTON,174,183,31,10
+    CONTROL         "Термобарьер",IDC_RADIO_1_3,"Button",BS_AUTORADIOBUTTON,210,183,61,10
+    CONTROL         "Напрямую",IDC_RADIO_1_4,"Button",BS_AUTORADIOBUTTON,279,183,50,10
     COMBOBOX        IDC_COMBO_INNER_PAD_SHAPE,101,225,65,125,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_INNER_PAD_W,179,225,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_INNER_PAD_L,234,225,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_INNER_PAD_RAD,288,225,40,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию",IDC_RADIO_2_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,106,242,39,10
-    CONTROL         "Нет",IDC_RADIO_2_2,"Button",BS_AUTORADIOBUTTON,146,242,51,10
-    CONTROL         "Термобарьер",IDC_RADIO_2_3,"Button",BS_AUTORADIOBUTTON,200,242,40,10
-    CONTROL         "Напрямую",IDC_RADIO_2_4,"Button",BS_AUTORADIOBUTTON,242,243,50,10
-    CONTROL         "Такой же как верхний пад",IDC_CHECK_BOTTOM_SAME_AS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,276,69,10
+    CONTROL         "По умолчанию",IDC_RADIO_2_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,106,242,62,10
+    CONTROL         "Нет",IDC_RADIO_2_2,"Button",BS_AUTORADIOBUTTON,175,242,30,10
+    CONTROL         "Термобарьер",IDC_RADIO_2_3,"Button",BS_AUTORADIOBUTTON,211,242,64,10
+    CONTROL         "Напрямую",IDC_RADIO_2_4,"Button",BS_AUTORADIOBUTTON,279,242,50,10
+    CONTROL         "Такой же как верхний",IDC_CHECK_BOTTOM_SAME_AS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,277,92,10
     COMBOBOX        IDC_COMBO_BOTTOM_PAD_SHAPE,102,292,65,114,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_BOTTOM_PAD_W,180,292,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_BOTTOM_PAD_L,234,292,40,12,ES_AUTOHSCROLL
@@ -1654,73 +1659,73 @@ BEGIN
     EDITTEXT        IDC_EDIT_BOTTOM_PAD_W3,180,324,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_BOTTOM_PAD_L3,234,324,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_BOTTOM_PAD_RAD3,288,324,40,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию",IDC_RADIO_3_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,105,341,39,10
-    CONTROL         "Нет",IDC_RADIO_3_2,"Button",BS_AUTORADIOBUTTON,145,341,51,10
-    CONTROL         "Термобарьер",IDC_RADIO_3_3,"Button",BS_AUTORADIOBUTTON,199,341,40,10
-    CONTROL         "Напрямую",IDC_RADIO_3_4,"Button",BS_AUTORADIOBUTTON,240,342,50,10
-    CONTROL         "Перемещать",IDC_RADIO_DRAG_PIN,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,380,67,10
-    CONTROL         "Задать:",IDC_RADIO_SET_PIN_POS,"Button",BS_AUTORADIOBUTTON,83,380,29,10
-    EDITTEXT        IDC_EDIT_PIN_X,123,377,40,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_PIN_Y,241,377,40,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_X_EDGE,166,377,54,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_Y_EDGE,284,377,54,55,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Готово",IDOK,351,375,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,409,375,50,14
+    CONTROL         "По умолчанию",IDC_RADIO_3_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,105,341,63,10
+    CONTROL         "Нет",IDC_RADIO_3_2,"Button",BS_AUTORADIOBUTTON,174,341,30,10
+    CONTROL         "Термобарьер",IDC_RADIO_3_3,"Button",BS_AUTORADIOBUTTON,210,341,60,10
+    CONTROL         "Напрямую",IDC_RADIO_3_4,"Button",BS_AUTORADIOBUTTON,277,341,50,10
+    CONTROL         "Перемещать",IDC_RADIO_DRAG_PIN,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,379,55,10
+    CONTROL         "Задать:",IDC_RADIO_SET_PIN_POS,"Button",BS_AUTORADIOBUTTON,82,379,40,10
+    EDITTEXT        IDC_EDIT_PIN_X,136,378,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PIN_Y,243,378,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_X_EDGE,179,378,46,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_Y_EDGE,286,378,45,55,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Готово",IDOK,373,377,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,431,377,50,14
     LISTBOX         IDC_LIST_PINS,362,127,134,221,LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Имя пина",IDC_STATIC,26,19,36,8
     GROUPBOX        "Добавить пин(ы)",IDC_STATIC,7,36,222,72
     GROUPBOX        "Позиция",IDC_STATIC,6,367,336,30
     GROUPBOX        "Ед.изм",IDC_STATIC,431,37,63,32
-    LTEXT           "Форма",IDC_STATIC,122,215,21,8
-    LTEXT           "X",IDC_STATIC,115,380,8,8
-    LTEXT           "Y",IDC_STATIC,233,380,8,8
+    LTEXT           "Форма",IDC_STATIC,122,215,32,8
+    LTEXT           "X",IDC_STATIC,128,381,8,8
+    LTEXT           "Y",IDC_STATIC,235,381,8,8
     GROUPBOX        "Медь и маска верхнего слоя",IDC_STATIC,7,112,336,87
     GROUPBOX        "Внутренний медный пад -- форма ""none"" рекомендована -- см. руководство",IDC_STATIC,7,204,335,54
     LTEXT           "Длина",IDC_STATIC,242,215,23,8
-    LTEXT           "Форма",IDC_STATIC,120,281,21,8
+    LTEXT           "Форма",IDC_STATIC,120,281,31,8
     LTEXT           "Длина",IDC_STATIC,242,281,23,8
-    LTEXT           "Ширина",IDC_STATIC,190,281,20,8
-    LTEXT           "Кол-во пинов",IDC_STATIC,106,47,48,8
-    LTEXT           "Ориентация",IDC_STATIC,118,78,36,8
-    LTEXT           "Шаг",IDC_STATIC,128,93,25,8
-    LTEXT           "Ширина",IDC_STATIC,190,215,20,8
-    LTEXT           "Радиус скругления",IDC_STATIC,285,124,53,8
-    LTEXT           "Радиус скругления",IDC_STATIC,285,215,51,8
-    LTEXT           "Радиус скругления",IDC_STATIC,285,281,64,8
+    LTEXT           "Ширина",IDC_STATIC,187,281,30,8
+    LTEXT           "Кол-во пинов",IDC_STATIC,107,47,48,8
+    LTEXT           "Ориентация",IDC_STATIC,112,78,44,8
+    LTEXT           "Шаг пинов",IDC_STATIC,116,93,36,8
+    LTEXT           "Ширина",IDC_STATIC,187,215,29,8
+    LTEXT           "Радиус",IDC_STATIC,297,124,29,8
+    LTEXT           "Радиус",IDC_STATIC,297,215,32,8
+    LTEXT           "Радиус",IDC_STATIC,297,281,30,8
     GROUPBOX        "Также применить к пинам",IDC_STATIC,352,112,154,246
-    LTEXT           "Инкремент",IDC_STATIC,121,62,32,8
-    LTEXT           "Медный пад",IDC_STATIC,57,295,38,8
+    LTEXT           "Инкремент",IDC_STATIC,117,62,39,8
+    LTEXT           "Медный пад",IDC_STATIC,53,295,46,8
     LTEXT           "Медный пад",IDC_STATIC,57,227,38,8
-    LTEXT           "Медный пад",IDC_STATIC,57,135,38,8
-    LTEXT           "Форма",IDC_STATIC,120,124,21,8
+    LTEXT           "Медный пад",IDC_STATIC,53,135,45,8
+    LTEXT           "Форма",IDC_STATIC,120,123,33,8
     LTEXT           "Длина",IDC_STATIC,242,124,23,8
-    LTEXT           "Ширина",IDC_STATIC,190,124,20,8
-    LTEXT           "Вырез защитной маски",IDC_STATIC,33,151,67,8
+    LTEXT           "Ширина",IDC_STATIC,187,124,30,8
+    LTEXT           "Вырез защитной маски",IDC_STATIC,17,151,80,8
     LTEXT           "Пад в слое пасты",IDC_STATIC,36,166,60,8
-    LTEXT           "Вырез защитной маски",IDC_STATIC,33,309,66,8
+    LTEXT           "Вырез защитной маски",IDC_STATIC,17,310,80,8
     LTEXT           "Пад в слое пасты",IDC_STATIC,36,325,60,8
-    LTEXT           "Тип контакта с медным полигоном",IDC_STATIC,22,341,78,8
+    LTEXT           "Тип контакта с полигоном",IDC_STATIC,10,341,91,8
     LTEXT           "Тип контакта с медным полигоном",IDC_STATIC,23,242,78,8
-    LTEXT           "Тип контакта с медным полигоном",IDC_STATIC,23,183,78,8
+    LTEXT           "Тип контакта с полигоном",IDC_STATIC,11,183,90,8
     GROUPBOX        "Медь и маска нижнего слоя",IDC_STATIC,7,265,335,93
     LTEXT           "Описание пина",IDC_STATIC,230,19,54,8
     EDITTEXT        IDC_EDIT_PIN_DESCRIPTION,287,17,208,12,ES_AUTOHSCROLL
-    CONTROL         "Такой же как пин:",IDC_RADIO_SAME_AS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,260,85,57,10
+    CONTROL         "Такой же как пин:",IDC_RADIO_SAME_AS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,270,85,77,10
 END
 
-IDD_ADD_POLY DIALOGEX 0, 0, 179, 73
+IDD_ADD_POLY DIALOGEX 0, 0, 202, 74
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Добавить/редактировать полилинию"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Открытая",IDC_RADIO_OPEN,"Button",BS_AUTORADIOBUTTON,17,11,33,10
-    CONTROL         "Закрытая (т.е. полигон)",IDC_RADIO_CLOSED,"Button",BS_AUTORADIOBUTTON,66,11,83,10
-    EDITTEXT        IDC_EDIT_WIDTH,54,30,40,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_ADD_POLY_UNITS,120,30,36,60,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Открытая",IDC_RADIO_OPEN,"Button",BS_AUTORADIOBUTTON,17,11,45,10
+    CONTROL         "Закрытая (т.е. полигон)",IDC_RADIO_CLOSED,"Button",BS_AUTORADIOBUTTON,93,11,95,10
+    EDITTEXT        IDC_EDIT_WIDTH,73,30,41,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_ADD_POLY_UNITS,148,30,36,60,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,18,54,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,108,54,50,14
-    LTEXT           "Толщина пера",IDC_STATIC,18,32,33,8
-    LTEXT           "Ед.изм",IDC_STATIC,102,32,17,8
+    PUSHBUTTON      "Отмена",IDCANCEL,134,54,50,14
+    LTEXT           "Толщина пера",IDC_STATIC,18,32,51,8
+    LTEXT           "Ед.изм",IDC_STATIC,122,32,24,8
 END
 
 IDD_IMPORT_FOOTPRINT DIALOGEX 0, 0, 365, 302
@@ -1728,13 +1733,13 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Импортировать футпринт из библиотечного файла"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_LIB_FOLDER,66,12,181,12,ES_AUTOHSCROLL | ES_READONLY
-    PUSHBUTTON      "Обзор...",IDC_BUTTON_BROWSE_LIB_FOLDER,256,12,42,12
-    CONTROL         "",IDC_PART_LIB_TREE,"SysTreeView32",WS_BORDER | WS_TABSTOP,12,36,156,186
+    EDITTEXT        IDC_EDIT_LIB_FOLDER,81,12,219,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Обзор...",IDC_BUTTON_BROWSE_LIB_FOLDER,309,12,42,12
+    CONTROL         "",IDC_PART_LIB_TREE,"SysTreeView32",WS_BORDER | WS_HSCROLL | WS_TABSTOP,12,36,156,186
     DEFPUSHBUTTON   "Готово",IDOK,66,282,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,246,282,50,14
     CONTROL         "",IDC_PREVIEW,"Static",SS_ENHMETAFILE | WS_BORDER,180,36,180,186,WS_EX_CLIENTEDGE
-    LTEXT           "Папка библиотек:",IDC_STATIC,12,13,48,8
+    LTEXT           "Папка библиотек:",IDC_STATIC,12,13,61,8
     LTEXT           "Автор",IDC_STATIC,18,231,23,8
     LTEXT           "Корпус",IDC_STATIC,18,248,23,8
     LTEXT           "Описание",IDC_STATIC,18,266,36,8
@@ -1743,34 +1748,35 @@ BEGIN
     EDITTEXT        IDC_EDIT_IMPORT_DESC,60,264,300,12,ES_AUTOHSCROLL | ES_READONLY
 END
 
-IDD_SET_AREA_HATCH DIALOGEX 0, 0, 124, 47
+IDD_SET_AREA_HATCH DIALOGEX 0, 0, 180, 48
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Задать тип полигона"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Призрак",IDC_RADIO_HATCH_NONE,"Button",BS_AUTORADIOBUTTON,6,6,33,10
-    CONTROL         "G36",IDC_RADIO_HATCH_EDGE,"Button",BS_AUTORADIOBUTTON,48,7,32,10
-    CONTROL         "Заливка",IDC_RADIO_HATCH_FULL,"Button",BS_AUTORADIOBUTTON,90,7,27,10
-    DEFPUSHBUTTON   "Готово",IDOK,6,24,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,66,24,50,14
+    CONTROL         "Призрак",IDC_RADIO_HATCH_NONE,"Button",BS_AUTORADIOBUTTON,10,7,46,10
+    CONTROL         "G36",IDC_RADIO_HATCH_EDGE,"Button",BS_AUTORADIOBUTTON,68,7,32,10
+    CONTROL         "Заливка",IDC_RADIO_HATCH_FULL,"Button",BS_AUTORADIOBUTTON,117,7,48,10
+    DEFPUSHBUTTON   "Готово",IDOK,31,26,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,91,26,50,14
 END
 
-IDD_FP_REF_TEXT DIALOGEX 0, 0, 165, 97
+IDD_FP_REF_TEXT DIALOGEX 0, 0, 191, 98
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Параметры «обозначения»"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_FP_REF_CHAR_HEIGHT,62,8,30,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_FP_REF_TEXT_UNITS,123,7,36,75,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Задать",IDC_RADIO_FP_REF_SET,"Button",BS_AUTORADIOBUTTON | WS_GROUP,19,40,27,10
-    EDITTEXT        IDC_EDIT_FP_REF_WIDTH,47,38,30,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию для высоты букв = ",IDC_RADIO_FP_REF_DEF,"Button",BS_AUTORADIOBUTTON,19,53,95,10
-    EDITTEXT        IDC_EDIT_FP_REF_DEF_WIDTH,116,52,30,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_FP_REF_TEXT_UNITS,145,8,36,75,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Задать",IDC_RADIO_FP_REF_SET,"Button",BS_AUTORADIOBUTTON | WS_GROUP,19,40,38,10
+    EDITTEXT        IDC_EDIT_FP_REF_WIDTH,61,39,30,12,ES_AUTOHSCROLL
+    CONTROL         "По умолчанию для высоты букв = ",IDC_RADIO_FP_REF_DEF,
+                    "Button",BS_AUTORADIOBUTTON,19,53,129,10
+    EDITTEXT        IDC_EDIT_FP_REF_DEF_WIDTH,150,52,30,12,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "Готово",IDOK,19,79,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,104,79,50,14
-    LTEXT           "Высота букв",-1,4,10,55,8
-    GROUPBOX        "Толщина пера",-1,4,28,155,42
-    LTEXT           "Ед.изм",-1,104,10,17,8
+    LTEXT           "Высота букв",-1,11,10,46,8
+    GROUPBOX        "Толщина пера",-1,4,28,181,42
+    LTEXT           "Ед.изм",-1,114,10,24,8
 END
 
 IDD_LIB_MANAGER DIALOGEX 0, 0, 413, 123
@@ -1778,71 +1784,71 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Сделать PDF из библиотечного файла"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_MGR_FOLDER,63,11,289,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MGR_FOLDER,85,11,267,12,ES_AUTOHSCROLL
     PUSHBUTTON      "Обзор...",IDC_BUTTON_MGR_BROWSE,363,11,35,12
-    COMBOBOX        IDC_COMBO_MGR_FILE,63,30,335,216,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_PAGE_SIZE,60,72,120,72,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_UNITS,60,90,120,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Сделать PDF файл",IDC_BUTTON_MAKE_PDF,267,99,50,15
+    COMBOBOX        IDC_COMBO_MGR_FILE,85,30,313,216,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_PAGE_SIZE,86,72,94,72,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_UNITS,87,90,93,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Сделать PDF файл",IDC_BUTTON_MAKE_PDF,236,99,88,15
     PUSHBUTTON      "Выйти",IDCANCEL,348,99,50,14
-    LTEXT           "Папка библиотек",IDC_STATIC,12,11,45,8
-    LTEXT           "Библиотечный файл",IDC_STATIC,12,32,36,8
-    LTEXT           "Размер страницы",IDC_STATIC,18,74,31,8
+    LTEXT           "Папка библиотек",IDC_STATIC,12,12,67,8
+    LTEXT           "Библиотечный файл",IDC_STATIC,12,32,72,8
+    LTEXT           "Размер страницы",IDC_STATIC,18,75,64,8
     GROUPBOX        "Опции",IDC_STATIC,6,54,197,60
-    LTEXT           "Ед.изм",IDC_STATIC,18,91,17,8
+    LTEXT           "Ед.изм",IDC_STATIC,18,91,25,8
 END
 
-IDD_DUP_FP_NAME DIALOGEX 0, 0, 206, 161
+IDD_DUP_FP_NAME DIALOGEX 0, 0, 268, 162
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Дублирование имени футпринта(!)"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Заменить футпринт для всех деталей",IDC_RADIO_REPLACE_ALL,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,78,108,10
-    CONTROL         "замените футпринт только для этой детали, используя новое имя",IDC_RADIO_REPLACE_THIS,
-                    "Button",BS_AUTORADIOBUTTON,12,96,181,10
-    EDITTEXT        IDC_EDIT_NEW_FP_NAME,48,108,114,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Готово",IDOK,36,138,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,120,138,50,14
-    EDITTEXT        IDC_EDIT_DUP_MESSAGE,12,12,180,48,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
-    GROUPBOX        "Выберите действие",IDC_STATIC,6,66,192,66
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,82,163,10
+    CONTROL         "заменить футпринт только для этой детали, используя новое имя",IDC_RADIO_REPLACE_THIS,
+                    "Button",BS_AUTORADIOBUTTON,12,97,238,10
+    EDITTEXT        IDC_EDIT_NEW_FP_NAME,49,111,156,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Готово",IDOK,49,138,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,156,138,50,14
+    EDITTEXT        IDC_EDIT_DUP_MESSAGE,13,12,237,48,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
+    GROUPBOX        "Выберите действие",IDC_STATIC,7,66,250,66
 END
 
-IDD_DRC DIALOGEX 0, 0, 164, 282
+IDD_DRC DIALOGEX 0, 0, 186, 283
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Правила дизайна"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Показать неразведённые связи как ошибки",IDC_CHECK_SHOW_UNROUTED,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,9,135,10
-    COMBOBOX        IDC_COMBO1,114,39,36,48,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT14,114,58,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT1,114,76,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT7,114,94,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT6,114,111,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT5,114,130,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT8,114,148,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT4,114,166,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT9,114,183,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT2,114,202,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT11,114,220,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT10,114,238,36,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Тестировать",IDC_BUTTON1,16,262,33,14
-    PUSHBUTTON      "Готово",IDOK,70,262,31,14
-    PUSHBUTTON      "Отмена",IDCANCEL,121,262,27,14
-    LTEXT           "пад - пад",IDC_STATIC,12,79,36,8
-    LTEXT           "пад - трасса",IDC_STATIC,12,97,40,8
-    LTEXT           "трасса - трасса",IDC_STATIC,12,114,45,8
-    LTEXT           "отв. - медь",IDC_STATIC,12,132,64,8
-    LTEXT           "ширина колец пинов",IDC_STATIC,12,169,59,8
-    LTEXT           "контур платы - медь",IDC_STATIC,12,204,84,8
-    LTEXT           "Ед.изм",IDC_STATIC,90,42,17,8
-    GROUPBOX        "Минимальные разрешённые зазоры",IDC_STATIC,6,28,152,227
-    LTEXT           "отв. - отв.",IDC_STATIC,12,151,38,8
-    LTEXT           "ширина колец виа",IDC_STATIC,12,186,59,8
-    LTEXT           "медный полигон - медь",IDC_STATIC,12,239,89,8
-    LTEXT           "контур платы - отв.",IDC_STATIC,12,223,62,8
-    LTEXT           "ширина трассы",IDC_STATIC,12,60,37,8
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,9,163,10
+    COMBOBOX        IDC_COMBO1,124,39,36,48,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT14,124,58,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT1,124,76,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT7,124,94,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT6,124,111,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,124,130,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT8,124,148,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,124,166,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT9,124,183,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,124,202,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT11,124,220,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT10,124,238,36,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Тестировать",IDC_BUTTON1,17,262,61,14
+    PUSHBUTTON      "Готово",IDOK,87,262,35,14
+    PUSHBUTTON      "Отмена",IDCANCEL,130,262,36,14
+    LTEXT           "пад - пад",IDC_STATIC,22,79,36,8
+    LTEXT           "пад - трасса",IDC_STATIC,22,97,61,8
+    LTEXT           "трасса - трасса",IDC_STATIC,22,114,70,8
+    LTEXT           "отверстия - медь",IDC_STATIC,22,132,85,8
+    LTEXT           "ширина колец пинов",IDC_STATIC,22,169,84,8
+    LTEXT           "контур платы - медь",IDC_STATIC,22,204,94,8
+    LTEXT           "Ед.изм",IDC_STATIC,100,42,17,8
+    GROUPBOX        "Минимальные разрешённые зазоры",IDC_STATIC,16,28,152,227
+    LTEXT           "отверстия - отверстия",IDC_STATIC,22,151,93,8
+    LTEXT           "ширина колец виа",IDC_STATIC,22,186,88,8
+    LTEXT           "медный полигон - медь",IDC_STATIC,22,239,94,8
+    LTEXT           "контур платы - отверстия",IDC_STATIC,22,223,88,8
+    LTEXT           "ширина трассы",IDC_STATIC,22,60,81,8
 END
 
 IDD_CROP DIALOGEX 0, 0, 356, 236
@@ -1850,10 +1856,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Применить зазоры к полигону"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_COMBO_NET_SEL,257,69,84,234,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_NET_SEL,265,69,76,234,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,32,208,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,85,208,50,14
-    CONTROL         "Ручной выбор эл.цепи",IDC_CHECK_NET_SEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,70,81,10
+    CONTROL         "Ручной выбор эл.цепи",IDC_CHECK_NET_SEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,70,91,10
     EDITTEXT        IDC_EDIT_W,294,85,47,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_CLR_PADS,294,99,47,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_CLR_SEGS,294,113,47,12,ES_AUTOHSCROLL
@@ -1865,25 +1871,26 @@ BEGIN
     CONTROL         "Принудительно с термобарьером",IDC_CHECK_ADD_THRML,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,202,124,10
     CONTROL         "Принудительно без термобарьеров",IDC_CHECK_NO_THRML,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,216,117,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,216,140,10
     CONTROL         "Стиль восьмиугольника для круглых форм.",IDC_CHECK_OCTAGON,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,56,131,10
-    CONTROL         "Задать толщину пера",IDC_CHECK_WID,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,86,84,10
-    CONTROL         "Сделать зазор для падов",IDC_CHECK_PADS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,100,94,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,56,169,10
+    CONTROL         "Задать толщину пера",IDC_CHECK_WID,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,86,101,10
+    CONTROL         "Сделать зазор для падов",IDC_CHECK_PADS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,100,110,10
     CONTROL         "Сделать зазор для трасс",IDC_CHECK_SEGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,115,99,10
-    CONTROL         "Сделать зазор для полигонов",IDC_CHECK_AREAS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,130,97,10
-    CONTROL         "Сделать зазор для отверстий",IDC_CHECK_HOLES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,144,95,10
-    CONTROL         "Сделать зазор для текстов",IDC_CHECK_TEXTS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,158,95,10
-    CONTROL         "Сделать зазор для контура",IDC_CHECK_BOARD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,173,97,10
+    CONTROL         "Сделать зазор для полигонов",IDC_CHECK_AREAS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,130,114,10
+    CONTROL         "Сделать зазор для отверстий",IDC_CHECK_HOLES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,144,116,10
+    CONTROL         "Сделать зазор для текстов",IDC_CHECK_TEXTS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,158,110,10
+    CONTROL         "Сделать зазор контура платы",IDC_CHECK_BOARD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,173,118,10
     CONTROL         "Сделать зазор для v-cut",IDC_CHECK_POLYLINES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,187,106,10
-    CONTROL         "Как будто всё в одном слое",IDC_CHECK_ANY_LAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,41,103,10
-    CONTROL         "Удалить неподключённые островки",IDC_CHECK_DEL_ISLAND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,27,109,10
+    CONTROL         "Как будто всё в одном слое",IDC_CHECK_ANY_LAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,41,130,10
+    CONTROL         "Удалить неподключённые островки",IDC_CHECK_DEL_ISLAND,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,27,158,10
     EDITTEXT        IDC_CLR_THERMAL,294,200,47,12,ES_AUTOHSCROLL
-    CONTROL         "Удалить предыдущую заливку",IDC_CHECK_ADD_NEW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,12,80,10
+    CONTROL         "Удалить предыдущую заливку",IDC_CHECK_ADD_NEW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,12,135,10
     COMBOBOX        IDC_COMBO_SETTINGS,17,27,130,234,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Сохранить",IDC_BUTTON_SAVE,120,101,27,12
-    PUSHBUTTON      "Удалить выбранную настройку",IDC_BUTTON_DELETE_SETTING,17,57,86,12
-    EDITTEXT        IDC_EDIT_NEW_NAME,17,101,101,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Сохранить",IDC_BUTTON_SAVE,112,101,41,12
+    PUSHBUTTON      "Удалить выбранную настройку",IDC_BUTTON_DELETE_SETTING,17,57,130,12
+    EDITTEXT        IDC_EDIT_NEW_NAME,17,101,93,12,ES_AUTOHSCROLL
     GROUPBOX        "Выбрать ранее сохраненную настройку",IDC_STATIC,9,13,149,65
     GROUPBOX        "Сохранить текущую настройку",IDC_STATIC,9,82,149,43
 END
@@ -1908,89 +1915,91 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Опции импорта"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Импорт",IDOK,30,284,50,14
-    PUSHBUTTON      "Сохранить проект с этими настройками, затем импортировать",ID_SAVE_AND_IMPORT,90,284,150,14
-    PUSHBUTTON      "Отмена",IDCANCEL,252,284,50,14
-    LTEXT           "Вы импортируете файл списка соединений в проект, который уже содержит детали и/или цепи",IDC_STATIC,6,6,268,8
-    GROUPBOX        "Для частей проекта, которых нет в файле списка соединений",IDC_STATIC,6,24,314,54
-    CONTROL         "Удалить детали",IDC_RADIO_REMOVE_PARTS,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,36,61,10
+    DEFPUSHBUTTON   "Импорт",IDOK,12,284,39,14
+    PUSHBUTTON      "Сохранить проект с этими настройками, затем импортировать",ID_SAVE_AND_IMPORT,55,284,225,14
+    PUSHBUTTON      "Отмена",IDCANCEL,284,284,37,14
+    LTEXT           "Вы импортируете файл списка эл.цепей в проект, который уже содержит детали и/или цепи",IDC_STATIC,6,6,323,8
+    GROUPBOX        "Для деталей проекта, которых нет в импортируемом файле",IDC_STATIC,6,24,314,54
+    CONTROL         "Удалить детали",IDC_RADIO_REMOVE_PARTS,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,36,87,10
     CONTROL         "Сохранить детали, но удалить соединения с эл.цепями",IDC_RADIO_KEEP_PARTS_NO_CONNECTIONS,
-                    "Button",BS_AUTORADIOBUTTON,12,49,154,10
+                    "Button",BS_AUTORADIOBUTTON,12,49,209,10
     CONTROL         "Оставить детали и соединения в эл.цепях",IDC_RADIO_KEEP_PARTS_AND_CONNECTIONS,
-                    "Button",BS_AUTORADIOBUTTON,12,62,129,10
-    GROUPBOX        "Для деталей в проекте, чей корпус или футпринт не соответствуют файлу списка соединений",IDC_STATIC,6,84,314,55
-    CONTROL         "Изменить футпринты в соответствии с файлом списка соединений",IDC_RADIO4,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,96,160,10
-    CONTROL         "Изменить футпринт, пакет которого не соответствует файлу списка соединений",IDC_RADIO5,
-                    "Button",BS_AUTORADIOBUTTON,12,109,209,10
-    CONTROL         "Оставить футпринты",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,12,122,83,10
+                    "Button",BS_AUTORADIOBUTTON,12,62,200,10
+    GROUPBOX        "Для деталей в проекте, чей корпус или футпринт не соответствуют файлу",IDC_STATIC,6,84,314,55
+    CONTROL         "Изменить футпринты в соответствии с файлом",IDC_RADIO4,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,12,96,277,10
+    CONTROL         "Изменить футпринт, корпус которого не соответствует файлу",IDC_RADIO5,
+                    "Button",BS_AUTORADIOBUTTON,12,109,274,10
+    CONTROL         "Оставить футпринты",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,12,122,186,10
     GROUPBOX        "Для эл.цепей в проекте перед импортом",IDC_STATIC,6,145,314,56
-    CONTROL         "Удалить все эл.цепи, которых нет в файле списка соединений",IDC_REMOVE_NOT_NL,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,158,154,10
-    CONTROL         "Полный контроль цепей пинов на деталях, присутствующих в файле списка соединений.",IDC_REMOVE_OLD_NET,
+    CONTROL         "Удалить все эл.цепи, которых нет в файле",IDC_REMOVE_NOT_NL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,158,207,10
+    CONTROL         "Полный контроль цепей пинов на деталях, присутствующих в файле",IDC_REMOVE_OLD_NET,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,171,282,10
-    CONTROL         "Переименовать цепи формата NETxxxxx, если имена совпадают.",IDC_RENAME_SAME,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,184,211,10
-    GROUPBOX        "Для трасс и полигонов, подключенных к пинам, цепи которых изменились.",IDC_STATIC,6,208,314,54
-    CONTROL         "Сохранить трассы",IDC_CHECK_KEEP_TRACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,220,59,10
-    CONTROL         "Сохранить обрубки",IDC_CHECK_KEEP_STUBS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,232,56,10
-    CONTROL         "Сохранить полигоны, если это возможно",IDC_CHECK_KEEP_AREAS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,244,90,10
-    CONTROL         "Перезагрузить библиотеку футпринтов",IDC_RELOAD_LIB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,268,90,10
+    CONTROL         "Переименовать цепи формата NETxxxxx, если имена совпадают",IDC_RENAME_SAME,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,184,252,10
+    GROUPBOX        "Для трасс и полигонов, подключенных к пинам, цепи которых изменились",IDC_STATIC,6,208,314,54
+    CONTROL         "Сохранить трассы",IDC_CHECK_KEEP_TRACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,220,168,10
+    CONTROL         "Сохранить обрубки",IDC_CHECK_KEEP_STUBS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,232,164,10
+    CONTROL         "Сохранить полигоны, если это возможно",IDC_CHECK_KEEP_AREAS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,244,183,10
+    CONTROL         "Перезагрузить библиотеку футпринтов",IDC_RELOAD_LIB,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,268,173,10
 END
 
-IDD_ADD_MASK_CUTOUT DIALOGEX 0, 0, 172, 95
+IDD_ADD_MASK_CUTOUT DIALOGEX 0, 0, 172, 124
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Добавить/редактировать линии механических слоёв"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_COMBO1,44,12,118,95,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Нет",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,42,33,10
-    CONTROL         "Краевая",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,66,42,32,10
-    CONTROL         "Полная",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,120,42,27,10
-    DEFPUSHBUTTON   "Готово",IDOK,36,72,42,14
-    PUSHBUTTON      "Отмена",IDCANCEL,102,72,42,14
+    COMBOBOX        IDC_COMBO1,37,12,118,95,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Нет",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,53,44,33,10
+    CONTROL         "Краевая",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,53,58,68,10
+    CONTROL         "Полная",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,53,72,53,10
+    DEFPUSHBUTTON   "Готово",IDOK,32,101,42,14
+    PUSHBUTTON      "Отмена",IDCANCEL,98,101,42,14
     LTEXT           "Слой",IDC_STATIC,13,14,19,8
-    GROUPBOX        "Стиль штриховки",IDC_STATIC,6,30,156,30
+    GROUPBOX        "Стиль штриховки",IDC_STATIC,18,30,137,62
 END
 
-IDD_CHANGE_LAYER DIALOGEX 0, 0, 186, 113
+IDD_CHANGE_LAYER DIALOGEX 0, 0, 171, 114
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Изменить слой"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_COMBO1,60,12,108,174,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "этому сегменту",IDC_RADIO_SEGMENT,"Button",BS_AUTORADIOBUTTON,18,42,57,10
-    CONTROL         "этой трассе",IDC_RADIO_TRACE,"Button",BS_AUTORADIOBUTTON,18,54,46,10
-    CONTROL         "этой эл.цепи",IDC_RADIO_NET,"Button",BS_AUTORADIOBUTTON,18,66,40,10
-    DEFPUSHBUTTON   "Готово",IDOK,24,93,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,108,93,50,14
-    LTEXT           "Новый слой",IDC_STATIC,14,14,33,8
-    GROUPBOX        "Применить к...",IDC_STATIC,12,30,156,54
+    COMBOBOX        IDC_COMBO1,63,12,94,174,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "этому сегменту",IDC_RADIO_SEGMENT,"Button",BS_AUTORADIOBUTTON,63,44,81,10
+    CONTROL         "этой трассе",IDC_RADIO_TRACE,"Button",BS_AUTORADIOBUTTON,63,56,73,10
+    CONTROL         "этой эл.цепи",IDC_RADIO_NET,"Button",BS_AUTORADIOBUTTON,63,68,70,10
+    DEFPUSHBUTTON   "Готово",IDOK,23,93,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,94,93,50,14
+    LTEXT           "Новый слой",IDC_STATIC,14,14,44,8
+    GROUPBOX        "Применить к...",IDC_STATIC,12,30,145,54
 END
 
-IDD_MOVE_ORIGIN DIALOGEX 0, 0, 164, 95
+IDD_MOVE_ORIGIN DIALOGEX 0, 0, 186, 96
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Изменить начало координат"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Перемещать",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,12,82,10
-    CONTROL         "Задать позицию",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,12,30,53,10
-    COMBOBOX        IDC_COMBO1,102,29,41,59,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT1,36,49,40,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT2,102,49,40,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Готово",IDOK,18,72,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,96,72,50,14
-    LTEXT           "Ед.изм",IDC_STATIC,78,31,17,8
-    LTEXT           "X",IDC_STATIC,24,51,8,8
-    LTEXT           "Y",IDC_STATIC,90,51,8,8
+    CONTROL         "Задать позицию",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,12,31,73,10
+    COMBOBOX        IDC_COMBO1,131,11,41,59,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT1,38,49,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,106,49,40,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Готово",IDOK,33,72,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,102,72,50,14
+    LTEXT           "Ед.изм",IDC_STATIC,103,13,23,8
+    LTEXT           "X",IDC_STATIC,26,51,8,8
+    LTEXT           "Y",IDC_STATIC,94,51,8,8
 END
 
-IDD_SHORTCUTS DIALOGEX 0, 0, 333, 284
+IDD_SHORTCUTS DIALOGEX 0, 0, 461, 279
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Горячие клавиши"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Отмена",IDCANCEL,215,15,50,12,NOT WS_VISIBLE
+    PUSHBUTTON      "Отмена",IDCANCEL,405,7,50,12,NOT WS_VISIBLE
     LTEXT           "space",IDC_STATIC,20,6,20,8
     LTEXT           "PgUp",IDC_STATIC,20,18,18,8
     LTEXT           "PgDn",IDC_STATIC,20,30,18,8
@@ -2001,39 +2010,52 @@ BEGIN
     LTEXT           "n",IDC_STATIC,20,102,8,8
     LTEXT           "s",IDC_STATIC,20,114,8,8
     LTEXT           "SHIFT",IDC_STATIC,20,186,20,8
-    LTEXT           "- центрировать курсор",IDC_STATIC,55,6,92,8
-    LTEXT           "- центрировать курсор и увеличить масштаб",IDC_STATIC,55,18,117,8
-    LTEXT           "- центрировать курсор и уменьшить масштаб",IDC_STATIC,55,30,117,8
-    LTEXT           "- показать все элементы в макете",IDC_STATIC,55,42,117,8
-    LTEXT           "- отменить выбор или операцию рисования",IDC_STATIC,55,54,165,8
-    LTEXT           "- установить слой трассирования (от 1 до 16)",IDC_STATIC,120,66,138,8
-    LTEXT           "- выделив сегмент или вершину, нажмите, чтобы выделить всю трассу",IDC_STATIC,55,90,231,8
-    LTEXT           "- выбрав пин, сегмент или вершину, нажмите, чтобы выделить всю эл.цепь",IDC_STATIC,55,102,230,8
-    LTEXT           "- выбрав пин, удерживайте нажатой кнопку и выберите другой пин, чтобы поменять местами эл.цепи пинов",IDC_STATIC,55,114,270,8
-    LTEXT           "- выделив сегмент, удерживайте кнопку и выберите другой сегмент, чтобы поменять местами эл.цепи трасс",IDC_STATIC,55,126,263,8
-    LTEXT           "- при использовании стрелок удерживайте кнопку для перемещения с шагом 1 мил или 0,01 мм",IDC_STATIC,55,198,240,8
+    CONTROL         "- центрировать курсор",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,6,92,8
+    CONTROL         "- центрировать курсор и увеличить масштаб",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,18,191,8
+    CONTROL         "- центрировать курсор и уменьшить масштаб",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,30,161,8
+    CONTROL         "- показать все элементы доски",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,42,124,8
+    CONTROL         "- отменить выбор или операцию рисования",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,54,165,8
+    LTEXT           "- установить слой трассирования (от 1 до 16)",IDC_STATIC,120,66,174,8
+    LTEXT           "- выделив сегмент или вершину, нажмите, чтобы выделить всю трассу",IDC_STATIC,55,90,286,8
+    LTEXT           "- выбрав пин, сегмент или вершину, нажмите, чтобы выделить всю эл.цепь",IDC_STATIC,55,102,282,8
+    CONTROL         "- выбрав пин, удерживайте нажатой кнопку и выберите другой пин, чтобы поменять местами эл.цепи пинов",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,114,375,8
+    CONTROL         "- выделив сегмент, удерживайте кнопку и выберите другой сегмент, чтобы поменять местами эл.цепи трасс",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,126,377,8
+    LTEXT           "- при использовании стрелок удерживайте кнопку для перемещения с шагом 1 мил или 0,01 мм",IDC_STATIC,55,198,338,8
     LTEXT           "d",IDC_STATIC,20,138,8,8
-    LTEXT           "- удерживайте, чтобы увеличить метки ошибок после тестирования",IDC_STATIC,55,138,104,8
+    CONTROL         "- удерживайте, чтобы увеличить метки ошибок после тестирования",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,138,281,8
     LTEXT           "f",IDC_STATIC,20,150,8,8
-    LTEXT           "- с выбранной вершиной трассы, принудительно создаёт переходное отверстие. Повторное нажатие переключает размер",IDC_STATIC,55,150,234,8
+    CONTROL         "- с выбранной вершиной трассы, создаёт переходное отверстие. Повторное нажатие переключает размер",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,150,381,8
     LTEXT           "u",IDC_STATIC,20,162,8,8
-    LTEXT           "- с выбранной вершиной трассы, отменяет переходное отверстие",IDC_STATIC,55,162,128,8
+    CONTROL         "- с выбранной вершиной трассы, отменяет переходное отверстие",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,162,297,8
     LTEXT           "m",IDC_STATIC,20,174,8,8
-    LTEXT           "- нажмите, чтобы войти в режим измерения",IDC_STATIC,55,174,164,8
+    CONTROL         "- нажмите, чтобы войти в режим измерения",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,174,164,8
     LTEXT           "arrows",IDC_STATIC,20,186,23,8
-    LTEXT           "- переместить выбранные элементы на один шаг сетки",IDC_STATIC,55,186,153,8
+    CONTROL         "- переместить выбранные элементы на один шаг сетки",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,186,212,8
     LTEXT           "CTRL",IDC_STATIC,20,210,18,8
-    LTEXT           "- удерживайте при выборе элементов для добавления/удаления из группы",IDC_STATIC,55,210,225,8
+    LTEXT           "- удерживайте при выборе элементов для добавления/удаления из группы",IDC_STATIC,55,210,327,8
     LTEXT           "Backspace",IDC_STATIC,19,236,34,8
-    LTEXT           "- во время трассировки делает отмену последнего сегмента",IDC_STATIC,55,236,164,8
+    CONTROL         "- во время трассировки делает отмену последнего сегмента",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,236,236,8
     LTEXT           "SHIFT-1234567890qwerty",IDC_STATIC,20,78,86,8
     LTEXT           "- изменить слой дорожки или медной области",IDC_STATIC,120,78,168,8
     LTEXT           "o",IDC_STATIC,20,248,8,8
-    LTEXT           "- установить начало координат в выбранный элемент",IDC_STATIC,55,248,104,8
+    CONTROL         "- установить начало координат в выбранный элемент",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,248,237,8
     LTEXT           "h",IDC_STATIC,20,260,8,8
-    LTEXT           "- выделить все элементы",IDC_STATIC,55,260,72,8
+    LTEXT           "- выделить все элементы",IDC_STATIC,55,260,177,8
     LTEXT           "SHIFT",IDC_STATIC,20,223,20,8
-    LTEXT           "- удерживайте нажатой при выборе частей для добавления/удаления объекта слияния из группы",IDC_STATIC,55,223,258,8
+    CONTROL         "- удерживайте нажатой при выборе частей для добавления/удаления объекта слияния из группы",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,55,223,348,8
 END
 
 IDD_MY_MESSAGE DIALOGEX 0, 0, 244, 101
@@ -2041,12 +2063,12 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Сообщение"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Больше не показывать это сообщение",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,69,114,10
+    CONTROL         "Больше не показывать это сообщение",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,69,158,10
     DEFPUSHBUTTON   "Готово",IDOK,90,83,50,14
     LTEXT           "Static",IDC_STATIC_MYMESSAGE,24,12,198,54
 END
 
-IDD_VIA DIALOGEX 0, 0, 173, 75
+IDD_VIA DIALOGEX 0, 0, 173, 73
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Размер виа"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -2055,8 +2077,8 @@ BEGIN
     COMBOBOX        IDC_VIA_HOLE_WIDTH,104,27,50,50,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,18,46,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,104,46,50,14
-    LTEXT           "Ширина",IDC_STATIC,18,12,20,8
-    LTEXT           "Диаметр отв.",IDC_STATIC,18,30,45,8
+    LTEXT           "Ширина виа",IDC_STATIC,18,13,65,8
+    LTEXT           "Диаметр отверстия",IDC_STATIC,18,29,74,8
 END
 
 IDD_MY_MESSAGE2 DIALOGEX 0, 0, 310, 106
@@ -2064,7 +2086,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Сообщение"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Больше не показывать это сообщение",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,69,114,10
+    CONTROL         "Больше не показывать это сообщение",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,69,175,10
     DEFPUSHBUTTON   "Готово",IDOK,60,84,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,204,84,50,14
     LTEXT           "Static",IDC_STATIC_MYMESSAGE_2,24,12,276,54
@@ -2076,44 +2098,45 @@ CAPTION "Вставить группу объектов"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Использовать следующий доступный номер для каждой детали",IDC_RADIO_USE_NEXT_REF,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,24,42,145,10
-    CONTROL         "Попробовать сохранить обозначения, уведомить и изменить в случае противоречий",IDC_RADIO_USE_GROUP_REF,
-                    "Button",BS_AUTORADIOBUTTON,24,54,233,10
-    CONTROL         "Добавить фиксированное смещение",IDC_RADIO_ADD_REF_OFFSET,"Button",BS_AUTORADIOBUTTON,24,66,77,10
-    EDITTEXT        IDC_EDIT_REF_OFFSET,101,66,39,12,ES_AUTOHSCROLL
-    LTEXT           "Эл.цепи, подключённые к пинам:",IDC_STATIC,25,82,72,8
-    CONTROL         "Сохранить всё",IDC_RADIO_RETAIN_ALL,"Button",BS_AUTORADIOBUTTON | WS_GROUP,99,82,45,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,24,42,239,10
+    CONTROL         "Попробовать сохранить обозначения, изменить с уведомлением",IDC_RADIO_USE_GROUP_REF,
+                    "Button",BS_AUTORADIOBUTTON,24,54,256,10
+    CONTROL         "Добавить фиксированное смещение",IDC_RADIO_ADD_REF_OFFSET,
+                    "Button",BS_AUTORADIOBUTTON,24,66,140,10
+    EDITTEXT        IDC_EDIT_REF_OFFSET,168,66,39,12,ES_AUTOHSCROLL
+    LTEXT           "Эл.цепи пинов:",IDC_STATIC,25,82,59,8
+    CONTROL         "Сохранить всё",IDC_RADIO_RETAIN_ALL,"Button",BS_AUTORADIOBUTTON | WS_GROUP,96,82,111,10
     CONTROL         "Сохранять, если пин подключен к трассе в группе",IDC_RADIO_RETAIN_TRACES,
-                    "Button",BS_AUTORADIOBUTTON,99,93,163,10
-    CONTROL         "Удалить все эл.цепи",IDC_RADIO_DEL_GROUP_NETS,"Button",BS_AUTORADIOBUTTON,99,104,63,10
+                    "Button",BS_AUTORADIOBUTTON,96,93,182,10
+    CONTROL         "Удалить все эл.цепи",IDC_RADIO_DEL_GROUP_NETS,"Button",BS_AUTORADIOBUTTON,96,104,111,10
     CONTROL         "Объединить эл.цепи группы с одноименными эл.цепями проекта",IDC_RADIO_USE_GROUP_NETS,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,315,20,175,10
-    CONTROL         "Использовать флажки в списке ниже, чтобы выбрать цепи для объединения, остальные переименовать",IDC_RADIO_USE_SELECTED_NETS,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,315,20,245,10
+    CONTROL         "Выбрать цепи для объединения, остальные переименовать",IDC_RADIO_USE_SELECTED_NETS,
                     "Button",BS_AUTORADIOBUTTON,315,33,238,10
     CONTROL         "",IDC_LIST_SELECT_GROUP_NETS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,312,51,247,121
     LTEXT           "Переименовать невыделенные эл.цепи:",IDC_STATIC,317,180,82,8
-    CONTROL         "Добавить суффикс «_$Gn», где n увеличивается для каждой вставленной группы",IDC_RADIO_USE_SUFFIX,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,317,192,225,10
+    CONTROL         "Добавить суффикс «_$Gn», где n увеличивается для каждой группы",IDC_RADIO_USE_SUFFIX,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,317,192,249,10
     CONTROL         "Генерировать новые имена в формате «Nxxxxx»",IDC_RADIO_MAKE_NEW_NAMES,
-                    "Button",BS_AUTORADIOBUTTON,317,203,155,10
-    CONTROL         "Перемещать",IDC_RADIO_DRAG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,61,151,67,10
+                    "Button",BS_AUTORADIOBUTTON,317,206,209,10
+    CONTROL         "Перемещать",IDC_RADIO_DRAG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,61,155,67,10
     CONTROL         "Сместить от исходного положения: X",IDC_RADIO_OFFSET,
-                    "Button",BS_AUTORADIOBUTTON,61,164,113,10
-    EDITTEXT        IDC_EDIT_GROUP_X,71,179,40,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_GROUP_Y,126,179,40,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_GROUP_UNITS,195,179,36,44,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+                    "Button",BS_AUTORADIOBUTTON,61,168,174,10
+    EDITTEXT        IDC_EDIT_GROUP_X,71,183,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GROUP_Y,126,183,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_GROUP_UNITS,195,183,36,44,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,54,205,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,192,205,50,14
     LTEXT           "Вы вставляете в проект группу деталей и сегментов трассировки",IDC_STATIC,12,6,224,8
-    GROUPBOX        "Детали группы",IDC_STATIC,12,30,276,113
+    GROUPBOX        "Детали группы",IDC_STATIC,12,30,276,119
     GROUPBOX        "Эл.цепи группы (контактные соединения, дорожки и полигоны)",IDC_STATIC,302,5,268,216
-    LTEXT           "Y",IDC_STATIC,117,181,8,8
-    LTEXT           "Ед.изм",IDC_STATIC,176,181,17,8
+    LTEXT           "Y",IDC_STATIC,117,185,8,8
+    LTEXT           "Ед.изм",IDC_STATIC,176,185,17,8
     LTEXT           "Выберите как обрабатывать детали и цепи в группе",IDC_STATIC,12,18,207,8
     CONTROL         "Преобразовать обозначения в текст и скрыть",IDC_REF_TO_TEXT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,122,133,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,120,182,10
     CONTROL         "Преобразовать названия в текст и скрыть",IDC_VALUE_TO_TEXT,
-                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,163,122,117,10
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,25,133,174,10
 END
 
 IDD_REASSIGN_LAYERS DIALOGEX 0, 0, 184, 346
@@ -2125,33 +2148,33 @@ BEGIN
     COMBOBOX        IDC_COMBO1,78,24,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Медь низ",IDC_STATIC_2,18,44,48,8
     COMBOBOX        IDC_COMBO2,78,42,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 1",IDC_STATIC_3,18,62,24,8
+    LTEXT           "Внутр. 1",IDC_STATIC_3,18,62,38,8
     COMBOBOX        IDC_COMBO3,78,60,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 2",IDC_STATIC_4,18,81,24,8
+    LTEXT           "Внутр. 2",IDC_STATIC_4,18,81,39,8
     COMBOBOX        IDC_COMBO4,78,78,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 3",IDC_STATIC_5,18,98,24,8
+    LTEXT           "Внутр. 3",IDC_STATIC_5,18,98,39,8
     COMBOBOX        IDC_COMBO5,78,96,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 4",IDC_STATIC_6,18,116,24,8
+    LTEXT           "Внутр. 4",IDC_STATIC_6,18,116,36,8
     COMBOBOX        IDC_COMBO6,78,114,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 5",IDC_STATIC_7,18,135,24,8
+    LTEXT           "Внутр. 5",IDC_STATIC_7,18,135,40,8
     COMBOBOX        IDC_COMBO7,78,132,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 6",IDC_STATIC_8,18,152,24,8
+    LTEXT           "Внутр. 6",IDC_STATIC_8,18,152,36,8
     COMBOBOX        IDC_COMBO8,78,150,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 7",IDC_STATIC_9,18,170,24,8
+    LTEXT           "Внутр. 7",IDC_STATIC_9,18,170,38,8
     COMBOBOX        IDC_COMBO9,78,168,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 8",IDC_STATIC_10,18,188,24,8
+    LTEXT           "Внутр. 8",IDC_STATIC_10,18,188,38,8
     COMBOBOX        IDC_COMBO10,78,186,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 9",IDC_STATIC_11,18,206,24,8
+    LTEXT           "Внутр. 9",IDC_STATIC_11,18,206,37,8
     COMBOBOX        IDC_COMBO11,78,204,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 10",IDC_STATIC_12,18,225,28,8
+    LTEXT           "Внутр. 10",IDC_STATIC_12,18,225,43,8
     COMBOBOX        IDC_COMBO12,78,222,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 11",IDC_STATIC_13,18,242,28,8
+    LTEXT           "Внутр. 11",IDC_STATIC_13,18,242,39,8
     COMBOBOX        IDC_COMBO13,78,240,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 12",IDC_STATIC_14,18,260,28,8
+    LTEXT           "Внутр. 12",IDC_STATIC_14,18,260,42,8
     COMBOBOX        IDC_COMBO14,78,258,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 13",IDC_STATIC_16,18,279,28,8
+    LTEXT           "Внутр. 13",IDC_STATIC_16,18,279,40,8
     COMBOBOX        IDC_COMBO15,78,276,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Внутр. 14",IDC_STATIC_15,18,296,28,8
+    LTEXT           "Внутр. 14",IDC_STATIC_15,18,296,38,8
     COMBOBOX        IDC_COMBO16,78,294,90,150,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,36,324,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,102,324,50,14
@@ -2159,29 +2182,30 @@ BEGIN
     GROUPBOX        "Новые слои",IDC_STATIC,72,12,102,300
 END
 
-IDD_EXPORT_DSN DIALOGEX 0, 0, 286, 221
+IDD_EXPORT_DSN DIALOGEX 0, 0, 299, 222
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Экспорт файла .dsn для автотрассировки"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Создавать записи «От-до» из видимых связей «пин-пин».",IDC_CHECK_FROM_TO,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,78,187,10
-    CONTROL         "Все эл.связи",IDC_RADIO_ALL,"Button",BS_AUTORADIOBUTTON | WS_GROUP,36,90,49,10
-    CONTROL         "Locked ratlines only",IDC_RADIO_LOCKED,"Button",BS_AUTORADIOBUTTON,36,102,79,10
-    CONTROL         "Все эл.связи в эл.цепях, в которых есть хотя бы одна блокированная эл.цепь",IDC_RADIO_NET_LOCKED,
-                    "Button",BS_AUTORADIOBUTTON,36,114,174,10
-    CONTROL         "Подробный режим",IDC_CHECK_VERBOSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,126,61,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,76,219,10
+    CONTROL         "Все эл.связи",IDC_RADIO_ALL,"Button",BS_AUTORADIOBUTTON | WS_GROUP,36,90,104,10
+    CONTROL         "Только блокированные",IDC_RADIO_LOCKED,"Button",BS_AUTORADIOBUTTON,36,102,131,10
+    CONTROL         "Все эл.связи в эл.цепях, в которых есть хотя бы одна блокировка",IDC_RADIO_NET_LOCKED,
+                    "Button",BS_AUTORADIOBUTTON,36,114,239,10
+    CONTROL         "Подробный режим",IDC_CHECK_VERBOSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,128,120,10
     CONTROL         "Просто отобразить информацию о плате, не создавая файл",IDC_CHECK_INFO,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,138,135,10
-    COMBOBOX        IDC_COMBO_BOUNDS,120,152,48,77,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_SIGNALS,120,171,48,101,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Готово",IDOK,54,198,50,14
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,24,140,227,10
+    COMBOBOX        IDC_COMBO_BOUNDS,162,155,48,77,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_SIGNALS,162,171,48,101,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Готово",IDOK,67,198,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,180,198,50,14
     GROUPBOX        "Опции",IDC_STATIC,12,63,270,129
-    LTEXT           "Номер контура платы для границы",IDC_STATIC,24,155,94,8
-    LTEXT           "Номер контура платы для сигналов",IDC_STATIC,24,171,85,8
-    LTEXT           "Экспортировать файл, который может быть прочитан автотрассировщиками, такими как FreeRoute или Specctra",IDC_STATIC,12,6,248,8
-    LTEXT           "По сути, это всего лишь оболочка для приложения FpcROUTE (с) Брюса Парэма",IDC_STATIC,12,16,242,8
+    LTEXT           "Номер контура платы для границы",IDC_STATIC,24,158,128,8
+    LTEXT           "Номер контура платы для сигналов",IDC_STATIC,24,171,125,8
+    CONTROL         "Экспортировать файл, который может быть прочитан автотрассировщиками",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,12,6,271,10
+    LTEXT           "По сути, это всего лишь оболочка для приложения FpcROUTE (с) Брюса Парэма",IDC_STATIC,12,17,280,8
     GROUPBOX        "Экспортировать файл",IDC_STATIC,12,30,270,30
     EDITTEXT        IDC_EDIT_FILE,18,42,258,12,ES_AUTOHSCROLL | ES_READONLY
 END
@@ -2194,14 +2218,14 @@ BEGIN
     EDITTEXT        IDC_EDIT_SES,12,54,246,12,ES_AUTOHSCROLL
     PUSHBUTTON      "По умолчанию",IDC_BUTTON_DEF,264,54,30,12
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE,300,54,12,12
-    CONTROL         "Подробный режим",IDC_CHECK_VERBOSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,90,61,10
+    CONTROL         "Подробный режим",IDC_CHECK_VERBOSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,90,136,10
     DEFPUSHBUTTON   "Готово",IDOK,48,114,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,228,114,50,14
     GROUPBOX        "Файл сеанса",IDC_STATIC,6,42,312,30
     GROUPBOX        "Опции",IDC_STATIC,6,78,312,28
-    LTEXT           "Объединить проект с файлом сеанса автотрассировщика, такого как FreeRoute или Specctra",IDC_STATIC,12,6,294,8
-    LTEXT           "По сути, это всего лишь оболочка для приложения FpcROUTE (с) Брюс Парэм",IDC_STATIC,12,18,242,8
-    LTEXT           "Если импорт прошел успешно, имя проекта будет расширено до «..._routed.fpc»",IDC_STATIC,12,30,258,8
+    LTEXT           "Объединить проект с файлом сеанса автотрассировщика",IDC_STATIC,12,6,294,8
+    LTEXT           "По сути, это всего лишь оболочка для приложения FpcROUTE (с) Брюса Парэма",IDC_STATIC,12,18,291,8
+    LTEXT           "Если импорт прошел успешно, имя проекта будет расширено до «..._routed.fpc»",IDC_STATIC,12,30,290,8
 END
 
 IDD_SIDE_STYLE DIALOGEX 0, 0, 186, 65
@@ -2210,63 +2234,62 @@ CAPTION "Установить стиль стороны полилинии"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Прямая",IDC_RADIO_STRAIGHT,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,12,41,10
-    CONTROL         "Дуга CW",IDC_RADIO_ARC_CW,"Button",BS_AUTORADIOBUTTON,68,12,40,10
-    CONTROL         "Дуга CCW",IDC_RADIO_ARC_CCW,"Button",BS_AUTORADIOBUTTON,126,12,45,10
+    CONTROL         "Дуга CW",IDC_RADIO_ARC_CW,"Button",BS_AUTORADIOBUTTON,68,12,46,10
+    CONTROL         "Дуга CCW",IDC_RADIO_ARC_CCW,"Button",BS_AUTORADIOBUTTON,126,12,53,10
     DEFPUSHBUTTON   "Готово",IDOK,30,42,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,108,42,50,14
 END
 
-IDD_REPORT DIALOGEX 0, 0, 240, 191
+IDD_REPORT DIALOGEX 0, 0, 297, 163
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Создать файл отчета «report.txt»"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Статистика доски",IDC_CHECK_STATS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,65,10
-    CONTROL         "Список отверстий",IDC_CHECK_DRILL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,30,38,10
-    CONTROL         "Список деталей",IDC_CHECK_PARTS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,42,40,10
-    CONTROL         "Настройки гербер",IDC_CHECK_CAM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,54,58,10
-    CONTROL         "Правила дизайна",IDC_CHECK_DRC_PARAMS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,66,57,10
-    CONTROL         "Ошибки тестирования",IDC_CHECK_DRC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,78,51,10
-    CONTROL         "Ошибки подключения",IDC_CHECK_CONNECTIVITY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,90,77,10
-    CONTROL         "inches/mils",IDC_RADIO_INCH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,114,18,50,10
-    CONTROL         "mm",IDC_RADIO_MM,"Button",BS_AUTORADIOBUTTON,114,30,27,10
-    CONTROL         "градусы против часовой стрелки",IDC_RADIO_CCW,"Button",BS_AUTORADIOBUTTON | WS_GROUP,114,66,98,10
-    CONTROL         "градусы по часовой стрелке",IDC_RADIO_CW,"Button",BS_AUTORADIOBUTTON,114,78,73,10
-    CONTROL         "Если смотреть сверху",IDC_RADIO_TOP,"Button",BS_AUTORADIOBUTTON | WS_GROUP,114,114,78,10
-    CONTROL         "Если смотреть снизу с",IDC_RADIO_BOTTOM,
-                    "Button",BS_AUTORADIOBUTTON,114,126,121,10
-    LTEXT           "зеркальным отражением",IDC_STATIC,126,138,73,8
-    DEFPUSHBUTTON   "Готово",IDOK,36,168,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,150,168,50,14
-    GROUPBOX        "Разделы",IDC_STATIC,6,6,90,150
-    GROUPBOX        "Ед.изм",IDC_STATIC,108,6,78,42
-    GROUPBOX        "Угол детали указывается как",IDC_STATIC,108,54,126,42
-    GROUPBOX        "Угол деталей нижней стороны",IDC_STATIC,108,102,126,54
+    CONTROL         "Статистика доски",IDC_CHECK_STATS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,18,93,10
+    CONTROL         "Список отверстий",IDC_CHECK_DRILL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,30,83,10
+    CONTROL         "Список деталей",IDC_CHECK_PARTS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,42,85,10
+    CONTROL         "Настройки гербер",IDC_CHECK_CAM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,54,101,10
+    CONTROL         "Правила дизайна",IDC_CHECK_DRC_PARAMS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,66,93,10
+    CONTROL         "Ошибки тестирования",IDC_CHECK_DRC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,78,93,10
+    CONTROL         "Ошибки подключения",IDC_CHECK_CONNECTIVITY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,90,104,10
+    CONTROL         "inches/mils",IDC_RADIO_INCH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,126,50,10
+    CONTROL         "mm",IDC_RADIO_MM,"Button",BS_AUTORADIOBUTTON,13,138,27,10
+    CONTROL         "градусы против часовой стрелки",IDC_RADIO_CCW,"Button",BS_AUTORADIOBUTTON | WS_GROUP,146,18,132,10
+    CONTROL         "градусы по часовой стрелке",IDC_RADIO_CW,"Button",BS_AUTORADIOBUTTON,146,30,117,10
+    CONTROL         "Если смотреть сверху",IDC_RADIO_TOP,"Button",BS_AUTORADIOBUTTON | WS_GROUP,146,66,133,10
+    CONTROL         "Если смотреть снизу с",IDC_RADIO_BOTTOM,"Button",BS_AUTORADIOBUTTON,146,78,121,10
+    CONTROL         "зеркальным отражением",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,158,90,111,8
+    DEFPUSHBUTTON   "Готово",IDOK,157,127,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,216,127,50,14
+    GROUPBOX        "Разделы",IDC_STATIC,6,6,122,103
+    GROUPBOX        "Ед.изм",IDC_STATIC,7,114,78,42
+    GROUPBOX        "Угол детали указывается как",IDC_STATIC,140,6,148,42
+    GROUPBOX        "Угол деталей нижней стороны",IDC_STATIC,140,54,148,55
 END
 
-IDD_CENTROID DIALOGEX 0, 0, 186, 180
+IDD_CENTROID DIALOGEX 0, 0, 240, 181
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Центроид"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "По умолчанию (центр падов)",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,38,93,10
-    CONTROL         "Задать",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,18,51,27,10
-    COMBOBOX        IDC_COMBO1,102,50,36,59,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT1,42,69,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT2,102,69,36,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_ANGLE,89,130,43,114,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Готово",IDOK,28,158,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,107,158,50,14
-    LTEXT           "Ед.изм",IDC_STATIC,78,51,17,8
-    LTEXT           "X",IDC_STATIC,31,70,8,8
-    LTEXT           "Y",IDC_STATIC,92,70,8,8
-    GROUPBOX        "Позиция",IDC_STATIC,6,27,174,60
-    GROUPBOX        "Ось",IDC_STATIC,6,93,174,57
-    LTEXT           "Ось футпринта используется для",IDC_STATIC,17,105,112,8
-    LTEXT           "Определить угол детали на печатной плате",IDC_STATIC,18,115,120,8
-    LTEXT           "Градусов (ccw)",IDC_STATIC,33,131,47,8
-    LTEXT           "Центроид – это точка, которая используется для определения",IDC_STATIC,6,4,154,8
-    LTEXT           "положения детали, требуется для установщиков компонентов",IDC_STATIC,6,14,174,8
+    CONTROL         "По умолчанию (центр падов)",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,45,38,143,10
+    CONTROL         "Задать",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,45,51,46,10
+    COMBOBOX        IDC_COMBO1,141,50,36,59,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT1,69,69,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,141,69,36,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_ANGLE,116,130,43,114,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Готово",IDOK,55,158,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,134,158,50,14
+    LTEXT           "Ед.изм",IDC_STATIC,113,51,24,8
+    LTEXT           "X",IDC_STATIC,58,70,8,8
+    LTEXT           "Y",IDC_STATIC,131,70,8,8
+    GROUPBOX        "Позиция",IDC_STATIC,33,27,174,60
+    GROUPBOX        "Ось",IDC_STATIC,33,93,174,57
+    LTEXT           "Ось футпринта используется для определения",IDC_STATIC,44,105,167,8
+    LTEXT           "Определения угла детали на плате",IDC_STATIC,45,115,137,8
+    LTEXT           "Градусов (ccw)",IDC_STATIC,60,131,47,8
+    LTEXT           "Центроид – это точка, которая используется для определения",IDC_STATIC,13,4,214,8
+    LTEXT           "положения детали, требуется для установщиков компонентов",IDC_STATIC,37,14,186,8
 END
 
 IDD_PAD_FLAGS DIALOGEX 0, 0, 226, 149
@@ -2293,19 +2316,19 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Клейкое место"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_COMBO1,60,6,41,59,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "По умолчанию проекта",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,34,77,10
-    CONTROL         "Задать диаметр",IDC_RADIO_SET_SIZE,"Button",BS_AUTORADIOBUTTON,18,46,57,10
-    EDITTEXT        IDC_EDIT_DIAMETER,78,46,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO1,83,6,41,59,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "По умолчанию проекта",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,34,130,10
+    CONTROL         "Задать диаметр",IDC_RADIO_SET_SIZE,"Button",BS_AUTORADIOBUTTON,18,48,69,10
+    EDITTEXT        IDC_EDIT_DIAMETER,89,47,40,12,ES_AUTOHSCROLL
     CONTROL         "Центроид футпринта",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,83,82,10
-    CONTROL         "Задать",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,18,98,27,10
-    EDITTEXT        IDC_EDIT1,61,97,40,12,ES_AUTOHSCROLL
+    CONTROL         "Задать",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,18,98,37,10
+    EDITTEXT        IDC_EDIT1,67,97,40,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT2,121,97,40,12,ES_AUTOHSCROLL
     CONTROL         "Перемещать",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,18,114,67,10
     DEFPUSHBUTTON   "Готово",IDOK,30,144,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,108,144,50,14
-    LTEXT           "Ед.изм",IDC_STATIC,37,8,17,8
-    LTEXT           "X",IDC_STATIC,52,99,8,8
+    LTEXT           "Ед.изм",IDC_STATIC,49,8,26,8
+    LTEXT           "X",IDC_STATIC,58,99,8,8
     LTEXT           "Y",IDC_STATIC,113,99,8,8
     GROUPBOX        "Позиция",IDC_STATIC,6,70,168,62
     GROUPBOX        "Размер",IDC_STATIC,6,22,168,42
@@ -2364,14 +2387,14 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Текстовая строка"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_TEXT,30,10,159,12,ES_AUTOHSCROLL
-    COMBOBOX        IDC_COMBO_ADD_TEXT_UNITS,30,30,36,20,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_TEXT,36,10,153,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_ADD_TEXT_UNITS,36,30,36,20,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_HEIGHT,145,31,43,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию для высоты букв",IDC_DEF_WIDTH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,64,86,10
-    CONTROL         "Задать ширину",IDC_SET_WIDTH,"Button",BS_AUTORADIOBUTTON,13,77,46,10
-    EDITTEXT        IDC_EDIT_WIDTH,62,76,44,12,ES_AUTOHSCROLL
+    CONTROL         "По умолчанию для высоты букв",IDC_DEF_WIDTH,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,64,150,10
+    CONTROL         "Задать ширину",IDC_SET_WIDTH,"Button",BS_AUTORADIOBUTTON,13,77,71,10
+    EDITTEXT        IDC_EDIT_WIDTH,86,76,44,12,ES_AUTOHSCROLL
     CONTROL         "Перемещать",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,12,114,67,10
-    CONTROL         "Задать позицию и угол",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,12,129,87,10
+    CONTROL         "Задать позицию и угол",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,12,129,99,10
     EDITTEXT        IDC_X,23,144,43,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_Y,87,144,43,12,ES_AUTOHSCROLL
     LISTBOX         IDC_LIST_ANGLE,153,113,35,43,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
@@ -2380,36 +2403,36 @@ BEGIN
     GROUPBOX        "Толщина пера",-1,7,53,190,40
     GROUPBOX        "Позиция",-1,6,99,190,66
     LTEXT           "Текст:",-1,6,11,18,8
-    LTEXT           "Высота букв",-1,84,32,57,8
+    LTEXT           "Высота букв",-1,94,33,49,8
     LTEXT           "X",-1,15,146,8,8
     LTEXT           "Y",-1,76,146,8,8
-    LTEXT           "Ед.изм",-1,6,32,17,8
+    LTEXT           "Ед.изм",-1,6,32,26,8
     LTEXT           "Угол",-1,130,114,19,8
 END
 
-IDD_VALUE_TEXT DIALOGEX 0, 0, 179, 219
+IDD_VALUE_TEXT DIALOGEX 0, 0, 212, 210
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Параметры «названия»"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_REF_ID,70,10,95,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_FOOTPRINT,45,28,120,12,ES_AUTOHSCROLL
-    CONTROL         "Видимость",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,68,35,10
-    CONTROL         "Задать",IDC_RADIO_SET,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,145,27,10
-    EDITTEXT        IDC_EDIT_WIDTH,62,144,38,12,ES_AUTOHSCROLL
-    CONTROL         "По умолчанию для высоты букв = ",IDC_RADIO_DEF,"Button",BS_AUTORADIOBUTTON,24,160,90,10
-    EDITTEXT        IDC_EDIT_DEF_WIDTH,119,159,37,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Готово",IDOK,18,187,50,14
+    EDITTEXT        IDC_EDIT_FOOTPRINT,70,28,95,12,ES_AUTOHSCROLL
+    CONTROL         "Видимость",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,68,71,10
+    CONTROL         "Задать",IDC_RADIO_SET,"Button",BS_AUTORADIOBUTTON | WS_GROUP,24,145,39,10
+    EDITTEXT        IDC_EDIT_WIDTH,67,144,38,12,ES_AUTOHSCROLL
+    CONTROL         "По умолчанию для высоты букв = ",IDC_RADIO_DEF,"Button",BS_AUTORADIOBUTTON,24,160,128,10
+    EDITTEXT        IDC_EDIT_DEF_WIDTH,156,159,37,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Готово",IDOK,46,187,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,114,187,50,14
-    GROUPBOX        "Толщина пера",IDC_STATIC,12,133,156,45
+    GROUPBOX        "Толщина пера",IDC_STATIC,12,133,189,45
     LTEXT           "Обозначение",IDC_STATIC,18,12,48,8
-    LTEXT           "Название",IDC_STATIC,18,30,18,8
-    LTEXT           "Ед.изм",IDC_STATIC,74,91,17,8
+    LTEXT           "Название",IDC_STATIC,18,30,46,8
+    LTEXT           "Ед.изм",IDC_STATIC,68,91,22,8
     COMBOBOX        IDC_COMBO_REF_TEXT_UNITS,94,88,36,75,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_CHAR_HEIGHT,94,105,36,12,ES_AUTOHSCROLL
-    LTEXT           "Высота букв",IDC_STATIC,37,107,55,8
+    CONTROL         "Высота букв",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,49,107,43,8
     CONTROL         "Положение по умолчанию (центр футпринта)",IDC_CHECK_DEF_POS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,54,133,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,23,54,173,10
 END
 
 IDD_NET_COMBINE DIALOGEX 0, 0, 300, 185
@@ -2430,7 +2453,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Готово",IDOK,30,48,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,114,48,50,14
-    LTEXT           "Выберите имя для объединенной эл.цепи",IDC_STATIC,12,6,96,8
+    LTEXT           "Выберите имя для объединенной эл.цепи",IDC_STATIC,12,6,156,8
     COMBOBOX        IDC_COMBO1,12,24,174,84,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
 END
 
@@ -2462,37 +2485,37 @@ BEGIN
     EDITTEXT        IDC_EDIT_STR,7,7,154,12,ES_AUTOHSCROLL
 END
 
-IDD_VIAS_GRID DIALOGEX 0, 0, 107, 180
+IDD_VIAS_GRID DIALOGEX 0, 0, 124, 181
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Добавить сетку переходов"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_UNITS,55,17,36,48,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT_SPACE_X,55,36,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_SPACE_Y,55,55,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_VIA_SIZE,55,73,36,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_HOLE_SIZE,55,89,36,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Готово",IDOK,15,155,33,16
-    PUSHBUTTON      "Отмена",IDCANCEL,57,155,34,16
-    LTEXT           "Шаг Y",-1,21,57,26,8
-    LTEXT           "Размер виа",-1,21,76,24,8
-    LTEXT           "Диаметр отв.",-1,21,92,29,8
-    LTEXT           "Ед.изм",-1,31,20,17,8
-    GROUPBOX        "Параметры",-1,7,7,93,111
-    LTEXT           "Шаг X",-1,21,39,26,8
-    CONTROL         "Сетка как одна деталь",IDC_CHECK_AS_PART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,124,39,10
-    CONTROL         "В шахматном порядке",IDC_CHECK_CHESS,"Button",BS_AUTO3STATE | WS_TABSTOP,16,138,35,10
+    COMBOBOX        IDC_UNITS,65,17,36,48,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_SPACE_X,65,36,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SPACE_Y,65,55,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_VIA_SIZE,65,73,36,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_HOLE_SIZE,65,89,36,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Готово",IDOK,23,155,33,16
+    PUSHBUTTON      "Отмена",IDCANCEL,67,155,34,16
+    LTEXT           "Шаг Y",-1,21,56,26,8
+    LTEXT           "Размер виа",-1,21,74,24,8
+    LTEXT           "Отверстие",-1,21,92,37,8
+    LTEXT           "Ед.изм",-1,21,20,24,8
+    GROUPBOX        "Параметры",-1,7,7,110,111
+    LTEXT           "Шаг X",-1,21,38,26,8
+    CONTROL         "Сетка как одна деталь",IDC_CHECK_AS_PART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,124,89,10
+    CONTROL         "В шахматном порядке",IDC_CHECK_CHESS,"Button",BS_AUTO3STATE | WS_TABSTOP,16,138,93,10
 END
 
-IDD_DUPLICATE_CHANNEL DIALOGEX 0, 0, 186, 56
+IDD_DUPLICATE_CHANNEL DIALOGEX 0, 0, 200, 57
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Дублировать трасстровку канала"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_SUFF,98,7,81,60,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    DEFPUSHBUTTON   "Готово",IDOK,35,29,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,105,29,50,14
-    LTEXT           "Использовать детали с суффиксом:",-1,14,9,76,8
+    COMBOBOX        IDC_SUFF,143,7,41,60,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Готово",IDOK,43,29,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,112,29,50,14
+    LTEXT           "Использовать детали с суффиксом:",-1,14,9,127,8
 END
 
 IDD_PDF_LAYERS DIALOGEX 0, 0, 419, 266
@@ -2582,26 +2605,26 @@ BEGIN
     CONTROL         "",IDC_CHECK_LAYER_31,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,225,195,16,8
     LTEXT           "COLOR",IDC_STATIC_LAYER_31,358,195,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_31,389,195,11,9
-    DEFPUSHBUTTON   "Готово",IDOK,287,236,50,14
-    PUSHBUTTON      "Отмена",IDCANCEL,350,236,50,14
+    DEFPUSHBUTTON   "Готово",IDOK,295,236,50,14
+    PUSHBUTTON      "Отмена",IDCANCEL,354,236,50,14
     LTEXT           "Вид.",IDC_STATIC,12,15,28,8
-    LTEXT           "Имена механических слоёв",IDC_STATIC,48,15,76,8
-    LTEXT           "Цвет",IDC_STATIC,153,15,18,8
+    LTEXT           "Имена механических слоёв",IDC_STATIC,44,15,94,8
+    LTEXT           "Цвет",IDC_STATIC,151,15,18,8
     LTEXT           "Ред.",IDC_STATIC,182,15,13,8
-    LTEXT           "Контур платы",IDC_STATIC,44,83,44,8
-    LTEXT           "Шелкогр.верх",IDC_STATIC,44,138,46,8
-    LTEXT           "Шелкогр.низ",IDC_STATIC,44,149,57,8
-    LTEXT           "Эл.связи",IDC_STATIC,44,127,23,8
-    LTEXT           "Медь верх",IDC_STATIC,251,27,38,8
+    LTEXT           "Контур платы",IDC_STATIC,44,83,57,8
+    LTEXT           "Шелкогр.верх",IDC_STATIC,44,138,54,8
+    LTEXT           "Шелкогр.низ",IDC_STATIC,44,150,57,8
+    LTEXT           "Эл.связи",IDC_STATIC,44,127,48,8
+    LTEXT           "Медь верх",IDC_STATIC,251,27,53,8
     LTEXT           "Медь низ",IDC_STATIC,251,38,49,8
-    LTEXT           "Внутр. 1",IDC_STATIC,251,49,24,8
-    LTEXT           "Внутр. 2",IDC_STATIC,251,61,24,8
-    LTEXT           "Внутр. 3",IDC_STATIC,251,72,24,8
-    LTEXT           "Внутр. 4",IDC_STATIC,251,83,24,8
-    LTEXT           "Внутр. 5",IDC_STATIC,251,94,24,8
-    LTEXT           "Внутр. 6",IDC_STATIC,251,105,24,8
-    LTEXT           "Перемещение",IDC_STATIC,44,27,30,8
-    LTEXT           "Фон",IDC_STATIC,44,38,38,8
+    LTEXT           "Внутр. 1",IDC_STATIC,251,49,36,8
+    LTEXT           "Внутр. 2",IDC_STATIC,251,61,36,8
+    LTEXT           "Внутр. 3",IDC_STATIC,251,72,33,8
+    LTEXT           "Внутр. 4",IDC_STATIC,251,83,34,8
+    LTEXT           "Внутр. 5",IDC_STATIC,251,94,37,8
+    LTEXT           "Внутр. 6",IDC_STATIC,251,105,36,8
+    LTEXT           "Перемещение",IDC_STATIC,44,27,50,8
+    LTEXT           "Фон доски",IDC_STATIC,44,38,52,8
     GROUPBOX        "",IDC_STATIC,7,20,30,180
     GROUPBOX        "",IDC_STATIC,36,20,110,180
     GROUPBOX        "",IDC_STATIC,145,20,29,180
@@ -2609,28 +2632,28 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,36,9,110,16
     GROUPBOX        "",IDC_STATIC,145,9,29,16
     LTEXT           "Защитная маска низ",IDC_STATIC,44,184,90,8
-    LTEXT           "Видимая сетка",IDC_STATIC,44,49,35,8
+    LTEXT           "Видимая сетка",IDC_STATIC,44,49,54,8
     GROUPBOX        "",IDC_STATIC,173,20,29,180
     GROUPBOX        "",IDC_STATIC,173,9,29,16
-    LTEXT           "Метки ошибок",IDC_STATIC,44,72,33,8
-    LTEXT           "Подсветка",IDC_STATIC,44,60,28,8
-    LTEXT           "Отверстия",IDC_STATIC,43,161,80,8
+    LTEXT           "Метки ошибок",IDC_STATIC,44,72,57,8
+    LTEXT           "Подсветка",IDC_STATIC,44,60,51,8
+    LTEXT           "Отверстия",IDC_STATIC,44,161,80,8
     LTEXT           "Защитная маска верх",IDC_STATIC,44,172,90,8
-    LTEXT           "Внутр. 7",IDC_STATIC,251,117,24,8
-    LTEXT           "Внутр. 8",IDC_STATIC,251,128,24,8
-    LTEXT           "Внутр. 9",IDC_STATIC,251,139,24,8
-    LTEXT           "Внутр. 10",IDC_STATIC,251,150,28,8
-    LTEXT           "Внутр. 11",IDC_STATIC,251,161,28,8
-    LTEXT           "Внутр. 12",IDC_STATIC,251,173,28,8
-    LTEXT           "Внутр. 13",IDC_STATIC,251,184,28,8
-    LTEXT           "Внутр. 14",IDC_STATIC,251,195,28,8
+    LTEXT           "Внутр. 7",IDC_STATIC,251,117,36,8
+    LTEXT           "Внутр. 8",IDC_STATIC,251,128,38,8
+    LTEXT           "Внутр. 9",IDC_STATIC,251,139,36,8
+    LTEXT           "Внутр. 10",IDC_STATIC,251,150,40,8
+    LTEXT           "Внутр. 11",IDC_STATIC,251,161,41,8
+    LTEXT           "Внутр. 12",IDC_STATIC,251,172,40,8
+    LTEXT           "Внутр. 13",IDC_STATIC,251,183,40,8
+    LTEXT           "Внутр. 14",IDC_STATIC,251,194,38,8
     GROUPBOX        "",IDC_STATIC,214,9,30,16
     GROUPBOX        "",IDC_STATIC,243,9,110,16
     GROUPBOX        "",IDC_STATIC,352,9,29,16
     GROUPBOX        "",IDC_STATIC,380,9,29,16
     LTEXT           "Вид.",IDC_STATIC,219,14,28,8
-    LTEXT           "Имя медного слоя",IDC_STATIC,255,14,64,8
-    LTEXT           "Цвет",IDC_STATIC,360,14,18,8
+    LTEXT           "Имя медного слоя",IDC_STATIC,252,14,77,8
+    LTEXT           "Цвет",IDC_STATIC,359,14,18,8
     LTEXT           "Ред.",IDC_STATIC,389,14,13,8
     GROUPBOX        "",IDC_STATIC,380,20,29,192
     GROUPBOX        "",IDC_STATIC,352,20,29,192
@@ -2639,7 +2662,7 @@ BEGIN
     CONTROL         "",IDC_CHECK_LAYER_7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,94,16,8
     LTEXT           "COLOR",IDC_STATIC_LAYER_7,151,94,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_7,182,94,11,9
-    LTEXT           "Скрайбинг (V-cut)",IDC_STATIC,44,94,26,8
+    LTEXT           "Скрайбинг (V-cut)",IDC_STATIC,44,94,63,8
     CONTROL         "",IDC_CHECK_LAYER_8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,105,16,8
     LTEXT           "COLOR",IDC_STATIC_LAYER_8,151,105,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_8,182,105,11,9
@@ -2648,37 +2671,37 @@ BEGIN
     LTEXT           "COLOR",IDC_STATIC_LAYER_9,151,116,17,8,WS_BORDER
     PUSHBUTTON      "",IDC_BUTTON_LAYER_9,182,116,11,9
     LTEXT           "Заметки низ",IDC_STATIC,44,116,70,8
-    CONTROL         "Системный режим",IDC_CHECK_LAYER_SYS_CLRS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,155,229,71,8
-    CONTROL         "Обозначения",IDC_CHECK_REF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,220,25,8
-    CONTROL         "Затемнить первые пины",IDC_CHECK_MARGIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,155,240,81,8
-    EDITTEXT        IDC_EDIT_MARGIN,240,237,24,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_TEXT_FONT,90,236,24,12,ES_AUTOHSCROLL
-    LTEXT           "mil",IDC_STATIC,119,238,10,8
-    CONTROL         "Названия",IDC_CHECK_VALUE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,231,34,8
+    CONTROL         "Системный режим",IDC_CHECK_LAYER_SYS_CLRS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,155,229,80,8
+    CONTROL         "Обозначения",IDC_CHECK_REF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,220,59,8
+    CONTROL         "Затемнить первые пины",IDC_CHECK_MARGIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,155,240,100,8
+    EDITTEXT        IDC_EDIT_MARGIN,256,237,28,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TEXT_FONT,95,239,24,12,ES_AUTOHSCROLL
+    LTEXT           "(mil)",IDC_STATIC,123,241,17,8
+    CONTROL         "Названия",IDC_CHECK_VALUE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,231,54,8
     GROUPBOX        "Печать текстов в центре детали",IDC_STATIC,7,207,136,52
-    LTEXT           "Размер текста:",IDC_STATIC,91,222,32,8
-    CONTROL         "Корпуса",IDC_CHECK_PACKAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,241,43,8
+    LTEXT           "Размер текста:",IDC_STATIC,95,220,36,17
+    CONTROL         "Корпуса",IDC_CHECK_PACKAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,242,43,8
 END
 
-IDD_PROTECT DIALOGEX 0, 0, 240, 108
+IDD_PROTECT DIALOGEX 0, 0, 383, 109
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Доступ к редактированию"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Защитить этот проект после создания файлов Gerber.",IDC_PROTECT_AFTER_GERBER,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,60,170,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,60,221,10
     CONTROL         "Защитить этот проект, если присутствует архивная папка CAM",IDC_PROTECT_ARCH_PRESENT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,73,183,10
-    CONTROL         "Разрешить редактирование",IDC_RADIO_EE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,15,64,10
-    CONTROL         "Отключить редактирование",IDC_RADIO_DE,"Button",BS_AUTORADIOBUTTON,13,28,64,10
-    DEFPUSHBUTTON   "",IDCANCEL,217,7,16,14,NOT WS_VISIBLE
-    GROUPBOX        "Разрешение на редактирование этого проекта",-1,7,3,116,42
-    GROUPBOX        "Глобальная автоматическая защита",-1,7,46,226,56
-    GROUPBOX        "Разрешение на редактирование списка эл.цепей",-1,130,3,103,42
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,73,242,10
+    CONTROL         "Разрешить редактирование",IDC_RADIO_EE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,15,106,10
+    CONTROL         "Отключить редактирование",IDC_RADIO_DE,"Button",BS_AUTORADIOBUTTON,13,28,108,10
+    DEFPUSHBUTTON   "",IDCANCEL,360,7,16,14,NOT WS_VISIBLE
+    GROUPBOX        "Разрешение на редактирование этого проекта",-1,7,3,177,42
+    GROUPBOX        "Глобальная автоматическая защита",-1,7,47,369,56
+    GROUPBOX        "Разрешение на редактирование списка эл.цепей",-1,191,3,185,42
     CONTROL         "Защитить netlist после импорта файла netlist",IDC_PROTECT_AFTER_IMPORT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,86,143,10
-    CONTROL         "Разрешить редактирование",IDC_RADIO_EE2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,138,15,64,10
-    CONTROL         "Отключить редактирование",IDC_RADIO_DE2,"Button",BS_AUTORADIOBUTTON,138,29,64,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,86,232,10
+    CONTROL         "Разрешить редактирование",IDC_RADIO_EE2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,207,15,124,10
+    CONTROL         "Отключить редактирование",IDC_RADIO_DE2,"Button",BS_AUTORADIOBUTTON,207,29,120,10
 END
 
 IDD_OPENSCAD DIALOGEX 0, 0, 281, 248
@@ -2686,18 +2709,18 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Создание 3D-объекта из полилинии"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Это тело",IDC_RADIO_BODY,"Button",BS_AUTORADIOBUTTON | WS_GROUP,159,132,41,10
-    CONTROL         "Это дыра",IDC_RADIO_HOLE,"Button",BS_AUTORADIOBUTTON,214,132,40,10
+    CONTROL         "Это тело",IDC_RADIO_BODY,"Button",BS_AUTORADIOBUTTON | WS_GROUP,159,132,48,10
+    CONTROL         "Это дыра",IDC_RADIO_HOLE,"Button",BS_AUTORADIOBUTTON,214,132,49,10
     EDITTEXT        IDC_EXTRUSION_VALUE,78,20,35,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_UNITS,63,132,52,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "Готово",IDOK,16,217,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,74,217,50,14
-    LTEXT           "Величина экструзии",IDC_STATIC_EX,22,23,50,8
-    LTEXT           "Ед.изм",IDC_STATIC,22,135,17,8
-    CONTROL         "Учитывать ширину полилинии",IDC_CORNER_ROUNDING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,190,90,10
+    LTEXT           "Величина",IDC_STATIC_EX,22,23,50,8
+    LTEXT           "Ед.изм",IDC_STATIC,22,135,30,8
+    CONTROL         "Учитывать ширину полилинии",IDC_CORNER_ROUNDING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,190,116,10
     GROUPBOX        "1. Экструзия",IDC_STATIC,7,7,124,64
     EDITTEXT        IDC_EXTRUSION_ROT,78,52,35,12,ES_AUTOHSCROLL
-    LTEXT           "Угол экструзии",IDC_STATIC_EX_R,22,54,50,8
+    LTEXT           "Угловая...",IDC_STATIC_EX_R,22,54,50,8
     GROUPBOX        "2. Вращение",IDC_STATIC,139,7,64,64
     EDITTEXT        IDC_ROT_X,157,20,36,12,ES_AUTOHSCROLL
     LTEXT           "X",IDC_STATIC,147,22,8,8
@@ -2712,7 +2735,7 @@ BEGIN
     LTEXT           "Y",IDC_STATIC,219,38,8,8
     EDITTEXT        IDC_MOV_Z,229,52,36,12,ES_AUTOHSCROLL
     LTEXT           "Z",IDC_STATIC,219,54,8,8
-    CONTROL         "Прозрачность",IDC_ROT_VTX1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,219,83,10
+    CONTROL         "Прозрачность",IDC_ROT_VTX1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,220,83,10
     GROUPBOX        "4. Матрица",IDC_STATIC,7,76,268,37
     EDITTEXT        IDC_MATRIX_X,22,91,19,12,ES_AUTOHSCROLL
     LTEXT           "X",IDC_STATIC,14,93,8,8
@@ -2731,14 +2754,14 @@ BEGIN
     COMBOBOX        IDC_COMBO_RESOLUTION,205,166,50,130,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Качество",IDC_STATIC,159,169,34,8
     EDITTEXT        IDC_LIFT,63,150,52,12,ES_AUTOHSCROLL
-    LTEXT           "Lift",IDC_STATIC_EX2,22,152,11,8
+    LTEXT           "Подъём",IDC_STATIC_EX2,22,152,26,8
     EDITTEXT        IDC_GLOBAL_ROT,63,166,52,12,ES_AUTOHSCROLL
-    LTEXT           "Вращение",IDC_STATIC_EX_R2,22,168,28,8
+    LTEXT           "Вращение",IDC_STATIC_EX_R2,22,168,37,8
     GROUPBOX        "5. Глобально",IDC_STATIC,7,119,124,83
     EDITTEXT        IDC_EXTRUSION_SCALE,78,36,35,12,ES_AUTOHSCROLL
-    LTEXT           "Шкала экструзии",IDC_STATIC_EX3,22,38,49,8
-    CONTROL         "Заполнить пространство между объектами",IDC_HULL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,185,112,10
-    CONTROL         "Сделать выпуклую шапку",IDC_LIKE_CAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,205,99,10
+    LTEXT           "Нелинейность",IDC_STATIC_EX3,22,38,49,8
+    CONTROL         "Заполнить пространство",IDC_HULL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,185,108,10
+    CONTROL         "Сделать шапку",IDC_LIKE_CAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,205,105,10
     GROUPBOX        "6. Опции",IDC_STATIC,139,119,136,120
 END
 
@@ -2842,9 +2865,9 @@ BEGIN
     IDD_ADD_MERGE, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 179
+        RIGHTMARGIN, 289
         TOPMARGIN, 7
-        BOTTOMMARGIN, 93
+        BOTTOMMARGIN, 94
     END
 
     IDD_ASSIGN_NET, DIALOG
@@ -2866,24 +2889,29 @@ BEGIN
     IDD_ADD_TEXT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 171
+        RIGHTMARGIN, 187
         TOPMARGIN, 7
-        BOTTOMMARGIN, 283
+        BOTTOMMARGIN, 304
     END
 
     IDD_NET_LIST, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 394
+        RIGHTMARGIN, 449
         TOPMARGIN, 7
-        BOTTOMMARGIN, 288
+        BOTTOMMARGIN, 289
     END
 
     IDD_EDIT_NET, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 220
+        RIGHTMARGIN, 221
         TOPMARGIN, 7
+        BOTTOMMARGIN, 309
+    END
+
+    IDD_EDIT_BOARD_CORNER, DIALOG
+    BEGIN
     END
 
     IDD_ADD_AREA, DIALOG
@@ -2905,17 +2933,17 @@ BEGIN
     IDD_ADD_WIDTH_MENU_ITEM, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 260
+        RIGHTMARGIN, 277
         TOPMARGIN, 7
-        BOTTOMMARGIN, 88
+        BOTTOMMARGIN, 89
     END
 
     IDD_SET_TRACE_WIDTHS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 249
+        RIGHTMARGIN, 256
         TOPMARGIN, 7
-        BOTTOMMARGIN, 195
+        BOTTOMMARGIN, 201
     END
 
     IDD_LAYERS, DIALOG
@@ -2937,9 +2965,9 @@ BEGIN
     IDD_REF_TEXT, DIALOG
     BEGIN
         LEFTMARGIN, 6
-        RIGHTMARGIN, 365
+        RIGHTMARGIN, 401
         TOPMARGIN, 7
-        BOTTOMMARGIN, 119
+        BOTTOMMARGIN, 120
     END
 
     IDD_IMPORT, DIALOG
@@ -3006,8 +3034,9 @@ BEGIN
     IDD_ADD_POLY, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 173
+        RIGHTMARGIN, 196
         TOPMARGIN, 7
+        BOTTOMMARGIN, 73
     END
 
     IDD_IMPORT_FOOTPRINT, DIALOG
@@ -3019,16 +3048,17 @@ BEGIN
 
     IDD_SET_AREA_HATCH, DIALOG
     BEGIN
-        RIGHTMARGIN, 117
+        RIGHTMARGIN, 173
         TOPMARGIN, 7
-        BOTTOMMARGIN, 40
+        BOTTOMMARGIN, 41
     END
 
     IDD_FP_REF_TEXT, DIALOG
     BEGIN
         LEFTMARGIN, 4
-        RIGHTMARGIN, 159
+        RIGHTMARGIN, 185
         TOPMARGIN, 7
+        BOTTOMMARGIN, 97
     END
 
     IDD_LIB_MANAGER, DIALOG
@@ -3041,17 +3071,17 @@ BEGIN
     IDD_DUP_FP_NAME, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 199
+        RIGHTMARGIN, 257
         TOPMARGIN, 7
-        BOTTOMMARGIN, 154
+        BOTTOMMARGIN, 155
     END
 
     IDD_DRC, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 157
+        RIGHTMARGIN, 179
         TOPMARGIN, 7
-        BOTTOMMARGIN, 275
+        BOTTOMMARGIN, 276
     END
 
     IDD_CROP, DIALOG
@@ -3081,33 +3111,33 @@ BEGIN
     IDD_ADD_MASK_CUTOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 165
+        RIGHTMARGIN, 164
         TOPMARGIN, 7
-        BOTTOMMARGIN, 88
+        BOTTOMMARGIN, 117
     END
 
     IDD_CHANGE_LAYER, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 179
+        RIGHTMARGIN, 164
         TOPMARGIN, 7
-        BOTTOMMARGIN, 106
+        BOTTOMMARGIN, 107
     END
 
     IDD_MOVE_ORIGIN, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 157
+        RIGHTMARGIN, 179
         TOPMARGIN, 7
-        BOTTOMMARGIN, 88
+        BOTTOMMARGIN, 89
     END
 
     IDD_SHORTCUTS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 327
+        RIGHTMARGIN, 455
         TOPMARGIN, 7
-        BOTTOMMARGIN, 278
+        BOTTOMMARGIN, 273
     END
 
     IDD_MY_MESSAGE, DIALOG
@@ -3123,7 +3153,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 166
         TOPMARGIN, 7
-        BOTTOMMARGIN, 68
+        BOTTOMMARGIN, 66
     END
 
     IDD_MY_MESSAGE2, DIALOG
@@ -3153,9 +3183,9 @@ BEGIN
     IDD_EXPORT_DSN, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 279
+        RIGHTMARGIN, 292
         TOPMARGIN, 7
-        BOTTOMMARGIN, 214
+        BOTTOMMARGIN, 215
     END
 
     IDD_IMPORT_SES, DIALOG
@@ -3177,17 +3207,17 @@ BEGIN
     IDD_REPORT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 233
+        RIGHTMARGIN, 290
         TOPMARGIN, 7
-        BOTTOMMARGIN, 184
+        BOTTOMMARGIN, 156
     END
 
     IDD_CENTROID, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 179
+        RIGHTMARGIN, 233
         TOPMARGIN, 7
-        BOTTOMMARGIN, 173
+        BOTTOMMARGIN, 174
     END
 
     IDD_PAD_FLAGS, DIALOG
@@ -3227,15 +3257,15 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 196
         TOPMARGIN, 7
-        BOTTOMMARGIN, 176
+        BOTTOMMARGIN, 184
     END
 
     IDD_VALUE_TEXT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 173
+        RIGHTMARGIN, 206
         TOPMARGIN, 7
-        BOTTOMMARGIN, 214
+        BOTTOMMARGIN, 205
     END
 
     IDD_NET_COMBINE, DIALOG
@@ -3273,17 +3303,17 @@ BEGIN
     IDD_VIAS_GRID, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 100
+        RIGHTMARGIN, 117
         TOPMARGIN, 7
-        BOTTOMMARGIN, 173
+        BOTTOMMARGIN, 174
     END
 
     IDD_DUPLICATE_CHANNEL, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 179
+        RIGHTMARGIN, 192
         TOPMARGIN, 7
-        BOTTOMMARGIN, 49
+        BOTTOMMARGIN, 50
     END
 
     IDD_PDF_LAYERS, DIALOG
@@ -3297,9 +3327,9 @@ BEGIN
     IDD_PROTECT, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 233
+        RIGHTMARGIN, 376
         TOPMARGIN, 7
-        BOTTOMMARGIN, 102
+        BOTTOMMARGIN, 103
     END
 
     IDD_OPENSCAD, DIALOG
@@ -3360,6 +3390,256 @@ BEGIN
 END
 
 IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_AREA AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_MASK_CUTOUT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_MERGE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_PIN AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_POLY AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_TEXT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_WIDTH_MENU_ITEM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_CAD AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_CENTROID AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_CHANGE_LAYER AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_CHOOSE_NET AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_CROP AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DRC AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DUP_FP_NAME AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DUPLICATE_CHANNEL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EDIT_BOARD_CORNER AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EDIT_NET AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EXPORT_DSN AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_FP_REF_TEXT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_FP_TEXT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_GLUE_SPOT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_GROUP_PASTE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_IMPORT_FOOTPRINT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_IMPORT_OPTIONS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_IMPORT_SES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_IVEX_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_LAYERS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_LIB_MANAGER AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MOVE_ORIGIN AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MY_MESSAGE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MY_MESSAGE2 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NET_LIST AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_OPENSCAD AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PARTLIST AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PDF_LAYERS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROJECT_OPTIONS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROTECT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_REASSIGN_LAYERS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_REF_TEXT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_REPORT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SAVE_FOOTPRINT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SEGMENT_WIDTH AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SET_AREA_HATCH AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SET_TRACE_WIDTHS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SHORTCUTS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SIDE_STYLE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VALUE_TEXT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIA AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIAS_GRID AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_WIZ_QUAD AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

@@ -1,12 +1,88 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcb.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\layers.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:layers.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FootprintView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FreePcb.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp",
+              "RelativeDocumentMoniker": "FreePcb.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp",
+              "RelativeToolTip": "FreePcb.cpp",
+              "ViewState": "AQIAABwCAAAAAAAAAAD4vxACAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-07-27T09:44:01.799Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FreePcbDoc.h",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.h",
+              "RelativeDocumentMoniker": "FreePcbDoc.h",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.h",
+              "RelativeToolTip": "FreePcbDoc.h",
+              "ViewState": "AQIAABsAAAAAAAAAAAAmwCYAAABiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-07-27T09:39:51.647Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "layers.h",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\layers.h",
+              "RelativeDocumentMoniker": "layers.h",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\layers.h",
+              "RelativeToolTip": "layers.h",
+              "ViewState": "AQIAAJwAAAAAAAAAAAAmwKkAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-07-27T09:34:42.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FootprintView.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp",
+              "RelativeDocumentMoniker": "FootprintView.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp",
+              "RelativeToolTip": "FootprintView.cpp",
+              "ViewState": "AQIAAHwBAAAAAAAAAAD4v4QBAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-07-27T09:30:38.362Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

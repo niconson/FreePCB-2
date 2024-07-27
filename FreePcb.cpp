@@ -525,6 +525,8 @@ void CFreePcbApp::OnHelpUserGuidePdf()
 {
     SHELLEXECUTEINFO ShExecInfo;
 	CString fn = m_Doc->m_app_dir + "\\doc\\freepcb_user_guide.pdf";
+	if(G_LANGUAGE)
+		fn = m_Doc->m_app_dir + "\\doc\\ПлатФорм.pdf";
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = NULL;

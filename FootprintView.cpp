@@ -385,6 +385,8 @@ void CFootprintView::OnDraw(CDC* pDC)
 		}
 	}
 	CRect r( x_off, NUM_FP_LAYERS*VSTEP+y_off, x_off+120, NUM_FP_LAYERS*VSTEP+12+y_off );
+	r.bottom += VSTEP;
+	r.top += VSTEP;
 	pDC->DrawText(G_LANGUAGE==0?"* Use numeric":"* Используйте", -1, &r, DT_TOP);
 	r.bottom += VSTEP;
 	r.top += VSTEP;

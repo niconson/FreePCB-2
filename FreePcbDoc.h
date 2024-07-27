@@ -36,9 +36,9 @@
 #define PROGRAM_CAP2 "Schematic Constructor - "
 #else
 #define NETLIST_UPDATED "Ќетлист был обновлЄн через редактор схем, но пока не был загружен в редактор плат." /*this phrase must be the same in both PCB and CDS*/
-#define NETLIST_WARNING "ќбновлЄнный нетлист загружали в редактор плат, но изменени€ не сохранили." /*this phrase must be the same in both PCB and CDS*/
+#define NETLIST_WARNING "ќбновлЄнный нетлист загружали в редактор плат, но изменени€ не сохранили!" /*this phrase must be the same in both PCB and CDS*/
 #define PROGRAM_CAP "ѕлат‘орм - "
-#define PROGRAM_CAP2 "ѕлат‘орм(схема) - "
+#define PROGRAM_CAP2 "—хемјтор - "
 #endif
 #define freeasy_netlist "\\related_files\\CDS_netlist\\"
 #define FILE_PROTECTED "Protected"
