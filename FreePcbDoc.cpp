@@ -12552,7 +12552,9 @@ void CFreePcbDoc::SwitchTo_ECDS( BOOL standby )
 				{
 					int rf = m_pcb_full_path.ReverseFind( '\\' );
 					CString cds_file = m_pcb_full_path.Left(rf) + "\\" + m_cds_filename;
-					CString FreeCds = m_app_dir + "\\FreeCds.exe";
+					CString FreeCds = m_app_dir + "\\СхемАтор.exe";
+					if (G_LANGUAGE == 0)
+						FreeCds = m_app_dir + "\\FreeCds.exe";
 					if ( (UINT)ShellExecute(	NULL,"open", "\""+FreeCds+"\"", "\""+cds_file+"\"", "\""+m_app_dir+"\"", SW_SHOWNORMAL) > 32 )
 					{
 						CMainFrame * frm = (CMainFrame*)AfxGetMainWnd();
@@ -12599,7 +12601,9 @@ void CFreePcbDoc::SwitchTo_ECDS( BOOL standby )
 						}
 					}
 				}
-				CString FreeCds = m_app_dir + "\\FreeCds.exe";
+				CString FreeCds = m_app_dir + "\\СхемАтор.exe";
+				if(G_LANGUAGE==0)
+					FreeCds = m_app_dir + "\\FreeCds.exe";
 				if ( (UINT)ShellExecute(	NULL,"open", "\""+FreeCds+"\"", "\""+cds_file+"\"", "\""+m_app_dir+"\"", SW_SHOWNORMAL) > 32 )
 				{
 				}
