@@ -293,7 +293,7 @@ BOOL CFreePcbDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	m_window_title = "no project open";
+	m_window_title = (G_LANGUAGE==0?"no project open":"редактор печатных плат");
 	m_parent_folder = "..\\projects\\";
 	m_lib_dir = "..\\lib\\" ;
 	return TRUE;
@@ -1066,7 +1066,7 @@ int CFreePcbDoc::FileClose()
 	// force redraw
 	m_view->m_cursor_mode = 999;
 	m_view->SetCursorMode( CUR_NONE_SELECTED );
-	m_window_title = PROGRAM_CAP"no project open";
+	m_window_title = (CString)PROGRAM_CAP + (G_LANGUAGE == 0 ? "no project open" : "редактор печатных плат");
 	pMain->SetWindowText( m_window_title );
 	CDC * pDC = m_view->GetDC();
 	m_view->OnDraw( pDC );
@@ -3892,6 +3892,9 @@ void CFreePcbDoc::InitializeNewProject()
 	}
 	m_plist->SetPinAnnularRing( m_annular_ring_pins );
 	m_nlist->SetViaAnnularRing( m_annular_ring_vias );
+	m_window_title = (CString)PROGRAM_CAP + (G_LANGUAGE == 0 ? "no project open" : "редактор печатных плат");
+	CWnd* pMain = AfxGetMainWnd(); 
+	pMain->SetWindowText(m_window_title);
 }
 
 // Call this function when the project is modified,

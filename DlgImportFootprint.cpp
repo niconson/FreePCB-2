@@ -74,7 +74,8 @@ BOOL CDlgImportFootprint::OnInitDialog()
 void CDlgImportFootprint::OnBnClickedButtonBrowseLibFolder()
 {
 	static CString path = "";
-	CPathDialog dlg( "Open Folder", "Select footprint library folder", *m_footlibfolder->GetFullPath() );
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+					G_LANGUAGE == 0 ? "Select footprint library folder" : "Выберите папку", *m_footlibfolder->GetFullPath() );
 	int ret = dlg.DoModal();
 	if( ret == IDOK )
 	{

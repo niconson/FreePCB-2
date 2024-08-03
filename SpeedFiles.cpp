@@ -167,7 +167,8 @@ void LoadSpeedFiles( CFreePcbDoc * doc )
 
 void SelectFolder( CFreePcbDoc * doc )
 {
-	CPathDialog dlg( "Project Folder", "Select default project folder", doc->m_parent_folder );
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+					G_LANGUAGE == 0 ? "Select default project folder" : "Выберите папку", doc->m_parent_folder );
 	int ret = dlg.DoModal();
 	if( ret == IDOK )
 	{

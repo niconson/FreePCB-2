@@ -1112,7 +1112,8 @@ void CDlgLibraryManager::Initialize( CFootLibFolderMap * foldermap, CDlgLog * lo
 
 void CDlgLibraryManager::OnBnClickedButtonMgrBrowse()
 {
-	CPathDialog dlg( "Open Folder", "Select footprint library folder", *m_footlib->GetFullPath() );
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+					G_LANGUAGE == 0 ? "Select footprint library folder" : "Выберите папку", *m_footlib->GetFullPath() );
 	int ret = dlg.DoModal();
 	if( ret == IDOK )
 	{

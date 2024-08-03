@@ -391,7 +391,8 @@ void CDlgSaveFootprint::OnBnClickedOk()
 
 void CDlgSaveFootprint::OnBnClickedButtonBrowse()
 {
-	CPathDialog dlg( "Open Folder", "Select footprint library folder", *m_folder->GetFullPath() );
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+					G_LANGUAGE == 0 ? "Select footprint library folder" : "Выберите папку", *m_folder->GetFullPath() );
 	int ret = dlg.DoModal();
 	if( ret == IDOK )
 	{

@@ -226,7 +226,7 @@ void CFootprintView::InitInstance( CShape * fp )
 	}
 	else
 	{
-		m_fp.m_name = "untitled";
+		m_fp.m_name = (G_LANGUAGE==0?"untitled":"редактор печатных плат");
 	}
 	SetWindowTitle( &m_fp.m_name );
 

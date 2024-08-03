@@ -69,8 +69,8 @@ void CDlgWizQuad::DoDataExchange(CDataExchange* pDX)
 		// incoming
 		if( !m_enable_save )
 		{
-			m_button_save.SetWindowText( "Done" );
-			m_button_exit.SetWindowText( "Cancel" );
+			m_button_save.SetWindowText( G_LANGUAGE==0?"Done":"Готово");
+			m_button_exit.SetWindowText(G_LANGUAGE == 0 ? "Cancel":"Отмена");
 		}
 		m_bmp.LoadBitmap( IDB_BITMAP_QUAD );
 		m_bmp_quad.SetBitmap( m_bmp );

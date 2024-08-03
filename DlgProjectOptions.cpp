@@ -502,7 +502,8 @@ void CDlgProjectOptions::OnBnClickedCheckAutosave()
 
 void CDlgProjectOptions::OnBnClickedButtonLib()
 {
-	CPathDialog dlg( "Library Folder", "Select default library folder", m_lib_folder );
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+					G_LANGUAGE == 0 ? "Select default library folder" : "Выберите папку", m_lib_folder );
 	int ret = dlg.DoModal();
 	if( ret == IDOK )
 	{
@@ -515,7 +516,8 @@ void CDlgProjectOptions::OnBnClickedButtonProjectFolder()
 {
 	if( m_new_project )
 	{
-		CPathDialog dlg( "Project Folder", "Select project folder", m_path_to_folder );
+		CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+						G_LANGUAGE == 0 ? "Select project folder" : "Выберите папку", m_path_to_folder );
 		int ret = dlg.DoModal();
 		if( ret == IDOK )
 		{

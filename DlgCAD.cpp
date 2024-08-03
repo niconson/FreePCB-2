@@ -719,7 +719,7 @@ void CDlgCAD::OnBnClickedGo()
 					f.WriteString(line);
 					line.Format("G04 Version: FreePCB-%5.3f*\n", m_version);
 					f.WriteString(line);
-					line.Format("G04 WebSite: https://github.com/Duxah/FreePCB-2/blob/master/Download.md *\n");
+					line.Format("G04 WebSite: https://github.com/niconson *\n");
 					f.WriteString(line);
 				}
 				else
@@ -728,7 +728,7 @@ void CDlgCAD::OnBnClickedGo()
 					f.WriteString(line);
 					line.Format("G04 Version: ПлатФорм %5.3f*\n", m_version);
 					f.WriteString(line);
-					line.Format("G04 WebSite: плат-форм.рф *\n");
+					line.Format("G04 WebSite: https://github.com/niconson *\n");
 					f.WriteString(line);
 				}
 				line.Format( "G04 %s*\n", f_str );
@@ -1074,7 +1074,8 @@ void CDlgCAD::OnBnClickedButtonFolder()
 {
 	if( m_folder.GetLength() == 0 )
 		OnBnClickedButtonDef();
-	CPathDialog dlg( "Select Folder", "Set CAM output folder", m_folder );
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
+					G_LANGUAGE == 0 ? "Set CAM output folder" : "Выберите папку", m_folder );
 	int ret = dlg.DoModal();
 	if( ret == IDOK )
 	{

@@ -361,7 +361,7 @@ int CFreePcbApp::ExitInstance()
 void CFreePcbApp::OnHelpFAQ()
 {
 	SHELLEXECUTEINFO ShExecInfo;
-	CString fn = "https://github.com/Duxah/FreePCB-2/blob/master/How_to.md";
+	CString fn = "https://github.com/niconson";
 	if (G_LANGUAGE)
 		fn = "https://плат-форм.рф";
 
@@ -381,7 +381,7 @@ void CFreePcbApp::OnHelpFAQ()
 void CFreePcbApp::OnHelpGotoWebsite()
 {
     SHELLEXECUTEINFO ShExecInfo;
-	CString fn = "https://github.com/Duxah/FreePCB-2/blob/master/README.md";
+	CString fn = "https://github.com/niconson";
 	if (G_LANGUAGE)
 		fn = "https://плат-форм.рф";
 
