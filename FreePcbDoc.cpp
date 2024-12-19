@@ -207,7 +207,7 @@ CFreePcbDoc::CFreePcbDoc()
 	m_dlg_log = NULL;
 	bNoFilesOpened = TRUE;
 	// VERSION (key)
-	m_version = 2.416;
+	m_version = 2.417;
 	m_file_version = m_version;
 	m_dlg_log = new CDlgLog;// CFreePcbDoc()
 	m_dlg_log->Create( IDD_LOG );

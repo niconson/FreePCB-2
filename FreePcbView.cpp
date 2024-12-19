@@ -8690,7 +8690,10 @@ int CFreePcbView::ShowSelectStatus()
 			RECT r = m_Doc->m_dlist->GetHighlightedBounds( NULL );
 			::MakeCStringFromDimension( &szx, r.right-r.left, u, FALSE, FALSE, FALSE, u==MIL?1:3 );
 			::MakeCStringFromDimension( &szy, r.top-r.bottom, u, FALSE, FALSE, FALSE, u==MIL?1:3 );
-			str.Format( "Group selected (%d) Rectangle %s x %s", m_sel_count, szx, szy );
+			if((r.right - r.left) == 0)
+				str.Format("Group selected (%d)", m_sel_count);
+			else
+				str.Format( "Group selected (%d) Rectangle %s x %s", m_sel_count, szx, szy );
 			if ( m_sel_merge_name.GetLength() )
 				str = m_sel_merge_name;
 		}

@@ -190,9 +190,9 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 		// incoming
 		// VERSION (key)
 #ifdef _DEBUG
-		m_edit_build.SetWindowText("2.4 Debug: 16"/* // VERSION "$WCREV$ Debug: ($WCDATE$)" */ );
+		m_edit_build.SetWindowText("2.4 Debug: 17"/* // VERSION "$WCREV$ Debug: ($WCDATE$)" */ );
 #else
-		m_edit_build.SetWindowText( "2.4 Release: 16"/* "$WCREV$ Debug: ($WCDATE$)" */ );
+		m_edit_build.SetWindowText( "2.4 Release: 17"/* "$WCREV$ Debug: ($WCDATE$)" */ );
 #endif
 	}
 }
