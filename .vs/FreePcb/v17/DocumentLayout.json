@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcb.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % d!9$  \u0022     ",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcb.rc||{177559E0-D141-11D0-92DF-00A0C9138C45}|,   b e g i n       % d!9$  \u0022     "
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcb.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\Shape.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:Shape.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\Dlg_OpenScad.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:Dlg_OpenScad.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,44 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FreePcb.rc - IDD_ADD_MASK_CUTOUT - Dialog",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.rc",
-              "RelativeDocumentMoniker": "FreePcb.rc",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.rc - IDD_ADD_MASK_CUTOUT - Dialog",
-              "RelativeToolTip": "FreePcb.rc - IDD_ADD_MASK_CUTOUT - Dialog",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2024-12-19T18:04:11.701Z",
-              "EditorCaption": " - IDD_ADD_MASK_CUTOUT - Dialog"
+              "DocumentIndex": 0,
+              "Title": "FreePcbDoc.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
+              "RelativeDocumentMoniker": "FreePcbDoc.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
+              "RelativeToolTip": "FreePcbDoc.cpp",
+              "ViewState": "AQIAAMUAAAAAAAAAAAAYwNEAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-27T12:15:33.041Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Shape.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\Shape.cpp",
+              "RelativeDocumentMoniker": "Shape.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\Shape.cpp",
+              "RelativeToolTip": "Shape.cpp",
+              "ViewState": "AQIAAAASAAAAAAAAAAAkwBMSAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-26T12:25:33.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Dlg_OpenScad.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\Dlg_OpenScad.cpp",
+              "RelativeDocumentMoniker": "Dlg_OpenScad.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\Dlg_OpenScad.cpp",
+              "RelativeToolTip": "Dlg_OpenScad.cpp",
+              "ViewState": "AQIAAKgBAAAAAAAAAAAYwLYBAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-26T12:23:29.989Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "FreePcb.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp",
               "RelativeDocumentMoniker": "FreePcb.cpp",
               "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp",
               "RelativeToolTip": "FreePcb.cpp",
-              "ViewState": "AQIAALMAAAAAAAAAAAAYwL4AAAACAAAA",
+              "ViewState": "AQIAALMAAAAAAAAAAAAYwMAAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-19T17:57:39.156Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FreePcbView.cpp",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp",
-              "RelativeDocumentMoniker": "FreePcbView.cpp",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp",
-              "RelativeToolTip": "FreePcbView.cpp",
-              "ViewState": "AQIAAOkhAAAAAAAAAAAYwPUhAAAxAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-11-19T13:06:35.867Z",
               "EditorCaption": ""
             }
           ]

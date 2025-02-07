@@ -190,9 +190,9 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 		// incoming
 		// VERSION (key)
 #ifdef _DEBUG
-		m_edit_build.SetWindowText("2.4 Debug: 17"/* // VERSION "$WCREV$ Debug: ($WCDATE$)" */ );
+		m_edit_build.SetWindowText("2.4 Debug: 18"/* // VERSION "$WCREV$ Debug: ($WCDATE$)" */ );
 #else
-		m_edit_build.SetWindowText( "2.4 Release: 17"/* "$WCREV$ Debug: ($WCDATE$)" */ );
+		m_edit_build.SetWindowText( "2.4 Release: 18"/* "$WCREV$ Debug: ($WCDATE$)" */ );
 #endif
 	}
 }
@@ -362,8 +362,8 @@ void CFreePcbApp::OnHelpFAQ()
 {
 	SHELLEXECUTEINFO ShExecInfo;
 	CString fn = "https://github.com/niconson";
-	if (G_LANGUAGE)
-		fn = "https://плат-форм.рф";
+	//if (G_LANGUAGE)
+	//	fn = "https://плат-форм.рф";
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = NULL;
@@ -382,8 +382,8 @@ void CFreePcbApp::OnHelpGotoWebsite()
 {
     SHELLEXECUTEINFO ShExecInfo;
 	CString fn = "https://github.com/niconson";
-	if (G_LANGUAGE)
-		fn = "https://плат-форм.рф";
+	//if (G_LANGUAGE)
+	//	fn = "https://плат-форм.рф";
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = NULL;

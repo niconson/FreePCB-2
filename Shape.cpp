@@ -4500,7 +4500,16 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					break;
 				}
 			}
-			if( hPresent )
+			//BOOL Cutout = 0;
+			for (int i = 0; i < m_outline_poly.GetSize(); i++)
+			{
+				if (m_outline_poly.GetAt(i).GetLayer() == LAY_FP_PAD_THRU)
+				{
+					hPresent = TRUE;
+					break;
+				}
+			}
+			if( hPresent )//|| Cutout )
 			{
 				// создаем diff, затем сразу union и
 				// рисуем цилиндр
@@ -4600,8 +4609,22 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					}
 				}
 			}
-			if( hPresent )
+			if( hPresent )//|| Cutout )
 			{
+				//здесь пишем вырезы в контуре PCB
+				for (int i = 0; i < m_outline_poly.GetSize(); i++)
+				{
+					if (m_outline_poly.GetAt(i).GetLayer() == LAY_FP_PAD_THRU)
+					{
+						CString polyPts = m_outline_poly.GetAt(i).GetOpenscadPolyPts(	doc->m_units,
+																						dlg.m_resolution,
+																						sp.GetLength()+5,
+																						0, 0, 0);
+						str.Format("%s(board_h*3, center=true)\n%spolygon([ %s ]);\n%s", dlg.L_EXTRUDE, sp, polyPts, sp);
+						file.WriteString(str);
+					}
+				}
+
 				// теперь закрываем diff
 				sp.Truncate( sp.GetLength()-ddSPACE.GetLength() );
 				str.Format("// end of difference\n%s", sp );
@@ -4622,8 +4645,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		for( int ic=0; ic<m_openscad_code.GetSize(); ic++ )
 		{
 			if( ic == 0 )
-				file.WriteString( "\n" );
-			str = (sp + m_openscad_code.GetAt(ic) + "\n");
+				file.WriteString( "\n" + sp);
+			str = (m_openscad_code.GetAt(ic) + "\n" + sp);
 			str.Replace("`","\"");
 			file.WriteString( str );
 		}
@@ -4641,8 +4664,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		for (int ic = 0; ic < m_openscad_hole.GetSize(); ic++)
 		{
 			if (ic == 0)
-				file.WriteString("\n");
-			str = (sp + m_openscad_hole.GetAt(ic) + "\n");
+				file.WriteString("\n" + sp);
+			str = (m_openscad_hole.GetAt(ic) + "\n" + sp);
 			str.Replace("`", "\"");
 			file.WriteString(str);
 		}
@@ -4669,8 +4692,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		for (int ic = 0; ic < m_openscad_module.GetSize(); ic++)
 		{
 			if (ic == 0)
-				file.WriteString("\n");
-			str = (sp + m_openscad_module.GetAt(ic) + "\n");
+				file.WriteString("\n" + sp);
+			str = (m_openscad_module.GetAt(ic) + "\n" + sp);
 			str.Replace("`", "\"");
 			file.WriteString(str);
 		}
