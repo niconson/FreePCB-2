@@ -4128,7 +4128,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 			str = "//============================================\n";
 			str += "// Построитель кода для OpenScad\n";
 			str += "// Author: duxahtech © 2014-2024\n";
-			str += "// Site: https://плат-форм.рф\n";
+			str += "// Site: https://github.com/niconson\n";
 			str += "//============================================\n\n\n\n";
 		}
 		file.WriteString( str );

@@ -850,7 +850,7 @@ BEGIN
     LTEXT           "© Advanced Interfaces Group, University of Manchester",IDC_STATIC,42,99,180,8
     LTEXT           "ClibPDF © FastIO Systems Inc.",IDC_STATIC,30,78,101,8
     LTEXT           "Generic Polygon Clipper",IDC_STATIC,30,90,76,8
-    EDITTEXT        IDC_EDIT1,66,36,139,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    EDITTEXT        IDC_EDIT1,66,36,162,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
     LTEXT           "Build",IDC_STATIC,42,36,16,8
     LTEXT           "Executables:",IDC_STATIC,18,114,42,8
     LTEXT           "FpcROUTE © 2007 Bruce Parham",IDC_STATIC,30,126,113,8
