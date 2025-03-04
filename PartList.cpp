@@ -3116,9 +3116,9 @@ void CPartList::ImportPartListInfo( partlist_info * pl, int flags, CDlgLog * log
 		if( !bFound )
 		{
 			// part in project but not in partlist_info
-			CString Prefix="";
+			CString Prefix="", Suffix="";
 			if( part->ref_des.Left(3) == "VIA" )
-				ParseRef( &part->ref_des, &Prefix );
+				ParseRef( &part->ref_des, &Prefix, &Suffix );
 			if( (flags & KEEP_PARTS_AND_CON) || Prefix.Compare("VIA") == 0 )
 			{
 				// set flag to preserve this part

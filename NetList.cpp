@@ -7321,11 +7321,11 @@ void CNetList::ImportNetListInfo( netlist_info * nl, int flags, CDlgLog * log,
 			{
 				// pin in net but not in netlist_info 
 				cpart * part = m_plist->GetPart( ref_des );
-				CString Prefix="";
+				CString Prefix="", Suffix="";
 				if( part )
 					if( flags )
 						if( part->ref_des.Left(3) == "VIA" )
-							ParseRef( &part->ref_des, &Prefix );
+							ParseRef( &part->ref_des, &Prefix, &Suffix );
 				if( (flags & KEEP_PARTS_AND_CON) || Prefix.Compare("VIA") == 0 )
 				{
 					// we may want to preserve this pin		
