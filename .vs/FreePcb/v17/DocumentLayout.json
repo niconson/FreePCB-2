@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\NetList.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:NetList.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcb.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,11 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "NetList.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\NetList.cpp",
               "RelativeDocumentMoniker": "NetList.cpp",
@@ -43,7 +43,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PartList.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\PartList.cpp",
               "RelativeDocumentMoniker": "PartList.cpp",
@@ -51,25 +51,24 @@
               "RelativeToolTip": "PartList.cpp",
               "ViewState": "AQIAACcMAAAAAAAAAAAYwCoMAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-02-27T20:56:21.5Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-27T20:56:21.5Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "FreePcbDoc.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
               "RelativeDocumentMoniker": "FreePcbDoc.cpp",
               "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
               "RelativeToolTip": "FreePcbDoc.cpp",
-              "ViewState": "AQIAAMUAAAAAAAAAAAAYwNEAAAASAAAA",
+              "ViewState": "AQIAAJAGAAAAAAAAAAAEwKwGAABHAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-27T12:15:33.041Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "FreePcb.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp",
               "RelativeDocumentMoniker": "FreePcb.cpp",
