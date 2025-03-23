@@ -7105,7 +7105,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "    if( enable_draw_%s != 0 )\n      Draw_%s();\n", fname, fname );
+			str.Format( "    if( enable_draw_%s != 0 )\n      Draw_%s_%s();\n", fname, fname, moduleName);
 			file.WriteString( str );
 		}
 		str.Format( "    if( enable_draw_board_outline != 0 )\n      Draw_BO_%s();\n", moduleName );
@@ -7223,7 +7223,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "module Draw_%s ()\n{\n", fname );
+			str.Format( "module Draw_%s_%s ()\n{\n", fname, moduleName);
 			file.WriteString( str );
 			for( cpart * pp=m_plist->GetFirstPart(); pp; pp=m_plist->GetNextPart(pp) )
 			{
