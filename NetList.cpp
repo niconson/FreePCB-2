@@ -4157,6 +4157,7 @@ int CNetList::PartFootprintChanged( cpart * part, CString * PINS )
 								continue;
 							}
 							ReverseNetConnect( net, ic, TRUE );
+							DrawConnection(net, ic);
 							ic++;// repeat
 							continue;
 						}

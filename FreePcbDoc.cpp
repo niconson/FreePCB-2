@@ -207,7 +207,7 @@ CFreePcbDoc::CFreePcbDoc()
 	m_dlg_log = NULL;
 	bNoFilesOpened = TRUE;
 	// VERSION (key)
-	m_version = 2.420;
+	m_version = 2.423;
 	m_file_version = m_version;
 	m_dlg_log = new CDlgLog;// CFreePcbDoc()
 	m_dlg_log->Create( IDD_LOG );
@@ -11914,6 +11914,13 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 				m_dlist->Get_Rect( el, &LRECT );
 				CPoint * P = new CPoint[np];//ok
 				m_dlist->Get_Points( el, P, &np );
+
+				if (el->gtype == DL_ARC_CW || el->gtype == DL_ARC_CCW ||
+					el->gtype == DL_CURVE_CW || el->gtype == DL_CURVE_CCW)
+				{
+					ASSERT(0); //no test for arc elements
+				}
+
 				for(int ipt=0; (ipt+1)<np; ipt++ )
 				{
 					int Lx1 = P[ipt].x;
