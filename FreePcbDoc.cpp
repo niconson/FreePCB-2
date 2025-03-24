@@ -7110,7 +7110,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			str.Format( "    else if( enable_draw_%s != 0 )\n      Draw_%s_%s();\n", fname, fname, moduleName);
 			file.WriteString(str);
 		}
-		str.Format( "    if( enable_draw_board_outline != 0 )\n      Draw_BO_%s();\n", moduleName );
+		str.Format( "    if( bAll != 0 )\n      Draw_BO_%s(1);\n", moduleName);
+		file.WriteString(str);
+		str.Format( "    else if( enable_draw_board_outline != 0 )\n      Draw_BO_%s(0);\n", moduleName );
 		file.WriteString( str );
 		//
 		// закрываем  pcb module
@@ -7118,7 +7120,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		file.WriteString( "}\n" );
 		file.WriteString( "\n" );
 		file.WriteString( "\n" );
-		str.Format( "/* ___________________\n      |                   |\n      |   BOARD OUTLINE   |\n      |___________________|\n    */\nmodule Draw_BO_%s()\n{\n", moduleName );
+		str.Format( "/* ___________________\n      |                   |\n      |   BOARD OUTLINE   |\n      |___________________|\n    */\nmodule Draw_BO_%s (bAll=0)\n{\n", moduleName );
 		file.WriteString( str );
 
 		
@@ -7196,7 +7198,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 								{
 									double HoleSize = ((double)p->shape->m_padstack[ipin].hole_size*cos(22.5*M_PI/180.0)-100000) / mu;
 									CString fname = foots.GetAt(ok1);
-									str.Format( "           if( enable_draw_%s != 0 )\n", fname );
+									str.Format( "           if( bAll != 0 )\n");
+									file.WriteString(str);
+									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize);
+									file.WriteString(str);
+									str.Format( "           else if( enable_draw_%s != 0 )\n", fname );
 									file.WriteString( str );
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize );
 									file.WriteString( str );
