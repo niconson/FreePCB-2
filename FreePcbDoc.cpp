@@ -7099,14 +7099,16 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		//
 		// открываем  pcb module
 		//
-		str.Format( "module Pcb_%s ()\n{\n", moduleName );
+		str.Format( "module Pcb_%s (bAll=0)\n{\n", moduleName );
 		file.WriteString( str );
 
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "    if( enable_draw_%s != 0 )\n      Draw_%s_%s();\n", fname, fname, moduleName);
-			file.WriteString( str );
+			str.Format( "    if( bAll != 0 )\n      Draw_%s_%s();\n", fname, moduleName);
+			file.WriteString(str);
+			str.Format( "    else if( enable_draw_%s != 0 )\n      Draw_%s_%s();\n", fname, fname, moduleName);
+			file.WriteString(str);
 		}
 		str.Format( "    if( enable_draw_board_outline != 0 )\n      Draw_BO_%s();\n", moduleName );
 		file.WriteString( str );
