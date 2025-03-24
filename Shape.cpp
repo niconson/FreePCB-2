@@ -4118,17 +4118,17 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		if (G_LANGUAGE == 0)
 		{
 			str = "//============================================\n";
-			str += "// Code builder for OpenScad via Freepcb-2 app\n";
-			str += "// Author: duxahtech © 2014-2024\n";
-			str += "// Site: https://github.com/niconson\n";
+			str += "// Code builder for OpenScad via Freepcb-2\n";
+			str += "// Author: niconson.com (c) 2014-2025\n";
+			str += "// Sites: https://niconson.com/freepcb2 https://github.com/niconson\n";
 			str += "//============================================\n\n\n\n";
 		}
 		else 
 		{
 			str = "//============================================\n";
-			str += "// Построитель кода для OpenScad\n";
-			str += "// Author: duxahtech © 2014-2024\n";
-			str += "// Site: https://github.com/niconson\n";
+			str += "// Code builder for OpenScad via Freepcb-2\n";
+			str += "// Author: niconson.com (c) 2014-2025\n";
+			str += "// Sites: https://niconson.com/freepcb2 https://github.com/niconson\n";
 			str += "//============================================\n\n\n\n";
 		}
 		file.WriteString( str );

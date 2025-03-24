@@ -844,7 +844,7 @@ FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,12,20,20
     LTEXT           "Редактор печатных плат ПлатФорм",IDC_STATIC,42,12,129,8,SS_NOPREFIX
-    LTEXT           "© Allan Wright 2003 - 2010,  © duxahtech 2014 - 2024",IDC_STATIC,42,24,179,8
+    LTEXT           "© Allan Wright 2003 - 2010,  © duxahtech 2014 - 2025",IDC_STATIC,42,24,179,8
     DEFPUSHBUTTON   "Готово",IDOK,178,7,50,14,WS_GROUP
     LTEXT           "Source libraries:",IDC_STATIC,19,66,51,8
     LTEXT           "© Advanced Interfaces Group, University of Manchester",IDC_STATIC,42,99,180,8
@@ -2820,7 +2820,7 @@ BEGIN
         BEGIN
             VALUE "Comments", "alpha"
             VALUE "FileDescription", "Freeware PCB editor"
-            VALUE "LegalCopyright", "Copyright (C) duxahtech 2014-2024"
+            VALUE "LegalCopyright", "Copyright (C) duxahtech 2014-2025"
         END
     END
     BLOCK "VarFileInfo"

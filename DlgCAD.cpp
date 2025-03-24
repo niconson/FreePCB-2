@@ -719,16 +719,24 @@ void CDlgCAD::OnBnClickedGo()
 					f.WriteString(line);
 					line.Format("G04 Version: FreePCB-%5.3f*\n", m_version);
 					f.WriteString(line);
-					line.Format("G04 WebSite: https://github.com/niconson *\n");
+					line.Format("G04 Author: niconson.com *\n");
+					f.WriteString(line);
+					line.Format("G04 WebSite: https://niconson.com/freepcb2 *\n");
+					f.WriteString(line); 
+					line.Format("G04 Repositories: https://github.com/niconson *\n");
 					f.WriteString(line);
 				}
 				else
 				{
-					line.Format("G04 \"ѕлат‘орм\" на русском*\n");
+					line.Format("G04 \"FreePCB2 на русском\"*\n");
 					f.WriteString(line);
 					line.Format("G04 Version: ѕлат‘орм %5.3f*\n", m_version);
 					f.WriteString(line);
-					line.Format("G04 WebSite: https://github.com/niconson *\n");
+					line.Format("G04 Author: niconson.com *\n");
+					f.WriteString(line);
+					line.Format("G04 WebSite: https://niconson.com/freepcb2 *\n");
+					f.WriteString(line);
+					line.Format("G04 Repositories: https://github.com/niconson *\n");
 					f.WriteString(line);
 				}
 				line.Format( "G04 %s*\n", f_str );
