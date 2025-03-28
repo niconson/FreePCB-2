@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\DlgCAD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:DlgCAD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -30,11 +34,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "DlgCAD.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\DlgCAD.cpp",
+              "RelativeDocumentMoniker": "DlgCAD.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\DlgCAD.cpp",
+              "RelativeToolTip": "DlgCAD.cpp",
+              "ViewState": "AQIAAM4CAAAAAAAAAAAhwNoCAAAzAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-03-28T10:02:52.592Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Shape.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\Shape.cpp",
               "RelativeDocumentMoniker": "Shape.cpp",
@@ -47,7 +64,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "FreePcbView.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp",
               "RelativeDocumentMoniker": "FreePcbView.cpp",
@@ -60,7 +77,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "PartList.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\PartList.cpp",
               "RelativeDocumentMoniker": "PartList.cpp",
@@ -73,7 +90,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "FreePcbDoc.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
               "RelativeDocumentMoniker": "FreePcbDoc.cpp",
@@ -86,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "FreePcb.cpp",
               "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcb.cpp",
               "RelativeDocumentMoniker": "FreePcb.cpp",

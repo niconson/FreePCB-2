@@ -728,7 +728,7 @@ void CDlgCAD::OnBnClickedGo()
 				}
 				else
 				{
-					line.Format("G04 \"FreePCB2 на русском\"*\n");
+					line.Format("G04 FreePCB MFC Application*\n");
 					f.WriteString(line);
 					line.Format("G04 Version: ѕлат‘орм %5.3f*\n", m_version);
 					f.WriteString(line);
