@@ -190,9 +190,9 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 		// incoming
 		// VERSION (key)
 #ifdef _DEBUG
-		m_edit_build.SetWindowText("2.4 Debug: 23   e-mail: freepcb@niconson.com"/* // VERSION "$WCREV$ Debug: ($WCDATE$)" */ );
+		m_edit_build.SetWindowText("2.4 Debug: 24   e-mail: freepcb@niconson.com"/* // VERSION "$WCREV$ Debug: ($WCDATE$)" */ );
 #else
-		m_edit_build.SetWindowText( "2.4 Release: 23   e-mail: freepcb@niconson.com"/* "$WCREV$ Debug: ($WCDATE$)" */ );
+		m_edit_build.SetWindowText( "2.4 Release: 24   e-mail: freepcb@niconson.com"/* "$WCREV$ Debug: ($WCDATE$)" */ );
 #endif
 	}
 }

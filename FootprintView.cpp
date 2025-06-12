@@ -496,23 +496,25 @@ void CFootprintView::OnSize(UINT nType, int cx, int cy)
 
 void CFootprintView::MoveToLayer( int layer )
 {
-	PushUndo();
+	if (m_cursor_mode != CUR_FP_GROUP_SELECTED)
+		PushUndo();
 	if( m_cursor_mode == CUR_FP_POLY_CORNER_SELECTED ||
 		m_cursor_mode == CUR_FP_POLY_SIDE_SELECTED ||
 		m_cursor_mode == CUR_FP_GROUP_SELECTED)
 	{
 		m_fp.m_outline_poly[m_sel_id.i].SetLayer(layer);
 		m_fp.m_outline_poly[m_sel_id.i].Draw(m_dlist);
-		if( m_cursor_mode != CUR_FP_GROUP_SELECTED )
-			CancelSelection();
 	}
 	else if( m_cursor_mode == CUR_FP_TEXT_SELECTED )
 	{
 		m_sel_text->m_layer = layer;
 		m_fp.Draw( m_fp.m_dlist,m_Doc->m_smfontutil );
-		CancelSelection();
 	}
-	FootprintModified( TRUE );
+	if (m_cursor_mode != CUR_FP_GROUP_SELECTED)
+	{
+		CancelSelection();
+		FootprintModified(TRUE);
+	}
 }
 
 void CFootprintView::SelectSimilar( BOOL b )
@@ -3699,7 +3701,7 @@ void CFootprintView::AddPolyline( id * m_id )
 				for( int i=0; i<m_fp.m_outline_poly.GetSize(); i++ )
 				{
 					if( m_fp.m_outline_poly[i].GetNumCorners() > 1 )
-						if( m_fp.m_outline_poly[i].GetSel(0) )
+						if( m_fp.m_outline_poly[i].GetSel() )
 						{
 							m_fp.m_outline_poly[i].SetW(dlg.GetWidth());
 							m_fp.m_outline_poly[i].Draw( m_fp.m_outline_poly[i].GetDisplayList() );

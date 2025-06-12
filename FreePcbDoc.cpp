@@ -207,7 +207,7 @@ CFreePcbDoc::CFreePcbDoc()
 	m_dlg_log = NULL;
 	bNoFilesOpened = TRUE;
 	// VERSION (key)
-	m_version = 2.423;
+	m_version = 2.424;
 	m_file_version = m_version;
 	m_dlg_log = new CDlgLog;// CFreePcbDoc()
 	m_dlg_log->Create( IDD_LOG );
@@ -2560,7 +2560,7 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 					if( isep == -1 )
 						ASSERT(0);		// unable to parse path
 					CString app = m_app_dir.Left(isep+1);
-					m_parent_folder = app + "Projects";
+					m_parent_folder = app + "Projects\\";
 				}
 			}
 			else if( np && key_str == "library_folder" )

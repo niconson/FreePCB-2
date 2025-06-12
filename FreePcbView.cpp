@@ -21200,7 +21200,7 @@ void CFreePcbView::OnInfoBoxMess( int command, int n_str, CArray<CString> *str, 
 		{
 			BOOL bPartFound = 0;
 			// hilite via
-			if( ref.Left(9) == "*DL_CIRC#" && ns%4 == 0 )
+			if(str->GetAt(ns).Left(9) == "*DL_CIRC#" && ns%4 == 0 )
 			{
 				bPartFound = 1;
 				CString s;
