@@ -10362,6 +10362,7 @@ void CFreePcbView::OnPartMove()
 	SetDrawLayer( DISABLE_CHANGE_DRAW_LAYER );
 	Invalidate(FALSE);
 	m_last_cursor_point = m_from_pt;
+	m_last_mouse_point = m_from_pt;
 	ReleaseDC( pDC );
 }
 //===============================================================================================

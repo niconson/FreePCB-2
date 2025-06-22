@@ -207,7 +207,7 @@ CFreePcbDoc::CFreePcbDoc()
 	m_dlg_log = NULL;
 	bNoFilesOpened = TRUE;
 	// VERSION (key)
-	m_version = 2.424;
+	m_version = 2.425;
 	m_file_version = m_version;
 	m_dlg_log = new CDlgLog;// CFreePcbDoc()
 	m_dlg_log->Create( IDD_LOG );
@@ -3199,7 +3199,7 @@ void CFreePcbDoc::WriteOptions( CStdioFile * file, BOOL bConfig )
 		CFreePcbView * view = (CFreePcbView*)m_view;
 		line.Format( "[options]\n\n" );
 		file->WriteString( line );
-		line.Format( "app_folder: %s\n", m_app_dir );
+		line.Format( "app_folder: \"%s\"\n", m_app_dir );
 		file->WriteString( line );
 		line.Format( "version: %5.3f\n", m_version );
 		file->WriteString( line );

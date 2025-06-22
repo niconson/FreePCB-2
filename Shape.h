@@ -122,9 +122,9 @@ class CShape
 {
 	// if variables are added, remember to modify Copy!
 public:
-	enum { MAX_NAME_SIZE = 59 };	// max. characters
+	enum { MAX_NAME_SIZE = 99 };	// max. characters
 	enum { MAX_PIN_NAME_SIZE = 39 };
-	enum { MAX_VALUE_SIZE = 39 };
+	enum { MAX_VALUE_SIZE = 99 };
 	CString m_name;		// name of shape (e.g. "DIP20")
 	CString m_author;
 	CString m_package;
