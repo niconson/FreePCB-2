@@ -482,6 +482,7 @@ public:
 	int MirrorNetConnect( cnet * net, int ic, int num_copper_layers, BOOL bDraw=TRUE );
 	BOOL ReverseNetConnect( cnet * net, int ic, BOOL bRev );
 	void RepairBranch( cnet * net, int ic, BOOL bMove );
+	void RepairBranchesForNet(cnet* net);
 	void RepairAllBranches( BOOL bMove );
 	int AddNetStub( cnet * net, int p1, int x1=0, int y1=0 );
 	int RemoveNetConnect( cnet * net, int ic, BOOL set_areas=TRUE );

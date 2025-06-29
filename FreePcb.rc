@@ -78,8 +78,7 @@ IDI_ICON2               ICON                    "res\\icon2.ico"
 //
 // Bitmap
 //
-
-IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+//IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 
 IDR_MYTOOLBAR           BITMAP                  "res\\Toolbar.bmp"
 
@@ -105,30 +104,6 @@ IDB_BITMAP_EDGE2        BITMAP                  "res\\edge2.bmp"
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR 16, 15
-BEGIN
-    BUTTON      ID_FILE_NEW
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_SAVE
-    SEPARATOR
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_FILE_PRINT
-    SEPARATOR
-    BUTTON      ID_APP_ABOUT
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-    SEPARATOR
-END
-
 IDR_MYTOOLBAR TOOLBAR 16, 15
 BEGIN
     BUTTON      ID_FILE_NEW
@@ -140,6 +115,8 @@ BEGIN
     BUTTON      ID_EDIT_PASTE
     SEPARATOR
     BUTTON      ID_FILE_PRINT
+    BUTTON      ID_SWITCH_TO_ECDS
+    BUTTON      ID_FILE_GENERATE_3D
     SEPARATOR
     BUTTON      ID_APP_ABOUT
     SEPARATOR

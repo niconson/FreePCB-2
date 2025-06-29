@@ -223,7 +223,7 @@ cnet * CNetList::GetNextNet()
 		m_pos_i--;
 		return NULL;
 	}
-	else
+	else if( m_pos_i >= 0 )
 	{
 		m_map.GetNextAssoc( m_pos[m_pos_i], name, ptr );
 		cnet * net = (cnet*)ptr;
@@ -231,6 +231,8 @@ cnet * CNetList::GetNextNet()
 			ASSERT(0);
 		return net;
 	}
+	else
+		return NULL;
 }
 
 // Cancel loop on next net
@@ -2025,6 +2027,41 @@ void CNetList::RepairAllBranches( BOOL bMove )
 		if(net) for(int ni=0; ni<net->nconnects; ni++)
 		{
 			RepairBranch(net,ni,bMove);
+		}
+	}
+}
+
+void CNetList::RepairBranchesForNet(cnet* net)
+{
+	for (int ni = 0; ni < net->nconnects; ni++)
+	{
+		if (net->connect[ni].end_pin == -1)
+		{
+			int vx = net->connect[ni].vtx[net->connect[ni].nsegs].x;
+			int vy = net->connect[ni].vtx[net->connect[ni].nsegs].y;
+			int dev = net->connect[ni].seg[0].width / 2;
+			for (int n2 = 0; n2 < net->nconnects; n2++)
+			{
+				if (ni == n2)
+					continue;
+				for (int seg = 0; seg < net->connect[n2].nsegs; seg++)
+				{
+					int x2 = net->connect[n2].vtx[seg].x;
+					int y2 = net->connect[n2].vtx[seg].y;
+					int dev2 = net->connect[n2].seg[seg].width / 2;
+					dev2 = max(dev2, dev);
+					if (abs(vx - x2) < dev2 && abs(vy - y2) < dev2)
+					{
+						int newTeeId = net->connect[n2].vtx[seg].tee_ID;
+						if( newTeeId == 0 )
+							newTeeId = GetNewTeeID();
+						net->connect[ni].vtx[net->connect[ni].nsegs].tee_ID = newTeeId;
+						net->connect[n2].vtx[seg].tee_ID = newTeeId;
+						DrawConnection(net, ni);
+						DrawConnection(net, n2);
+					}
+				}
+			}
 		}
 	}
 }
@@ -4373,7 +4410,7 @@ int CNetList::PartFootprintChanged( cpart * part, CString * PINS )
 				}
 			}
 		}
-		RemoveOrphanBranches( net, 0 );
+		RemoveOrphanBranches( net, 0 );// n.u.???
 		net = GetNextNet(/*LABEL*/);
 	}
 	return 0;
@@ -4408,7 +4445,7 @@ int CNetList::PartDeleted( cpart * part, BOOL bSetAreas )
 			else
 				ip++;
 		}
-		RemoveOrphanBranches( net, 0 );
+		RemoveOrphanBranches( net, 0 );// n.u.???
 	}
 	if( bSetAreas )
 	{
@@ -6893,7 +6930,7 @@ int CNetList::ReadNets( CStdioFile * pcb_file, double read_version, int * InLaye
 					RemoveArea( net, ia );
 			}
 			CleanUpConnections( net );
-			RemoveOrphanBranches( net, 0 );
+			RemoveOrphanBranches( net, 0 );// n.u.???
 			SetAreaConnections( net );
 		}	
 	}
@@ -8522,6 +8559,10 @@ int CNetList::CheckConnectivity( CString * logstr )
 		m_map.GetNextAssoc( pos, name, ptr );
 		cnet * net = (cnet*)ptr;
 		CString net_name = net->name;
+		RepairBranchesForNet(net);
+		RepairAllBranches(TRUE);
+		OptimizeConnections(net,-1,0,0,0);
+
 		// now check connections
 		for( int ic=0; ic<net->connect.GetSize(); ic++ )
 		{

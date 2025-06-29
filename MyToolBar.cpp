@@ -49,16 +49,16 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if( !LoadToolBar( IDR_MYTOOLBAR ) )
 		return -1;
 
-	SetButtonInfo( 12, IDC_STATIC_VISIBLE_GRID, TBBS_SEPARATOR, 40 );
-	SetButtonInfo( 13, IDC_STATIC_VISIBLE_GRID, TBBS_SEPARATOR, 50 );
-	SetButtonInfo( 14, IDC_STATIC_VISIBLE_GRID, TBBS_SEPARATOR, 80 );
-	SetButtonInfo( 15, IDC_COMBO_VISIBLE_GRID, TBBS_SEPARATOR, 90 );
-	SetButtonInfo( 16, IDC_STATIC_PLACEMENT_GRID, TBBS_SEPARATOR, 64 );
-	SetButtonInfo( 17, IDC_COMBO_PLACEMENT_GRID, TBBS_SEPARATOR, 90 );
-	SetButtonInfo( 18, IDC_STATIC_ROUTING_GRID, TBBS_SEPARATOR, 50 );
-	SetButtonInfo( 19, IDC_COMBO_ROUTING_GRID, TBBS_SEPARATOR, 90 );
-	SetButtonInfo( 20, IDC_STATIC_SNAP_ANGLE, TBBS_SEPARATOR, 50 );
-	SetButtonInfo( 21, IDC_COMBO_SNAP_ANGLE, TBBS_SEPARATOR, 50 );
+	SetButtonInfo( 14, IDC_STATIC_VISIBLE_GRID, TBBS_SEPARATOR, 40 );
+	SetButtonInfo( 15, IDC_STATIC_VISIBLE_GRID, TBBS_SEPARATOR, 50 );
+	SetButtonInfo( 16, IDC_STATIC_VISIBLE_GRID, TBBS_SEPARATOR, 80 );
+	SetButtonInfo( 17, IDC_COMBO_VISIBLE_GRID, TBBS_SEPARATOR, 90 );
+	SetButtonInfo( 18, IDC_STATIC_PLACEMENT_GRID, TBBS_SEPARATOR, 64 );
+	SetButtonInfo( 19, IDC_COMBO_PLACEMENT_GRID, TBBS_SEPARATOR, 90 );
+	SetButtonInfo( 20, IDC_STATIC_ROUTING_GRID, TBBS_SEPARATOR, 50 );
+	SetButtonInfo( 21, IDC_COMBO_ROUTING_GRID, TBBS_SEPARATOR, 90 );
+	SetButtonInfo( 22, IDC_STATIC_SNAP_ANGLE, TBBS_SEPARATOR, 50 );
+	SetButtonInfo( 23, IDC_COMBO_SNAP_ANGLE, TBBS_SEPARATOR, 50 );
 
 	m_font.CreateFont( 14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET,
 		OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, 
@@ -67,13 +67,13 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetFont( &m_font );
 
 	RECT rect;
-	GetItemRect( 12, &rect );
+	GetItemRect( 14, &rect );
 	rect.top += 5;
 	rect.left += 5;
 	m_ctlStaticUnits.Create(G_LANGUAGE==0?"   Units":"Ед.изм", WS_VISIBLE, rect, this, IDC_STATIC_VISIBLE_GRID );
 	m_ctlStaticUnits.SetFont( &m_font );
 
-	GetItemRect( 13, &rect );
+	GetItemRect( 15, &rect );
 	rect.bottom = rect.top + 300;
 	rect.left += 5;
 	m_ctlComboUnits.Create( WS_CHILD | WS_VISIBLE | WS_VSCROLL |
@@ -84,37 +84,37 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_ctlComboUnits.InsertString( 1, "mm" );
 	m_ctlComboUnits.SetCurSel( 0 );
 
-	GetItemRect( 14, &rect );
+	GetItemRect( 16, &rect );
 	rect.top += 5;
 	rect.left += 5;
 	m_ctlStaticVisibleGrid.Create(G_LANGUAGE==0?"   Grids: Visible":"   Сетка: Вид", WS_VISIBLE, rect, this, IDC_STATIC_VISIBLE_GRID);
 	m_ctlStaticVisibleGrid.SetFont( &m_font );
 
-	GetItemRect( 15, &rect );
+	GetItemRect( 17, &rect );
 	rect.bottom = rect.top + 300;
 	m_ctlComboVisibleGrid.Create( WS_CHILD | WS_VISIBLE | WS_VSCROLL |
 		CBS_DROPDOWN, rect, this, IDC_COMBO_VISIBLE_GRID );
 	m_ctlComboVisibleGrid.SetFont( &m_font );
 
-	GetItemRect( 16, &rect );
+	GetItemRect( 18, &rect );
 	rect.top += 5;
 	rect.left += 5;
 	m_ctlStaticPlacementGrid.Create(G_LANGUAGE==0?"  Placement":"   Детали", WS_VISIBLE, rect, this, IDC_STATIC_PLACEMENT_GRID);
 	m_ctlStaticPlacementGrid.SetFont( &m_font );
 
-	GetItemRect( 17, &rect );
+	GetItemRect( 19, &rect );
 	rect.bottom = rect.top + 300;
 	m_ctlComboPlacementGrid.Create( WS_CHILD | WS_VISIBLE | WS_VSCROLL |
 		CBS_DROPDOWN, rect, this, IDC_COMBO_PLACEMENT_GRID );
 	m_ctlComboPlacementGrid.SetFont( &m_font );
 
-	GetItemRect( 18, &rect );
+	GetItemRect( 20, &rect );
 	rect.top += 5;
 	rect.left += 5;
 	m_ctlStaticRoutingGrid.Create(G_LANGUAGE==0?"   Routing":" Трассы", WS_VISIBLE, rect, this, IDC_STATIC_ROUTING_GRID);
 	m_ctlStaticRoutingGrid.SetFont( &m_font );
 
-	GetItemRect( 19, &rect );
+	GetItemRect( 21, &rect );
 	rect.bottom = rect.top + 300;
 	rect.left += 5;
 	rect.right += 5;
@@ -122,13 +122,13 @@ int CMyToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		CBS_DROPDOWNLIST, rect, this, IDC_COMBO_ROUTING_GRID );
 	m_ctlComboRoutingGrid.SetFont( &m_font );
 
-	GetItemRect( 20, &rect );
+	GetItemRect( 22, &rect );
 	rect.top += 5;
 	rect.left += 5;
 	m_ctlStaticSnapAngle.Create(G_LANGUAGE==0?"  Angle":"   Угол", WS_VISIBLE, rect, this, IDC_STATIC_SNAP_ANGLE);
 	m_ctlStaticSnapAngle.SetFont( &m_font );
 
-	GetItemRect( 21, &rect );
+	GetItemRect( 23, &rect );
 	rect.bottom = rect.top + 300;
 	m_ctlComboSnapAngle.Create( WS_CHILD | WS_VISIBLE | WS_VSCROLL |
 		CBS_DROPDOWNLIST, rect, this, IDC_COMBO_SNAP_ANGLE );

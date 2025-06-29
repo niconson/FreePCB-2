@@ -5856,7 +5856,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 				}
 				// delete new areas
 				// if it's outside board outline 
-				if( getbit( m_Doc->m_crop_flags, MC_BOARD ) )
+				if( getbit( m_Doc->m_crop_flags, MC_BOARD ) || getbit(m_Doc->m_crop_flags, MC_POLYLINES))
 				{
 					for( int i_a=m_sel_net->nareas-1; i_a>=mem_n_areas; i_a-- )
 					{
@@ -5865,11 +5865,23 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 						BOOL remove = 1;
 						for( int sc_p=0; sc_p<m_Doc->m_outline_poly.GetSize(); sc_p++ )
 						{
-							if( m_Doc->m_outline_poly[sc_p].GetLayer() == LAY_BOARD_OUTLINE )
+							if (m_Doc->m_outline_poly[sc_p].GetLayer() == LAY_BOARD_OUTLINE && getbit(m_Doc->m_crop_flags, MC_BOARD)) 
 							{
 								if( m_Doc->m_outline_poly[sc_p].TestPointInside(cur_x, cur_y) )
 								{
 									remove = 0;
+									break;
+								}
+							}
+						}
+						if( remove == 0 ) for (int sc_p = 0; sc_p < m_Doc->m_outline_poly.GetSize(); sc_p++)
+						{
+							if (m_Doc->m_outline_poly[sc_p].GetLayer() == LAY_SCRIBING && getbit(m_Doc->m_crop_flags, MC_POLYLINES))
+							{
+								if (m_Doc->m_outline_poly[sc_p].TestPointInside(cur_x, cur_y) &&
+									m_Doc->m_outline_poly[sc_p].GetHatch() == CPolyLine::DIAGONAL_FULL)
+								{
+									remove = 1;
 									break;
 								}
 							}
@@ -8076,9 +8088,14 @@ int CFreePcbView::ShowSelectStatus()
 	switch( m_cursor_mode )
 	{
 	case CUR_NONE_SELECTED:
-		str.Format( "No selection (%d)", m_Doc->m_nlist->m_pos_i );
+	{
+		int n_ratlines = m_Doc->m_nlist->GetNumRatlines();
+		if (G_LANGUAGE == 0)
+			str.Format("%d ratlines currently are not routed.  (Iterator=%d)", n_ratlines, m_Doc->m_nlist->m_pos_i);
+		else
+			str.Format("Количество неразведённых участков цепей: %d  (Итератор=%d)", n_ratlines, m_Doc->m_nlist->m_pos_i);
+	}
 		break;
-
 	case CUR_DRE_SELECTED:
 		str.Format( "DRE %s", m_sel_dre->str );
 		break;

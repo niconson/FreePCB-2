@@ -1,17 +1,17 @@
 [options]
 
-app_folder: D:\FreePCBDev\FreePCB-2\.\Debug
-version: 2.416
-file_version: 2.416
-project_name: "Package"
-library_folder: "d:\freepcbdev\freepcb-2\.\fp_lib"
-full_library_folder: "d:\freepcbdev\freepcb-2\.\fp_lib\lib"
-CAM_folder: "D:\Разработки\Projects\Micronix\СПК-1\version-01\CAM(СПК-1-R1)(8-17-2023)"
+app_folder: "D:\FreePCBDev\FreePCB-2\.\Debug"
+version: 2.426
+file_version: 2.426
+project_name: "Grainger-01"
+library_folder: "d:\works\projects\micronics\lib"
+full_library_folder: "d:\works\projects\micronics\lib\footprints"
+CAM_folder: "D:\Works\Projects\Micronics\Grainger\version-01\CAM(Grainger-01)(5-16-2025)"
 ses_file_path: ""
 netlist_completed: "0"
 part_search: ""
 png_settings: "800 0.05"
-netlist_file_path: "d:\разработки\projects\micronix\СПК-1\version-01\related_files\CDS_netlist\СПК-1-R1.fpc.net"
+netlist_file_path: "d:\works\projects\Micronics\Grainger\version-01\related_files\CDS_netlist\Grainger-01.fpc.net"
 SMT_connect_copper: "1"
 default_glue_width: "635000"
 dsn_flags: "3"
@@ -22,23 +22,23 @@ auto_ratline_disable: "0"
 auto_ratline_disable_min_pins: "100"
 netlist_import_flags: 3015
 m_client_rect_left: 110
-m_client_rect_right: 1477
-m_client_rect_bottom: 646
+m_client_rect_right: 1389
+m_client_rect_bottom: 717
 m_client_rect_top: 0
-m_org_x: -120026
-m_org_y: -128275
-m_scale_factor: 361218
+m_org_x: -51454
+m_org_y: -26657
+m_scale_factor: 13727
 part_line_visible: 1
 merge_shown: 1
 pdf_pin1: -0.700000
-pdf_use_font: -889000 889000 500000
+pdf_use_font: -635000 635000 -635000
 units: MM
 
 m_sel_mask: 2147483645
-m_visible_layers: -84357
-m_top_layer: 13
-m_grid_style: 1
-visible_grid_spacing: 10000000.000000
+m_visible_layers: -42117
+m_top_layer: 14
+m_grid_style: 0
+visible_grid_spacing: 1000000.000000
   visible_grid_item: 100mil
   visible_grid_item: 125mil
   visible_grid_item: 200mil
@@ -58,7 +58,7 @@ visible_grid_spacing: 10000000.000000
   visible_grid_item: 50mm
   visible_grid_item: 100mm
 
-placement_grid_spacing: 1000000.000000
+placement_grid_spacing: 100000.000000
   placement_grid_item: 10mil
   placement_grid_item: 20mil
   placement_grid_item: 25mil
@@ -117,7 +117,7 @@ routing_grid_spacing: 0.000000
 
 snap_angle: 45
 
-fp_visible_grid_spacing: 25000000.000000
+fp_visible_grid_spacing: 1000000.000000
   fp_visible_grid_item: 100mil
   fp_visible_grid_item: 125mil
   fp_visible_grid_item: 200mil
@@ -137,7 +137,7 @@ fp_visible_grid_spacing: 25000000.000000
   fp_visible_grid_item: 50mm
   fp_visible_grid_item: 100mm
 
-fp_placement_grid_spacing: 500000.000000
+fp_placement_grid_spacing: 1000000.000000
   fp_placement_grid_item: 10mil
   fp_placement_grid_item: 20mil
   fp_placement_grid_item: 25mil
@@ -163,15 +163,15 @@ fp_placement_grid_spacing: 500000.000000
 
 fp_snap_angle: 45
 
-m_seg_clearance: 205080
-fill_clearance: 300000
+m_seg_clearance: 195080
+fill_clearance: 508000
 mask_clearance: 50000
 thermal_width: 400000
 thermal_clearance: 200000
-min_silkscreen_width: 150000
+min_silkscreen_width: 100000
 highlight_width: 127000
-hole_clearance: 400000
-pilot_diameter: 500000
+hole_clearance: 508000
+pilot_diameter: 200000
 annular_ring_for_pins: 200000
 annular_ring_for_vias: 200000
 shrink_paste_mask: 0
@@ -188,91 +188,78 @@ cam_space_y: 0
 report_options: 4123
 drc_check_unrouted: 1
 drc_trace_width: 250000
-drc_pad_pad: 200000
-drc_pad_trace: 200000
-drc_trace_trace: 200000
-drc_hole_copper: 500000
+drc_pad_pad: 190000
+drc_pad_trace: 190000
+drc_trace_trace: 190000
+drc_hole_copper: 400000
 drc_annular_ring_pins: 199000
 drc_annular_ring_vias: 199000
 drc_board_edge_copper: 300000
-drc_board_edge_hole: 500000
-drc_hole_hole: 300000
-drc_copper_copper: 200000
+drc_board_edge_hole: 0
+drc_hole_hole: 600000
+drc_copper_copper: 100000
 
-default_trace_width:0.4mm
-default_via_pad_width:1.5mm
-default_via_hole_width:0.8mm
+default_trace_width:0.5mm
+default_via_pad_width:0.9mm
+default_via_hole_width:0.5mm
 n_width_menu: 4
-  width_menu_item: 1 0.4mm 0mil 0mil
+  width_menu_item: 1 0.3mm 0mil 0mil
   width_menu_item: 2 0.5mm 0mil 0mil
-  width_menu_item: 3 0.7mm 0mil 0mil
-  width_menu_item: 4 1mm 0mil 0mil
+  width_menu_item: 3 0.8mm 0mil 0mil
+  width_menu_item: 4 1.2mm 1.2mm 0.8mm
 
 n_copper_layers: 2
-  layer_info: "dragging" 0 255 255 0 1 127 127 127 0
-  layer_info: "background" 1 239 239 239 1 255 255 255 0
-  layer_info: "visible grid" 2 238 238 238 0 0 0 0 0
-  layer_info: "highlight" 3 255 255 0 1 0 0 0 0
-  layer_info: "DRC error" 4 255 0 0 1 128 64 0 0
-  layer_info: "board outline" 5 0 115 60 1 6 255 168 0
-  layer_info: "scribing (V-cut)" 6 127 127 127 1 224 224 224 1
-  layer_info: "top notes" 7 134 134 134 0 255 162 117 1
-  layer_info: "bot notes" 8 134 134 134 0 128 128 128 0
-  layer_info: "rat line" 9 0 0 128 1 0 0 160 0
-  layer_info: "top silk" 10 178 178 178 1 255 255 255 0
-  layer_info: "bottom silk" 11 255 170 170 0 255 255 255 0
-  layer_info: "thru pad" 12 235 235 235 1 255 255 255 0
-  layer_info: "top view" 13 77 77 122 1 230 230 230 0
-  layer_info: "bot view" 14 222 111 111 0 180 180 180 0
-  layer_info: "top copper" 15 40 165 90 1 128 255 210 0
-  layer_info: "bot copper" 16 30 90 50 0 95 95 95 0
+  layer_info: "движение" 0 255 255 0 1 127 127 127 0
+  layer_info: "фон доски" 1 239 239 239 1 255 255 255 0
+  layer_info: "линии сетки" 2 238 238 238 0 0 0 0 0
+  layer_info: "подсветка" 3 255 255 0 1 0 0 0 0
+  layer_info: "тестирование" 4 255 0 0 1 128 64 0 0
+  layer_info: "контур платы" 5 0 115 60 1 4 255 167 1
+  layer_info: "скрайбинг (V)" 6 127 127 127 1 224 224 224 0
+  layer_info: "заметки верх" 7 134 134 134 0 255 162 117 1
+  layer_info: "заметки низ" 8 134 134 134 1 128 128 128 0
+  layer_info: "эл. связи" 9 0 0 128 1 0 0 160 0
+  layer_info: "шёлк верх" 10 178 178 178 0 255 255 255 1
+  layer_info: "шёлк низ" 11 255 170 170 1 255 255 255 0
+  layer_info: "отверстия" 12 235 235 235 1 255 255 255 1
+  layer_info: "вид верх" 13 77 77 122 0 230 230 230 1
+  layer_info: "вид низ" 14 222 111 111 1 180 180 180 0
+  layer_info: "медь верх" 15 40 165 90 0 145 255 217 1
+  layer_info: "медь низ" 16 30 90 50 1 95 95 95 0
 
 [footprints]
 
-name: "OUTLINE1"
-author: "Duxah"
-package: "OUTLINE1"
-description: "Pads"
+name: "R0603"
+author: "Ivex"
+package: "R0603"
   units: NM
-  sel_rect: -87088900 -123088900 87088900 123088900
-  ref_text: 900000 -56900000 -93300000 0 150000
-  value_text: 700000 -57000000 -94300000 0 100000
-  centroid: 1 0 0 0
-  outline_polyline: 127000 87000000 -118000000 1 0 4
-    next_corner: 82000000 -123000000 1
-    next_corner: -82000000 -123000000 0
-    next_corner: -87000000 -118000000 1
-    next_corner: -87000000 118000000 0
-    next_corner: -82000000 123000000 1
-    next_corner: 82000000 123000000 0
-    next_corner: 87000000 118000000 1
-    next_corner: 87000000 29000000 0
-    next_corner: 86000000 29000000 0
-    next_corner: 86000000 118000000 0
-    next_corner: 82000000 122000000 2
-    next_corner: -82000000 122000000 0
-    next_corner: -86000000 118000000 2
-    next_corner: -86000000 -118000000 0
-    next_corner: -82000000 -122000000 2
-    next_corner: 82000000 -122000000 0
-    next_corner: 86000000 -118000000 2
-    next_corner: 86000000 -29000000 0
-    next_corner: 87000000 -29000000 0
+  sel_rect: -1460000 -710000 1460000 710000
+  ref_text: 1270000 850000 1900000 0 177800
+  value_text: 1270000 850000 -640000 0 177800
+  centroid: 0 0 100 0
+  outline_polyline: 120000 300000 500000 1 0 4
+    next_corner: -300000 500000 0
+    next_corner: -450000 650000 0
+    next_corner: -1050000 650000 0
+    next_corner: -1400000 300000 2
+    next_corner: -1400000 -250000 0
+    next_corner: -1000000 -650000 2
+    next_corner: -450000 -650000 0
+    next_corner: -300000 -500000 0
+    next_corner: 300000 -500000 0
+    next_corner: 450000 -650000 0
+    next_corner: 1000000 -650000 0
+    next_corner: 1400000 -250000 2
+    next_corner: 1400000 300000 0
+    next_corner: 1050000 650000 2
+    next_corner: 450000 650000 0
     close_polyline: 0
-    openscad_data: "// Global lift 29.750mm //|// Global rotation 0.000 //|// Rotation around vertex1 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Black` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 0.500, scale= 1.000, convexity=2 )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 127000 86500000 29500000 0 0 4
-    next_corner: 85500000 28500000 2
-    next_corner: 86500000 27500000 2
-    next_corner: 87500000 28500000 2
-    close_polyline: 2
-    openscad_data: "// Global rotation 0.000 //|// Global lift 29.750mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Black` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 0.500, scale= 1.000, convexity=2 )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 127000 86500000 -27500000 0 0 4
-    next_corner: 85500000 -28500000 2
-    next_corner: 86500000 -29500000 2
-    next_corner: 87500000 -28500000 2
-    close_polyline: 2
-    openscad_data: "// Global rotation 0.000 //|// Global lift 29.750mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Black` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 0.500, scale= 1.000, convexity=2 )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  n_pins: 0
+    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|"
+  n_pins: 2
+    pin: "1" 0 -825000 200 0 ""
+      top_pad: 4 1000000 400000 400000 200000
+    pin: "2" 0 825000 0 0 ""
+      top_pad: 4 1000000 400000 400000 200000
 
 [board]
 
@@ -285,16 +272,32 @@ description: "Pads"
 
 [parts]
 
-part: VIA10
-  ref_text: 1270000 127000 0 -60600000 -93200000 1
-  shape: "OUTLINE1"
-  pos: 0 0 0 180 0
+part: R1C1
+  ref_text: 1270000 177800 0 275000 -3200000 1
+  shape: "R0603"
+  value: "1k" 1270000 177800 0 850000 -640000 0
+  pos: -58400000 -26675000 1 90 0
 
 [nets]
+
+net: "NET00002" 1 0 0 0 0 0 1
+  pin: 1 R1C1.1
+
+net: "NET00001" 1 0 0 0 0 0 1
+  pin: 1 R1C1.2
 
 [texts]
 
 [merges]
 
+  merge: "Источник" 0
+  merge: "ТЯГА" 0
+  merge: "ВОДА" 0
+  merge: "ВОДА2" 0
+  merge: "ПУСК" 0
+  merge: "POWER" 0
+  merge: "ЦИКЛ" 0
+  merge: "START" 0
+  merge: "ТЯГА2" 0
 
 [end]

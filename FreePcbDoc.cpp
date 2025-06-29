@@ -207,7 +207,7 @@ CFreePcbDoc::CFreePcbDoc()
 	m_dlg_log = NULL;
 	bNoFilesOpened = TRUE;
 	// VERSION (key)
-	m_version = 2.425;
+	m_version = 2.426;
 	m_file_version = m_version;
 	m_dlg_log = new CDlgLog;// CFreePcbDoc()
 	m_dlg_log->Create( IDD_LOG );
@@ -2661,6 +2661,7 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 			else if( np && key_str == "n_copper_layers" )
 			{
 				m_num_copper_layers = my_atoi( &p[0] );
+				m_num_copper_layers = min(14, m_num_copper_layers);
 				m_plist->SetNumCopperLayers( m_num_copper_layers );
 				m_nlist->SetNumCopperLayers( m_num_copper_layers );
 				m_num_layers = m_num_copper_layers + LAY_TOP_COPPER;
@@ -6525,6 +6526,7 @@ void CFreePcbDoc::PasteFromFile( CString pathname, BOOL bwDialog )
 			if( in_str.Left(16) == "n_copper_layers:" )
 			{
 				n_copper_lrs = atoi( in_str.Right( in_str.GetLength()-16 ) );
+				n_copper_lrs = min(14, n_copper_lrs);
 			}
 			else if( in_str.Left(13) == "file_version:" )
 			{
@@ -7028,6 +7030,10 @@ void CFreePcbDoc::OnRepeatDrc()
 
 void CFreePcbDoc::OnFileGenerate3DFile()
 {
+	if (bNoFilesOpened)
+	{
+		return;
+	}
 	if( m_project_modified )
 	{
 		AfxMessageBox(G_LANGUAGE == 0 ? 
@@ -12545,6 +12551,16 @@ void CFreePcbDoc::SwitchTo__ECDS()
 
 void CFreePcbDoc::SwitchTo_ECDS( BOOL standby )
 {
+	if (bNoFilesOpened)
+	{
+		CString FreeCds = m_app_dir + "\\СхемАтор.exe";
+		if (G_LANGUAGE == 0)
+			FreeCds = m_app_dir + "\\FreeCds.exe";
+		if ((UINT)ShellExecute(NULL, "open", "\"" + FreeCds + "\"", "", "\"" + m_app_dir + "\"", SW_SHOWNORMAL) > 32)
+		{
+		}
+		return;
+	}
 	for( int STEP=0; STEP<2; STEP++ )
 	{
 		CString name = PROGRAM_CAP2 + m_cds_filename;
@@ -12563,7 +12579,7 @@ void CFreePcbDoc::SwitchTo_ECDS( BOOL standby )
 			{
 				if( STEP == 0 )
 				{
-					m_cds_filename = FindSchematicFile();	
+					m_cds_filename = FindSchematicFile();
 					continue;
 				}
 				else if( m_cds_filename.GetLength() )
