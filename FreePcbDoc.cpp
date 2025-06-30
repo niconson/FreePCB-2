@@ -207,7 +207,7 @@ CFreePcbDoc::CFreePcbDoc()
 	m_dlg_log = NULL;
 	bNoFilesOpened = TRUE;
 	// VERSION (key)
-	m_version = 2.426;
+	m_version = 2.427;
 	m_file_version = m_version;
 	m_dlg_log = new CDlgLog;// CFreePcbDoc()
 	m_dlg_log->Create( IDD_LOG );
@@ -1071,6 +1071,7 @@ int CFreePcbDoc::FileClose()
 	CDC * pDC = m_view->GetDC();
 	m_view->OnDraw( pDC );
 	m_view->ReleaseDC( pDC );
+	bNoFilesOpened = TRUE;
 	return IDOK;
 }
 

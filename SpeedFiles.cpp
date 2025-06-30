@@ -60,7 +60,7 @@ void LoadSpeedFiles( CFreePcbDoc * doc )
 		if( isep == -1 )
 			ASSERT(0);		// unable to parse path
 		CString app = doc->m_app_dir.Left(isep+1);
-		doc->m_parent_folder = app + "Projects";
+		doc->m_parent_folder = app + "Projects\\";
 	}
 	//
 	CMenu* pMenu = &theApp.m_main;

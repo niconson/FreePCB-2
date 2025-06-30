@@ -22315,9 +22315,9 @@ void CFreePcbView::ShowPinState (cpart * p, int pin)
 	//m_Doc->m_dlist->HighLight( el );
 	//clrbit(el->layers_bitmap,LAY_PAD_THRU);
 
-	dl_element * el = m_Doc->m_dlist->Add(NULL,NULL,lmap,DL_HOLLOW_RRECT,1,&pr,TH*m_pin_state/50,NULL,0);
-	m_Doc->m_dlist->HighLight( el );
-	clrbit(el->layers_bitmap,LAY_PAD_THRU);
+	//dl_element * el = m_Doc->m_dlist->Add(NULL,NULL,lmap,DL_HOLLOW_RRECT,1,&pr,TH*m_pin_state/50,NULL,0);
+	//m_Doc->m_dlist->HighLight( el );
+	//clrbit(el->layers_bitmap,LAY_PAD_THRU);
 	//
 	dl_element * cel = m_Doc->m_dlist->Cpy( tpin->dl_el );
 	cel->transparent = TRANSPARENT_BLACK_GROUND;

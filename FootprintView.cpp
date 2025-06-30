@@ -299,104 +299,106 @@ void CFootprintView::OnDraw(CDC* pDC)
 {
 #define VSTEP 14
 
-	if( !m_Doc )
+	if( !m_Doc || m_bDraggingRect )
 	{
 		// don't try to draw until InitInstance() has been called
 		return;
 	}
-
+	
 	// get client rectangle
 	GetClientRect( &m_client_r );
 
 	// draw stuff on left pane
-	if( m_left_pane_invalid )
+	if (m_left_pane_invalid)
 	{
 		// erase previous contents if changed
-		CBrush brush( RGB(255, 255, 255) );
-		CPen pen( PS_SOLID, 1, RGB(255, 255, 255) );
-		CBrush * old_brush = pDC->SelectObject( &brush );
-		CPen * old_pen = pDC->SelectObject( &pen );
+		CBrush brush(RGB(255, 255, 255));
+		CPen pen(PS_SOLID, 1, RGB(255, 255, 255));
+		CBrush* old_brush = pDC->SelectObject(&brush);
+		CPen* old_pen = pDC->SelectObject(&pen);
 		// erase left pane
 		RECT r = m_client_r;
 		r.right = m_left_pane_w;
 		r.bottom -= m_bottom_pane_h;
-		pDC->Rectangle( &r );
+		pDC->Rectangle(&r);
 		// erase bottom pane
 		r = m_client_r;
 		r.top = r.bottom - m_bottom_pane_h;
-		pDC->Rectangle( &r );
-		pDC->SelectObject( old_brush ); 
-		pDC->SelectObject( old_pen );
+		pDC->Rectangle(&r);
+		pDC->SelectObject(old_brush);
+		pDC->SelectObject(old_pen);
 		m_left_pane_invalid = FALSE;
-	}
-	CFont * old_font = pDC->SelectObject( &m_small_font );
-	int y_off = 10;
-	int x_off = 10;
 
-	for( int i=0; i<m_Doc->m_fp_num_layers; i++ )  
-	{
-		// i = position index
-		CRect r( x_off, i*VSTEP+y_off, x_off+12, i*VSTEP+12+y_off );
-		CBrush brush( RGB(m_Doc->m_fp_rgb[i][0], m_Doc->m_fp_rgb[i][1], m_Doc->m_fp_rgb[i][2]) );
-		if( m_Doc->m_fp_vis[i] )
-		{
-			// draw colored rectangle
-			CBrush * old_brush = pDC->SelectObject( &brush );
-			pDC->Rectangle( &r );
-			pDC->SelectObject( old_brush );
-		}
-		else
-		{
-			// if layer is invisible, draw box with X
-			pDC->Rectangle( &r );
-			pDC->MoveTo( r.left, r.top );
-			pDC->LineTo( r.right, r.bottom );
-			pDC->MoveTo( r.left, r.bottom );
-			pDC->LineTo( r.right, r.top );
-		}
-		r.left += 20;
-		r.right += 120;
-		r.bottom += 5;
-		pDC->DrawText( &fp_layer_str[i][0], -1, &r, 0 ); 
-		if( i >= LAY_FP_TOP_COPPER && i <= LAY_FP_BOTTOM_COPPER ) 
-		{
-			CString num_str; 
-			num_str.Format( "[%d*]", i-LAY_FP_TOP_COPPER+1 );
-			RECT nr = r;
-			nr.left = nr.right - 55;
-			pDC->DrawText( num_str, -1, &nr, DT_TOP );
-		}
-		RECT ar = r;
-		ar.left = 2;
-		ar.right = 8;
-		ar.bottom -= 5;
-		if( i == m_active_layer )
-		{
-			// draw arrowhead
-			pDC->MoveTo( ar.left, ar.top+1 );
-			pDC->LineTo( ar.right-1, (ar.top+ar.bottom)/2 );
-			pDC->LineTo( ar.left, ar.bottom-1 );
-			pDC->LineTo( ar.left, ar.top+1 );
-		}
-		else
-		{
-			// erase arrowhead
-			pDC->FillSolidRect( &ar, RGB(255,255,255) ); 
-		}
-	}
-	CRect r( x_off, NUM_FP_LAYERS*VSTEP+y_off, x_off+120, NUM_FP_LAYERS*VSTEP+12+y_off );
-	r.bottom += VSTEP;
-	r.top += VSTEP;
-	pDC->DrawText(G_LANGUAGE==0?"* Use numeric":"* Используйте", -1, &r, DT_TOP);
-	r.bottom += VSTEP;
-	r.top += VSTEP;
-	pDC->DrawText(G_LANGUAGE==0?"keys to display":"цифры для выбора", -1, &r, DT_TOP);
-	r.bottom += VSTEP;
-	r.top += VSTEP;
-	pDC->DrawText(G_LANGUAGE==0?"layer on top":"верхнего слоя", -1, &r, DT_TOP);
+		CFont* old_font = pDC->SelectObject(&m_small_font);
+		int y_off = 10;
+		int x_off = 10;
 
-	// draw function keys on bottom pane
-	DrawBottomPane();
+		for (int i = 0; i < m_Doc->m_fp_num_layers; i++)
+		{
+			// i = position index
+			CRect r(x_off, i * VSTEP + y_off, x_off + 12, i * VSTEP + 12 + y_off);
+			CBrush brush(RGB(m_Doc->m_fp_rgb[i][0], m_Doc->m_fp_rgb[i][1], m_Doc->m_fp_rgb[i][2]));
+			if (m_Doc->m_fp_vis[i])
+			{
+				// draw colored rectangle
+				CBrush* old_brush = pDC->SelectObject(&brush);
+				pDC->Rectangle(&r);
+				pDC->SelectObject(old_brush);
+			}
+			else
+			{
+				// if layer is invisible, draw box with X
+				pDC->Rectangle(&r);
+				pDC->MoveTo(r.left, r.top);
+				pDC->LineTo(r.right, r.bottom);
+				pDC->MoveTo(r.left, r.bottom);
+				pDC->LineTo(r.right, r.top);
+			}
+			r.left += 20;
+			r.right += 120;
+			r.bottom += 5;
+			pDC->DrawText(&fp_layer_str[i][0], -1, &r, 0);
+			if (i >= LAY_FP_TOP_COPPER && i <= LAY_FP_BOTTOM_COPPER)
+			{
+				CString num_str;
+				num_str.Format("[%d*]", i - LAY_FP_TOP_COPPER + 1);
+				RECT nr = r;
+				nr.left = nr.right - 55;
+				pDC->DrawText(num_str, -1, &nr, DT_TOP);
+			}
+			RECT ar = r;
+			ar.left = 2;
+			ar.right = 8;
+			ar.bottom -= 5;
+			if (i == m_active_layer)
+			{
+				// draw arrowhead
+				pDC->MoveTo(ar.left, ar.top + 1);
+				pDC->LineTo(ar.right - 1, (ar.top + ar.bottom) / 2);
+				pDC->LineTo(ar.left, ar.bottom - 1);
+				pDC->LineTo(ar.left, ar.top + 1);
+			}
+			else
+			{
+				// erase arrowhead
+				pDC->FillSolidRect(&ar, RGB(255, 255, 255));
+			}
+		}
+		{
+			CRect r(x_off, NUM_FP_LAYERS * VSTEP + y_off, x_off + 120, NUM_FP_LAYERS * VSTEP + 12 + y_off);
+			r.bottom += VSTEP;
+			r.top += VSTEP;
+			pDC->DrawText(G_LANGUAGE == 0 ? "* Use numeric" : "* Используйте", -1, &r, DT_TOP);
+			r.bottom += VSTEP;
+			r.top += VSTEP;
+			pDC->DrawText(G_LANGUAGE == 0 ? "keys to display" : "цифры для выбора", -1, &r, DT_TOP);
+			r.bottom += VSTEP;
+			r.top += VSTEP;
+			pDC->DrawText(G_LANGUAGE == 0 ? "layer on top" : "верхнего слоя", -1, &r, DT_TOP);
+		}
+		// draw function keys on bottom pane
+		DrawBottomPane();
+	}
 
 	// clip to pcb drawing region
 	pDC->SelectClipRgn( &m_pcb_rgn );
@@ -1372,9 +1374,9 @@ void CFootprintView::OnLButtonDown(UINT nFlags, CPoint point)
 		// clicked in bottom pane, test for hit on function key rectangle
 		for( int i=0; i<8; i++ )
 		{
-			CRect r( FKEY_OFFSET_X+i*FKEY_STEP+(i/4)*FKEY_GAP, 
+			CRect r(m_left_pane_w +i*FKEY_STEP+(i/4)*FKEY_GAP,
 				m_client_r.bottom-FKEY_OFFSET_Y-FKEY_R_H, 
-				FKEY_OFFSET_X+i*FKEY_STEP+(i/4)*FKEY_GAP+FKEY_R_W,
+				m_left_pane_w +i*FKEY_STEP+(i/4)*FKEY_GAP+FKEY_R_W,
 				m_client_r.bottom-FKEY_OFFSET_Y );
 			if( r.PtInRect( point ) )
 			{
@@ -2254,6 +2256,7 @@ void CFootprintView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 	//
 	ReleaseDC( pDC );
 	ShowSelectStatus();
+	m_left_pane_invalid = TRUE;
 	Invalidate( FALSE );//HandleKeyPress	
 }
 
@@ -2556,9 +2559,9 @@ void CFootprintView::DrawBottomPane()
 	{
 		for( int i=0; i<4; i++ )
 		{
-			CRect r( FKEY_OFFSET_X+(j*4+i)*FKEY_STEP+j*FKEY_GAP, 
+			CRect r(	m_left_pane_w+(j*4+i)*FKEY_STEP+j*FKEY_GAP, 
 						m_client_r.bottom-FKEY_OFFSET_Y-FKEY_R_H, 
-						FKEY_OFFSET_X+(j*4+i)*FKEY_STEP+j*FKEY_GAP+FKEY_R_W,
+						m_left_pane_w+(j*4+i)*FKEY_STEP+j*FKEY_GAP+FKEY_R_W,
 						m_client_r.bottom-FKEY_OFFSET_Y );
 			pDC->Rectangle( &r );
 			pDC->MoveTo( r.left+FKEY_SEP_W, r.top );
