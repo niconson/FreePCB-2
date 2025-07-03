@@ -1,37 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FootprintView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FootprintView.cpp",
-              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp",
-              "RelativeDocumentMoniker": "FootprintView.cpp",
-              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FootprintView.cpp",
-              "RelativeToolTip": "FootprintView.cpp",
-              "ViewState": "AQIAAFkFAAAAAAAAAAAQwGIFAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-06-30T17:34:37.705Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

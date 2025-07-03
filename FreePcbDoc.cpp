@@ -2662,7 +2662,7 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 			else if( np && key_str == "n_copper_layers" )
 			{
 				m_num_copper_layers = my_atoi( &p[0] );
-				m_num_copper_layers = min(14, m_num_copper_layers);
+				m_num_copper_layers = min(16, m_num_copper_layers);
 				m_plist->SetNumCopperLayers( m_num_copper_layers );
 				m_nlist->SetNumCopperLayers( m_num_copper_layers );
 				m_num_layers = m_num_copper_layers + LAY_TOP_COPPER;
@@ -5611,6 +5611,8 @@ void CFreePcbDoc::OutlinePolyUndoCallback( int type, void * ptr, BOOL undo )
 // call dialog to create Gerber and drill files
 void CFreePcbDoc::OnFileGenerateCadFiles()
 {
+	if (theApp.m_view_mode == theApp.FOOTPRINT)
+		return;
 	if( m_outline_poly.GetSize() == 0 )
 	{
 		AfxMessageBox(G_LANGUAGE == 0 ? "A board outline must be present for CAM file generation":"Для генерации файла ГЕРБЕР необходимо наличие контура платы.");
@@ -6428,6 +6430,8 @@ void CFreePcbDoc::OnToolsCheckTraces()
 
 void CFreePcbDoc::OnEditSelectAll()
 {
+	if (theApp.m_view_mode == theApp.FOOTPRINT)
+		return;
 	m_view->CancelSelection();
 	id _id( ID_PART_DEF );
 	for( cpart * p=m_plist->GetFirstPart(); p; p=m_plist->GetNextPart(p) )
@@ -7018,6 +7022,8 @@ void CFreePcbDoc::ResetUndoState()
 
 void CFreePcbDoc::OnRepeatDrc()
 {
+	if (theApp.m_view_mode == theApp.FOOTPRINT)
+		return;
 	m_nlist->OptimizeConnections(0,0,0);
 	m_drelist->Clear();
 	m_dlg_log->ShowWindow( SW_SHOW );

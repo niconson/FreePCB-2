@@ -6247,6 +6247,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 						m_sel_id = n->area[iar].poly->GetId();
 						m_sel_id.sst = ID_SIDE;
 						m_sel_id.ii = 0;
+						m_sel_net = n;
 						nLayer = MoveAreaToLayer( nLayer );
 					}
 				}

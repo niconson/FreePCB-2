@@ -543,6 +543,7 @@ void CTextList::ReadTexts( CStdioFile * pcb_file, double read_version )
 				layer = my_atoi( &p[3] );
 				if( read_version < 2.0199 )
 					layer += 3;
+				layer = min(layer, LAY_BOTTOM_COPPER + theApp.m_Doc->m_num_copper_layers - 2);
 				int angle = my_atoi( &p[4] );
 				int mirror = my_atoi( &p[5] );
 				int font_size = my_atoi( &p[6] );
