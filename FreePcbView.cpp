@@ -3377,17 +3377,18 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 				el->transparent = TRANSPARENT_HILITE;
 				// text
 				int font_size = min( NM_PER_MIL*10, dst/10 );
+				font_size = max(NM_PER_MIL, font_size);
 				int stroke_width = font_size/6;
 				CString str;
 				::MakeCStringFromDimension( &str, dst, m_Doc->m_units, 0, 0, 0 );
 				CText * ht = m_Doc->m_tlist->AddText( m_last_cursor_point.x, m_last_cursor_point.y, 0/*angle*/, 0/*mirror*/, 0/*bNegative*/,
 															  m_active_layer, font_size, stroke_width, &str );
-				m_Doc->m_tlist->HighlightText(ht,TRANSPARENT_HILITE);
+				m_Doc->m_tlist->HighlightText(ht, TRANSPARENT_BLACK_GROUND);
 				m_Doc->m_tlist->RemoveText( ht );
 				::MakeCStringFromDimension( &str, m_measure_dist, m_Doc->m_units, 0, 0, 0 );
 				ht = m_Doc->m_tlist->AddText( m_last_cursor_point.x, m_last_cursor_point.y-(font_size*2), 0/*angle*/, 0/*mirror*/, 0/*bNegative*/,
 															  m_active_layer, font_size, stroke_width, &str );
-				m_Doc->m_tlist->HighlightText(ht,TRANSPARENT_HILITE);
+				m_Doc->m_tlist->HighlightText(ht, TRANSPARENT_BLACK_GROUND);
 				m_Doc->m_tlist->RemoveText( ht );
 				if( prev_m_ang >= 0 )
 				{
@@ -3400,7 +3401,7 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 					::MakeCStringFromDimension( &str, diff_ang, MM, 0, 0, 0, 2, 0 );
 					ht = m_Doc->m_tlist->AddText( m_last_cursor_point.x, m_last_cursor_point.y-(font_size*4), 0/*angle*/, 0/*mirror*/, 0/*bNegative*/,
 															  m_active_layer, font_size, stroke_width, &str );
-					m_Doc->m_tlist->HighlightText(ht,TRANSPARENT_HILITE);
+					m_Doc->m_tlist->HighlightText(ht, TRANSPARENT_BLACK_GROUND);
 					m_Doc->m_tlist->RemoveText( ht );
 				}
 				//
@@ -4456,7 +4457,8 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 					m_Doc->m_dlist->CancelHighLight();
 					m_Doc->m_nlist->HighlightNetVertices( m_sel_net, FALSE, FALSE );
 				}
-				else if( m_merge_show && m_cursor_mode == CUR_NONE_SELECTED )
+				else if( m_merge_show && (	m_cursor_mode == CUR_NONE_SELECTED ||
+											m_cursor_mode == CUR_GROUP_SELECTED))
 				{
 					m_dlist->CancelHighLight(0,1);
 					ShowMerges();
@@ -6161,6 +6163,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else if( fk == FK_COPY_TO_LAYER )
 		{
 			MoveAreaToLayer();
+			CancelSelection();
 		}
 		else if( fk == FK_COPY_CUT )
 		{

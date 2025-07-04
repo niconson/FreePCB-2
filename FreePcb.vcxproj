@@ -59,6 +59,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>ПлатФорм</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>ПлатФорм</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -92,7 +95,7 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>winmm.lib;rpcrt4.lib;clibpdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/FreePcb.exe</OutputFile>
+      <OutputFile>%(OutputFile)</OutputFile>
       <Version>1.109</Version>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>./libs/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

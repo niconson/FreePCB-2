@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\FreePCBDev\\FreePCB-2\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbDoc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{48B16142-FBCE-4203-996C-8DEC8AAE6546}|FreePcb.vcxproj|solutionrelative:FreePcbView.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FreePcbDoc.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
+              "RelativeDocumentMoniker": "FreePcbDoc.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbDoc.cpp",
+              "RelativeToolTip": "FreePcbDoc.cpp",
+              "ViewState": "AQIAAPkJAAAAAAAAAAAkwAMKAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-07-04T16:47:26.723Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FreePcbView.cpp",
+              "DocumentMoniker": "D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp",
+              "RelativeDocumentMoniker": "FreePcbView.cpp",
+              "ToolTip": "D:\\FreePCBDev\\FreePCB-2\\FreePcbView.cpp",
+              "RelativeToolTip": "FreePcbView.cpp",
+              "ViewState": "AQIAAGMRAAAAAAAAAAAkwGsRAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-07-04T16:46:07.207Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

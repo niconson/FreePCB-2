@@ -42,7 +42,7 @@ else if( A.SubString(1,ALength) == "mod_imp" )
 else if( A.SubString(1,ALength) == "net_imp" )
         OpenDialog->Filter = "Netlist (PADSPCB)|*.net|TXT (PADSPCB)|*.txt";
 else if( A.SubString(1,ALength) == "doc_imp" )
-        OpenDialog->Filter = "Microsoft Word file|*.docx|Word 2003|*.doc|Text file|*.txt|PDF file|*.pdf";
+        OpenDialog->Filter = "PDF file|*.pdf|Microsoft Word file|*.docx|Word 2003|*.doc|Text file|*.txt";
 else    OpenDialog->Filter = "All files|*.*";
 
 // export

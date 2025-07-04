@@ -89,6 +89,8 @@ if( ALength && Text.Length() > 3 )
         Wrm << (ExtractFilePath(Text)).c_str();
         Wrm.close();
         }
+if(FPC)
+        SetForegroundWindow(FPC);
 exit(0);
 }
 //---------------------------------------------------------------------------
