@@ -7660,6 +7660,47 @@ void CNetList::ReassignCopperLayers( int n_new_layers, int * layer )
 //
 void CNetList::RestoreConnectionsAndAreas( CNetList * old_nl, int flags, CDlgLog * log )
 {
+	// restore nets of all vias
+	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+	{
+		if (p->ref_des.Left(3) != "VIA")
+			continue;
+		if (p->shape->GetNumPins(2) == 1) // VIA
+		{
+			cnet * viaNet = p->pin[0].net;
+			if (viaNet)
+			{
+				cnet* old_net = old_nl->GetNetPtrByName(&viaNet->name);
+				if (old_net == NULL)
+					continue;
+				if (old_net->name.Compare(viaNet->name))
+					continue;
+				cnet* trueNet = NULL;
+				for (int i0 = 0; i0 < old_net->npins; i0++)
+				{
+					cpart* p1 = old_net->pin[i0].part;
+					if (p1 && p1 != p)
+						if (p1->shape->GetNumPins(2) == 2)
+						{
+							CString p1pin = old_net->pin[i0].pin_name;
+							cpart* p1new = m_plist->GetPart(p1->ref_des);
+							if (p1new)
+							{
+								trueNet = FindPin(&p1new->ref_des, &p1pin);
+								break;
+							}
+						}
+				}
+				if (trueNet && trueNet != viaNet)
+				{
+					int index = GetNetPinIndex(viaNet, &p->ref_des, &p->shape->m_padstack[0].name);
+					RemoveNetPin(viaNet, index, 0, 0, 0);
+					AddNetPin(trueNet, &p->ref_des, &p->shape->m_padstack[0].name);
+					p->pin[0].net = trueNet;
+				}
+			}
+		}
+	}
 	// loop through old nets
 	old_nl->MarkAllNets( 0 );
 	cnet * old_net = old_nl->GetFirstNet();

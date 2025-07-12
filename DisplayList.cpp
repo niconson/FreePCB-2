@@ -2674,17 +2674,22 @@ void CDisplayList::Drag( CDC * pDC, int x, int y )
 			//if(sign(i_drag_xf - i_drag_xi) == old_xi_dir && sign(i_drag_yf - i_drag_yi) == old_yi_dir &&
 			//   sign(i_drag_xi - m_drag_xb) == old_xb_dir && sign(i_drag_yi - m_drag_yb) == old_yb_dir &&
 			//   sign(m_drag_xe - i_drag_xf) == old_xe_dir && sign(m_drag_ye - i_drag_yf) == old_ye_dir   )
+			//if( abs(m_drag_xi - i_drag_xi) < m_visual_grid_spacing &&
+			//	abs(m_drag_yi - i_drag_yi) < m_visual_grid_spacing &&
+			//	abs(m_drag_xf - i_drag_xf) < m_visual_grid_spacing &&
+			//	abs(m_drag_yf - i_drag_yf) < m_visual_grid_spacing )
+			if(Distance(i_drag_xi, i_drag_yi, i_drag_xf, i_drag_yf) > 10.0)
 			{
 				m_drag_xi = i_drag_xi;
 				m_drag_yi = i_drag_yi;
 				m_drag_xf = i_drag_xf;
 				m_drag_yf = i_drag_yf;
 			}
-			//else
-			//{
-			//	xx = m_drag_x;
-			//	yy = m_drag_y;
-			//}
+			else
+			{
+				//xx = m_drag_x;
+				//yy = m_drag_y;
+			}
 
 			// 4. Redraw the three segments:
 			{

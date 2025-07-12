@@ -5173,6 +5173,9 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			// select segment
 			m_sel_id.Set( ID_NET, ID_CONNECT, new_ic, ID_SEG, new_is );
 			NewSelect( net, &m_sel_id, 1, 0 );
+			CPoint p((m_sel_con.vtx[m_sel_is].x + m_sel_con.vtx[m_sel_is+1].x)/2, (m_sel_con.vtx[m_sel_is].y + m_sel_con.vtx[m_sel_is+1].y)/2);
+			p = m_dlist->PCBToScreen(p);
+			SetCursorPos(p.x, p.y);
 			OnSegmentMove();
 		}
 		else if( fk == FK_INSERT_VERTICES )
