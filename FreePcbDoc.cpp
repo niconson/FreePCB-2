@@ -7041,6 +7041,10 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 	{
 		return;
 	}
+	if (theApp.m_view_mode == theApp.FOOTPRINT)
+	{
+		return;
+	}
 	if( m_project_modified )
 	{
 		AfxMessageBox(G_LANGUAGE == 0 ? 
