@@ -1515,8 +1515,13 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 			CString s;
 			s.Format( "combining cutouts %d from %d", Cutouts.GetSize()-icut1, Cutouts.GetSize() ); 
 			pMain->DrawStatus( 3, &s );
-			if( icut1%10 == 0 )
-				UpdateWindow( pMain->GetSafeHwnd() );
+			if (icut1 % 10 == 0)
+			{
+				UpdateWindow(pMain->GetSafeHwnd());
+				CWnd* wnd = AfxGetMainWnd();
+				if (wnd)
+					wnd->UpdateWindow();
+			}
 		}
 		for( int icut2=Cutouts.GetSize()-1; icut2>icut1; icut2-- )
 		{

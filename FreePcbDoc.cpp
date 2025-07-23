@@ -6235,6 +6235,9 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 					m_dlg_log->AddLine( str );
 					m_dlg_log->BringWindowToTop();
 					m_dlg_log->UpdateWindow();
+					CWnd* wnd = AfxGetMainWnd();
+					if (wnd)
+						wnd->UpdateWindow();
 				}
 				if( ret == -1 )
 				{
@@ -6319,6 +6322,9 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 				}
 				m_dlg_log->BringWindowToTop();
 				m_dlg_log->UpdateWindow();
+				CWnd * wnd = AfxGetMainWnd();
+				if(wnd)
+					wnd->UpdateWindow();
 			}
 			// check all areas in net for intersection
 			if( net->nareas > 1 )
