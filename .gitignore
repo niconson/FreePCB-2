@@ -7,3 +7,4 @@ Debug/Component/*
 Debug/Backups/*
 Debug/FPC_EXE/*
 Debug/related_files/*
+.vs/*
