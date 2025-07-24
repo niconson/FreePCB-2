@@ -2678,7 +2678,9 @@ void CDisplayList::Drag( CDC * pDC, int x, int y )
 			//	abs(m_drag_yi - i_drag_yi) < m_visual_grid_spacing &&
 			//	abs(m_drag_xf - i_drag_xf) < m_visual_grid_spacing &&
 			//	abs(m_drag_yf - i_drag_yf) < m_visual_grid_spacing )
-			if(Distance(i_drag_xi, i_drag_yi, i_drag_xf, i_drag_yf) > 10.0)
+			if (Distance(i_drag_xi, i_drag_yi, i_drag_xf, i_drag_yf) > 10.0)
+			if (Distance(i_drag_xf, i_drag_yf, m_drag_xe, m_drag_ye) > 10.0)
+			if (Distance(i_drag_xi, i_drag_yi, m_drag_xb, m_drag_yb) > 10.0)
 			{
 				m_drag_xi = i_drag_xi;
 				m_drag_yi = i_drag_yi;

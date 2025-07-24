@@ -7874,6 +7874,12 @@ void CFreePcbView::SetFKText( int mode )
 	case CUR_DRAG_STUB:
 		m_fkey_option[0] = FK_BACK_WIDTH;
 		m_fkey_option[1] = FK_NEXT_WIDTH;
+		if(en_branch == 1)
+			m_fkey_option[2] = FK_BRANCH_TO_SEG;
+		else if (en_branch == 0)
+			m_fkey_option[2] = FK_BRANCH_TO_VIA;
+		else 
+			m_fkey_option[2] = FK_DISABLE_BRANCH;
 		m_fkey_option[3] = FK_AS_PAD;
 		m_fkey_option[4] = FK_DISABLE_BRANCH;
 		m_fkey_option[5] = FK_BRANCH_TO_SEG;
