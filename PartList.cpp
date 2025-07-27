@@ -5595,7 +5595,7 @@ void CPartList::ChannelDuplication( CString * Suffix, CArray<CPolyLine> * po, CT
 	stat_shift++;
 }
 
-CPoint CPartList::AlignByRatline( cpart * PART, int i, BOOL Validate )
+CPoint CPartList::AlignByRatline( cpart * PART, int i, BOOL Validate, CPoint EN45 )
 {
 	CFreePcbApp * theApp = (CFreePcbApp*)AfxGetApp();
 	cnet * pad_net = PART->pin[i].net;
@@ -5643,15 +5643,41 @@ CPoint CPartList::AlignByRatline( cpart * PART, int i, BOOL Validate )
 							BOOL VERTICAL = (abs( pad_net->connect[conn].vtx[0].x - pad_net->connect[conn].vtx[1].x ) < abs( pad_net->connect[conn].vtx[0].y - pad_net->connect[conn].vtx[1].y ));
 							int px = pad_net->connect[conn].vtx[ 1 ].x;
 							int py = pad_net->connect[conn].vtx[ 1 ].y;
-							if( VERTICAL && dis < Xmin_len && abs( px-pos1.x ) < abs( theApp->m_Doc->m_part_grid_spacing ) )
+							if (EN45.x && EN45.y)
 							{
-								Xmin_len = dis;
-								dx = px-pos1.x;
+								if (VERTICAL && dis < Xmin_len && abs(px - pos1.x) < abs(theApp->m_Doc->m_part_grid_spacing))
+								{
+									Xmin_len = dis;
+									dx = px - pos1.x;
+								}
+								if (!VERTICAL && dis < Ymin_len && abs(py - pos1.y) < abs(theApp->m_Doc->m_part_grid_spacing))
+								{
+									Ymin_len = dis;
+									dy = py - pos1.y;
+								}
 							}
-							if( !VERTICAL && dis < Ymin_len && abs( py-pos1.y ) < abs( theApp->m_Doc->m_part_grid_spacing ) )
+							else if (abs(abs(px - pos1.x) - abs(py - pos1.y)) < abs(theApp->m_Doc->m_part_grid_spacing))
 							{
-								Ymin_len = dis;
-								dy = py-pos1.y;
+								if (EN45.x == 0)
+								{
+									if (dis < Xmin_len)
+									{
+										Xmin_len = dis;
+										dx = abs(px - pos1.x) - abs(py - pos1.y);
+										if (px < pos1.x)
+											dx = -dx;
+									}
+								}
+								else
+								{
+									if (dis < Ymin_len)
+									{
+										Ymin_len = dis;
+										dy = abs(py - pos1.y) - abs(px - pos1.x);
+										if (py < pos1.y)
+											dy = -dy;
+									}
+								}
 							}
 						}
 					}
@@ -5674,15 +5700,41 @@ CPoint CPartList::AlignByRatline( cpart * PART, int i, BOOL Validate )
 													  pad_net->connect[conn].vtx[pad_net->connect[conn].nsegs-1].y ));
 								int px = pad_net->connect[conn].vtx[ pad_net->connect[conn].nsegs-1 ].x;
 								int py = pad_net->connect[conn].vtx[ pad_net->connect[conn].nsegs-1 ].y;
-								if( VERTICAL && dis < Xmin_len && abs( px-pos1.x ) < abs( theApp->m_Doc->m_part_grid_spacing ) )
+								if (EN45.x && EN45.y)
 								{
-									Xmin_len = dis;
-									dx = px-pos1.x;
+									if (VERTICAL && dis < Xmin_len && abs(px - pos1.x) < abs(theApp->m_Doc->m_part_grid_spacing))
+									{
+										Xmin_len = dis;
+										dx = px - pos1.x;
+									}
+									if (!VERTICAL && dis < Ymin_len && abs(py - pos1.y) < abs(theApp->m_Doc->m_part_grid_spacing))
+									{
+										Ymin_len = dis;
+										dy = py - pos1.y;
+									}
 								}
-								if( !VERTICAL && dis < Ymin_len && abs( py-pos1.y ) < abs( theApp->m_Doc->m_part_grid_spacing ) )
+								else if (abs(abs(px - pos1.x) - abs(py - pos1.y)) < abs(theApp->m_Doc->m_part_grid_spacing))
 								{
-									Ymin_len = dis;
-									dy = py-pos1.y;
+									if (EN45.x == 0)
+									{
+										if (dis < Xmin_len)
+										{
+											Xmin_len = dis;
+											dx = abs(px - pos1.x) - abs(py - pos1.y);
+											if (px < pos1.x)
+												dx = -dx;
+										}
+									}
+									else
+									{
+										if (dis < Ymin_len)
+										{
+											Ymin_len = dis;
+											dy = abs(py - pos1.y) - abs(px - pos1.x);
+											if (py < pos1.y)
+												dy = -dy;
+										}
+									}
 								}
 							}
 					}

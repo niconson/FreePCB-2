@@ -224,7 +224,7 @@ public:
 					int x, int y, int side, int angle, int visible, int glued, int merge ); 
 	void MarkAllParts( int mark );
 	void ChannelDuplication( CString * Suffix, CArray<CPolyLine> * po, CTextList * tl );
-	CPoint AlignByRatline( cpart * PART, int i, BOOL Validate=0 );
+	CPoint AlignByRatline( cpart * PART, int i, BOOL Validate, CPoint EN45 );
 	int Remove( cpart * element );
 	void RemoveAllParts();
 	int HighlightPart( cpart * part, BOOL bX=FALSE );

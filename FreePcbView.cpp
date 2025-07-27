@@ -380,7 +380,7 @@ void CFreePcbView::InitializeView()
 	m_snap_mode = SM_GRID_POINTS;
 	fCopyTraces = FALSE;	
 	fRepour = FALSE;
-	en_branch = 0;
+	en_branch = DISABLE_BRANCH;
 	m_page = 1;
 	// default screen coords in world units (i.e. display units)
 	m_pcbu_per_pixel = 5.0*PCBU_PER_MIL;	// 5 mils per pixel
@@ -1620,8 +1620,13 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 				m_Doc->m_nlist->PartMoved( m_sel_part , TRUE );
 				m_Doc->m_nlist->OptimizeConnections( m_sel_part, m_Doc->m_auto_ratline_disable, 
 													 m_Doc->m_auto_ratline_min_pins );
-				if( m_sel_id.st == ID_PAD )
-					m_Doc->m_plist->AlignByRatline( m_sel_part, m_sel_id.i );
+				if (m_sel_id.st == ID_PAD)
+				{
+					CPoint PA(1,1);
+					PA = m_Doc->m_plist->AlignByRatline(m_sel_part, m_sel_id.i, 0, PA);
+					if (PA.x == 0 || PA.y == 0) 
+						m_Doc->m_plist->AlignByRatline(m_sel_part, m_sel_id.i, 0, PA);
+				}
 				else 
 					AlignGroupByRatline( m_Doc );
 				if( m_merge_show ) // CUR_DRAG_PART
@@ -1660,9 +1665,16 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 					MoveGroup( dx, dy , TRUE);
 					if( m_sel_part && m_sel_id.type == ID_PART && m_sel_id.st == ID_PAD )
 					{
-						CPoint PA = m_Doc->m_plist->AlignByRatline( m_sel_part, m_sel_id.i, TRUE );
-						if( PA.x || PA.y )
-							MoveGroup( PA.x, PA.y , 0 );
+						CPoint PA(1,1);
+						PA = m_Doc->m_plist->AlignByRatline( m_sel_part, m_sel_id.i, TRUE, PA);
+						if (PA.x || PA.y)
+							MoveGroup(PA.x, PA.y, 0);
+						if (PA.x == 0 || PA.y == 0)
+						{
+							PA = m_Doc->m_plist->AlignByRatline(m_sel_part, m_sel_id.i, TRUE, PA);
+							if (PA.x || PA.y)
+								MoveGroup(PA.x, PA.y, 0);
+						}
 					}
 					else 
 						AlignGroupByRatline( m_Doc );
@@ -6605,14 +6617,14 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		{
 			m_dlist->CancelHighLight();
 			m_Doc->m_nlist->HighlightNetVertices( m_sel_net, FALSE );
-			en_branch = 1;
+			en_branch = BRANCH_TO_VERTEX;
 			SetFKText(m_cursor_mode);
 		}
 		if (fk == FK_BRANCH_TO_SEG)	
 		{
 			m_dlist->CancelHighLight();
 			m_Doc->m_nlist->HighlightNetConnections( m_sel_net );
-			en_branch = 2;
+			en_branch = BRANCH_TO_LINE;
 			SetFKText(m_cursor_mode);
 		}
 		else if (fk == FK_DISABLE_BRANCH)	
@@ -6620,7 +6632,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			m_dlist->CancelHighLight();
 			m_Doc->m_nlist->HighlightNet( m_sel_net, TRANSPARENT_HILITE );
 			m_Doc->m_plist->HighlightAllPadsOnNet( m_sel_net, 1, m_active_layer );
-			en_branch = 0;
+			en_branch = DISABLE_BRANCH;
 			SetFKText(m_cursor_mode);
 		}
 		else if ( fk == FK_BACK_WIDTH || fk == FK_NEXT_WIDTH || fk == FK_AS_PAD )	
@@ -7874,9 +7886,9 @@ void CFreePcbView::SetFKText( int mode )
 	case CUR_DRAG_STUB:
 		m_fkey_option[0] = FK_BACK_WIDTH;
 		m_fkey_option[1] = FK_NEXT_WIDTH;
-		if(en_branch == 1)
+		if(en_branch == BRANCH_TO_VERTEX)
 			m_fkey_option[2] = FK_BRANCH_TO_SEG;
-		else if (en_branch == 0)
+		else if (en_branch == DISABLE_BRANCH)
 			m_fkey_option[2] = FK_BRANCH_TO_VIA;
 		else 
 			m_fkey_option[2] = FK_DISABLE_BRANCH;
