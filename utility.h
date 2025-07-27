@@ -168,3 +168,4 @@ void q_sort(int numbers[], int index[], int left, int right);
 void q_sort_3way( int a[], int b[], int left, int right );
 CSize GetTextHeight( SMFontUtil * smfontutil );
 BYTE getbit( int rgstr, int bit );
+void CStringToLegalFileName(CString* fileName);

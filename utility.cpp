@@ -3751,3 +3751,15 @@ CSize GetTextHeight( SMFontUtil * smfontutil )
 	}
 	return 0;
 }
+
+void CStringToLegalFileName(CString* fileName)
+{
+	for (int ism = fileName->FindOneOf(ILLEGAL_TOTAL); ism >= 0; ism = fileName->FindOneOf(ILLEGAL_TOTAL))
+		fileName->Replace(fileName->Mid(ism, 1), "_");
+	for (int ism = 0; ism < fileName->GetLength(); ism++)
+		if (fileName->Mid(ism, 1).FindOneOf(CSORT) == -1) // ILLEGAL SYMBOL!
+		{
+			int up = fileName->GetAt(ism) % 10;
+			fileName->SetAt(ism, 'A' + abs(up));
+		}
+}

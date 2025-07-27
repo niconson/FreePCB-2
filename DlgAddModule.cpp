@@ -25,6 +25,53 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 	if (!pDX->m_bSaveAndValidate)
 	{
 		// incoming
+		CFileFind finder;
+		CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*.lib";
+		BOOL bWorking = finder.FindFile(search_str);
+		while (bWorking)
+		{
+			bWorking = finder.FindNextFile();
+			CString fn = finder.GetFileName();
+			if (!finder.IsDirectory())
+			{
+				// found a file
+				CString foot = fn;
+				foot.Truncate(fn.GetLength() - 4);
+
+				// loop through footprints in heading
+				CFootLibFolder* libfolder = theApp.m_Doc->m_footlibfoldermap.GetFolder(&theApp.m_Doc->m_full_lib_dir, theApp.m_Doc->m_dlg_log);
+				BOOL bFail = 0;
+				for (int ilib = 0; ilib < libfolder->GetNumLibs(); ilib++)
+					if (bFail == 0) for (int i = 0; i < libfolder->GetNumFootprints(ilib); i++)
+					{
+						CString* str = libfolder->GetFootprintName(ilib, i);
+						CString footName = *str;
+						CStringToLegalFileName(&footName);
+						if (footName.CompareNoCase(foot) == 0)
+						{
+							bFail = 1;
+							break;
+						}
+					}
+				if (bFail)
+					continue;
+				CString include = "include <" + fn + ">";
+				BOOL bIncludeFound = 0;
+				for (int i = 0; i < m_code_text->GetSize(); i++)
+				{
+					CString s = m_code_text->GetAt(i);
+					if (s.Find(include) >= 0)
+					{
+						bIncludeFound = 1;
+						break;
+					}
+				}
+				if(bIncludeFound == 0)
+					m_code.ReplaceSel("// " + include + "\r\n");
+			}
+		}
+		finder.Close();
+
 		m_code.SetFont(&m_font);
 		for (int i = 0; i < m_code_text->GetSize(); i++)
 		{

@@ -4096,14 +4096,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 	{
 		_mkdir( path );
 	}
-	for( int ism=fileName->FindOneOf( ILLEGAL_TOTAL ); ism>=0; ism=fileName->FindOneOf( ILLEGAL_TOTAL ) )
-		fileName->Replace( fileName->Mid(ism,1), "_" );
-	for( int ism=0; ism<fileName->GetLength(); ism++ )
-		if( fileName->Mid(ism,1).FindOneOf( CSORT ) == -1 ) // ILLEGAL SYMBOL!
-		{
-			int up = fileName->GetAt(ism)%10;
-			fileName->SetAt(ism,'A'+abs(up));
-		}
+	CStringToLegalFileName( fileName ); // correct filename
 	path += "\\" + *fileName + ".lib";
 	CStdioFile file;
 	int nHoles = 0;
@@ -4129,10 +4122,22 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 			str += "// Code builder for OpenScad via Freepcb-2\n";
 			str += "// Author: niconson.com (c) 2014-2025\n";
 			str += "// Sites: https://niconson.com/freepcb2 https://github.com/niconson\n";
-			str += "//============================================\n\n\n\n";
+			str += "//============================================\n\n";
 		}
 		file.WriteString( str );
-
+		//
+		// MODULES
+		// добавляем доп. код MODULE, если есть
+		//
+		for (int ic = 0; ic < m_openscad_module.GetSize(); ic++)
+		{
+			if (ic == 0)
+				file.WriteString("\n" + sp);
+			str = (m_openscad_module.GetAt(ic) + "\n" + sp);
+			str.Replace("`", "\"");
+			file.WriteString(str);
+		}
+		//
 		// board
 		double b_height = 1500000.0 / mu;
 		CString board_h;
@@ -4142,7 +4147,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		// сначала сохраняем все полилинии как модули с названием POLY_№
 		// и заодно проверяем есть ли дыры
 		//
-		file.WriteString( "// Polylines\n" );
+		file.WriteString( "\n// Polylines\n" );
 		int minx, miny, minz, maxx, maxy, maxz;
 		minx = miny = minz = INT_MAX;
 		maxx = maxy = maxz = INT_MIN;
@@ -4685,18 +4690,6 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		file.WriteString( str );
 		str.Format("}\n%s", sp );
 		file.WriteString( str );
-		//
-		// MODULES
-		// добавляем доп. код MODULE, если есть
-		//
-		for (int ic = 0; ic < m_openscad_module.GetSize(); ic++)
-		{
-			if (ic == 0)
-				file.WriteString("\n" + sp);
-			str = (m_openscad_module.GetAt(ic) + "\n" + sp);
-			str.Replace("`", "\"");
-			file.WriteString(str);
-		}
 		//
 		// закомментированный вызов модуля
 		//
