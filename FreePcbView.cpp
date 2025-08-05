@@ -6446,7 +6446,8 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 							for( int io=sh->m_outline_poly.GetSize()-1; io>=0; io-- )
 								if( sh->m_outline_poly[io].GetLayer() == LAY_FP_SILK_TOP ||
 									sh->m_outline_poly[io].GetLayer() == LAY_FP_SILK_BOTTOM )
-									sh->m_outline_poly[io].SetW(m_Doc->m_min_silkscreen_stroke_wid);
+									if(sh->m_outline_poly[io].GetVisible())
+										sh->m_outline_poly[io].SetW(m_Doc->m_min_silkscreen_stroke_wid);
 					}
 					for( cpart * p=m_Doc->m_plist->GetFirstPart(); p; p=m_Doc->m_plist->GetNextPart(p) )
 					{

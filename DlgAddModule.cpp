@@ -26,7 +26,13 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 	{
 		// incoming
 		CFileFind finder;
-		CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*.lib";
+		CString mod_prj_name = theApp.m_Doc->m_name;
+		CStringToLegalFileName(&mod_prj_name);
+		if (mod_prj_name.Right(3) == "fpc")
+			mod_prj_name.Truncate(mod_prj_name.GetLength() - 3);
+		else
+			mod_prj_name += ".";
+		CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*.scad";
 		BOOL bWorking = finder.FindFile(search_str);
 		while (bWorking)
 		{
@@ -35,9 +41,10 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 			if (!finder.IsDirectory())
 			{
 				// found a file
-				CString foot = fn;
-				foot.Truncate(fn.GetLength() - 4);
-
+				CString scad = fn;
+				scad.Truncate(fn.GetLength() - 4);
+				if(scad.CompareNoCase(mod_prj_name) == 0)
+					continue;
 				// loop through footprints in heading
 				CFootLibFolder* libfolder = theApp.m_Doc->m_footlibfoldermap.GetFolder(&theApp.m_Doc->m_full_lib_dir, theApp.m_Doc->m_dlg_log);
 				BOOL bFail = 0;
@@ -47,7 +54,7 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 						CString* str = libfolder->GetFootprintName(ilib, i);
 						CString footName = *str;
 						CStringToLegalFileName(&footName);
-						if (footName.CompareNoCase(foot) == 0)
+						if (scad.Find(footName) > 0)
 						{
 							bFail = 1;
 							break;
@@ -55,7 +62,7 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 					}
 				if (bFail)
 					continue;
-				CString include = "include <" + fn + ">";
+				CString include = "include <" + scad + "lib>";
 				BOOL bIncludeFound = 0;
 				for (int i = 0; i < m_code_text->GetSize(); i++)
 				{
@@ -103,7 +110,7 @@ void CDlgAddModule::Outgoing()
 		if (s.GetLength())
 			m_code_text->Add(s);
 	}
-	CString name = m_fp->m_name;
+	CString name = theApp.m_Doc->m_name + "_" + m_fp->m_name;
 	m_fp->GenerateOpenscadFileA(&name, 1);
 }
 BEGIN_MESSAGE_MAP(CDlgAddModule, CDialog)

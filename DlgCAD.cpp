@@ -11,6 +11,8 @@
 #include "RTcall.h"
 #include ".\dlgcad.h"
 
+extern CFreePcbApp theApp;
+
 // CDlgCAD dialog
 
 IMPLEMENT_DYNAMIC(CDlgCAD, CDialog)
@@ -321,8 +323,28 @@ void CDlgCAD::OnBnClickedGo()
 		else
 			return;
 	}
+	if ( theApp.m_Doc->m_project_validated < 2 && m_folder.Right(9) != "(wERRORS)" )
+	{
+		if (theApp.m_Doc->m_project_validated == 0)
+		{
+			if (G_LANGUAGE)
+				AfxMessageBox("Перед генерацией гербер-файлов необходимо делать проверку проекта на отсутствие ошибок!", MB_OK);
+			else
+				AfxMessageBox("Before generating Gerber files, it is necessary to check the project for errors!", MB_OK);
+			return;
+		}
+		if ( theApp.m_Doc->m_project_validated == 1 )
+		{
+			CString errStr = m_folder;
+			int islash = m_folder.ReverseFind('\\');
+			if (islash > 0)
+				m_folder.Insert(islash + 1, "(wERRORS)");
+			else
+				m_folder += "(wERRORS)";
+			rename(errStr, m_folder);
+		}
+	}
 	GetFields();
-
 	// warn about copper-copper clearance
 	if( m_fill_clearance == 0 && m_bShowMessageForClearance )     
 	{

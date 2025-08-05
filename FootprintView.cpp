@@ -1217,9 +1217,13 @@ void CFootprintView::OnLButtonUp(UINT nFlags, CPoint point)
 			if( m_cursor_mode == CUR_FP_ADD_POLY )
 				m_fp.m_outline_poly[ip].Start( LAY_FP_SILK_TOP, m_polyline_width, 
 				m_polyline_width*2, p.x, p.y, CPolyLine::DIAGONAL_FULL, &m_sel_id, NULL );
-			else
-				m_fp.m_outline_poly[ip].Start( LAY_FP_PAD_THRU, m_polyline_width, 
-				m_polyline_width*2, p.x, p.y, CPolyLine::DIAGONAL_FULL, &m_sel_id, NULL );
+			else if( m_cursor_mode == CUR_FP_ADD_PCB_HOLE )
+				if( m_polyline_width )
+					m_fp.m_outline_poly[ip].Start( LAY_FP_PAD_THRU, m_polyline_width, 
+					m_polyline_width*2, p.x, p.y, CPolyLine::DIAGONAL_FULL, &m_sel_id, NULL );
+				else
+					m_fp.m_outline_poly[ip].Start(LAY_FP_TOP_COPPER, 0,
+					NM_PER_MIL, p.x, p.y, CPolyLine::NO_HATCH, &m_sel_id, NULL);
 			m_dlist->StartDraggingArc( pDC, m_polyline_style, p.x, p.y, p.x, p.y, LAY_FP_SELECTION, 1, 1 );
 			SetCursorMode( CUR_FP_DRAG_POLY_1 );
 			FootprintModified( TRUE );
@@ -1433,6 +1437,7 @@ void CFootprintView::OnLButtonDown(UINT nFlags, CPoint point)
 			}
 		}
 		y_off = r.bottom + 2*VSTEP;
+		InvalidateLeftPane();
 	}
 	else
 		m_bLButtonDown = TRUE;
@@ -1716,6 +1721,11 @@ void CFootprintView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else if( fk == FK_FP_ADD_PCB_HOLE )
 		{
 			m_polyline_width = -1;
+			AddPolyline();
+		}
+		else if (fk == FK_FP_ADD_AREA_HOLE)
+		{
+			m_polyline_width = 0;
 			AddPolyline();
 		}
 		break;
@@ -2394,6 +2404,7 @@ void CFootprintView::SetFKText( int mode )
 		m_fkey_option[1] = FK_FP_ADD_TEXT;
 		m_fkey_option[2] = FK_FP_ADD_POLYLINE;
 		m_fkey_option[3] = FK_FP_ADD_PAD;
+		m_fkey_option[4] = FK_FP_ADD_AREA_HOLE;
 		break;
 	case CUR_FP_GROUP_SELECTED:
 		m_fkey_option[0] = FK_FP_ROTATE_45; 
@@ -3159,7 +3170,7 @@ void CFootprintView::OnPolylineOpenScad()
 		if( isEMPTY )
 			m_fp.m_outline_poly[m_sel_id.i].SetVisible(FALSE);
 		FootprintModified( TRUE );
-		CString name = m_fp.m_name;
+		CString name = theApp.m_Doc->m_name + "_" + m_fp.m_name;
 		m_fp.GenerateOpenscadFileA( &name, 1 );
 		m_fp.m_outline_poly.GetAt( m_sel_id.i ).Draw( m_dlist );
 		Invalidate( FALSE );
@@ -3671,10 +3682,10 @@ void CFootprintView::OnAddPolyline()
 }
 void CFootprintView::AddPolyline( id * m_id )
 {
-	BOOL PCB_HOLE = 0;
+	BOOL ADD_HOLE = 0;
 	CDlgAddPoly dlg;
 	int ret;
-	if( m_polyline_width >= 0 )
+	if( m_polyline_width > 0 )
 	{
 		int cl = 0;
 		if( m_id )
@@ -3687,9 +3698,16 @@ void CFootprintView::AddPolyline( id * m_id )
 			dlg.Initialize( m_units, m_polyline_width );
 		ret = dlg.DoModal();
 	}
+	else if (m_polyline_width == 0)
+	{
+		ADD_HOLE = 1;
+		dlg.Initialize(m_units, m_polyline_width);
+		dlg.m_closed_flag = TRUE;
+		ret = IDOK;
+	}
 	else
 	{
-		PCB_HOLE = 1;
+		ADD_HOLE = 1;
 		m_polyline_width = NM_PER_MIL*2;
 		dlg.Initialize( m_units, m_polyline_width );
 		dlg.m_closed_flag = TRUE;
@@ -3738,9 +3756,10 @@ void CFootprintView::AddPolyline( id * m_id )
 				m_fp.m_outline_poly.GetSize(), ID_CORNER, 0 );
 			m_polyline_closed_flag = dlg.GetClosedFlag();
 			m_polyline_style = CPolyLine::STRAIGHT;
-			m_polyline_width = dlg.GetWidth();
+			if(!ADD_HOLE)
+				m_polyline_width = dlg.GetWidth();
 			m_dlist->StartDraggingArray( pDC, p.x, p.y );
-			if( PCB_HOLE )
+			if( ADD_HOLE )
 				SetCursorMode( CUR_FP_ADD_PCB_HOLE );
 			else
 				SetCursorMode( CUR_FP_ADD_POLY );
@@ -4654,7 +4673,7 @@ void CFootprintView::OnInvalidate( CCmdUI * CMD )
 
 void CFootprintView::GenerateOpenscadFile()
 {
-	CString name = m_fp.m_name;
+	CString name = theApp.m_Doc->m_name + "_" + m_fp.m_name;
 	CString path = m_fp.GenerateOpenscadFileA( &name, 1 );
 	int rf = path.ReverseFind('\\');
 	if( rf == -1 )

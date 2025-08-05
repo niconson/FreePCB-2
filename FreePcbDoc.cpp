@@ -3775,6 +3775,7 @@ void CFreePcbDoc::InitializeNewProject()
 		m_visual_grid_spacing, m_part_grid_spacing, m_routing_grid_spacing, m_snap_angle, MIL );
 
 	// default PCB parameters
+	m_project_validated = FALSE;
 	m_bSMT_copper_connect = FALSE;
 	m_default_glue_w = 25*NM_PER_MIL;
 	m_trace_w = 10*NM_PER_MIL;
@@ -3926,6 +3927,7 @@ void CFreePcbDoc::ProjectModified( BOOL flag, BOOL b_clear_redo )
 			m_window_title = m_window_title + "*";
 			pMain->SetWindowText( m_window_title );
 		}
+		m_project_validated = FALSE;
 	}
 	else
 	{
@@ -5618,6 +5620,7 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		AfxMessageBox(G_LANGUAGE == 0 ? "A board outline must be present for CAM file generation":"Для генерации файла ГЕРБЕР необходимо наличие контура платы.");
 		return;
 	}
+	int mem_project_validated = m_project_validated;
 	AddBoardHoles();
 	CDlgCAD dlg;
 	dlg.Initialize( m_version,
@@ -5653,6 +5656,7 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		m_mlist,
 		m_dlg_log );
 	m_nlist->OptimizeConnections( FALSE );
+	m_project_validated = mem_project_validated;
 	int ret = dlg.DoModal();
 	CancelBoardHoles();
 	if( ret == IDOK )
@@ -7067,14 +7071,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		_mkdir( path );
 	}
 	CString moduleName = m_name;
-	for( int ism=moduleName.FindOneOf( ILLEGAL_TOTAL ); ism>=0; ism=moduleName.FindOneOf( ILLEGAL_TOTAL ) )
-		moduleName.Replace( moduleName.Mid(ism,1), "_" );
-	for( int ism=0; ism<moduleName.GetLength(); ism++ )
-		if( moduleName.Mid(ism,1).FindOneOf( CSORT ) == -1 ) // ILLEGAL SYMBOL!
-		{
-			int up = moduleName.GetAt(ism)%10;
-			moduleName.SetAt(ism,'A'+abs(up));
-		}
+	CStringToLegalFileName( &moduleName );
 	path += "\\" + moduleName + ".lib";
 	CStdioFile file;
 	double mu = (m_units==MM?NM_PER_MM:NM_PER_MIL);
@@ -7093,7 +7090,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		{
 			if( p->shape && p->utility != Mark )
 			{
-				CString nm = p->shape->m_name;
+				CString nm = m_name + "_" + p->shape->m_name;
 				CString full_path = p->shape->GenerateOpenscadFileA( &nm, 0 );
 				
 				int f = full_path.ReverseFind('\\');
@@ -7128,9 +7125,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "    if( bAll != 0 )\n      Draw_%s_%s();\n", fname, moduleName);
+			str.Format( "    if( bAll != 0 )\n      Draw_%s();\n", fname);
 			file.WriteString(str);
-			str.Format( "    else if( enable_draw_%s != 0 )\n      Draw_%s_%s();\n", fname, fname, moduleName);
+			str.Format( "    else if( enable_draw_%s != 0 )\n      Draw_%s();\n", fname, fname);
 			file.WriteString(str);
 		}
 		str.Format( "    if( bAll != 0 )\n      Draw_BO_%s(1);\n", moduleName);
@@ -7143,7 +7140,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		file.WriteString( "}\n" );
 		file.WriteString( "\n" );
 		file.WriteString( "\n" );
-		str.Format( "/* ___________________\n      |                   |\n      |   BOARD OUTLINE   |\n      |___________________|\n    */\nmodule Draw_BO_%s (bAll=0)\n{\n", moduleName );
+		str.Format( "/* ___________________\n  |                   |\n  |   BOARD OUTLINE   |\n  |___________________|\n*/\nmodule Draw_BO_%s (bAll=0)\n{\n", moduleName );
 		file.WriteString( str );
 
 		
@@ -7254,7 +7251,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "module Draw_%s_%s ()\n{\n", fname, moduleName);
+			str.Format( "module Draw_%s ()\n{\n", fname);
 			file.WriteString( str );
 			for( cpart * pp=m_plist->GetFirstPart(); pp; pp=m_plist->GetNextPart(pp) )
 			{
@@ -7264,9 +7261,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					double py = pp->y / mu;
 					double rot = pp->angle;
 					if( pp->side )
-						str.Format( "    translate([ %.3f, %.3f, -board_h ])\n      rotate([ 0.0, 180.0, 0.0 ])\n        rotate([ 0.0, 0.0, %.3f ])\n          F%s();\n", px, py, rot, fname );
+						str.Format( "    translate([ %.3f, %.3f, -board_h ])\n      rotate([ 0.0, 180.0, 0.0 ])\n        rotate([ 0.0, 0.0, %.3f ])\n          F%s();\n", px, py, rot, fname);
 					else
-						str.Format( "    translate([ %.3f, %.3f, 0.0 ])\n      rotate([ 0.0, 0.0, %.3f ])\n        F%s();\n", px, py, -rot, fname );
+						str.Format( "    translate([ %.3f, %.3f, 0.0 ])\n      rotate([ 0.0, 0.0, %.3f ])\n        F%s();\n", px, py, -rot, fname);
 					file.WriteString( str );
 				}
 			}
@@ -11216,6 +11213,14 @@ void CFreePcbDoc::DRC()
 			part->NetPtr.SetSize(gsz);
 			for( int io=0; io<gsz; io++ )
 			{
+				int s_w = part->m_outline_stroke[io]->dlist->Get_el_w(part->m_outline_stroke[io]);
+				int s_layer = part->m_outline_stroke[io]->layers_bitmap;
+				int lay_top_copper = 0;
+				setbit(lay_top_copper, LAY_TOP_COPPER);
+				int lay_bottom_copper = 0;
+				setbit(lay_bottom_copper, LAY_BOTTOM_COPPER);
+				if (s_w < (NM_PER_MIL / 10) && (s_layer == lay_top_copper || s_layer == lay_bottom_copper))
+					continue;
 				id GID;
 				int d=0, xx=0, yy=0, pad_wng=0;
 				cpart * badP = part;
@@ -11711,6 +11716,7 @@ cancel_verification:
 	if( virtual_net_unc )
 		m_nlist->RemoveNet( virtual_net_unc );
 	CancelBoardHoles();
+	m_project_validated = 1;
 	if( nerrors > MAXERRORS )
 	{
 		if( m_dlg_log )
@@ -11720,6 +11726,8 @@ cancel_verification:
 	{
 		if( m_dlg_log )
 			m_dlg_log->AddLine( "\r\n***** DONE *****\r\n" );
+		if ( nerrors == 0 )
+			m_project_validated = 2;
 	}
 }
 

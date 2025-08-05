@@ -2426,6 +2426,8 @@ int LPD = 0;
 								int s_w = part->m_outline_stroke[ips]->dlist->Get_el_w(part->m_outline_stroke[ips]);
 								if( layer == LAY_SILK_TOP || layer == LAY_SILK_BOTTOM )
 									s_w = max( s_w, min_silkscreen_stroke_wid );
+								if (s_w < (NM_PER_MIL/10) && layer >= LAY_TOP_COPPER )
+									continue;
 								CAperture outline_ap( CAperture::AP_CIRCLE, s_w, 0 );
 								ChangeAperture( &outline_ap, &current_ap, &ap_array, PASS0, f );
 								// move to start of stroke

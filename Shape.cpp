@@ -4113,7 +4113,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 			str = "//============================================\n";
 			str += "// Code builder for OpenScad via Freepcb-2\n";
 			str += "// Author: niconson.com (c) 2014-2025\n";
-			str += "// Sites: https://niconson.com/freepcb2 https://github.com/niconson\n";
+			str += "// Sites: https://niconson.com/freepcb2\n";
+			str += "//        https://github.com/niconson\n";
 			str += "//============================================\n\n\n\n";
 		}
 		else 
@@ -4121,7 +4122,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 			str = "//============================================\n";
 			str += "// Code builder for OpenScad via Freepcb-2\n";
 			str += "// Author: niconson.com (c) 2014-2025\n";
-			str += "// Sites: https://niconson.com/freepcb2 https://github.com/niconson\n";
+			str += "// Sites: https://niconson.com/freepcb2\n";
+			str += "//        https://github.com/niconson\n";
 			str += "//============================================\n\n";
 		}
 		file.WriteString( str );
@@ -4709,9 +4711,16 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					str.Format( "Convexity = 2;\n" );
 					file.WriteString( str );
 					file.WriteString( "enable_draw_pads = 1;\n" );
+					file.WriteString( "enable_draw_holes = 1;\n" );
 					file.WriteString( board_h );
 					str.Format("F%s();\n\n", *fileName );
 					file.WriteString( str );
+					str.Format("translate( [%.2f, %.2f,-board_h] )\n", (double)m_centroid_x / mu, (double)m_centroid_y / mu);
+					file.WriteString(str);
+					file.WriteString("  color( \"green\", 0.5 )\n");
+					file.WriteString("    linear_extrude( board_h, convexity=Convexity)\n");
+					str.Format("      square( [%.2f+board_h, %.2f+board_h], center=true );\n", (double)(selection.right - selection.left) / mu, (double)(selection.top - selection.bottom) / mu);
+					file.WriteString(str);
 					file.Close();
 				}
 			}

@@ -73,7 +73,7 @@ void CDlgAddCode::Outgoing()
 		if (s.GetLength())
 			m_code_text->Add(s);
 	}
-	CString name = m_fp->m_name;
+	CString name = theApp.m_Doc->m_name + "_" + m_fp->m_name;
 	m_fp->GenerateOpenscadFileA(&name, 1);
 }
 BEGIN_MESSAGE_MAP(CDlgAddCode, CDialog)
@@ -99,7 +99,7 @@ void CDlgAddCode::OnBnClickedCancel()
 void CDlgAddCode::OnEnSetfocusCode()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CString str;
+	/*CString str;
 	m_code.GetWindowTextA( str );
 	int f =str.Find("    // add your code" );
 	if( f > 0 )
@@ -111,7 +111,7 @@ void CDlgAddCode::OnEnSetfocusCode()
 			m_code.SetSel( str.GetLength(), str.GetLength() );
 	}
 	else
-		m_code.SetSel( str.GetLength(), str.GetLength() );
+		m_code.SetSel( str.GetLength(), str.GetLength() );*/
 }
 
 

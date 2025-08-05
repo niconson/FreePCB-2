@@ -73,7 +73,7 @@ void CDlgAddHole::Outgoing()
 		if (s.GetLength())
 			m_code_text->Add(s);
 	}
-	CString name = m_fp->m_name;
+	CString name = theApp.m_Doc->m_name + "_" + m_fp->m_name;
 	m_fp->GenerateOpenscadFileA(&name, 1);
 }
 BEGIN_MESSAGE_MAP(CDlgAddHole, CDialog)
