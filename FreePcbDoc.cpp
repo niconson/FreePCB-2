@@ -6192,10 +6192,12 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 				//excl areas
 				int bUndo = 0;
 				int na = net->nareas;
-				if( net->area[ia].poly->GetHatch() == CPolyLine::NO_HATCH && net->area[ia].poly->GetW() == 0 )
+				int mem_hatch = net->area[ia].poly->GetHatch();
+				int mem_wid = net->area[ia].poly->GetW();
+				if( mem_hatch == CPolyLine::NO_HATCH && mem_wid == 0 )
 				{//
 				}//
-				else if( net->area[ia].poly->GetHatch() == CPolyLine::DIAGONAL_FULL )
+				else if( mem_hatch == CPolyLine::DIAGONAL_FULL )
 				{//
 				}//
 				else	
@@ -6213,6 +6215,10 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 						bUndo = 1;
 					}
 					m_view->SaveUndoInfoForArea( net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, m_undo_list );
+					if (mem_hatch != CPolyLine::NO_HATCH)
+						net->area[ia].poly->SetHatch(CPolyLine::NO_HATCH);
+					if (mem_wid == 0)
+						net->area[ia].poly->SetW(NM_PER_MIL);
 					m_nlist->AddCutoutsForArea( net,
 												ia, 
 												NULL,
