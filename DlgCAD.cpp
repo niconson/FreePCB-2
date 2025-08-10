@@ -33,6 +33,21 @@ CDlgCAD::~CDlgCAD()
 void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_EDIT_FIELD1, m_edit_panel_field_x);
+	DDX_Control(pDX, IDC_EDIT_FIELD2, m_edit_panel_field_y);
+	DDX_Control(pDX, IDC_EDIT_PANEL_HOLE_DIAM, m_edit_panel_hole_diam);
+	DDX_Control(pDX, IDC_PANEL_TEXT1, m_edit_panel_text1);
+	DDX_Control(pDX, IDC_PANEL_TEXT2, m_edit_panel_text2);
+	DDX_Control(pDX, IDC_PANEL_TEXT3, m_edit_panel_text3);
+	DDX_Control(pDX, IDC_PANEL_TEXT4, m_edit_panel_text4);
+	DDX_Control(pDX, IDC_REF2, m_check_ref2);
+	DDX_Control(pDX, IDC_REF3, m_check_ref3);
+	DDX_Control(pDX, IDC_REF4, m_check_ref4);
+	DDX_Control(pDX, IDC_V_CUTOUT_X, m_button_v_cut_x);
+	DDX_Control(pDX, IDC_V_CUTOUT_Y, m_button_v_cut_y);
+	DDX_Control(pDX, IDC_PANEL_HOLE_CNT, m_panel_hole_cnt);
+	DDX_Control(pDX, IDC_SELECT_REF, m_panel_reference);
+	//
 	DDX_Control(pDX, IDC_EDIT_FOLDER, m_edit_folder);
 	DDX_Control(pDX, IDC_EDIT_FILL, m_edit_fill);
 	DDX_Control(pDX, IDC_EDIT_MASK, m_edit_mask);
@@ -99,7 +114,14 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 	if( !pDX->m_bSaveAndValidate )
 	{
 		// entry
-		//
+		m_panel_hole_cnt.AddString("4");
+		m_panel_hole_cnt.AddString("8");
+		m_panel_hole_cnt.AddString("16");
+		m_panel_hole_cnt.AddString("32");
+		m_panel_reference.AddString("RoundedType1");
+		m_panel_reference.AddString("RoundedType2");
+		m_panel_reference.AddString("RectType1");
+		m_panel_reference.AddString("RectType2");
 		struct _stat buf;
 		int STAT = _stat( m_folder, &buf );
 		if( m_folder.GetLength() == 0 || STAT )
@@ -188,6 +210,23 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 				}
 			}
 		}
+		// for panelization
+		if(m_panel.m_ref_count == 0)
+			m_check_ref2.SetCheck(1);
+		else if (m_panel.m_ref_count == 1)
+			m_check_ref3.SetCheck(1);
+		else
+			m_check_ref4.SetCheck(1);
+		if (m_panel.m_scribing == 1 )
+			m_button_v_cut_x.SetCheck(1);
+		else if (m_panel.m_scribing == 2)
+			m_button_v_cut_y.SetCheck(1);
+		else if (m_panel.m_scribing)
+		{
+			m_button_v_cut_x.SetCheck(1);
+			m_button_v_cut_y.SetCheck(1);
+		}
+		//
 		m_dpi.SetWindowTextA( m_dpi_str );
 		m_png_aa.SetWindowTextA( m_png_aa_str );
 		m_check_drill.SetCheck( m_drill_file );
@@ -245,7 +284,15 @@ void CDlgCAD::Initialize( double version,
 						 CArray<CPolyLine> * op,
 						 BOOL * bShowMessageForClearance,
 						 CPartList * pl, CNetList * nl, CTextList * tl, CDisplayList * dl, Merge * ml,
-						 CDlgLog * log )
+						 CDlgLog * log,
+						 int* panel_fields,
+						 int* panel_holes,
+						 int panel_ref_count,
+						 CString panel_reference,
+						 int panel_scribing,
+						 CString* panel_text,
+						 RECT m_panel_frame_for_paste,
+						 RECT pcb_rect)
 {
 	m_bShowMessageForClearance = *bShowMessageForClearance;
 	m_bSMT_connect = bSMTconnect;
@@ -256,6 +303,24 @@ void CDlgCAD::Initialize( double version,
 	m_f_name = (*file_name).Left((*file_name).GetLength()-4);
 	m_units = units;
 	m_fill_clearance = fill_clearance;
+	//
+	m_panel.m_fields[0] = panel_fields[0];
+	m_panel.m_fields[1] = panel_fields[1];
+	m_panel.m_holes[0] = panel_holes[0];
+	m_panel.m_holes[1] = panel_holes[1];
+	m_panel.m_ref_count = panel_ref_count;
+	m_panel.m_reference = panel_reference;
+	m_panel.m_scribing = panel_scribing;
+	m_panel.m_text[0] = panel_text[0];
+	m_panel.m_text[1] = panel_text[1];
+	m_panel.m_text[2] = panel_text[2];
+	m_panel.m_text[3] = panel_text[3];
+	m_panel.m_frame_for_paste.left = m_panel_frame_for_paste.left;
+	m_panel.m_frame_for_paste.right = m_panel_frame_for_paste.right;
+	m_panel.m_frame_for_paste.top = m_panel_frame_for_paste.top;
+	m_panel.m_frame_for_paste.bottom = m_panel_frame_for_paste.bottom;
+	m_panel.m_pcb_rect = pcb_rect;
+	//
 	m_mask_clearance = mask_clearance;
 	m_thermal_width = thermal_width;
 	m_thermal_clearance = thermal_clearance;
@@ -323,6 +388,28 @@ void CDlgCAD::OnBnClickedGo()
 		else
 			return;
 	}
+	if (theApp.m_Doc->m_project_validated < 2)
+	{
+		if (theApp.m_Doc->m_project_validated == 0)
+		{
+			if (G_LANGUAGE)
+				AfxMessageBox("Перед генерацией гербер-файлов необходимо делать проверку проекта на отсутствие ошибок!", MB_OK);
+			else
+				AfxMessageBox("Before generating Gerber files, it is necessary to check the project for errors!", MB_OK);
+			return;
+		}
+		if (theApp.m_Doc->m_project_validated == 1)
+		{
+			CString errStr = m_folder;
+			int islash = m_folder.ReverseFind('\\');
+			if (islash > 0)
+				m_folder.Insert(islash + 1, "(wERRORS)");
+			else
+				m_folder += "(wERRORS)";
+			rename(errStr, m_folder);
+		}
+	}
+
 	GetFields();
 	// warn about copper-copper clearance
 	if( m_fill_clearance == 0 && m_bShowMessageForClearance )     
@@ -370,27 +457,6 @@ void CDlgCAD::OnBnClickedGo()
 				DeleteFile( m_folder + "\\" + name );
 		}
     }
-	if (theApp.m_Doc->m_project_validated < 2 && m_folder.Right(9) != "(wERRORS)")
-	{
-		if (theApp.m_Doc->m_project_validated == 0)
-		{
-			if (G_LANGUAGE)
-				AfxMessageBox("Перед генерацией гербер-файлов необходимо делать проверку проекта на отсутствие ошибок!", MB_OK);
-			else
-				AfxMessageBox("Before generating Gerber files, it is necessary to check the project for errors!", MB_OK);
-			return;
-		}
-		if (theApp.m_Doc->m_project_validated == 1)
-		{
-			CString errStr = m_folder;
-			int islash = m_folder.ReverseFind('\\');
-			if (islash > 0)
-				m_folder.Insert(islash + 1, "(wERRORS)");
-			else
-				m_folder += "(wERRORS)";
-			rename(errStr, m_folder);
-		}
-	}
 
 	BOOL errors = FALSE;	// if errors occur
 
@@ -419,7 +485,7 @@ void CDlgCAD::OnBnClickedGo()
 			log_message.Format( "Writing file: \"%s\"\r\n", f_name );
 			m_dlg_log->AddLine( log_message );
 			// unplated holes
-			CPoint p_err = ::WriteDrillFile( &f, m_pl, m_nl, m_op, m_n_x, m_n_y, m_space_x, m_space_y );
+			CPoint p_err = ::WriteDrillFile( &f, m_pl, m_nl, m_op, m_panel, m_n_x, m_n_y, m_space_x, m_space_y );
 			if( p_err.x || p_err.y )
 			{
 				CString xs, ys;
@@ -769,7 +835,7 @@ void CDlgCAD::OnBnClickedGo()
 					m_min_silkscreen_width, m_highlight_width, m_thermal_width,
 					m_hole_clearance, m_thermal_clearance,
 					m_n_x, m_n_y, m_space_x, m_space_y,
-					m_op, m_pl, m_nl, m_tl, m_dl, m_ml );
+					m_op, m_pl, m_nl, m_tl, m_dl, m_ml, m_panel );
 				f.WriteString( "M02*\n" );	// end of job
 				f.Close();
 			}
@@ -989,6 +1055,42 @@ void CDlgCAD::GetFields()
 		m_drill_file = 1;
 	else
 		m_drill_file = 0;
+
+	// panelization
+	if (m_check_ref2.GetCheck())
+		m_panel.m_ref_count = 0;
+	else if (m_check_ref3.GetCheck())
+		m_panel.m_ref_count = 1;
+	else
+		m_panel.m_ref_count = 2;
+	if (m_button_v_cut_x.GetCheck() && m_button_v_cut_y.GetCheck())
+		m_panel.m_scribing = 3;
+	else if (m_button_v_cut_x.GetCheck())
+		m_panel.m_scribing = 1;
+	else if (m_button_v_cut_y.GetCheck())
+		m_panel.m_scribing = 2;
+	else
+		m_panel.m_scribing = 0;
+	m_edit_panel_field_x.GetWindowText(str);
+	m_panel.m_fields[0] = atof(str) * mult;
+	m_edit_panel_field_y.GetWindowText(str);
+	m_panel.m_fields[1] = atof(str) * mult;
+
+	m_edit_panel_hole_diam.GetWindowText(str);
+	m_panel.m_holes[0] = atof(str) * mult;
+	m_panel_hole_cnt.GetWindowText(str);
+	m_panel.m_holes[1] = atof(str);
+	m_panel_reference.GetWindowText(str);
+	m_panel.m_reference = str;
+
+	m_edit_panel_text1.GetWindowText(str);
+	m_panel.m_text[0] = str;
+	m_edit_panel_text2.GetWindowText(str);
+	m_panel.m_text[1] = str;
+	m_edit_panel_text3.GetWindowText(str);
+	m_panel.m_text[2] = str;
+	m_edit_panel_text4.GetWindowText(str);
+	m_panel.m_text[3] = str;
 }
 
 void CDlgCAD::SetFields()
@@ -1025,6 +1127,29 @@ void CDlgCAD::SetFields()
 	m_edit_space_x.SetWindowText( str );
 	MakeCStringFromDouble( &str, m_space_y/mult );
 	m_edit_space_y.SetWindowText( str );
+
+	// panelization
+	MakeCStringFromDouble(&str, m_panel.m_fields[0] / mult);
+	m_edit_panel_field_x.SetWindowText(str);
+	MakeCStringFromDouble(&str, m_panel.m_fields[1] / mult);
+	m_edit_panel_field_y.SetWindowText(str);
+	MakeCStringFromDouble(&str, m_panel.m_holes[0] / mult);
+	m_edit_panel_hole_diam.SetWindowText(str);
+	MakeCStringFromDouble(&str, m_panel.m_holes[1]);
+	int iof = m_panel_hole_cnt.FindString(0,str);
+	if (iof >= 0)
+		m_panel_hole_cnt.SetCurSel(iof);
+	else
+		m_panel_hole_cnt.SetCurSel(0);
+	iof = m_panel_reference.FindString(0, m_panel.m_reference);
+	if (iof >= 0)
+		m_panel_reference.SetCurSel(iof);
+	else
+		m_panel_reference.SetCurSel(0);
+	m_edit_panel_text1.SetWindowText(m_panel.m_text[0]);
+	m_edit_panel_text2.SetWindowText(m_panel.m_text[1]);
+	m_edit_panel_text3.SetWindowText(m_panel.m_text[2]);
+	m_edit_panel_text4.SetWindowText(m_panel.m_text[3]);
 }
 void CDlgCAD::OnCbnSelchangeComboCadUnits()
 {

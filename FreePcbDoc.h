@@ -48,6 +48,17 @@
 class CFreePcbDoc;
 class CFreePcbView;
 
+typedef struct {
+	int m_fields[2];
+	int m_holes[2];
+	int m_ref_count;
+	CString m_reference;
+	int m_scribing;
+	CString m_text[4];
+	RECT m_frame_for_paste;
+	RECT m_pcb_rect;
+}PanelOptions;
+
 struct undo_outline_poly {
 	int layer;
 	int wid;
@@ -283,6 +294,13 @@ public:
 
 	// CAM flags and parameters
 	CArray<CString> m_crop_data;
+	int m_panel_fields[2];
+	int m_panel_holes[2];
+	int m_panel_ref_count;
+	CString m_panel_reference;
+	int m_panel_scribing;
+	CString m_panel_text[4];
+	RECT m_panel_frame_for_paste;
 	int m_crop_flags;
 	int m_cam_flags;
 	int m_cam_units;
@@ -402,7 +420,7 @@ public:
 	void EnsureNotMinimized(HWND hWnd, BOOL bSwToFile=TRUE );
 	void ChannelDuplication();
 	void OnProtection();
-	void AddBoardHoles( BOOL bCANCEL=FALSE );
+	RECT AddBoardHoles( BOOL bCANCEL=FALSE, POINT * MakePanel = NULL);
 	void CancelBoardHoles( BOOL bUNDO=TRUE );
 	void ClipClear();
 	void OnAddTopImage();

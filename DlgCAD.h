@@ -10,6 +10,7 @@ class CDlgCAD : public CDialog
 	DECLARE_DYNAMIC(CDlgCAD)
 
 public:
+
 	CDlgCAD(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgCAD();
 	void Initialize(	double version, 
@@ -37,7 +38,15 @@ public:
 						CArray<CPolyLine> * op, 
 						BOOL * bShowMessageForClearance,
 						CPartList * pl, CNetList * nl, CTextList * tl, CDisplayList * dl, Merge * ml,
-						CDlgLog * log );
+						CDlgLog * log,
+						int * panel_fields,
+						int * panel_holes,
+						int panel_ref_count,
+						CString panel_reference,
+						int panel_scribing,
+						CString * panel_text,
+						RECT m_panel_frame_for_paste,
+						RECT pcb_rect);
 	void SetFields();
 	void GetFields();
 // Dialog Data
@@ -83,6 +92,8 @@ public:
 	CButton m_check_moires;
 	CButton m_check_layer_text;
 	CButton m_check_hilite;
+	PanelOptions m_panel;
+	
 	int m_num_copper_layers;
 	int m_fill_clearance;
 	int m_hole_clearance;
@@ -124,6 +135,23 @@ public:
 	CEdit m_edit_hole_clearance;
 	CEdit m_edit_ann_pins;
 	CEdit m_edit_ann_vias;
+
+	// for panelization
+	CEdit m_edit_panel_field_x;
+	CEdit m_edit_panel_field_y;
+	CEdit m_edit_panel_hole_diam;
+	CEdit m_edit_panel_text1;
+	CEdit m_edit_panel_text2;
+	CEdit m_edit_panel_text3;
+	CEdit m_edit_panel_text4;
+	CButton m_check_ref2;
+	CButton m_check_ref3;
+	CButton m_check_ref4;
+	CButton m_button_v_cut_x;
+	CButton m_button_v_cut_y;
+	CComboBox m_panel_hole_cnt;
+	CComboBox m_panel_reference;
+	//
 	CButton m_check_thermal_pins;
 	CButton m_check_thermal_vias;
 	CButton m_check_mask_vias;

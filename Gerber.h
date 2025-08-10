@@ -69,7 +69,8 @@ int WriteGerberFile( CStdioFile * f,
 					CNetList * nl, 
 					CTextList * tl, 
 					CDisplayList * dl,
-					Merge * ml ); 
-CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<CPolyLine> * bd,
+					Merge * ml,
+					PanelOptions panel); 
+CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<CPolyLine> * bd, PanelOptions panel,
 				   int n_x=1, int n_y=1, int offset_x=0, int offset_y=0 );
 

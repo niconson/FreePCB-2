@@ -2890,6 +2890,42 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 			{
 				m_fill_clearance = my_atoi( &p[0] );
 			}
+			else if (np >= 3 && key_str == "panel_fields")
+			{
+				m_panel_fields[0] = my_atoi(&p[0]);
+				m_panel_fields[1] = my_atoi(&p[1]);
+			}
+			else if (np >= 3 && key_str == "panel_holes")
+			{
+				m_panel_holes[0] = my_atoi(&p[0]);
+				m_panel_holes[1] = my_atoi(&p[1]);
+			}
+			else if (np && key_str == "panel_ref_count")
+			{
+				m_panel_ref_count = my_atoi(&p[0]);
+			}
+			else if (np && key_str == "panel_reference")
+			{
+				m_panel_reference = p[0];
+			}
+			else if (np && key_str == "panel_scribing")
+			{
+				m_panel_scribing = my_atoi(&p[0]);
+			}
+			else if (np >= 5 && key_str == "panel_text")
+			{
+				m_panel_text[0] = p[0];
+				m_panel_text[1] = p[1];
+				m_panel_text[2] = p[2];
+				m_panel_text[3] = p[3];
+			}
+			else if (np >= 5 && key_str == "panel_frame_for_paste")
+			{
+				m_panel_frame_for_paste.left = my_atoi(&p[0]);
+				m_panel_frame_for_paste.right = my_atoi(&p[1]);
+				m_panel_frame_for_paste.top = my_atoi(&p[2]);
+				m_panel_frame_for_paste.bottom = my_atoi(&p[3]);
+			}
 			else if( np && key_str == "mask_clearance" )
 			{
 				m_mask_clearance = my_atoi( &p[0] );
@@ -3386,6 +3422,22 @@ void CFreePcbDoc::WriteOptions( CStdioFile * file, BOOL bConfig )
 		file->WriteString( line );
 		line.Format( "fill_clearance: %d\n", m_fill_clearance );
 		file->WriteString( line );
+		// for panelization
+		line.Format("panel_fields: %d %d\n", m_panel_fields[0], m_panel_fields[1] );
+		file->WriteString(line);
+		line.Format("panel_holes: %d %d\n", m_panel_holes[0], m_panel_holes[1]);
+		file->WriteString(line);
+		line.Format("panel_ref_count: %d\n", m_panel_ref_count);
+		file->WriteString(line);
+		line.Format("panel_reference: \"%s\"\n", m_panel_reference);
+		file->WriteString(line);
+		line.Format("panel_scribing: %d\n", m_panel_scribing);
+		file->WriteString(line);
+		line.Format("panel_text: \"%s\" \"%s\" \"%s\" \"%s\"\n", m_panel_text[0], m_panel_text[1], m_panel_text[2], m_panel_text[3]);
+		file->WriteString(line);
+		line.Format("panel_frame_for_paste: %d %d %d %d\n", m_panel_frame_for_paste.left, m_panel_frame_for_paste.right, m_panel_frame_for_paste.top, m_panel_frame_for_paste.bottom);
+		file->WriteString(line);
+		//
 		line.Format( "mask_clearance: %d\n", m_mask_clearance );
 		file->WriteString( line );
 		line.Format( "thermal_width: %d\n", m_thermal_width );
@@ -3792,13 +3844,22 @@ void CFreePcbDoc::InitializeNewProject()
 		m_cam_shortcut[ii] = "";
 	m_cam_full_path = "";
 	m_ses_full_path = "";
-	m_fill_clearance = 10*NM_PER_MIL;
-	m_mask_clearance = 8*NM_PER_MIL;
-	m_thermal_clearance = 8*NM_PER_MIL; 
-	m_thermal_width = 10*NM_PER_MIL;
-	m_min_silkscreen_stroke_wid = 5*NM_PER_MIL;
-	m_highlight_wid = 5*NM_PER_MIL;
-	m_pilot_diameter = 10*NM_PER_MIL;
+	m_panel_fields[0] = m_panel_fields[1] = 10 * NM_PER_MM;
+	m_panel_holes[0] = 2 * NM_PER_MM;
+	m_panel_holes[1] = 4;
+	m_panel_ref_count = 2;
+	m_panel_reference = "none";
+	m_panel_scribing = 0;
+	m_panel_text[0] = m_panel_text[2] = "OnTop";
+	m_panel_text[1] = m_panel_text[3] = "OnBot";
+	m_panel_frame_for_paste.left = m_panel_frame_for_paste.right = m_panel_frame_for_paste.top = m_panel_frame_for_paste.bottom = 0;
+	m_fill_clearance = 10 * NM_PER_MIL;
+	m_mask_clearance = 8 * NM_PER_MIL;
+	m_thermal_clearance = 8 * NM_PER_MIL; 
+	m_thermal_width = 10 * NM_PER_MIL;
+	m_min_silkscreen_stroke_wid = 5 * NM_PER_MIL;
+	m_highlight_wid = 5 * NM_PER_MIL;
+	m_pilot_diameter = 10 * NM_PER_MIL;
 	m_cam_flags = GERBER_BOARD_OUTLINE;
 	m_crop_flags = 0;
 	m_cam_layers = 0xf00fff;	// default layers
@@ -5621,7 +5682,10 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		return;
 	}
 	int mem_project_validated = m_project_validated;
-	AddBoardHoles();
+	POINT PANEL;
+	PANEL.x = m_n_x;
+	PANEL.y = m_n_y;
+	RECT PcbRect = AddBoardHoles(0, &PANEL);
 	CDlgCAD dlg;
 	dlg.Initialize( m_version,
 		&m_cam_full_path, 
@@ -5654,7 +5718,15 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		m_tlist, 
 		m_dlist,
 		m_mlist,
-		m_dlg_log );
+		m_dlg_log,
+		m_panel_fields,
+		m_panel_holes,
+		m_panel_ref_count,
+		m_panel_reference,
+		m_panel_scribing,
+		m_panel_text,
+		m_panel_frame_for_paste,
+		PcbRect);
 	m_nlist->OptimizeConnections( FALSE );
 	m_project_validated = mem_project_validated;
 	int ret = dlg.DoModal();
@@ -5665,6 +5737,17 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		// update parameters
 		ProjectModified( TRUE );
 		///
+		m_panel_fields[0] = dlg.m_panel.m_fields[0];
+		m_panel_fields[1] = dlg.m_panel.m_fields[1];
+		m_panel_holes[0] = dlg.m_panel.m_holes[0];
+		m_panel_holes[1] = dlg.m_panel.m_holes[1];
+		m_panel_ref_count = dlg.m_panel.m_ref_count;
+		m_panel_reference = dlg.m_panel.m_reference;
+		m_panel_scribing = dlg.m_panel.m_scribing;
+		m_panel_text[0] = dlg.m_panel.m_text[0];
+		m_panel_text[1] = dlg.m_panel.m_text[1];
+		m_panel_text[2] = dlg.m_panel.m_text[2];
+		m_panel_text[3] = dlg.m_panel.m_text[3];
 		m_png_settings = dlg.m_png_settings;
 		m_cam_full_path = dlg.m_folder;
 		m_cam_units = dlg.m_units;
@@ -14116,12 +14199,13 @@ void CFreePcbDoc::OnDeleteBottomImage()
 	m_view->OnRangeCmds(NULL);
 }
 
-void CFreePcbDoc::AddBoardHoles( BOOL bCANCEL )
+RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 {
 	static CArray<CPolyLine> mem_polylines;
-
+	RECT BOARD;
+	BOARD.left = BOARD.right = BOARD.bottom = BOARD.top = 0;
 	if( m_outline_poly.GetSize() == 0 )
-		return;
+		return BOARD;
 
 	if( bCANCEL && mem_polylines.GetSize() == 0 )
 		ASSERT(0);
@@ -14145,11 +14229,68 @@ void CFreePcbDoc::AddBoardHoles( BOOL bCANCEL )
 			m_outline_poly[i].Draw();
 		}
 		mem_polylines.RemoveAll();
-		return;
+		return BOARD;
 	}
 
 	///m_view->SaveUndoInfoForOutlinePoly( m_view->UNDO_OP, TRUE, m_undo_list ); n.u.
-	for( cpart * p=m_plist->GetFirstPart(); p; p=m_plist->GetNextPart(p) )
+	if (MakePanel) 
+		if(MakePanel->x > 1 || MakePanel->y > 1)
+		{
+			RECT op_rect, totalRect;
+			op_rect.left = op_rect.bottom = INT_MAX;
+			op_rect.right = op_rect.top = INT_MIN;
+			// get boundaries of board outline (in nm)
+			int bW = NM_PER_MIL;
+			for (int ib = 0; ib < m_outline_poly.GetSize(); ib++)
+			{
+				id gid = m_outline_poly[ib].GetId();
+				if (gid.st != ID_BOARD)
+					continue;
+				bW = m_outline_poly[ib].GetW();
+				m_outline_poly[ib].RecalcRectC(0);
+				RECT gr = m_outline_poly[ib].GetCornerBounds(0);
+				SwellRect(&op_rect, gr);
+			}
+			if (op_rect.left == INT_MAX)
+			{
+				op_rect = rect(0, 0, 0, 0);
+			}
+			BOARD = op_rect;
+			totalRect.left = op_rect.left - m_panel_fields[0];
+			totalRect.right = op_rect.left + ((op_rect.right - op_rect.left) * m_n_x) + (m_space_x * (m_n_x - 1)) + m_panel_fields[0];
+			totalRect.bottom = op_rect.bottom - m_panel_fields[1];
+			totalRect.top = op_rect.bottom + ((op_rect.top - op_rect.bottom) * m_n_y) + (m_space_y * (m_n_y - 1)) + m_panel_fields[1];
+			int sz = m_outline_poly.GetSize();
+			m_outline_poly.SetSize(sz + 1);
+			id bid(ID_POLYLINE, ID_BOARD, sz);
+			m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, totalRect.left, totalRect.bottom, 0, &bid, NULL);
+			m_outline_poly[sz].AppendCorner(totalRect.right, totalRect.bottom, 0, 0);
+			m_outline_poly[sz].AppendCorner(totalRect.right, totalRect.top, 0, 0);
+			m_outline_poly[sz].AppendCorner(totalRect.left, totalRect.top, 0, 0);
+			m_outline_poly[sz].Close();
+			for (int ib = 0; ib < sz; ib++)
+			{
+				id gid = m_outline_poly[ib].GetId();
+				if (gid.st != ID_BOARD)
+					continue;
+				if (m_outline_poly[ib].GetNumContours() < 2)
+					continue;
+				int start = m_outline_poly[ib].GetContourStart(1);
+				for (int icont = start; icont < m_outline_poly[ib].GetNumCorners(); icont++)
+				{
+					m_outline_poly[sz].AppendCorner(m_outline_poly[ib].GetX(icont), m_outline_poly[ib].GetY(icont), m_outline_poly[ib].GetSideStyle(m_outline_poly[ib].GetIndexCornerBack(icont)), 0);
+					if (m_outline_poly[ib].GetContourEnd(m_outline_poly[ib].GetNumContour(icont)) == icont ||
+						icont == (m_outline_poly[ib].GetNumCorners()-1))
+						m_outline_poly[sz].Close(m_outline_poly[ib].GetSideStyle(icont));
+				}
+			}
+			while (m_outline_poly.GetSize() > 1)
+			{
+				m_outline_poly[0].Undraw();
+				m_outline_poly.RemoveAt(0);
+			}
+		}
+	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
 	{
 		for( int io=0; io<p->m_outline_stroke.GetSize(); io++ )
 		{
@@ -14187,6 +14328,35 @@ void CFreePcbDoc::AddBoardHoles( BOOL bCANCEL )
 		}
 	}
 	ProjectCombineBoard( LAY_BOARD_OUTLINE );
+	if (MakePanel)
+		if (MakePanel->x > 1 || MakePanel->y > 1)
+		{
+			if (m_outline_poly[0].GetNumContours() > 1)
+			{
+				int start = m_outline_poly[0].GetContourStart(1);
+				int end = m_outline_poly[0].GetNumCorners();
+				for (int ix = 0; ix < m_n_x; ix++)
+				{
+					int x_offset = ix * (BOARD.right - BOARD.left + m_space_x);
+					for (int iy = 0; iy < m_n_y; iy++)
+					{
+						if (ix == 0 && iy == 0)
+							continue;
+						int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y);
+						for (int ic = start; ic < end; ic++)
+						{
+							m_outline_poly[0].AppendCorner(	m_outline_poly[0].GetX(ic) + x_offset, 
+															m_outline_poly[0].GetY(ic) + y_offset, 
+															m_outline_poly[0].GetSideStyle(m_outline_poly[0].GetIndexCornerBack(ic)), 0);
+							if (m_outline_poly[0].GetContourEnd(m_outline_poly[0].GetNumContour(ic)) == ic)
+								m_outline_poly[0].Close(m_outline_poly[0].GetSideStyle(ic));
+						}
+					}
+				}
+			}
+			ProjectCombineBoard(LAY_BOARD_OUTLINE);
+		}
+	return BOARD;
 }
 
 void CFreePcbDoc::CancelBoardHoles( BOOL bUNDO )

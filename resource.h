@@ -275,6 +275,7 @@
 #define IDC_EDIT_IMPORT_SOURCE          1004
 #define IDC_EDIT4                       1004
 #define IDC_EDIT_INCREMENT              1004
+#define IDC_EDIT_FIELD1                 1004
 #define IDC_EDIT_VIA_HOLE_W             1005
 #define IDC_EDIT_LAYER_4                1005
 #define IDC_EDIT_FOOTPRINT              1005
@@ -282,23 +283,29 @@
 #define IDC_EDIT_IMPORT_DESC            1005
 #define IDC_EDIT5                       1005
 #define IDC_MERGE_AREA_CLEARANCE        1005
+#define IDC_EDIT_FIELD2                 1005
 #define IDC_COMBO_NET                   1006
 #define IDC_EDIT_LAYER_5                1006
 #define IDC_EDIT6                       1006
 #define IDC_FOOTPRINT2                  1006
 #define IDC_FOOT_SEARCH                 1006
+#define IDC_EDIT_PANEL_HOLE_DIAM        1006
 #define IDC_COMBO_WIDTH                 1007
 #define IDC_EDIT_LAYER_6                1007
 #define IDC_EDIT7                       1007
+#define IDC_PANEL_TEXT1                 1007
 #define IDC_DEF_NET                     1008
 #define IDC_EDIT_LAYER_7                1008
 #define IDC_EDIT8                       1008
+#define IDC_PANEL_TEXT2                 1008
 #define IDC_DEF_CON                     1009
 #define IDC_EDIT_LAYER_8                1009
 #define IDC_EDIT9                       1009
+#define IDC_PANEL_TEXT3                 1009
 #define IDC_APPLY_NET                   1010
 #define IDC_EDIT_LAYER_9                1010
 #define IDC_EDIT10                      1010
+#define IDC_PANEL_TEXT4                 1010
 #define IDC_APPLY_CON                   1011
 #define IDC_EDIT_LAYER_10               1011
 #define IDC_EDIT11                      1011
@@ -326,10 +333,12 @@
 #define IDC_RADIO_Z1                    1029
 #define IDC_RADIO7                      1029
 #define IDC_RADIO_2_1                   1029
+#define IDC_REF3                        1029
 #define IDC_Y                           1030
 #define IDC_RADIO_C2                    1030
 #define IDC_RADIO8                      1030
 #define IDC_RADIO_2_2                   1030
+#define IDC_REF4                        1030
 #define IDC_RADIO_G2                    1031
 #define IDC_RADIO9                      1031
 #define IDC_RADIO_1_1                   1031
@@ -445,6 +454,8 @@
 #define IDC_CHECK_INNER6                1173
 #define IDC_LAYER_DESC                  1174
 #define IDC_PREVIEW                     1175
+#define IDC_V_CUTOUT_X                  1175
+#define IDC_V_CUTOUT_Y                  1176
 #define IDC_CHECK_PREVIEW               1177
 #define IDC_BMP_QUAD                    1179
 #define IDC_EDIT_WIZ_HPINS              1180
@@ -551,7 +562,10 @@
 #define IDC_COMBO_REF_TEXT_UNITS        1263
 #define IDC_COMBO_CAD_UNITS             1264
 #define IDC_EDIT_FP_REF_CHAR_HEIGHT     1265
+#define IDC_PANEL_HOLE_CNT              1265
 #define IDC_COMBO_FP_REF_TEXT_UNITS     1266
+#define IDC_PANEL_HOLE_CNT2             1266
+#define IDC_SELECT_REF                  1266
 #define IDC_EDIT_FP_REF_WIDTH           1267
 #define IDC_EDIT_FP_REF_DEF_WIDTH       1268
 #define IDC_RADIO_FP_REF_SET            1269
@@ -921,6 +935,7 @@
 #define IDC_STATIC_EX2                  1550
 #define IDC_GLOBAL_ROT                  1551
 #define IDC_CODE                        1553
+#define IDC_REF2                        1553
 #define IDC_STATIC_EX_R2                1554
 #define IDC_EXTRUSION_SCALE             1555
 #define IDC_STATIC_EX3                  1556
@@ -1156,7 +1171,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        362
 #define _APS_NEXT_COMMAND_VALUE         32944
-#define _APS_NEXT_CONTROL_VALUE         1552
+#define _APS_NEXT_CONTROL_VALUE         1554
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

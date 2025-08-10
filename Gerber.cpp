@@ -903,7 +903,7 @@ int WriteGerberFile( CStdioFile * f, int flags, int layer,
 					int hole_clearance, int thermal_clearance,
 					int n_x, int n_y, int step_x, int step_y,
 					CArray<CPolyLine> * op, CPartList * pl, 
-					CNetList * nl, CTextList * tl, CDisplayList * dl, Merge * ml )
+					CNetList * nl, CTextList * tl, CDisplayList * dl, Merge * ml, PanelOptions panel)
 {
 THERMAL_W = thermal_wid;
 int LPD = 0;
@@ -919,27 +919,10 @@ int LPD = 0;
 	aperture_array ap_array;
 	int current_iap = -1;
 	CAperture current_ap;
-	RECT op_rect;
-	op_rect.left = op_rect.bottom = INT_MAX;
-	op_rect.right = op_rect.top = INT_MIN;
+	RECT op_rect = panel.m_pcb_rect;
 	const double cos_oct = cos( pi/8.0 ); 
 	CString str;
-
-	// get boundaries of board outline (in nm)
-	if( int s = op->GetSize() )
-		for( int ib=0; ib<s; ib++ ) 
-		{
-			id gid = (*op)[ib].GetId();
-			if( gid.st != ID_BOARD )
-				continue;
-			RECT gr = (*op)[ib].GetCornerBounds(0);
-			SwellRect( &op_rect, gr );
-		}
-	if( op_rect.left == INT_MAX )
-	{
-		op_rect = rect( 0,0,0,0 );
-	}
-
+	CPoint BoardOrigin(panel.m_pcb_rect.left, panel.m_pcb_rect.bottom);
 	// perform two passes through data, first just get apertures, then write file
 	for( int ipass=0; ipass<2; ipass++ )
 	{
@@ -1097,8 +1080,8 @@ int LPD = 0;
 		}
 
 		// draw moires
-		double f_step_x = (op_rect.right - op_rect.left + (double)step_x)/NM_PER_MIL;	// mils
-		double f_step_y = (op_rect.top - op_rect.bottom + (double)step_y)/NM_PER_MIL;	// mils
+		double f_step_x = ((double)op_rect.right - (double)op_rect.left + (double)step_x)/(double)NM_PER_MIL;	// mils
+		double f_step_y = ((double)op_rect.top - (double)op_rect.bottom + (double)step_y)/(double)NM_PER_MIL;	// mils
 		if( op && (flags & GERBER_AUTO_MOIRES) )
 		{
 			if( PASS1 )
@@ -1173,16 +1156,185 @@ int LPD = 0;
 			}
 			tl->RemoveText( t );
 		}
-
+		// objects of panelization
+		if (n_x > 1 || n_y > 1)
+		{
+			if (PASS1)
+			{
+				if (BoardOrigin.x == INT_MAX || BoardOrigin.y == INT_MAX)
+				{
+					BoardOrigin.x = BoardOrigin.y = 0;
+				}
+			}
+			BOOL VERTIC = 1;
+			if (abs(op_rect.top - op_rect.bottom) < abs(op_rect.right - op_rect.left))
+				VERTIC = 0;
+			f->WriteString("\nG04 Objects of panelization *\n");
+			if (layer == LAY_SCRIBING)
+			{
+				// stroke outline with aperture to create clearance
+				CAperture panel_ap(CAperture::AP_CIRCLE, _2540, 0);
+				ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				if (PASS1)
+				{
+					if (panel.m_scribing == 1 || panel.m_scribing == 3)
+					{
+						for (int istep = 0; istep < n_y; istep++)
+						{
+							if (istep == 0 || step_y)
+							{
+								::WriteMoveTo(f, 
+									BoardOrigin.x - panel.m_fields[0], 
+									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep), LIGHT_OFF);
+								::WriteMoveTo(f, 
+									BoardOrigin.x + panel.m_fields[0] + (f_step_x * NM_PER_MIL * n_x) - step_x, 
+									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep), LIGHT_ON);
+							}
+							{
+								::WriteMoveTo(f, 
+									BoardOrigin.x - panel.m_fields[0], 
+									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep) + (op_rect.top - op_rect.bottom), LIGHT_OFF);
+								::WriteMoveTo(f, 
+									BoardOrigin.x + panel.m_fields[0] + (f_step_x * NM_PER_MIL * n_x) - step_x, 
+									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep) + (op_rect.top - op_rect.bottom), LIGHT_ON);
+							}
+						}
+					}
+					if (panel.m_scribing == 2 || panel.m_scribing == 3)
+					{
+						for (int istep = 0; istep < n_x; istep++)
+						{
+							if (istep == 0 || step_x)
+							{
+								::WriteMoveTo(f, 
+									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep), 
+									BoardOrigin.y - panel.m_fields[1], LIGHT_OFF);
+								::WriteMoveTo(f, 
+									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep), 
+									BoardOrigin.y + panel.m_fields[1] + (f_step_y * NM_PER_MIL * n_y) - step_y, LIGHT_ON);
+							}
+							{
+								::WriteMoveTo(f, 
+									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left), 
+									BoardOrigin.y - panel.m_fields[1], LIGHT_OFF);
+								::WriteMoveTo(f, 
+									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left), 
+									BoardOrigin.y + panel.m_fields[1] + (f_step_y * NM_PER_MIL * n_y) - step_y, LIGHT_ON);
+							}
+						}
+					}
+				}
+			}
+			else if (layer == LAY_TOP_COPPER || layer == LAY_BOTTOM_COPPER ||
+				((layer == LAY_PASTE_TOP || layer == LAY_PASTE_BOTTOM) && panel.m_reference.Right(1) == "2"))
+			{
+				// stroke outline with aperture to create clearance
+				if (panel.m_reference == "RoundedType1")
+				{
+					CAperture panel_ap(CAperture::AP_CIRCLE, NM_PER_MM, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else if (panel.m_reference == "RoundedType2")
+				{
+					CAperture panel_ap(CAperture::AP_CIRCLE, NM_PER_MM * 3 / 2, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else if (panel.m_reference == "RectType1")
+				{
+					CAperture panel_ap(CAperture::AP_SQUARE, NM_PER_MM, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else if (panel.m_reference == "RectType2")
+				{
+					CAperture panel_ap(CAperture::AP_SQUARE, NM_PER_MM * 3 / 2, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else // default!
+				{
+					CAperture panel_ap(CAperture::AP_SQUARE, NM_PER_MM / 2, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				if (PASS1)
+				{
+					::WriteMoveTo(f, 
+						BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC?0:panel.m_fields[0]), 
+						BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC?panel.m_fields[1]:0), LIGHT_FLASH);
+					if (panel.m_ref_count == 0 || panel.m_ref_count == 2)
+						::WriteMoveTo(f, 
+							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
+							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+					if (panel.m_ref_count == 1 || panel.m_ref_count == 2)
+					{
+						::WriteMoveTo(f, 
+							BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC ? 0 : panel.m_fields[0]),
+							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+						::WriteMoveTo(f, 
+							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
+							BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+					}
+				}
+			}
+			else if (layer == LAY_SM_TOP || layer == LAY_SM_BOTTOM)
+			{
+				// stroke outline with aperture to create clearance
+				if (panel.m_reference == "RoundedType1")
+				{
+					CAperture panel_ap(CAperture::AP_CIRCLE, NM_PER_MM * 3, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else if (panel.m_reference == "RoundedType2")
+				{
+					CAperture panel_ap(CAperture::AP_CIRCLE, NM_PER_MM * 4, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else if (panel.m_reference == "RectType1")
+				{
+					CAperture panel_ap(CAperture::AP_SQUARE, NM_PER_MM * 3, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else if (panel.m_reference == "RectType2")
+				{
+					CAperture panel_ap(CAperture::AP_SQUARE, NM_PER_MM * 4, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				else // default!
+				{
+					CAperture panel_ap(CAperture::AP_SQUARE, NM_PER_MM * 2, 0);
+					ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
+				}
+				if (PASS1)
+				{
+					::WriteMoveTo(f, 
+						BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC ? 0 : panel.m_fields[0]),
+						BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+					if (panel.m_ref_count == 0 || panel.m_ref_count == 2)
+						::WriteMoveTo(f,
+							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
+							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+					if (panel.m_ref_count == 1 || panel.m_ref_count == 2)
+					{
+						::WriteMoveTo(f,
+							BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC ? 0 : panel.m_fields[0]),
+							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+						::WriteMoveTo(f,
+							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
+							BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+					}
+				}
+			}
+		}
 		// step and repeat for panelization
 		if( PASS1 )
 		{
-			f->WriteString( "\nG04 Step and Repeat for panelization *\n" );
-			if( n_x > 1 || n_y > 1 )
+			if (layer != LAY_BOARD_OUTLINE)
 			{
-				CString str;
-				str.Format( "SRX%dY%dI%fJ%f*", n_x, n_y, f_step_x/1000.0, f_step_y/1000.0 );
-				f->WriteString( "%" + str + "%\n" );
+				f->WriteString("\nG04 Step and Repeat for panelization *\n");
+				if (n_x > 1 || n_y > 1)
+				{
+					CString str;
+					str.Format("SRX%dY%dI%fJ%f*", n_x, n_y, f_step_x / 1000.0, f_step_y / 1000.0);
+					f->WriteString("%" + str + "%\n");
+				}
 			}
 		}
 		// draw outline poly
@@ -2650,41 +2802,41 @@ int LPD = 0;
 			for( int i=0; i<op->GetSize(); i++ )
 			{
 				CPolyLine * poly = &(*op)[i];
+				int pW = poly->GetW();
 				int pL = poly->GetLayer();
-				if ( layer == poly->GetLayer() ||
-					 ((flags & GERBER_BOARD_OUTLINE) && pL == LAY_BOARD_OUTLINE)) 
+				int pCl = poly->GetClosed();
+				BOOL poly_OK = (layer == poly->GetLayer() || ((flags & GERBER_BOARD_OUTLINE) && pL == LAY_BOARD_OUTLINE));
+				if (poly_OK)
 				{
-					int pW =  poly->GetW();
-					if( pL == LAY_SILK_TOP || pL == LAY_SILK_BOTTOM )
-						pW = max( pW, min_silkscreen_stroke_wid );
-					else if( pW >= -1 )
-						pW = max( pW, _2540 );
+					if (pL == LAY_SILK_TOP || pL == LAY_SILK_BOTTOM)
+						pW = max(pW, min_silkscreen_stroke_wid);
+					else if (pW >= -1)
+						pW = max(pW, _2540);
 					else
-						pW = min( pW, -_2540 );
-					int pCl = poly->GetClosed();
-					if( pCl )
+						pW = min(pW, -_2540);	
+					if (pCl)
 					{   // draw hatch pattern
-						if( abs(pW) > _2540 && (pL != LAY_BOARD_OUTLINE ))//|| poly->GetNumContours() > 1) )
+						if (abs(pW) > _2540 && (pL != LAY_BOARD_OUTLINE))//|| poly->GetNumContours() > 1) )
 						{
-							CAperture _ap( CAperture::AP_CIRCLE,  abs(pW)*9/10, 0 );
-							ChangeAperture( &_ap, &current_ap, &ap_array, PASS0, f );
-							if( PASS1 )
-							{	
-								if( int nh = poly->GetHatchSize() )
+							CAperture _ap(CAperture::AP_CIRCLE, abs(pW) * 9 / 10, 0);
+							ChangeAperture(&_ap, &current_ap, &ap_array, PASS0, f);
+							if (PASS1)
+							{
+								if (int nh = poly->GetHatchSize())
 								{
 									SET_LPD
-									f->WriteString( "\nG04 Draw polyline*\n" );
-									for (int h=0; h<nh; h++)
+										f->WriteString("\nG04 Draw polyline*\n");
+									for (int h = 0; h < nh; h++)
 									{
-										dl_element * dlh = poly->GetHatchLoc(h);
-										CArray<CPoint> * gP = dl->Get_Points( dlh, NULL, 0 );
+										dl_element* dlh = poly->GetHatchLoc(h);
+										CArray<CPoint>* gP = dl->Get_Points(dlh, NULL, 0);
 										int npt = gP->GetSize();
-										CPoint * P = new CPoint[npt];//ok
-										dl->Get_Points( dlh, P, &npt );
-										for( int ii=0; ii+1<npt; ii+=2 )
+										CPoint* P = new CPoint[npt];//ok
+										dl->Get_Points(dlh, P, &npt);
+										for (int ii = 0; ii + 1 < npt; ii += 2)
 										{
-											::WriteMoveTo( f, P[ii].x, P[ii].y, LIGHT_OFF );
-											::WriteMoveTo( f, P[ii+1].x, P[ii+1].y, LIGHT_ON );
+											::WriteMoveTo(f, P[ii].x, P[ii].y, LIGHT_OFF);
+											::WriteMoveTo(f, P[ii + 1].x, P[ii + 1].y, LIGHT_ON);
 										}
 										delete P;
 									}
@@ -2692,49 +2844,60 @@ int LPD = 0;
 							}
 						}
 					}
-					// stroke outline with aperture to create clearance
-					CAperture sm_ap( CAperture::AP_CIRCLE, abs(pW), 0 );
-					ChangeAperture( &sm_ap, &current_ap, &ap_array, PASS0, f );
-					if( PASS1 )
+				}
+				// stroke outline with aperture to create clearance
+				CAperture sm_ap( CAperture::AP_CIRCLE, abs(pW), 0 );
+				ChangeAperture( &sm_ap, &current_ap, &ap_array, PASS0, f );
+				if (PASS1 && poly_OK)
+				{
+					if (pW < _2540)
+						SET_LPC
+					else if (pW == _2540 && pCl)
 					{
-						if( pW < _2540 )
-							SET_LPC
-						else if( pW == _2540 && pCl )
-						{
-							if( pL == LAY_SM_TOP || pL == LAY_SM_BOTTOM )
-								f->WriteString( "G36*\n" );
-						}
-						// stroke outline with aperture to create clearance
-						int nc = poly->GetNumCorners();
-						if( pCl == 0 )
-							nc--;
-						for( int ico=0; ico<poly->GetNumContours(); ico++ )
-						{
-							int cst = poly->GetContourStart(ico);
-							int cend = poly->GetContourEnd(ico);
-							cend = min(cend,nc-1);
-							int last_x = poly->GetX(cst);
-							int last_y = poly->GetY(cst);
-							::WriteMoveTo( f, last_x, last_y, LIGHT_OFF );
-							for( int ic=cst; ic<=cend; ic++ )
-							{
-								last_x = poly->GetX(ic);
-								last_y = poly->GetY(ic);
-								int in = poly->GetIndexCornerNext(ic);
-								int x = poly->GetX(in);
-								int y = poly->GetY(in);
-								int style = poly->GetSideStyle(ic);
-								::WritePolygonSide( f, last_x, last_y, x, y, style, N_SIDES_APPROX_ARC, LIGHT_ON );	
-							}
-						}
-						if( pW < _2540 )
-							SET_LPD
-						else if( pW == _2540 && pCl )
-						{
-							if( pL == LAY_SM_TOP || pL == LAY_SM_BOTTOM )
-								f->WriteString( "G37*\n" );
-						}
+						if (pL == LAY_SM_TOP || pL == LAY_SM_BOTTOM)
+							f->WriteString("G36*\n");
 					}
+				}
+				// stroke outline with aperture to create clearance
+				int nc = poly->GetNumCorners();
+				if( pCl == 0 )
+					nc--;
+				for( int ico=0; ico<poly->GetNumContours(); ico++ )
+				{
+					int cst = poly->GetContourStart(ico);
+					int cend = poly->GetContourEnd(ico);
+					cend = min(cend,nc-1);
+					int last_x = poly->GetX(cst);
+					int last_y = poly->GetY(cst);
+					if (PASS1 && poly_OK)
+						::WriteMoveTo( f, last_x, last_y, LIGHT_OFF );
+					for( int ic=cst; ic<=cend; ic++ )
+					{
+						last_x = poly->GetX(ic);
+						last_y = poly->GetY(ic);
+						int in = poly->GetIndexCornerNext(ic);
+						int x = poly->GetX(in);
+						int y = poly->GetY(in);
+						//if (PASS0 && pL == LAY_BOARD_OUTLINE)
+						//{
+						//	BoardOrigin.x = min(BoardOrigin.x, x);
+						//	BoardOrigin.y = min(BoardOrigin.y, y);
+						//}
+						int style = poly->GetSideStyle(ic);
+						if (PASS1 && poly_OK)
+							::WritePolygonSide( f, last_x, last_y, x, y, style, N_SIDES_APPROX_ARC, LIGHT_ON );	
+					}
+				}
+				if (PASS1 && poly_OK)
+				{
+					if( pW < _2540 )
+						SET_LPD
+					else if( pW == _2540 && pCl )
+					{
+						if( pL == LAY_SM_TOP || pL == LAY_SM_BOTTOM )
+							f->WriteString( "G37*\n" );
+					}
+
 				}
 			}
 		}
@@ -2848,7 +3011,7 @@ int AddToArray( int value, CArray<int,int> * array )
 
 // write NC drill file
 //
-CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<CPolyLine> * bd,
+CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<CPolyLine> * bd, PanelOptions panel,
 				   int n_x, int n_y, int space_x, int space_y )
 {
 	CArray<int,int> diameter;
@@ -2921,7 +3084,10 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 			}
 		}
 	}
-
+	if (n_x > 1 || n_y > 1)
+	{
+		::AddToArray(panel.m_holes[0] / NM_PER_MIL, &diameter);
+	}
 	// now, write data to file
 	CString str;
 	for( int iid=0; iid<diameter.GetSize(); iid++ )
@@ -2944,37 +3110,43 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 	file->WriteString( "G90\n" );	// absolute data
 
 	// get boundaries of board outline
-	int bd_min_x = INT_MAX;
-	int bd_min_y = INT_MAX;
-	int bd_max_x = INT_MIN;
-	int bd_max_y = INT_MIN;
-	for( int ib=0; ib<bd->GetSize(); ib++ ) 
-	{
-		for( int ic=0; ic<(*bd)[ib].GetNumCorners(); ic++ )
-		{
-			id gid = (*bd)[ib].GetId();
-			if( gid.st != ID_BOARD )
-				continue;
-			int x = (*bd)[ib].GetX(ic);
-			if( x < bd_min_x )
-				bd_min_x = x;
-			if( x > bd_max_x )
-				bd_max_x = x;
-			int y = (*bd)[ib].GetY(ic);
-			if( y < bd_min_y )
-				bd_min_y = y;
-			if( y > bd_max_y )
-				bd_max_y = y;
-		}
-	}
-	int x_step = bd_max_x - bd_min_x + space_x;
-	int y_step = bd_max_y - bd_min_y + space_y;
+	int x_step = panel.m_pcb_rect.right - panel.m_pcb_rect.left + space_x;
+	int y_step = panel.m_pcb_rect.top - panel.m_pcb_rect.bottom + space_y;
 	for( int id=0; id<diameter.GetSize(); id++ )
 	{
 		// now write hole size and all holes
 		int d = diameter[id];
 		str.Format( "T%02d\n", id+1 ); 
 		file->WriteString( str );
+		if (n_x > 1 || n_y > 1)
+		{
+			if (d == panel.m_holes[0] / NM_PER_MIL)
+			{
+				double range_x = x_step * n_x + panel.m_fields[0] - space_x;
+				double range_y = y_step * n_y + panel.m_fields[1] - space_y;
+				double shift_x = range_x / (double)panel.m_holes[1] * 4.0;
+				double shift_y = range_y / (double)panel.m_holes[1] * 4.0;
+				for (int io = 0; io < panel.m_holes[1] / 4; io++)
+				{
+					str.Format("X%.6dY%.6d\n",     // 2.4
+						(int)(panel.m_pcb_rect.left - (panel.m_fields[0] / 2) + (shift_x * io)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom - (panel.m_fields[1] / 2)) / (NM_PER_MIL / 10));
+					file->WriteString(str);
+					str.Format("X%.6dY%.6d\n",     // 2.4
+						(int)(panel.m_pcb_rect.left + range_x - (panel.m_fields[0] / 2) - (shift_x * io)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom + range_y - (panel.m_fields[1] / 2)) / (NM_PER_MIL / 10));
+					file->WriteString(str);
+					str.Format("X%.6dY%.6d\n",     // 2.4
+						(int)(panel.m_pcb_rect.left - (panel.m_fields[0] / 2)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom + range_y - (panel.m_fields[1] / 2) - (shift_y * io)) / (NM_PER_MIL / 10));
+					file->WriteString(str);
+					str.Format("X%.6dY%.6d\n",     // 2.4
+						(int)(panel.m_pcb_rect.left + range_x - (panel.m_fields[0] / 2)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom - (panel.m_fields[1] / 2) + (shift_y * io)) / (NM_PER_MIL / 10));
+					file->WriteString(str);
+				}
+			}
+		}
 		// loop for panelization
 		for( int ix=0; ix<n_x; ix++ )
 		{
