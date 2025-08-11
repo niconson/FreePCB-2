@@ -45,8 +45,7 @@ public:
 						CString panel_reference,
 						int panel_scribing,
 						CString * panel_text,
-						RECT m_panel_frame_for_paste,
-						RECT pcb_rect);
+						RECT m_panel_frame_for_paste);
 	void SetFields();
 	void GetFields();
 // Dialog Data

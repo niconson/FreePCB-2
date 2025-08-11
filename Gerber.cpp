@@ -1156,7 +1156,9 @@ int LPD = 0;
 			}
 			tl->RemoveText( t );
 		}
-		// objects of panelization
+		//=============================================================================
+		// ********************** draw objects of panelization ************************
+		//=============================================================================
 		if (n_x > 1 || n_y > 1)
 		{
 			if (PASS1)
@@ -1225,6 +1227,66 @@ int LPD = 0;
 					}
 				}
 			}
+			else if ((layer == LAY_SILK_TOP && panel.m_text[0].GetLength()) ||
+					(layer == LAY_SILK_BOTTOM && panel.m_text[1].GetLength()))
+			{
+				if (layer == LAY_SILK_TOP && panel.m_text[0].GetLength())
+				{
+					str = panel.m_text[0];
+					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TW = TH / 7;
+					CText* t = tl->AddText(BoardOrigin.x + TH,
+						BoardOrigin.y - TH - TH + TW + TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					// draw text
+					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
+					if (PASS1)
+					{
+						if (t->dl_el)
+						{
+							CArray<CPoint>* tpt = dl->Get_Points(t->dl_el, NULL, 0);
+							int np = tpt->GetSize();
+							CPoint* m_stroke = new CPoint[np];//ok
+							dl->Get_Points(t->dl_el, m_stroke, &np);
+							for (int istroke = 0; istroke + 1 < np; istroke += 2)
+							{
+								::WriteMoveTo(f, m_stroke[istroke].x, m_stroke[istroke].y, LIGHT_OFF);
+								::WriteMoveTo(f, m_stroke[istroke + 1].x, m_stroke[istroke + 1].y, LIGHT_ON);
+							}
+							delete m_stroke;
+						}
+					}
+					tl->RemoveText(t);
+				}
+				if (layer == LAY_SILK_BOTTOM && panel.m_text[1].GetLength())
+				{
+					str = panel.m_text[1];
+					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TW = TH / 7;
+					CText* t = tl->AddText(BoardOrigin.x + TH,
+						BoardOrigin.y - TH - TH + TW + TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					// draw text
+					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
+					if (PASS1)
+					{
+						if (t->dl_el)
+						{
+							CArray<CPoint>* tpt = dl->Get_Points(t->dl_el, NULL, 0);
+							int np = tpt->GetSize();
+							CPoint* m_stroke = new CPoint[np];//ok
+							dl->Get_Points(t->dl_el, m_stroke, &np);
+							for (int istroke = 0; istroke + 1 < np; istroke += 2)
+							{
+								::WriteMoveTo(f, m_stroke[istroke].x, m_stroke[istroke].y, LIGHT_OFF);
+								::WriteMoveTo(f, m_stroke[istroke + 1].x, m_stroke[istroke + 1].y, LIGHT_ON);
+							}
+							delete m_stroke;
+						}
+					}
+					tl->RemoveText(t);
+				}
+			}
 			else if (layer == LAY_TOP_COPPER || layer == LAY_BOTTOM_COPPER ||
 				((layer == LAY_PASTE_TOP || layer == LAY_PASTE_BOTTOM) && panel.m_reference.Right(1) == "2"))
 			{
@@ -1273,6 +1335,60 @@ int LPD = 0;
 							BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
 					}
 				}
+				if (layer == LAY_TOP_COPPER && panel.m_text[2].GetLength())
+				{
+					str = panel.m_text[2];
+					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TW = TH / 7;
+					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					// draw text
+					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
+					if (PASS1)
+					{
+						if (t->dl_el)
+						{
+							CArray<CPoint>* tpt = dl->Get_Points(t->dl_el, NULL, 0);
+							int np = tpt->GetSize();
+							CPoint* m_stroke = new CPoint[np];//ok
+							dl->Get_Points(t->dl_el, m_stroke, &np);
+							for (int istroke = 0; istroke + 1 < np; istroke += 2)
+							{
+								::WriteMoveTo(f, m_stroke[istroke].x, m_stroke[istroke].y, LIGHT_OFF);
+								::WriteMoveTo(f, m_stroke[istroke + 1].x, m_stroke[istroke + 1].y, LIGHT_ON);
+							}
+							delete m_stroke;
+						}
+					}
+					tl->RemoveText(t);
+				}
+				if (layer == LAY_BOTTOM_COPPER && panel.m_text[3].GetLength())
+				{
+					str = panel.m_text[3];
+					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TW = TH / 7;
+					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					// draw text
+					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
+					if (PASS1)
+					{
+						if (t->dl_el)
+						{
+							CArray<CPoint>* tpt = dl->Get_Points(t->dl_el, NULL, 0);
+							int np = tpt->GetSize();
+							CPoint* m_stroke = new CPoint[np];//ok
+							dl->Get_Points(t->dl_el, m_stroke, &np);
+							for (int istroke = 0; istroke + 1 < np; istroke += 2)
+							{
+								::WriteMoveTo(f, m_stroke[istroke].x, m_stroke[istroke].y, LIGHT_OFF);
+								::WriteMoveTo(f, m_stroke[istroke + 1].x, m_stroke[istroke + 1].y, LIGHT_ON);
+							}
+							delete m_stroke;
+						}
+					}
+					tl->RemoveText(t);
+				}
 			}
 			else if (layer == LAY_SM_TOP || layer == LAY_SM_BOTTOM)
 			{
@@ -1320,6 +1436,60 @@ int LPD = 0;
 							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
 							BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
 					}
+				}
+				if (layer == LAY_SM_TOP && panel.m_text[2].GetLength())
+				{
+					str = panel.m_text[2];
+					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TW = TH / 7;
+					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					// draw text
+					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
+					if (PASS1)
+					{
+						if (t->dl_el)
+						{
+							CArray<CPoint>* tpt = dl->Get_Points(t->dl_el, NULL, 0);
+							int np = tpt->GetSize();
+							CPoint* m_stroke = new CPoint[np];//ok
+							dl->Get_Points(t->dl_el, m_stroke, &np);
+							for (int istroke = 0; istroke + 1 < np; istroke += 2)
+							{
+								::WriteMoveTo(f, m_stroke[istroke].x, m_stroke[istroke].y, LIGHT_OFF);
+								::WriteMoveTo(f, m_stroke[istroke + 1].x, m_stroke[istroke + 1].y, LIGHT_ON);
+							}
+							delete m_stroke;
+						}
+					}
+					tl->RemoveText(t);
+				}
+				if (layer == LAY_SM_BOTTOM && panel.m_text[3].GetLength())
+				{
+					str = panel.m_text[3];
+					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TW = TH / 7;
+					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					// draw text
+					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
+					if (PASS1)
+					{
+						if (t->dl_el)
+						{
+							CArray<CPoint>* tpt = dl->Get_Points(t->dl_el, NULL, 0);
+							int np = tpt->GetSize();
+							CPoint* m_stroke = new CPoint[np];//ok
+							dl->Get_Points(t->dl_el, m_stroke, &np);
+							for (int istroke = 0; istroke + 1 < np; istroke += 2)
+							{
+								::WriteMoveTo(f, m_stroke[istroke].x, m_stroke[istroke].y, LIGHT_OFF);
+								::WriteMoveTo(f, m_stroke[istroke + 1].x, m_stroke[istroke + 1].y, LIGHT_ON);
+							}
+							delete m_stroke;
+						}
+					}
+					tl->RemoveText(t);
 				}
 			}
 		}

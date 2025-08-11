@@ -291,8 +291,7 @@ void CDlgCAD::Initialize( double version,
 						 CString panel_reference,
 						 int panel_scribing,
 						 CString* panel_text,
-						 RECT m_panel_frame_for_paste,
-						 RECT pcb_rect)
+						 RECT m_panel_frame_for_paste)
 {
 	m_bShowMessageForClearance = *bShowMessageForClearance;
 	m_bSMT_connect = bSMTconnect;
@@ -319,7 +318,6 @@ void CDlgCAD::Initialize( double version,
 	m_panel.m_frame_for_paste.right = m_panel_frame_for_paste.right;
 	m_panel.m_frame_for_paste.top = m_panel_frame_for_paste.top;
 	m_panel.m_frame_for_paste.bottom = m_panel_frame_for_paste.bottom;
-	m_panel.m_pcb_rect = pcb_rect;
 	//
 	m_mask_clearance = mask_clearance;
 	m_thermal_width = thermal_width;
@@ -431,7 +429,17 @@ void CDlgCAD::OnBnClickedGo()
 		m_hole_clearance = m_fill_clearance;
 		SetFields();
 	}
-
+	POINT PANEL;
+	PANEL.x = m_n_x;
+	PANEL.y = m_n_y;
+	theApp.m_Doc->m_n_x = m_n_x;
+	theApp.m_Doc->m_n_y = m_n_y;
+	theApp.m_Doc->m_space_x = m_space_x;
+	theApp.m_Doc->m_space_y = m_space_y;
+	theApp.m_Doc->m_panel_fields[0] = m_panel.m_fields[0];
+	theApp.m_Doc->m_panel_fields[1] = m_panel.m_fields[1];
+	m_panel.m_pcb_rect = theApp.m_Doc->AddBoardHoles(0, &PANEL);
+	m_nl->OptimizeConnections(FALSE);
 	// show log
 	m_dlg_log->ShowWindow( SW_SHOW );
 	m_dlg_log->UpdateWindow();
@@ -883,6 +891,7 @@ void CDlgCAD::OnBnClickedGo()
 		m_dlg_log->AddLine( "************************* DONE *************************\r\n" ); 
 		_chdir( m_app_folder );	// change back
 	}
+	theApp.m_Doc->CancelBoardHoles();
 }
 
 void CDlgCAD::GetFields()

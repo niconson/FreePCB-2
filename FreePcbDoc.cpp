@@ -5681,11 +5681,6 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		AfxMessageBox(G_LANGUAGE == 0 ? "A board outline must be present for CAM file generation":"Для генерации файла ГЕРБЕР необходимо наличие контура платы.");
 		return;
 	}
-	int mem_project_validated = m_project_validated;
-	POINT PANEL;
-	PANEL.x = m_n_x;
-	PANEL.y = m_n_y;
-	RECT PcbRect = AddBoardHoles(0, &PANEL);
 	CDlgCAD dlg;
 	dlg.Initialize( m_version,
 		&m_cam_full_path, 
@@ -5725,12 +5720,8 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		m_panel_reference,
 		m_panel_scribing,
 		m_panel_text,
-		m_panel_frame_for_paste,
-		PcbRect);
-	m_nlist->OptimizeConnections( FALSE );
-	m_project_validated = mem_project_validated;
+		m_panel_frame_for_paste);
 	int ret = dlg.DoModal();
-	CancelBoardHoles();
 	if( ret == IDOK )
 	{
 		int maxw = 0;
