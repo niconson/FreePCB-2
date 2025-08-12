@@ -1233,9 +1233,10 @@ int LPD = 0;
 				if (layer == LAY_SILK_TOP && panel.m_text[0].GetLength())
 				{
 					str = panel.m_text[0];
-					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
 					int TW = TH / 7;
-					CText* t = tl->AddText(BoardOrigin.x + TH,
+					int w = (panel.m_fields[0]?panel.m_fields[0]:10*NM_PER_MM);
+					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
 						BoardOrigin.y - TH - TH + TW + TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
@@ -1261,10 +1262,11 @@ int LPD = 0;
 				if (layer == LAY_SILK_BOTTOM && panel.m_text[1].GetLength())
 				{
 					str = panel.m_text[1];
-					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
 					int TW = TH / 7;
-					CText* t = tl->AddText(BoardOrigin.x + TH,
-						BoardOrigin.y - TH - TH + TW + TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC&&panel.m_fields[0]? 0 : w),
+						BoardOrigin.y - TH - TH + TW + TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1318,29 +1320,37 @@ int LPD = 0;
 				}
 				if (PASS1)
 				{
+					int field_0 = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					int field_1 = (panel.m_fields[1] ? panel.m_fields[1] : 10 * NM_PER_MM);
+					if (panel.m_fields[0] == 0)
+						VERTIC = 0;
+					else if (panel.m_fields[1] == 0)
+						VERTIC = 1;
 					::WriteMoveTo(f, 
-						BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC?0:panel.m_fields[0]), 
-						BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC?panel.m_fields[1]:0), LIGHT_FLASH);
+						BoardOrigin.x - (field_0 / 2) + (VERTIC?0: field_0),
+						BoardOrigin.y - (field_1 / 2) + (VERTIC? field_1 :0), LIGHT_FLASH);
 					if (panel.m_ref_count == 0 || panel.m_ref_count == 2)
 						::WriteMoveTo(f, 
-							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
-							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+							BoardOrigin.x + (field_0 / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : field_0),
+							BoardOrigin.y + (field_1 / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? field_1 : 0), LIGHT_FLASH);
 					if (panel.m_ref_count == 1 || panel.m_ref_count == 2)
 					{
 						::WriteMoveTo(f, 
-							BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC ? 0 : panel.m_fields[0]),
-							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+							BoardOrigin.x - (field_0 / 2) + (VERTIC ? 0 : field_0),
+							BoardOrigin.y + (field_1 / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? field_1 : 0), LIGHT_FLASH);
 						::WriteMoveTo(f, 
-							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
-							BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+							BoardOrigin.x + (field_0 / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : field_0),
+							BoardOrigin.y - (field_1 / 2) + (VERTIC ? field_1 : 0), LIGHT_FLASH);
 					}
 				}
 				if (layer == LAY_TOP_COPPER && panel.m_text[2].GetLength())
 				{
 					str = panel.m_text[2];
-					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
 					int TW = TH / 7;
-					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
+						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1365,9 +1375,11 @@ int LPD = 0;
 				if (layer == LAY_BOTTOM_COPPER && panel.m_text[3].GetLength())
 				{
 					str = panel.m_text[3];
-					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
 					int TW = TH / 7;
-					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC && panel.m_fields[0] ? 0 : w),
+						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1420,29 +1432,37 @@ int LPD = 0;
 				}
 				if (PASS1)
 				{
+					int field_0 = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					int field_1 = (panel.m_fields[1] ? panel.m_fields[1] : 10 * NM_PER_MM);
+					if (panel.m_fields[0] == 0)
+						VERTIC = 0;
+					else if (panel.m_fields[1] == 0)
+						VERTIC = 1;
 					::WriteMoveTo(f, 
-						BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC ? 0 : panel.m_fields[0]),
-						BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+						BoardOrigin.x - (field_0 / 2) + (VERTIC ? 0 : field_0),
+						BoardOrigin.y - (field_1 / 2) + (VERTIC ? field_1 : 0), LIGHT_FLASH);
 					if (panel.m_ref_count == 0 || panel.m_ref_count == 2)
 						::WriteMoveTo(f,
-							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
-							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+							BoardOrigin.x + (field_0 / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : field_0),
+							BoardOrigin.y + (field_1 / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? field_1 : 0), LIGHT_FLASH);
 					if (panel.m_ref_count == 1 || panel.m_ref_count == 2)
 					{
 						::WriteMoveTo(f,
-							BoardOrigin.x - (panel.m_fields[0] / 2) + (VERTIC ? 0 : panel.m_fields[0]),
-							BoardOrigin.y + (panel.m_fields[1] / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+							BoardOrigin.x - (field_0 / 2) + (VERTIC ? 0 : field_0),
+							BoardOrigin.y + (field_1 / 2) + (f_step_y * NM_PER_MIL * n_y) - (step_y) - (VERTIC ? field_1 : 0), LIGHT_FLASH);
 						::WriteMoveTo(f,
-							BoardOrigin.x + (panel.m_fields[0] / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : panel.m_fields[0]),
-							BoardOrigin.y - (panel.m_fields[1] / 2) + (VERTIC ? panel.m_fields[1] : 0), LIGHT_FLASH);
+							BoardOrigin.x + (field_0 / 2) + (f_step_x * NM_PER_MIL * n_x) - (step_x) - (VERTIC ? 0 : field_0),
+							BoardOrigin.y - (field_1 / 2) + (VERTIC ? field_1 : 0), LIGHT_FLASH);
 					}
 				}
 				if (layer == LAY_SM_TOP && panel.m_text[2].GetLength())
 				{
 					str = panel.m_text[2];
-					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
 					int TW = TH / 7;
-					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
+						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1467,9 +1487,11 @@ int LPD = 0;
 				if (layer == LAY_SM_BOTTOM && panel.m_text[3].GetLength())
 				{
 					str = panel.m_text[3];
-					int TH = (panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
 					int TW = TH / 7;
-					CText* t = tl->AddText(BoardOrigin.x + TH, BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
+					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC && panel.m_fields[0] ? 0 : w),
+						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -3292,27 +3314,61 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 		{
 			if (d == panel.m_holes[0] / NM_PER_MIL)
 			{
-				double range_x = x_step * n_x + panel.m_fields[0] - space_x;
-				double range_y = y_step * n_y + panel.m_fields[1] - space_y;
+				double range_x = x_step * n_x + panel.m_fields[0] - space_x - (panel.m_fields[0] ? 0 : 20 * NM_PER_MM);
+				double range_y = y_step * n_y + panel.m_fields[1] - space_y - (panel.m_fields[1] ? 0 : 20 * NM_PER_MM);
 				double shift_x = range_x / (double)panel.m_holes[1] * 4.0;
 				double shift_y = range_y / (double)panel.m_holes[1] * 4.0;
+				int field_0 = (panel.m_fields[0] ? panel.m_fields[0] : -20 * NM_PER_MM);
+				int field_1 = (panel.m_fields[1] ? panel.m_fields[1] : -20 * NM_PER_MM);
+				//if (panel.m_fields[0] == 0)
+				//	VERTIC = 0;
+				//else if (panel.m_fields[1] == 0)
+				//	VERTIC = 1;
 				for (int io = 0; io < panel.m_holes[1] / 4; io++)
 				{
+					if (panel.m_fields[1])
+					{
+						str.Format("X%.6dY%.6d\n",     // 2.4
+							(int)(panel.m_pcb_rect.left - (field_0 / 2) + (shift_x * io)) / (NM_PER_MIL / 10),
+							(int)(panel.m_pcb_rect.bottom - (field_1 / 2)) / (NM_PER_MIL / 10));
+						file->WriteString(str);
+						str.Format("X%.6dY%.6d\n",     // 2.4
+							(int)(panel.m_pcb_rect.left + range_x - (field_0 / 2) - (shift_x * io)) / (NM_PER_MIL / 10),
+							(int)(panel.m_pcb_rect.bottom + range_y - (field_1 / 2)) / (NM_PER_MIL / 10));
+						file->WriteString(str);
+					}
+					if (panel.m_fields[0])
+					{
+						str.Format("X%.6dY%.6d\n",     // 2.4
+							(int)(panel.m_pcb_rect.left - (field_0 / 2)) / (NM_PER_MIL / 10),
+							(int)(panel.m_pcb_rect.bottom + range_y - (field_1 / 2) - (shift_y * io)) / (NM_PER_MIL / 10));
+						file->WriteString(str);
+						str.Format("X%.6dY%.6d\n",     // 2.4
+							(int)(panel.m_pcb_rect.left + range_x - (field_0 / 2)) / (NM_PER_MIL / 10),
+							(int)(panel.m_pcb_rect.bottom - (field_1 / 2) + (shift_y * io)) / (NM_PER_MIL / 10));
+						file->WriteString(str);
+					}
+				}
+				if (panel.m_fields[0] == 0)
+				{
 					str.Format("X%.6dY%.6d\n",     // 2.4
-						(int)(panel.m_pcb_rect.left - (panel.m_fields[0] / 2) + (shift_x * io)) / (NM_PER_MIL / 10),
-						(int)(panel.m_pcb_rect.bottom - (panel.m_fields[1] / 2)) / (NM_PER_MIL / 10));
+						(int)(panel.m_pcb_rect.left - (field_0 / 2) + range_x) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom - (field_1 / 2)) / (NM_PER_MIL / 10));
 					file->WriteString(str);
 					str.Format("X%.6dY%.6d\n",     // 2.4
-						(int)(panel.m_pcb_rect.left + range_x - (panel.m_fields[0] / 2) - (shift_x * io)) / (NM_PER_MIL / 10),
-						(int)(panel.m_pcb_rect.bottom + range_y - (panel.m_fields[1] / 2)) / (NM_PER_MIL / 10));
+						(int)(panel.m_pcb_rect.left - (field_0 / 2)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom + range_y - (field_1 / 2)) / (NM_PER_MIL / 10));
+					file->WriteString(str);
+				}
+				if (panel.m_fields[1] == 0)
+				{
+					str.Format("X%.6dY%.6d\n",     // 2.4
+						(int)(panel.m_pcb_rect.left - (field_0 / 2)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom - (field_1 / 2)) / (NM_PER_MIL / 10));
 					file->WriteString(str);
 					str.Format("X%.6dY%.6d\n",     // 2.4
-						(int)(panel.m_pcb_rect.left - (panel.m_fields[0] / 2)) / (NM_PER_MIL / 10),
-						(int)(panel.m_pcb_rect.bottom + range_y - (panel.m_fields[1] / 2) - (shift_y * io)) / (NM_PER_MIL / 10));
-					file->WriteString(str);
-					str.Format("X%.6dY%.6d\n",     // 2.4
-						(int)(panel.m_pcb_rect.left + range_x - (panel.m_fields[0] / 2)) / (NM_PER_MIL / 10),
-						(int)(panel.m_pcb_rect.bottom - (panel.m_fields[1] / 2) + (shift_y * io)) / (NM_PER_MIL / 10));
+						(int)(panel.m_pcb_rect.left + range_x - (field_0 / 2)) / (NM_PER_MIL / 10),
+						(int)(panel.m_pcb_rect.bottom + range_y - (field_1 / 2)) / (NM_PER_MIL / 10));
 					file->WriteString(str);
 				}
 			}

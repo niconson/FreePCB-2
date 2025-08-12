@@ -5681,6 +5681,7 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 		AfxMessageBox(G_LANGUAGE == 0 ? "A board outline must be present for CAM file generation":"Для генерации файла ГЕРБЕР необходимо наличие контура платы.");
 		return;
 	}
+	int mem_validate = m_project_validated;
 	CDlgCAD dlg;
 	dlg.Initialize( m_version,
 		&m_cam_full_path, 
@@ -5776,6 +5777,7 @@ void CFreePcbDoc::OnFileGenerateCadFiles()
 			dlg.Ini( this );
 			dlg.ExtProtection( TRUE );
 		}
+	m_project_validated = mem_validate;
 }
 
 void CFreePcbDoc::OnToolsFootprintwizard()

@@ -423,7 +423,6 @@ void CDlgCAD::OnBnClickedGo()
 		else
 			m_bShowMessageForClearance = !dlg.bDontShowBoxState;
 	}
-
 	if( m_hole_clearance < m_fill_clearance )
 	{
 		m_hole_clearance = m_fill_clearance;
@@ -438,6 +437,34 @@ void CDlgCAD::OnBnClickedGo()
 	theApp.m_Doc->m_space_y = m_space_y;
 	theApp.m_Doc->m_panel_fields[0] = m_panel.m_fields[0];
 	theApp.m_Doc->m_panel_fields[1] = m_panel.m_fields[1];
+	if (m_n_x > 1 || m_n_y > 1)
+	{
+		if (m_panel.m_fields[0] == 0 && m_panel.m_fields[1] == 0)
+		{
+			CString errStr;
+			errStr.Format(G_LANGUAGE == 0 ? "Enter the size of the technological fields for panelization" : "¬ведите размер технологических полей дл€ панелизации");
+			AfxMessageBox(errStr, MB_OK);
+			return;
+		}
+		if (m_panel.m_holes[0] == 0)
+		{
+			CString errStr;
+			errStr.Format(G_LANGUAGE == 0 ? "Enter the size of the holes for panelization" : "¬ведите размер отверстий дл€ панелизации");
+			AfxMessageBox(errStr, MB_OK);
+			return;
+		}
+		if ((m_panel.m_text[0].GetLength() ||
+			m_panel.m_text[0].GetLength() ||
+			m_panel.m_text[0].GetLength() ||
+			m_panel.m_text[0].GetLength()) && m_panel.m_fields[1] == 0)
+		{
+			CString errStr;
+			errStr.Format(G_LANGUAGE == 0 ? "Technological field Y cannot be zero if there is a signature in the panelization" : "“ехнологическое поле Y не может быть нулевым если присутствует подпись в панелизации");
+			AfxMessageBox(errStr, MB_OK);
+			return;
+		}
+	}
+	int mem_valid = theApp.m_Doc->m_project_validated;
 	m_panel.m_pcb_rect = theApp.m_Doc->AddBoardHoles(0, &PANEL);
 	m_nl->OptimizeConnections(FALSE);
 	// show log
@@ -892,6 +919,7 @@ void CDlgCAD::OnBnClickedGo()
 		_chdir( m_app_folder );	// change back
 	}
 	theApp.m_Doc->CancelBoardHoles();
+	theApp.m_Doc->m_project_validated = mem_valid;
 }
 
 void CDlgCAD::GetFields()
