@@ -7498,7 +7498,7 @@ void CFreePcbDoc::OnFileGenerateReportFile()
 		int ip = m_pcb_full_path.ReverseFind('\\');
 		if( ip > 0 )
 		{
-			CString report = m_path_to_folder + "\\related_files\\report.txt";
+			CString report = m_path_to_folder + "\\related_files\\reports\\report.txt";
 			ShellExecute(	NULL, "open", report, NULL, m_path_to_folder, SW_SHOWNORMAL);
 		}
 	}
@@ -7769,9 +7769,15 @@ void CFreePcbDoc::ProjectCombineBoard( int layer )
 								else str.Format( "Polylines %d and %d intersect and will be combined.\n",
 									i1+1, i2+1 );
 								str += "If they are complex, this may take a few seconds.";
-								CDlgMyMessageBox dlg;
-								dlg.Initialize( str );
-								dlg.DoModal();
+								//CDlgMyMessageBox dlg;
+								//dlg.Initialize( str );
+								//dlg.DoModal();
+								CMainFrame* pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+								if (pMain)
+								{
+									pMain->DrawStatus(3, &str);
+									pMain->UpdateWindow();
+								}
 								mod_i1 = TRUE;
 							}				
 						}
@@ -12888,7 +12894,7 @@ void CFreePcbDoc::AddViaGrid()
 							s.Format( "via %d from %d", number, max_num_vias ); 
 							pMain->DrawStatus( 3, &s );
 							if( number%10 == 0 )
-								m_view->UpdateWindow();
+								pMain->UpdateWindow();
 						}
 					}
 					if( ap->TestPointInside( currX, currY ) )
@@ -14224,31 +14230,14 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 		mem_polylines.RemoveAll();
 		return BOARD;
 	}
-
+	int bW = 0;
+	RECT op_rect = GetBoardRect(&bW);
+	BOARD = op_rect;
 	///m_view->SaveUndoInfoForOutlinePoly( m_view->UNDO_OP, TRUE, m_undo_list ); n.u.
 	if (MakePanel) 
 		if(MakePanel->x > 1 || MakePanel->y > 1)
 		{
-			RECT op_rect, totalRect;
-			op_rect.left = op_rect.bottom = INT_MAX;
-			op_rect.right = op_rect.top = INT_MIN;
-			// get boundaries of board outline (in nm)
-			int bW = NM_PER_MIL;
-			for (int ib = 0; ib < m_outline_poly.GetSize(); ib++)
-			{
-				id gid = m_outline_poly[ib].GetId();
-				if (gid.st != ID_BOARD)
-					continue;
-				bW = m_outline_poly[ib].GetW();
-				m_outline_poly[ib].RecalcRectC(0);
-				RECT gr = m_outline_poly[ib].GetCornerBounds(0);
-				SwellRect(&op_rect, gr);
-			}
-			if (op_rect.left == INT_MAX)
-			{
-				op_rect = rect(0, 0, 0, 0);
-			}
-			BOARD = op_rect;
+			RECT totalRect;
 			totalRect.left = op_rect.left - m_panel_fields[0];
 			totalRect.right = op_rect.left + ((op_rect.right - op_rect.left) * m_n_x) + (m_space_x * (m_n_x - 1)) + m_panel_fields[0];
 			totalRect.bottom = op_rect.bottom - m_panel_fields[1];
@@ -14348,6 +14337,35 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 				}
 			}
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
+			for( cpart* BRD_PART = m_plist->GetFirstPart(); BRD_PART; BRD_PART= m_plist->GetNextPart(BRD_PART) )
+				if (BRD_PART->shape)
+				{
+					for (int i = 0; i < BRD_PART->shape->m_outline_poly.GetSize(); i++)
+					{
+						CPolyLine* pp = &BRD_PART->shape->m_outline_poly[i];
+						if (pp->GetLayer() == LAY_FP_VISIBLE_GRID)
+						{
+							for (int ix = 0; ix < m_n_x; ix++)
+							{
+								int x_offset = ix * (BOARD.right - BOARD.left + m_space_x);
+								for (int iy = 0; iy < m_n_y; iy++)
+								{
+									int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y);
+									int sz = m_outline_poly.GetSize();
+									m_outline_poly.SetSize(sz + 1);
+									id bid(ID_POLYLINE, ID_BOARD, sz);
+									m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, pp->GetX(0)+x_offset, pp->GetY(0)+y_offset, 0, &bid, NULL);
+									for (int ic = 1; ic < pp->GetNumCorners(); ic++)
+									{
+										m_outline_poly[sz].AppendCorner(pp->GetX(ic)+x_offset, pp->GetY(ic)+y_offset, pp->GetSideStyle(ic-1), 0);
+									}
+									m_outline_poly[sz].Close(pp->GetSideStyle(0));
+								}
+							}
+						}
+					}
+				}
+			ProjectCombineBoard(LAY_BOARD_OUTLINE);
 		}
 	return BOARD;
 }
@@ -14403,4 +14421,28 @@ BOOL CFreePcbDoc::OnSpeedFile( UINT CMD )
 {
 	RunSpeedFile( this, CMD );
 	return 1;
+}
+
+RECT CFreePcbDoc::GetBoardRect( int * Width )
+{
+	RECT op_rect;
+	op_rect.left = op_rect.bottom = INT_MAX;
+	op_rect.right = op_rect.top = INT_MIN;
+	// get boundaries of board outline (in nm)
+	int bW = NM_PER_MIL;
+	for (int ib = 0; ib < m_outline_poly.GetSize(); ib++)
+	{
+		id gid = m_outline_poly[ib].GetId();
+		if (gid.st != ID_BOARD)
+			continue;
+		bW = m_outline_poly[ib].GetW();
+		m_outline_poly[ib].RecalcRectC(0);
+		RECT gr = m_outline_poly[ib].GetCornerBounds(0);
+		SwellRect(&op_rect, gr);
+	}
+	if (op_rect.left == INT_MAX)
+		op_rect = rect(0, 0, 0, 0);
+	if (Width)
+		*Width = bW;
+	return op_rect;
 }

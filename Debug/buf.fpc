@@ -1,17 +1,17 @@
 [options]
 
 app_folder: "D:\FreePCBDev\FreePCB-2\.\Debug"
-version: 2.426
-file_version: 2.426
-project_name: "Grainger-01"
+version: 2.427
+file_version: 2.427
+project_name: "Smart-Servo-1-01"
 library_folder: "d:\works\projects\micronics\lib"
 full_library_folder: "d:\works\projects\micronics\lib\footprints"
-CAM_folder: "D:\Works\Projects\Micronics\Grainger\version-01\CAM(Grainger-01)(5-16-2025)"
+CAM_folder: "d:\works\projects\Micronics\Smart-Servo-1\version-01\CAM(Smart-Servo-1-01)(8-10-2025)"
 ses_file_path: ""
-netlist_completed: "0"
-part_search: ""
+netlist_completed: "1"
+part_search: "tp"
 png_settings: "800 0.05"
-netlist_file_path: "d:\works\projects\Micronics\Grainger\version-01\related_files\CDS_netlist\Grainger-01.fpc.net"
+netlist_file_path: "d:\works\projects\Micronics\Smart-Servo-1\version-01\related_files\CDS_netlist\Smart-Servo-1-01.fpc.net"
 SMT_connect_copper: "1"
 default_glue_width: "635000"
 dsn_flags: "3"
@@ -20,23 +20,23 @@ dsn_signals_poly: "0"
 autosave_interval: 60
 auto_ratline_disable: "0"
 auto_ratline_disable_min_pins: "100"
-netlist_import_flags: 3015
+netlist_import_flags: 19399
 m_client_rect_left: 110
-m_client_rect_right: 1389
-m_client_rect_bottom: 717
+m_client_rect_right: 1514
+m_client_rect_bottom: 708
 m_client_rect_top: 0
-m_org_x: -51454
-m_org_y: -26657
-m_scale_factor: 13727
+m_org_x: -29933
+m_org_y: -44846
+m_scale_factor: 71554
 part_line_visible: 1
 merge_shown: 1
 pdf_pin1: -0.700000
-pdf_use_font: -635000 635000 -635000
+pdf_use_font: 355600 355600 355600
 units: MM
 
 m_sel_mask: 2147483645
-m_visible_layers: -42117
-m_top_layer: 14
+m_visible_layers: -84357
+m_top_layer: 13
 m_grid_style: 0
 visible_grid_spacing: 1000000.000000
   visible_grid_item: 100mil
@@ -58,7 +58,7 @@ visible_grid_spacing: 1000000.000000
   visible_grid_item: 50mm
   visible_grid_item: 100mm
 
-placement_grid_spacing: 100000.000000
+placement_grid_spacing: 400000.000000
   placement_grid_item: 10mil
   placement_grid_item: 20mil
   placement_grid_item: 25mil
@@ -137,7 +137,7 @@ fp_visible_grid_spacing: 1000000.000000
   fp_visible_grid_item: 50mm
   fp_visible_grid_item: 100mm
 
-fp_placement_grid_spacing: 1000000.000000
+fp_placement_grid_spacing: 100000.000000
   fp_placement_grid_item: 10mil
   fp_placement_grid_item: 20mil
   fp_placement_grid_item: 25mil
@@ -163,103 +163,795 @@ fp_placement_grid_spacing: 1000000.000000
 
 fp_snap_angle: 45
 
-m_seg_clearance: 195080
-fill_clearance: 508000
+m_seg_clearance: 205080
+fill_clearance: 254000
+panel_fields: 20000000 20000000
+panel_holes: 3000000 32
+panel_ref_count: 0
+panel_reference: "RectType1"
+panel_scribing: 3
+panel_text: "OnTopSilk" "OnBotSilk" "OnTopCopper" "OnBotCopper"
+panel_frame_for_paste: 0 0 0 0
 mask_clearance: 50000
 thermal_width: 400000
 thermal_clearance: 200000
-min_silkscreen_width: 100000
+min_silkscreen_width: 150000
 highlight_width: 127000
-hole_clearance: 508000
+hole_clearance: 400000
 pilot_diameter: 200000
 annular_ring_for_pins: 200000
 annular_ring_for_vias: 200000
-shrink_paste_mask: 0
-cam_flags: 96
+shrink_paste_mask: 50000
+cam_flags: 224
 crop_flags: 28255
-cam_layers: 1048639
+cam_layers: 15728703
 cam_drill_file: 1
 cam_units: 1
-cam_n_x: 1
-cam_n_y: 1
-cam_space_x: 0
-cam_space_y: 0
+cam_n_x: 3
+cam_n_y: 3
+cam_space_x: 2000000
+cam_space_y: 2000000
 
 report_options: 4123
 drc_check_unrouted: 1
 drc_trace_width: 250000
-drc_pad_pad: 190000
-drc_pad_trace: 190000
-drc_trace_trace: 190000
+drc_pad_pad: 200000
+drc_pad_trace: 200000
+drc_trace_trace: 200000
 drc_hole_copper: 400000
 drc_annular_ring_pins: 199000
 drc_annular_ring_vias: 199000
-drc_board_edge_copper: 300000
-drc_board_edge_hole: 0
-drc_hole_hole: 600000
-drc_copper_copper: 100000
+drc_board_edge_copper: 400000
+drc_board_edge_hole: 550000
+drc_hole_hole: 700000
+drc_copper_copper: 200000
 
-default_trace_width:0.5mm
-default_via_pad_width:0.9mm
+default_trace_width:0.4mm
+default_via_pad_width:1mm
 default_via_hole_width:0.5mm
-n_width_menu: 4
-  width_menu_item: 1 0.3mm 0mil 0mil
-  width_menu_item: 2 0.5mm 0mil 0mil
-  width_menu_item: 3 0.8mm 0mil 0mil
-  width_menu_item: 4 1.2mm 1.2mm 0.8mm
+n_width_menu: 0
 
-n_copper_layers: 2
+n_copper_layers: 4
   layer_info: "движение" 0 255 255 0 1 127 127 127 0
   layer_info: "фон доски" 1 239 239 239 1 255 255 255 0
   layer_info: "линии сетки" 2 238 238 238 0 0 0 0 0
-  layer_info: "подсветка" 3 255 255 0 1 0 0 0 0
+  layer_info: "подсветка" 3 255 255 0 1 255 255 0 1
   layer_info: "тестирование" 4 255 0 0 1 128 64 0 0
-  layer_info: "контур платы" 5 0 115 60 1 4 255 167 1
-  layer_info: "скрайбинг (V)" 6 127 127 127 1 224 224 224 0
-  layer_info: "заметки верх" 7 134 134 134 0 255 162 117 1
-  layer_info: "заметки низ" 8 134 134 134 1 128 128 128 0
-  layer_info: "эл. св€зи" 9 0 0 128 1 0 0 160 0
-  layer_info: "шЄлк верх" 10 178 178 178 0 255 255 255 1
-  layer_info: "шЄлк низ" 11 255 170 170 1 255 255 255 0
+  layer_info: "контур платы" 5 0 115 60 1 0 185 120 1
+  layer_info: "скрайбинг (V)" 6 255 0 128 1 127 127 127 0
+  layer_info: "заметки верх" 7 128 64 0 0 255 0 0 0
+  layer_info: "заметки низ" 8 128 64 0 0 128 128 128 0
+  layer_info: "эл. св€зи" 9 0 0 128 1 0 0 160 1
+  layer_info: "шЄлк верх" 10 178 178 178 1 255 255 255 1
+  layer_info: "шЄлк низ" 11 255 170 170 0 255 255 255 0
   layer_info: "отверсти€" 12 235 235 235 1 255 255 255 1
-  layer_info: "вид верх" 13 77 77 122 0 230 230 230 1
-  layer_info: "вид низ" 14 222 111 111 1 180 180 180 0
-  layer_info: "медь верх" 15 40 165 90 0 145 255 217 1
-  layer_info: "медь низ" 16 30 90 50 1 95 95 95 0
+  layer_info: "вид верх" 13 77 77 122 1 230 230 230 1
+  layer_info: "вид низ" 14 222 111 111 0 127 127 127 0
+  layer_info: "медь верх" 15 40 165 90 1 47 255 182 1
+  layer_info: "медь низ" 16 30 90 50 0 10 100 20 0
+  layer_info: "медь 1" 17 0 0 255 1 127 127 127 0
+  layer_info: "медь 2" 18 255 0 0 1 127 127 127 0
 
 [footprints]
 
-name: "R0603"
-author: "Ivex"
-package: "R0603"
-  units: NM
-  sel_rect: -1460000 -710000 1460000 710000
-  ref_text: 1270000 850000 1900000 0 177800
-  value_text: 1270000 850000 -640000 0 177800
-  centroid: 0 0 100 0
-  outline_polyline: 120000 300000 500000 1 0 4
-    next_corner: -300000 500000 0
-    next_corner: -450000 650000 0
-    next_corner: -1050000 650000 0
-    next_corner: -1400000 300000 2
-    next_corner: -1400000 -250000 0
-    next_corner: -1000000 -650000 2
-    next_corner: -450000 -650000 0
-    next_corner: -300000 -500000 0
-    next_corner: 300000 -500000 0
-    next_corner: 450000 -650000 0
-    next_corner: 1000000 -650000 0
-    next_corner: 1400000 -250000 2
-    next_corner: 1400000 300000 0
-    next_corner: 1050000 650000 2
-    next_corner: 450000 650000 0
+name: "MOBILE_BOARD_OUTLINE"
+package: "MOBILE_BOARD_OUTLINE"
+  units: MIL
+  sel_rect: 0 0 39.370079 39.370079
+  ref_text: 100 100 200 0 10
+  value_text: 100 100 0 0 10
+  centroid: 0 0 0 0
+  outline_polyline: 10 -233.626457 -2322.846772 1 0 2
+    next_corner: -233.626457 -2322.846772 0
+    next_corner: -233.626417 -2322.848346 0
+    next_corner: 233.867323 -2322.824094 0
+    next_corner: 233.867323 -2322.824094 0
     close_polyline: 0
-    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|"
-  n_pins: 2
-    pin: "1" 0 -825000 200 0 ""
-      top_pad: 4 1000000 400000 400000 200000
-    pin: "2" 0 825000 0 0 ""
-      top_pad: 4 1000000 400000 400000 200000
+  outline_polyline: 10 472.504331 -1220.448031 1 0 2
+    next_corner: 472.504331 -1220.448031 0
+    next_corner: 445.158346 -1222.84189 0
+    next_corner: 418.643386 -1229.947953 0
+    next_corner: 393.765118 -1241.550472 0
+    next_corner: 371.279764 -1257.296535 0
+    next_corner: 351.870236 -1276.70811 0
+    next_corner: 336.126378 -1299.195118 0
+    next_corner: 324.526614 -1324.074488 0
+    next_corner: 317.423228 -1350.590079 0
+    next_corner: 315.032126 -1377.936378 0
+    next_corner: 317.425984 -1405.28252 0
+    next_corner: 324.532205 -1431.797323 0
+    next_corner: 336.134567 -1456.675433 0
+    next_corner: 351.880787 -1479.160945 0
+    next_corner: 371.292283 -1498.570394 0
+    next_corner: 393.779213 -1514.314409 0
+    next_corner: 418.65874 -1525.914094 0
+    next_corner: 445.174252 -1533.01748 0
+    next_corner: 472.520551 -1535.408661 0
+    next_corner: 477.615512 -1536.078976 0
+    next_corner: 482.363228 -1538.045354 0
+    next_corner: 486.440394 -1541.173386 0
+    next_corner: 489.568898 -1545.250157 0
+    next_corner: 491.535669 -1549.997795 0
+    next_corner: 492.206693 -1555.092598 0
+    next_corner: 492.224016 -1889.738268 0
+    next_corner: 492.022598 -1903.842992 0
+    next_corner: 490.611575 -1929.568976 0
+    next_corner: 487.856142 -1955.185984 0
+    next_corner: 483.763701 -1980.623622 0
+    next_corner: 478.345591 -2005.812126 0
+    next_corner: 471.616614 -2030.682677 0
+    next_corner: 463.595354 -2055.166929 0
+    next_corner: 454.303543 -2079.197795 0
+    next_corner: 443.76685 -2102.709449 0
+    next_corner: 432.014252 -2125.63748 0
+    next_corner: 419.07748 -2147.918898 0
+    next_corner: 404.992677 -2169.492913 0
+    next_corner: 389.797795 -2190.300157 0
+    next_corner: 373.534724 -2210.283465 0
+    next_corner: 356.248268 -2229.388504 0
+    next_corner: 337.985669 -2247.562362 0
+    next_corner: 318.79685 -2264.755748 0
+    next_corner: 298.734488 -2280.92126 0
+    next_corner: 277.853622 -2296.014646 0
+    next_corner: 256.211417 -2309.994488 0
+    next_corner: 233.867402 -2322.82252 0
+    next_corner: -233.626457 -2322.846772 0
+    next_corner: -245.943031 -2315.970079 0
+    next_corner: -267.911654 -2302.509134 0
+    next_corner: -289.145709 -2287.917008 0
+    next_corner: -309.586969 -2272.233543 0
+    next_corner: -329.179567 -2255.501575 0
+    next_corner: -347.869646 -2237.767402 0
+    next_corner: -365.605827 -2219.079213 0
+    next_corner: -382.339606 -2199.488504 0
+    next_corner: -398.025276 -2179.048819 0
+    next_corner: -412.619567 -2157.81622 0
+    next_corner: -426.082874 -2135.848819 0
+    next_corner: -438.377953 -2113.206929 0
+    next_corner: -449.471181 -2089.952756 0
+    next_corner: -459.332047 -2066.149764 0
+    next_corner: -467.933701 -2041.863465 0
+    next_corner: -475.25248 -2017.16 0
+    next_corner: -481.268543 -1992.107402 0
+    next_corner: -485.965118 -1966.774331 0
+    next_corner: -489.32937 -1941.230394 0
+    next_corner: -491.352283 -1915.545039 0
+    next_corner: -492.027953 -1889.789134 0
+    next_corner: -492.045354 -1555.143622 0
+    next_corner: -491.374921 -1550.048819 0
+    next_corner: -489.408504 -1545.300945 0
+    next_corner: -486.280354 -1541.22378 0
+    next_corner: -482.203583 -1538.095197 0
+    next_corner: -477.45622 -1536.128583 0
+    next_corner: -472.361339 -1535.45748 0
+    next_corner: -445.015118 -1533.063543 0
+    next_corner: -418.500394 -1525.95748 0
+    next_corner: -393.622283 -1514.355118 0
+    next_corner: -371.136654 -1498.608819 0
+    next_corner: -351.727244 -1479.197323 0
+    next_corner: -335.983386 -1456.710236 0
+    next_corner: -324.383622 -1431.830945 0
+    next_corner: -317.280276 -1405.315433 0
+    next_corner: -314.889134 -1377.968976 0
+    next_corner: -317.282992 -1350.622992 0
+    next_corner: -324.389094 -1324.10811 0
+    next_corner: -335.991614 -1299.230079 0
+    next_corner: -351.737756 -1276.744567 0
+    next_corner: -371.149213 -1257.335039 0
+    next_corner: -393.636299 -1241.591181 0
+    next_corner: -418.51563 -1229.991339 0
+    next_corner: -445.03126 -1222.887953 0
+    next_corner: -472.377717 -1220.496929 0
+    next_corner: -477.472559 -1219.826457 0
+    next_corner: -482.220354 -1217.860236 0
+    next_corner: -486.297323 -1214.731969 0
+    next_corner: -489.425906 -1210.655354 0
+    next_corner: -491.392598 -1205.907717 0
+    next_corner: -492.063543 -1200.812835 0
+    next_corner: -492.116654 -177.190906 0
+    next_corner: -491.446378 -172.095945 0
+    next_corner: -489.479882 -167.348228 0
+    next_corner: -486.35189 -163.27126 0
+    next_corner: -482.275118 -160.142598 0
+    next_corner: -477.527638 -158.175748 0
+    next_corner: -472.432559 -157.504685 0
+    next_corner: -445.086457 -155.110827 0
+    next_corner: -418.571732 -148.004724 0
+    next_corner: -393.693465 -136.402362 0
+    next_corner: -371.20815 -120.656063 0
+    next_corner: -351.798898 -101.244567 0
+    next_corner: -336.054803 -78.75748 0
+    next_corner: -324.455157 -53.878268 0
+    next_corner: -317.351496 -27.36252 0
+    next_corner: -314.960787 -0.016378 0
+    next_corner: 0 0 0
+    next_corner: 314.960866 0.016299 0
+    next_corner: 317.354882 -27.329843 0
+    next_corner: 324.460709 -53.844567 0
+    next_corner: 336.063071 -78.722677 0
+    next_corner: 351.809449 -101.208268 0
+    next_corner: 371.220787 -120.617638 0
+    next_corner: 393.707953 -136.361575 0
+    next_corner: 418.587323 -147.961417 0
+    next_corner: 445.103071 -155.064803 0
+    next_corner: 472.449213 -157.455866 0
+    next_corner: 477.544331 -158.126339 0
+    next_corner: 482.29189 -160.092717 0
+    next_corner: 486.369213 -163.220866 0
+    next_corner: 489.497402 -167.297402 0
+    next_corner: 491.464331 -172.045 0
+    next_corner: 492.135197 -177.139803 0
+    next_corner: 492.188268 -1200.76189 0
+    next_corner: 491.517717 -1205.856693 0
+    next_corner: 489.551575 -1210.604567 0
+    next_corner: 486.423386 -1214.681654 0
+    next_corner: 482.34685 -1217.810079 0
+    next_corner: 477.599134 -1219.77685 0
+    close_polyline: 0
+  outline_polyline: 10 319.574724 78.440787 1 0 10
+    next_corner: 319.574724 78.440787 0
+    next_corner: 324.196614 78.212913 0
+    next_corner: 324.932165 78.074567 0
+    next_corner: 325.678622 78.023583 0
+    next_corner: 330.21 77.082165 0
+    next_corner: 334.758346 76.226969 0
+    next_corner: 335.467913 75.989882 0
+    next_corner: 336.200787 75.837638 0
+    next_corner: 340.562559 74.287677 0
+    next_corner: 344.951299 72.821378 0
+    next_corner: 345.622047 72.489803 0
+    next_corner: 346.327283 72.239252 0
+    next_corner: 350.437126 70.109961 0
+    next_corner: 354.58563 68.059567 0
+    next_corner: 355.204961 67.639803 0
+    next_corner: 355.869528 67.295512 0
+    next_corner: 359.651496 64.626181 0
+    next_corner: 363.481772 62.030236 0
+    next_corner: 364.03815 61.530039 0
+    next_corner: 364.649685 61.098465 0
+    next_corner: 368.032362 57.939528 0
+    next_corner: 371.474094 54.845709 0
+    next_corner: 371.957323 54.274252 0
+    next_corner: 372.504213 53.763583 0
+    next_corner: 375.424843 50.173976 0
+    next_corner: 378.413661 46.639803 0
+    next_corner: 378.814567 46.007874 0
+    next_corner: 379.28685 45.42748 0
+    next_corner: 381.691496 41.473622 0
+    next_corner: 384.17122 37.565394 0
+    next_corner: 384.482402 36.884685 0
+    next_corner: 384.871181 36.245472 0
+    next_corner: 386.715039 32.001024 0
+    next_corner: 388.639528 27.791535 0
+    next_corner: 388.855079 27.074921 0
+    next_corner: 389.153268 26.388583 0
+    next_corner: 390.402047 21.932362 0
+    next_corner: 391.735354 17.500276 0
+    next_corner: 391.851339 16.760906 0
+    next_corner: 392.053268 16.040394 0
+    next_corner: 392.683661 11.455394 0
+    next_corner: 393.400984 6.883307 0
+    next_corner: 395.194213 -13.60063 0
+    next_corner: 398.733622 -26.807559 0
+    next_corner: 404.512441 -39.198661 0
+    next_corner: 412.35563 -50.398543 0
+    next_corner: 422.024094 -60.066063 0
+    next_corner: 433.224764 -67.907992 0
+    next_corner: 445.616969 -73.685748 0
+    next_corner: 458.824252 -77.223898 0
+    next_corner: 479.307913 -79.014961 0
+    next_corner: 481.006496 -79.28126 0
+    next_corner: 482.722165 -79.388701 0
+    next_corner: 487.817283 -80.059173 0
+    next_corner: 492.647441 -81.033937 0
+    next_corner: 497.488937 -81.953976 0
+    next_corner: 497.913228 -82.096654 0
+    next_corner: 498.351772 -82.185157 0
+    next_corner: 503.003858 -83.808425 0
+    next_corner: 507.675276 -85.379252 0
+    next_corner: 512.422835 -87.34563 0
+    next_corner: 516.833346 -89.536142 0
+    next_corner: 521.268071 -91.675827 0
+    next_corner: 521.64378 -91.925276 0
+    next_corner: 522.047953 -92.126024 0
+    next_corner: 526.11937 -94.89689 0
+    next_corner: 530.221142 -97.620315 0
+    next_corner: 534.298465 -100.748465 0
+    next_corner: 537.994173 -104.007677 0
+    next_corner: 541.727835 -107.225906 0
+    next_corner: 542.023543 -107.561181 0
+    next_corner: 542.358701 -107.856732 0
+    next_corner: 545.575512 -111.588071 0
+    next_corner: 548.83689 -115.285472 0
+    next_corner: 551.965079 -119.362008 0
+    next_corner: 554.689567 -123.464528 0
+    next_corner: 557.460315 -127.534921 0
+    next_corner: 557.660984 -127.938858 0
+    next_corner: 557.910433 -128.314488 0
+    next_corner: 560.050512 -132.748898 0
+    next_corner: 562.241614 -137.159528 0
+    next_corner: 564.208543 -141.907126 0
+    next_corner: 565.779843 -146.578622 0
+    next_corner: 567.40378 -151.23126 0
+    next_corner: 567.492244 -151.669528 0
+    next_corner: 567.634764 -152.093189 0
+    next_corner: 568.555354 -156.935197 0
+    next_corner: 569.530591 -161.765551 0
+    next_corner: 570.201457 -166.860354 0
+    next_corner: 570.523543 -171.996575 0
+    next_corner: 570.875354 -177.135748 0
+    next_corner: 570.928425 -1200.757835 0
+    next_corner: 570.577244 -1205.895079 0
+    next_corner: 570.255157 -1211.036654 0
+    next_corner: 569.584606 -1216.131457 0
+    next_corner: 568.610236 -1220.958898 0
+    next_corner: 567.691339 -1225.79626 0
+    next_corner: 567.547598 -1226.22374 0
+    next_corner: 567.458386 -1226.665866 0
+    next_corner: 565.836142 -1231.314606 0
+    next_corner: 564.266772 -1235.982835 0
+    next_corner: 562.30063 -1240.730709 0
+    next_corner: 560.108228 -1245.14563 0
+    next_corner: 557.967087 -1249.583071 0
+    next_corner: 557.719803 -1249.955433 0
+    next_corner: 557.520866 -1250.356102 0
+    next_corner: 554.747283 -1254.432087 0
+    next_corner: 552.022283 -1258.535945 0
+    next_corner: 548.894094 -1262.613031 0
+    next_corner: 545.637047 -1266.306024 0
+    next_corner: 542.420354 -1270.038228 0
+    next_corner: 542.082953 -1270.335827 0
+    next_corner: 541.785591 -1270.673031 0
+    next_corner: 538.055 -1273.888976 0
+    next_corner: 534.361063 -1277.14752 0
+    next_corner: 530.284528 -1280.275945 0
+    next_corner: 526.18126 -1283.001142 0
+    next_corner: 522.106811 -1285.774449 0
+    next_corner: 521.705394 -1285.973819 0
+    next_corner: 521.332283 -1286.221654 0
+    next_corner: 516.895551 -1288.362992 0
+    next_corner: 512.482008 -1290.555394 0
+    next_corner: 507.734291 -1292.522165 0
+    next_corner: 503.065354 -1294.092402 0
+    next_corner: 498.41748 -1295.715 0
+    next_corner: 497.975669 -1295.804213 0
+    next_corner: 497.54811 -1295.948031 0
+    next_corner: 492.707953 -1296.868071 0
+    next_corner: 487.883346 -1297.84248 0
+    next_corner: 482.788543 -1298.513661 0
+    next_corner: 481.071024 -1298.621457 0
+    next_corner: 479.370906 -1298.888189 0
+    next_corner: 458.88748 -1300.681299 0
+    next_corner: 445.680787 -1304.220709 0
+    next_corner: 433.289016 -1309.999882 0
+    next_corner: 422.089331 -1317.842835 0
+    next_corner: 412.421693 -1327.511457 0
+    next_corner: 404.579961 -1338.71185 0
+    next_corner: 398.802087 -1351.104291 0
+    next_corner: 395.264016 -1364.31126 0
+    next_corner: 394.073031 -1377.93252 0
+    next_corner: 395.265354 -1391.552992 0
+    next_corner: 398.804882 -1404.759764 0
+    next_corner: 404.583976 -1417.151417 0
+    next_corner: 412.427047 -1428.351299 0
+    next_corner: 422.095709 -1438.018937 0
+    next_corner: 433.29622 -1445.860866 0
+    next_corner: 445.688189 -1451.638425 0
+    next_corner: 458.89563 -1455.176654 0
+    next_corner: 479.379528 -1456.967795 0
+    next_corner: 481.077244 -1457.233937 0
+    next_corner: 482.792677 -1457.341378 0
+    next_corner: 487.887638 -1458.011693 0
+    next_corner: 492.71874 -1458.986614 0
+    next_corner: 497.55811 -1459.906102 0
+    next_corner: 497.982874 -1460.048898 0
+    next_corner: 498.422087 -1460.137559 0
+    next_corner: 503.074528 -1461.760866 0
+    next_corner: 507.744567 -1463.331102 0
+    next_corner: 512.492283 -1465.29748 0
+    next_corner: 516.903071 -1467.487992 0
+    next_corner: 521.339449 -1469.628504 0
+    next_corner: 521.71437 -1469.877441 0
+    next_corner: 522.11748 -1470.077638 0
+    next_corner: 526.189134 -1472.848504 0
+    next_corner: 530.29252 -1475.572992 0
+    next_corner: 534.369685 -1478.701024 0
+    next_corner: 538.065315 -1481.960157 0
+    next_corner: 541.797323 -1485.176732 0
+    next_corner: 542.09378 -1485.512795 0
+    next_corner: 542.429921 -1485.809252 0
+    next_corner: 545.647598 -1489.541535 0
+    next_corner: 548.906575 -1493.236063 0
+    next_corner: 552.035079 -1497.312835 0
+    next_corner: 554.761024 -1501.417244 0
+    next_corner: 557.533268 -1505.490197 0
+    next_corner: 557.732677 -1505.891614 0
+    next_corner: 557.980748 -1506.265157 0
+    next_corner: 560.122913 -1510.703583 0
+    next_corner: 562.314213 -1515.115 0
+    next_corner: 564.280984 -1519.862638 0
+    next_corner: 565.851299 -1524.531732 0
+    next_corner: 567.474449 -1529.181693 0
+    next_corner: 567.563425 -1529.622323 0
+    next_corner: 567.70685 -1530.04878 0
+    next_corner: 568.627008 -1534.889488 0
+    next_corner: 569.601614 -1539.715906 0
+    next_corner: 570.272638 -1544.810709 0
+    next_corner: 570.595118 -1549.950748 0
+    next_corner: 570.94685 -1555.088543 0
+    next_corner: 570.964173 -1889.734213 0
+    next_corner: 570.925591 -1890.29815 0
+    next_corner: 570.956142 -1890.862598 0
+    next_corner: 570.754724 -1904.967323 0
+    next_corner: 570.622992 -1906.55878 0
+    next_corner: 570.644567 -1908.155315 0
+    next_corner: 569.233543 -1933.881299 0
+    next_corner: 568.980236 -1935.928661 0
+    next_corner: 568.900118 -1937.989921 0
+    next_corner: 566.144685 -1963.606929 0
+    next_corner: 565.784606 -1965.63815 0
+    next_corner: 565.596654 -1967.692992 0
+    next_corner: 561.504213 -1993.13063 0
+    next_corner: 561.038189 -1995.140591 0
+    next_corner: 560.743071 -1997.182126 0
+    next_corner: 555.324961 -2022.37063 0
+    next_corner: 554.754488 -2024.35315 0
+    next_corner: 554.352874 -2026.376654 0
+    next_corner: 547.623898 -2051.247205 0
+    next_corner: 546.950551 -2053.196811 0
+    next_corner: 546.443583 -2055.196654 0
+    next_corner: 538.422323 -2079.680906 0
+    next_corner: 537.647677 -2081.59311 0
+    next_corner: 537.036654 -2083.563858 0
+    next_corner: 527.744843 -2107.594724 0
+    next_corner: 526.87126 -2109.463543 0
+    next_corner: 526.158071 -2111.399291 0
+    next_corner: 515.621378 -2134.910945 0
+    next_corner: 514.65122 -2136.731457 0
+    next_corner: 513.837835 -2138.626929 0
+    next_corner: 502.085236 -2161.554961 0
+    next_corner: 501.020748 -2163.322874 0
+    next_corner: 500.108898 -2165.173858 0
+    next_corner: 487.172126 -2187.455276 0
+    next_corner: 486.017362 -2189.163819 0
+    next_corner: 485.010354 -2190.963819 0
+    next_corner: 470.925551 -2212.537835 0
+    next_corner: 469.682244 -2214.184606 0
+    next_corner: 468.58189 -2215.930197 0
+    next_corner: 453.387008 -2236.737441 0
+    next_corner: 452.059213 -2238.31685 0
+    next_corner: 450.869213 -2240.002165 0
+    next_corner: 434.606142 -2259.985472 0
+    next_corner: 433.198268 -2261.492402 0
+    next_corner: 431.92189 -2263.112913 0
+    next_corner: 414.635433 -2282.217953 0
+    next_corner: 413.149764 -2283.65 0
+    next_corner: 411.790157 -2285.201654 0
+    next_corner: 393.527559 -2303.375512 0
+    next_corner: 391.969488 -2304.727402 0
+    next_corner: 390.53063 -2306.205669 0
+    next_corner: 371.341811 -2323.399055 0
+    next_corner: 369.714843 -2324.667756 0
+    next_corner: 368.200551 -2326.06874 0
+    next_corner: 348.138189 -2342.234252 0
+    next_corner: 346.447165 -2343.415984 0
+    next_corner: 344.861693 -2344.735748 0
+    next_corner: 323.980827 -2359.829134 0
+    next_corner: 322.230157 -2360.920827 0
+    next_corner: 320.577677 -2362.155866 0
+    next_corner: 298.935472 -2376.135709 0
+    next_corner: 297.130551 -2377.134016 0
+    next_corner: 295.41563 -2378.280945 0
+    next_corner: 273.071614 -2391.108976 0
+    next_corner: 269.182244 -2393.001457 0
+    next_corner: 265.24122 -2395.043819 0
+    next_corner: 265.241063 -2395.043858 0
+    next_corner: 265.240945 -2395.043937 0
+    next_corner: 265.238976 -2395.044606 0
+    next_corner: 265.237441 -2395.045433 0
+    next_corner: 264.289094 -2395.382441 0
+    next_corner: 263.40811 -2395.81126 0
+    next_corner: 259.300787 -2397.155354 0
+    next_corner: 255.115079 -2398.643228 0
+    next_corner: 255.114921 -2398.643228 0
+    next_corner: 255.114803 -2398.643307 0
+    next_corner: 255.112913 -2398.643661 0
+    next_corner: 255.111142 -2398.644331 0
+    next_corner: 254.125079 -2398.849213 0
+    next_corner: 253.194331 -2399.153898 0
+    next_corner: 248.944449 -2399.925787 0
+    next_corner: 244.59315 -2400.830276 0
+    next_corner: 244.592953 -2400.830276 0
+    next_corner: 244.592835 -2400.830315 0
+    next_corner: 244.590906 -2400.830433 0
+    next_corner: 244.589094 -2400.830827 0
+    next_corner: 243.583622 -2400.899567 0
+    next_corner: 242.620551 -2401.074606 0
+    next_corner: 238.307008 -2401.260591 0
+    next_corner: 233.871378 -2401.564252 0
+    next_corner: -233.622362 -2401.588504 0
+    next_corner: -235.32685 -2401.471969 0
+    next_corner: -237.034843 -2401.514685 0
+    next_corner: -239.252717 -2401.266142 0
+    next_corner: -241.443661 -2401.197913 0
+    next_corner: -242.869567 -2400.956417 0
+    next_corner: -244.344213 -2400.85563 0
+    next_corner: -246.016732 -2400.50815 0
+    next_corner: -247.714803 -2400.317874 0
+    next_corner: -249.877874 -2399.769685 0
+    next_corner: -252.039646 -2399.403701 0
+    next_corner: -253.419134 -2398.970315 0
+    next_corner: -254.866378 -2398.669685 0
+    next_corner: -256.476142 -2398.097638 0
+    next_corner: -258.132362 -2397.677953 0
+    next_corner: -260.200079 -2396.840551 0
+    next_corner: -262.292638 -2396.183386 0
+    next_corner: -263.600906 -2395.565906 0
+    next_corner: -264.992874 -2395.071299 0
+    next_corner: -266.51 -2394.285236 0
+    next_corner: -268.093386 -2393.644055 0
+    next_corner: -270.026614 -2392.533622 0
+    next_corner: -272.011654 -2391.596929 0
+    next_corner: -284.328228 -2384.720236 0
+    next_corner: -285.666102 -2383.848425 0
+    next_corner: -287.081457 -2383.109016 0
+    next_corner: -309.050079 -2369.648071 0
+    next_corner: -310.73126 -2368.452835 0
+    next_corner: -312.507205 -2367.403228 0
+    next_corner: -333.74126 -2352.811102 0
+    next_corner: -335.357717 -2351.529409 0
+    next_corner: -337.076496 -2350.388189 0
+    next_corner: -357.517756 -2334.704724 0
+    next_corner: -359.065079 -2333.340079 0
+    next_corner: -360.721614 -2332.110551 0
+    next_corner: -380.314213 -2315.378583 0
+    next_corner: -381.787638 -2313.935157 0
+    next_corner: -383.377441 -2312.620748 0
+    next_corner: -402.06752 -2294.886575 0
+    next_corner: -403.46378 -2293.367598 0
+    next_corner: -404.983071 -2291.971339 0
+    next_corner: -422.719252 -2273.28311 0
+    next_corner: -424.03374 -2271.693543 0
+    next_corner: -425.477717 -2270.219882 0
+    next_corner: -442.211496 -2250.629173 0
+    next_corner: -443.44126 -2248.972638 0
+    next_corner: -444.805787 -2247.425787 0
+    next_corner: -460.491457 -2226.986102 0
+    next_corner: -461.632874 -2225.26748 0
+    next_corner: -462.914921 -2223.650866 0
+    next_corner: -477.509213 -2202.418268 0
+    next_corner: -478.558858 -2200.642638 0
+    next_corner: -479.754331 -2198.961496 0
+    next_corner: -493.217638 -2176.994094 0
+    next_corner: -494.173268 -2175.165315 0
+    next_corner: -495.279094 -2173.423937 0
+    next_corner: -507.574173 -2150.782047 0
+    next_corner: -508.43248 -2148.906378 0
+    next_corner: -509.445827 -2147.109252 0
+    next_corner: -520.539055 -2123.855079 0
+    next_corner: -521.298228 -2121.936535 0
+    next_corner: -522.216142 -2120.08878 0
+    next_corner: -532.077008 -2096.285787 0
+    next_corner: -532.734646 -2094.330394 0
+    next_corner: -533.554409 -2092.437559 0
+    next_corner: -542.156063 -2068.15126 0
+    next_corner: -542.710512 -2066.163976 0
+    next_corner: -543.430236 -2064.230433 0
+    next_corner: -550.749016 -2039.526969 0
+    next_corner: -551.198583 -2037.513898 0
+    next_corner: -551.816024 -2035.545709 0
+    next_corner: -557.832087 -2010.49311 0
+    next_corner: -558.175827 -2008.458504 0
+    next_corner: -558.689409 -2006.46063 0
+    next_corner: -563.385984 -1981.127559 0
+    next_corner: -563.622717 -1979.078268 0
+    next_corner: -564.031102 -1977.055906 0
+    next_corner: -567.395354 -1951.511969 0
+    next_corner: -567.524488 -1949.453307 0
+    next_corner: -567.826457 -1947.412559 0
+    next_corner: -569.84937 -1921.727205 0
+    next_corner: -569.870591 -1919.663937 0
+    next_corner: -570.065354 -1917.609921 0
+    next_corner: -570.741024 -1891.854016 0
+    next_corner: -570.697598 -1890.822874 0
+    next_corner: -570.76811 -1889.793189 0
+    next_corner: -570.785512 -1555.147677 0
+    next_corner: -570.434252 -1550.009213 0
+    next_corner: -570.11248 -1544.870591 0
+    next_corner: -569.442047 -1539.775787 0
+    next_corner: -568.467087 -1534.944882 0
+    next_corner: -567.547559 -1530.105472 0
+    next_corner: -567.404724 -1529.680669 0
+    next_corner: -567.316063 -1529.241339 0
+    next_corner: -565.692717 -1524.589134 0
+    next_corner: -564.12248 -1519.919055 0
+    next_corner: -562.156063 -1515.171181 0
+    next_corner: -559.965709 -1510.760827 0
+    next_corner: -557.824646 -1506.323465 0
+    next_corner: -557.575827 -1505.94874 0
+    next_corner: -557.375827 -1505.546024 0
+    next_corner: -554.604409 -1501.473622 0
+    next_corner: -551.879961 -1497.370512 0
+    next_corner: -548.751811 -1493.293346 0
+    next_corner: -545.494685 -1489.600118 0
+    next_corner: -542.277795 -1485.867677 0
+    next_corner: -541.940709 -1485.570315 0
+    next_corner: -541.643425 -1485.233228 0
+    next_corner: -537.912323 -1482.016654 0
+    next_corner: -534.218583 -1478.758268 0
+    next_corner: -530.141811 -1475.629685 0
+    next_corner: -526.037402 -1472.903661 0
+    next_corner: -521.963425 -1470.130709 0
+    next_corner: -521.562441 -1469.931535 0
+    next_corner: -521.189606 -1469.683898 0
+    next_corner: -516.751142 -1467.541614 0
+    next_corner: -512.338622 -1465.349803 0
+    next_corner: -507.59126 -1463.383189 0
+    next_corner: -502.922953 -1461.81311 0
+    next_corner: -498.272087 -1460.189685 0
+    next_corner: -497.831339 -1460.100669 0
+    next_corner: -497.405079 -1459.957323 0
+    next_corner: -492.566024 -1459.03748 0
+    next_corner: -487.737874 -1458.062559 0
+    next_corner: -482.642992 -1457.391457 0
+    next_corner: -480.926535 -1457.28374 0
+    next_corner: -479.227874 -1457.017283 0
+    next_corner: -458.744449 -1455.224094 0
+    next_corner: -445.537717 -1451.684646 0
+    next_corner: -433.146102 -1445.905591 0
+    next_corner: -421.946496 -1438.062717 0
+    next_corner: -412.278701 -1428.393858 0
+    next_corner: -404.436929 -1417.193425 0
+    next_corner: -398.659134 -1404.801142 0
+    next_corner: -395.121063 -1391.594173 0
+    next_corner: -393.930039 -1377.972756 0
+    next_corner: -395.122362 -1364.352244 0
+    next_corner: -398.661811 -1351.145669 0
+    next_corner: -404.440945 -1338.754016 0
+    next_corner: -412.284094 -1327.554055 0
+    next_corner: -421.952677 -1317.886417 0
+    next_corner: -433.152992 -1310.044764 0
+    next_corner: -445.545512 -1304.266811 0
+    next_corner: -458.752402 -1300.72878 0
+    next_corner: -479.236181 -1298.937795 0
+    next_corner: -480.934961 -1298.671457 0
+    next_corner: -482.65122 -1298.563976 0
+    next_corner: -487.746063 -1297.893504 0
+    next_corner: -492.575866 -1296.91874 0
+    next_corner: -497.413622 -1295.999685 0
+    next_corner: -497.839606 -1295.856417 0
+    next_corner: -498.280512 -1295.76748 0
+    next_corner: -502.93185 -1294.144409 0
+    next_corner: -507.600157 -1292.574921 0
+    next_corner: -512.347953 -1290.608701 0
+    next_corner: -516.763701 -1288.415787 0
+    next_corner: -521.20063 -1286.274724 0
+    next_corner: -521.572717 -1286.027598 0
+    next_corner: -521.973228 -1285.82874 0
+    next_corner: -526.048268 -1283.05563 0
+    next_corner: -530.153346 -1280.329724 0
+    next_corner: -534.230315 -1277.201457 0
+    next_corner: -537.923346 -1273.944173 0
+    next_corner: -541.653071 -1270.729764 0
+    next_corner: -541.951693 -1270.391181 0
+    next_corner: -542.290157 -1270.092717 0
+    next_corner: -545.505118 -1266.363071 0
+    next_corner: -548.76248 -1262.670591 0
+    next_corner: -551.891063 -1258.593976 0
+    next_corner: -554.617559 -1254.488858 0
+    next_corner: -557.390591 -1250.414764 0
+    next_corner: -557.589488 -1250.014252 0
+    next_corner: -557.836929 -1249.641772 0
+    next_corner: -559.979764 -1245.202165 0
+    next_corner: -562.171457 -1240.789882 0
+    next_corner: -564.13815 -1236.042244 0
+    next_corner: -565.707835 -1231.374921 0
+    next_corner: -567.331772 -1226.722441 0
+    next_corner: -567.420709 -1226.28189 0
+    next_corner: -567.563937 -1225.856063 0
+    next_corner: -568.483465 -1221.018386 0
+    next_corner: -569.45874 -1216.188189 0
+    next_corner: -570.129685 -1211.093307 0
+    next_corner: -570.452126 -1205.952244 0
+    next_corner: -570.803701 -1200.81689 0
+    next_corner: -570.856811 -177.194961 0
+    next_corner: -570.505748 -172.059252 0
+    next_corner: -570.184134 -166.920551 0
+    next_corner: -569.513858 -161.825591 0
+    next_corner: -568.538661 -156.992717 0
+    next_corner: -567.618504 -152.15063 0
+    next_corner: -567.476378 -151.728031 0
+    next_corner: -567.388228 -151.291063 0
+    next_corner: -565.764252 -146.636496 0
+    next_corner: -564.19315 -141.964291 0
+    next_corner: -562.226654 -137.216575 0
+    next_corner: -560.036299 -132.806535 0
+    next_corner: -557.896063 -128.370787 0
+    next_corner: -557.646614 -127.995157 0
+    next_corner: -557.446181 -127.591535 0
+    next_corner: -554.675315 -123.520236 0
+    next_corner: -551.951378 -119.417835 0
+    next_corner: -548.823386 -115.340866 0
+    next_corner: -545.565236 -111.646457 0
+    next_corner: -542.349331 -107.915157 0
+    next_corner: -542.012441 -107.617953 0
+    next_corner: -541.715039 -107.280748 0
+    next_corner: -537.983307 -104.063701 0
+    next_corner: -534.290118 -100.805748 0
+    next_corner: -530.213346 -97.677087 0
+    next_corner: -526.10878 -94.950945 0
+    next_corner: -522.037244 -92.179449 0
+    next_corner: -521.635118 -91.979685 0
+    next_corner: -521.261142 -91.731299 0
+    next_corner: -516.824803 -89.590039 0
+    next_corner: -512.412598 -87.398189 0
+    next_corner: -507.665118 -85.431339 0
+    next_corner: -502.995039 -83.860512 0
+    next_corner: -498.343701 -82.236929 0
+    next_corner: -497.904055 -82.14815 0
+    next_corner: -497.479055 -82.005197 0
+    next_corner: -492.638898 -81.084961 0
+    next_corner: -487.809488 -80.109764 0
+    next_corner: -482.714409 -79.438701 0
+    next_corner: -480.997953 -79.330984 0
+    next_corner: -479.299094 -79.064488 0
+    next_corner: -458.815827 -77.271378 0
+    next_corner: -445.608898 -73.73185 0
+    next_corner: -433.217441 -67.952913 0
+    next_corner: -422.018189 -60.110157 0
+    next_corner: -412.350394 -50.44122 0
+    next_corner: -404.508307 -39.240472 0
+    next_corner: -398.730591 -26.848268 0
+    next_corner: -395.192402 -13.641299 0
+    next_corner: -393.401732 6.84126 0
+    next_corner: -392.684882 11.414016 0
+    next_corner: -392.054843 15.999803 0
+    next_corner: -391.85315 16.719764 0
+    next_corner: -391.737362 17.458425 0
+    next_corner: -390.404528 21.890906 0
+    next_corner: -389.155906 26.348268 0
+    next_corner: -388.858031 27.034094 0
+    next_corner: -388.642756 27.750079 0
+    next_corner: -386.718465 31.960512 0
+    next_corner: -384.874843 36.205591 0
+    next_corner: -384.486496 36.844213 0
+    next_corner: -384.17563 37.524488 0
+    next_corner: -381.695945 41.433622 0
+    next_corner: -379.291457 45.388189 0
+    next_corner: -378.819567 45.968228 0
+    next_corner: -378.419134 46.599567 0
+    next_corner: -375.430984 50.13378 0
+    next_corner: -372.509685 53.725 0
+    next_corner: -371.963189 54.235394 0
+    next_corner: -371.480551 54.806299 0
+    next_corner: -368.038543 57.901102 0
+    next_corner: -364.655866 61.060669 0
+    next_corner: -364.045079 61.491811 0
+    next_corner: -363.489094 61.991772 0
+    next_corner: -359.657638 64.589134 0
+    next_corner: -355.876339 67.258622 0
+    next_corner: -355.21252 67.602598 0
+    next_corner: -354.593661 68.022165 0
+    next_corner: -350.443819 70.073858 0
+    next_corner: -346.334646 72.203346 0
+    next_corner: -345.630315 72.453661 0
+    next_corner: -344.959921 72.785157 0
+    next_corner: -340.569094 74.252717 0
+    next_corner: -336.208504 75.802756 0
+    next_corner: -335.476457 75.954882 0
+    next_corner: -334.767362 76.191929 0
+    next_corner: -330.218071 77.047874 0
+    next_corner: -325.686575 77.989803 0
+    next_corner: -324.940748 78.040827 0
+    next_corner: -324.205866 78.179134 0
+    next_corner: -319.582992 78.407598 0
+    next_corner: -314.964843 78.72378 0
+    next_corner: -0.004055 78.740157 0
+    next_corner: -0.004016 78.740118 0
+    next_corner: -0.004016 78.740157 0
+    next_corner: 314.956811 78.756457 0
+    close_polyline: 0
+  n_pins: 0
 
 [board]
 
@@ -272,32 +964,23 @@ package: "R0603"
 
 [parts]
 
-part: R1C1
-  ref_text: 1270000 177800 0 275000 -3200000 1
-  shape: "R0603"
-  value: "1k" 1270000 177800 0 850000 -640000 0
-  pos: -58400000 -26675000 1 90 0
+part: BOARD
+  ref_text: 0 0 0 2540000 5080000 0
+  shape: "MOBILE_BOARD_OUTLINE"
+  pos: 0 0 0 0 0
 
 [nets]
-
-net: "NET00002" 1 0 0 0 0 0 1
-  pin: 1 R1C1.1
-
-net: "NET00001" 1 0 0 0 0 0 1
-  pin: 1 R1C1.2
 
 [texts]
 
 [merges]
 
-  merge: "»сточник" 0
-  merge: "“я√ј" 0
-  merge: "¬ќƒј" 0
-  merge: "¬ќƒј2" 0
-  merge: "ѕ”— " 0
-  merge: "POWER" 0
-  merge: "÷» Ћ" 0
-  merge: "START" 0
-  merge: "“я√ј2" 0
+  merge: "Merge-1" 0
+  merge: "+3v3" 0
+  merge: "t(∞C)" 0
+  merge: "Merge-2" 0
+  merge: "CPU" 0
+  merge: "A" 0
+  merge: "B" 0
 
 [end]

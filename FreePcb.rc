@@ -274,6 +274,12 @@ BEGIN
             MENUITEM "Инвертировать цвета",         ID_INVERTCOLORS
             MENUITEM "Поменять местами изображения", ID_SWAPIMAGES
         END
+        POPUP "Мобильный контур и мост"
+        BEGIN
+            MENUITEM "Фреза 1.5мм, мост 3 отв. по 0.3мм",   ID_MBO_1
+            MENUITEM "Фреза 2мм, мост 4 отв. по 0.3мм",     ID_MBO_2
+            MENUITEM "Фреза 3мм, мост 4 отв. по 0.5мм",     ID_MBO_3
+        END
     END
     POPUP "Утилиты"
     BEGIN

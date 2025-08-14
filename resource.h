@@ -1163,6 +1163,10 @@
 #define ID_FILE_CAM19                   33019
 #define ID_FILE_CAM20                   33020
 #define ID_FILE_CAM21                   33021
+#define ID_MBO_1						33100
+#define ID_MBO_2						33101
+#define ID_MBO_3						33102
+
 
 // Next default values for new objects
 // 

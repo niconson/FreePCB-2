@@ -276,6 +276,9 @@ ON_COMMAND(ID_ALIGN_MIDPOINT_X, OnAlignMiddleX )
 ON_COMMAND(ID_ALIGN_MIDPOINT_Y, OnAlignMiddleY )
 ON_COMMAND(ID_ALIGN_45_X, OnAlign45X )
 ON_COMMAND(ID_ALIGN_45_Y, OnAlign45Y )
+ON_COMMAND(ID_MBO_1, OnMobileBoardOutline1)
+ON_COMMAND(ID_MBO_2, OnMobileBoardOutline2)
+ON_COMMAND(ID_MBO_3, OnMobileBoardOutline3)
 //
 //ON_UPDATE_COMMAND_UI_RANGE(1, ID_ADD_POLYLINE, OnRangeCmds)
 //ON_UPDATE_COMMAND_UI_RANGE(ID_ADD_GRAPHICLINE, ID_MAX_NUM_COMMANDS, OnRangeCmds)
@@ -23069,4 +23072,156 @@ void CFreePcbView::JumpToPin( cpart * sel_p, id sid )
 		m_sel_id = m_id;
 		SetForegroundWindow();
 	}
+}
+
+void CFreePcbView::OnMobileBoardOutline1()
+{
+	MobileBoardOutline(1500000,3,300000);
+}
+void CFreePcbView::OnMobileBoardOutline2()
+{
+	MobileBoardOutline(2000000, 4, 300000);
+}
+void CFreePcbView::OnMobileBoardOutline3()
+{
+	MobileBoardOutline(3000000, 4, 500000);
+}
+void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
+{
+	RECT op_rect, totalRect;
+	int bW = 0;
+	op_rect = m_Doc->GetBoardRect(&bW);
+	if (op_rect.right == op_rect.left)
+	{
+		AfxMessageBox(G_LANGUAGE?"Сначала добавьте линию контура печатной платы! (BOARD_OUTLINE)":"First add board outline!");
+		return;
+	}
+	m_Doc->AddBoardHoles();
+	int max_index = m_Doc->m_outline_poly.GetSize();
+	for (int ib = 0; ib < max_index; ib++)
+	{
+		id gid = m_Doc->m_outline_poly[ib].GetId();
+		if (gid.st != ID_BOARD)
+			continue;
+		for (int i = 0; i < m_Doc->m_outline_poly[ib].GetNumCorners(); i++)
+		{
+			int x1 = m_Doc->m_outline_poly[ib].GetX(i);
+			int y1 = m_Doc->m_outline_poly[ib].GetY(i);
+			int n = m_Doc->m_outline_poly[ib].GetIndexCornerNext(i);
+			int x2 = m_Doc->m_outline_poly[ib].GetX(n);
+			int y2 = m_Doc->m_outline_poly[ib].GetY(n);
+			int st = m_Doc->m_outline_poly[ib].GetSideStyle(i);
+			
+			CPoint PTS[N_SIDES_APPROX_ARC];
+			int npts = Generate_Arc(x1, y1, x2, y2, st, PTS, N_SIDES_APPROX_ARC-1);
+			for (int a = 0; a < npts-1; a++)
+			{
+				CPoint BRD[50];
+				int num_brd_points = Gen_HollowLinePoly(PTS[a].x, PTS[a].y, PTS[a + 1].x, PTS[a + 1].y, Frez * 2, BRD, 50);
+				int sz = m_Doc->m_outline_poly.GetSize();
+				m_Doc->m_outline_poly.SetSize(sz + 1);
+				id bid(ID_POLYLINE, ID_BOARD, sz);
+				m_Doc->m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
+				for (int b = 1; b < num_brd_points; b++)
+				{
+					m_Doc->m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
+				}
+				m_Doc->m_outline_poly[sz].Close();
+			}
+			if (n < i)
+				break;
+		}
+	}
+	m_Doc->ProjectCombineBoard(LAY_BOARD_OUTLINE);
+	//
+	CString foot_str = "MOBILE_BOARD_OUTLINE";
+	void * ptr = NULL;
+	BOOL bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
+	CShape* footprint = (CShape*)ptr;
+	if(footprint == NULL || bInCache == 0)
+		footprint = new CShape;
+	footprint->m_name = foot_str;
+	m_Doc->m_footprint_cache_map.SetAt(footprint->m_name, footprint);
+	footprint->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
+	//
+	//
+	//
+	foot_str = "MOBILE_PCB_CONNECTOR";
+	ptr = NULL;
+	bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
+	CShape* connector = (CShape*)ptr;
+	if (connector == NULL || bInCache == 0)
+		connector = new CShape;
+	connector->m_name = foot_str;
+	m_Doc->m_footprint_cache_map.SetAt(connector->m_name, connector);
+	connector->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
+	connector->m_outline_poly.SetSize(2);
+	id boid(ID_PART_LINES, ID_OUTLINE, 0, ID_CORNER, 0);
+	connector->m_outline_poly[0].Start (LAY_FP_VISIBLE_GRID, bW, NM_PER_MIL, -2000000, 0, 0, &boid, NULL);
+	connector->m_outline_poly[0].AppendCorner(-3000000, 1000000, 2, 0);
+	connector->m_outline_poly[0].AppendCorner(-3000000, 2000000, 0, 0);
+	connector->m_outline_poly[0].AppendCorner( 3000000, 2000000, 0, 0);
+	connector->m_outline_poly[0].AppendCorner( 3000000, 1000000, 0, 0);
+	connector->m_outline_poly[0].AppendCorner( 2000000, 0, 2, 0);
+	connector->m_outline_poly[0].AppendCorner( 3000000,-1000000, 2, 0);
+	connector->m_outline_poly[0].AppendCorner( 3000000,-2000000, 0, 0);
+	connector->m_outline_poly[0].AppendCorner(-3000000,-2000000, 0, 0);
+	connector->m_outline_poly[0].AppendCorner(-3000000,-1000000, 0, 0);
+	connector->m_outline_poly[0].Close(2);
+	boid.Set(ID_PART_LINES, ID_OUTLINE, 1, ID_CORNER, 0);
+	connector->m_outline_poly[1].Start(LAY_FP_SILK_TOP, bW, NM_PER_MIL, -2000000, 0, 0, &boid, NULL);
+	connector->m_outline_poly[1].AppendCorner(-3000000, 1000000, 2, 0);
+	connector->m_outline_poly[1].AppendCorner(-3000000, 2000000, 0, 0);
+	connector->m_outline_poly[1].AppendCorner(3000000, 2000000, 0, 0);
+	connector->m_outline_poly[1].AppendCorner(3000000, 1000000, 0, 0);
+	connector->m_outline_poly[1].AppendCorner(2000000, 0, 2, 0);
+	connector->m_outline_poly[1].AppendCorner(3000000, -1000000, 2, 0);
+	connector->m_outline_poly[1].AppendCorner(3000000, -2000000, 0, 0);
+	connector->m_outline_poly[1].AppendCorner(-3000000, -2000000, 0, 0);
+	connector->m_outline_poly[1].AppendCorner(-3000000, -1000000, 0, 0);
+	connector->m_outline_poly[1].Close(2);
+	//
+	//
+	//
+	int sz = m_Doc->m_outline_poly.GetSize();
+	footprint->m_outline_poly.SetSize(sz);	
+	for (int ib = 0; ib < sz; ib++ )
+	{
+		id boid(ID_PART_LINES, ID_OUTLINE, ib, ID_CORNER, 0);
+		footprint->m_outline_poly[ib].Start(ib>=max_index?LAY_FP_PAD_THRU: LAY_FP_VISIBLE_GRID,
+			m_Doc->m_outline_poly[ib].GetW(),
+			NM_PER_MIL,
+			m_Doc->m_outline_poly[ib].GetX(0),
+			m_Doc->m_outline_poly[ib].GetY(0),
+			0, &boid, NULL);
+		for (int ic = 0; ic <= m_Doc->m_outline_poly[ib].GetContourEnd(0); ic++)
+		{
+			footprint->m_outline_poly[ib].AppendCorner(
+				m_Doc->m_outline_poly[ib].GetX(ic),
+				m_Doc->m_outline_poly[ib].GetY(ic), 0, 0);
+		}
+		footprint->m_outline_poly[ib].Close();
+	}
+	CString ref = "BOARD";
+	cpart* MobileP = m_Doc->m_plist->GetPart(ref);
+	if(MobileP == NULL)
+		MobileP = m_Doc->m_plist->Add(footprint, &ref, 0, 0, 0, 0, 1, 1);
+	if (MobileP)
+	{
+		m_Doc->m_plist->ResizeRefText(MobileP, 0, 0, 0, 0);
+		m_Doc->m_plist->ResizeValueText(MobileP, 0, 0, 0, 0);
+		m_Doc->m_plist->DrawPart(MobileP);
+	}
+	ref = "CONNECTOR";
+	MobileP = m_Doc->m_plist->GetPart(ref);
+	if (MobileP == NULL)
+		MobileP = m_Doc->m_plist->Add(connector, &ref, 0, 0, 0, 0, 1, 1);
+	if (MobileP)
+	{
+		m_Doc->m_plist->ResizeRefText(MobileP, 0, 0, 0, 0);
+		m_Doc->m_plist->ResizeValueText(MobileP, 0, 0, 0, 0);
+		m_Doc->m_plist->DrawPart(MobileP);
+	}
+	OnRangeCmds(NULL);
+	m_Doc->AddBoardHoles(TRUE);
 }

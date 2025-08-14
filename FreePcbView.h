@@ -1151,6 +1151,10 @@ public:
 	afx_msg void OnAlign45X();
 	afx_msg void OnAlign45Y();
 	void OnAlignment( int xpt, int ypt );
+	afx_msg void OnMobileBoardOutline1();
+	afx_msg void OnMobileBoardOutline2();
+	afx_msg void OnMobileBoardOutline3();
+	void MobileBoardOutline(int Frez, int n_holes, int d_holes);
 	//
 	afx_msg void OnRangeCmds( CCmdUI * CMD );
 	void ProjectRunInfoBox();

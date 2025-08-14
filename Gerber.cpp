@@ -1183,7 +1183,7 @@ int LPD = 0;
 					{
 						for (int istep = 0; istep < n_y; istep++)
 						{
-							if (istep == 0 || step_y)
+							if ((istep == 0 || step_y) && (istep != 0 || panel.m_fields[1]))
 							{
 								::WriteMoveTo(f, 
 									BoardOrigin.x - panel.m_fields[0], 
@@ -1192,6 +1192,7 @@ int LPD = 0;
 									BoardOrigin.x + panel.m_fields[0] + (f_step_x * NM_PER_MIL * n_x) - step_x, 
 									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep), LIGHT_ON);
 							}
+							if (istep != (n_y-1) || panel.m_fields[1])
 							{
 								::WriteMoveTo(f, 
 									BoardOrigin.x - panel.m_fields[0], 
@@ -1206,7 +1207,7 @@ int LPD = 0;
 					{
 						for (int istep = 0; istep < n_x; istep++)
 						{
-							if (istep == 0 || step_x)
+							if ((istep == 0 || step_x) && (istep != 0 || panel.m_fields[0]))
 							{
 								::WriteMoveTo(f, 
 									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep), 
@@ -1215,6 +1216,7 @@ int LPD = 0;
 									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep), 
 									BoardOrigin.y + panel.m_fields[1] + (f_step_y * NM_PER_MIL * n_y) - step_y, LIGHT_ON);
 							}
+							if (istep != (n_x-1) || panel.m_fields[0])
 							{
 								::WriteMoveTo(f, 
 									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left), 
@@ -1464,7 +1466,7 @@ int LPD = 0;
 					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
 						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
-					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					CAperture text_ap(CAperture::AP_CIRCLE, TW*2, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
 					if (PASS1)
 					{
@@ -1493,7 +1495,7 @@ int LPD = 0;
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC && panel.m_fields[0] ? 0 : w),
 						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
-					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
+					CAperture text_ap(CAperture::AP_CIRCLE, TW*2, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
 					if (PASS1)
 					{

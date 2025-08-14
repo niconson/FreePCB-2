@@ -125,7 +125,7 @@ void CDlgReport::OnBnClickedOk()
 	m_doc->m_report_flags = m_flags;
 	m_doc->ProjectModified( TRUE );
 
-	CString fn = m_doc->m_path_to_folder + "\\related_files\\report.txt"; 
+	CString fn = m_doc->m_path_to_folder + "\\related_files\\reports\\report.txt"; 
 	CStdioFile file;
 	int ok = file.Open( fn, CFile::modeCreate | CFile::modeWrite ); 
 	if( !ok )     
@@ -140,7 +140,24 @@ void CDlgReport::OnBnClickedOk()
 	file.WriteString( "Project file: " + m_doc->m_pcb_full_path + "\n" );
 	file.WriteString( "Default library folder: " + m_doc->m_full_lib_dir + "\n" );
 	CMap <int,int,int,int> hole_size_map;
-
+	//
+	RECT all_board_bounds;
+	all_board_bounds.left = INT_MAX;
+	all_board_bounds.bottom = INT_MAX;
+	all_board_bounds.right = INT_MIN;
+	all_board_bounds.top = INT_MIN;
+	for (int ib = 0; ib < m_doc->m_outline_poly.GetSize(); ib++)
+	{
+		id bid = m_doc->m_outline_poly[ib].GetId();
+		if (bid.st == ID_BOARD)
+		{
+			m_doc->m_outline_poly[ib].RecalcRectC(0);
+			RECT r;
+			r = m_doc->m_outline_poly[ib].GetBounds();
+			SwellRect(&all_board_bounds, r);
+		}
+	}
+	//
 	if( !(m_flags & NO_PCB_STATS) )
 	{
 		file.WriteString( "\nBoard statistics\n" );
@@ -150,26 +167,31 @@ void CDlgReport::OnBnClickedOk()
 		int nbo = m_doc->GetNumBoards();
 		line.Format( "Number of board outlines: %d\n", nbo );
 		file.WriteString( line );
-		RECT all_board_bounds;
-		all_board_bounds.left = INT_MAX;
-		all_board_bounds.bottom = INT_MAX;
-		all_board_bounds.right = INT_MIN;
-		all_board_bounds.top = INT_MIN;
-		for( int ib=0; ib<m_doc->m_outline_poly.GetSize(); ib++ )
-		{
-			id bid = m_doc->m_outline_poly[ib].GetId();
-			if( bid.st == ID_BOARD )
-			{
-				RECT r;
-				r = m_doc->m_outline_poly[ib].GetBounds();
-				SwellRect( &all_board_bounds, r );
-			}
-		}
 		int x = abs(all_board_bounds.right - all_board_bounds.left);
 		int y = abs(all_board_bounds.top - all_board_bounds.bottom);
 		::MakeCStringFromDimension( &str1, x, m_units, TRUE, FALSE, TRUE, 3 ); 
 		::MakeCStringFromDimension( &str2, y, m_units, TRUE, FALSE, TRUE, 3 );
 		file.WriteString( "Board outline(s) size: X = " + str1 + "; Y = " + str2 + "\n" );
+		if (m_doc->m_n_x > 1 || m_doc->m_n_y > 1)
+		{
+			RECT totalRect;
+			totalRect.left = all_board_bounds.left - m_doc->m_panel_fields[0];
+			totalRect.right = all_board_bounds.left + ((all_board_bounds.right - all_board_bounds.left) * m_doc->m_n_x) + (m_doc->m_space_x * (m_doc->m_n_x - 1)) + m_doc->m_panel_fields[0];
+			totalRect.bottom = all_board_bounds.bottom - m_doc->m_panel_fields[1];
+			totalRect.top = all_board_bounds.bottom + ((all_board_bounds.top - all_board_bounds.bottom) * m_doc->m_n_y) + (m_doc->m_space_y * (m_doc->m_n_y - 1)) + m_doc->m_panel_fields[1];
+			::MakeCStringFromDimension(&str1, (totalRect.right-totalRect.left), m_units, TRUE, FALSE, TRUE, 3);
+			::MakeCStringFromDimension(&str2, (totalRect.top-totalRect.bottom), m_units, TRUE, FALSE, TRUE, 3);
+			file.WriteString("PCB multiplication size: X = " + str1 + "; Y = " + str2 + "\n");
+			::MakeCStringFromDimension(&str1, (all_board_bounds.right - all_board_bounds.left)+m_doc->m_space_x, m_units, TRUE, FALSE, TRUE, 3);
+			::MakeCStringFromDimension(&str2, (all_board_bounds.top - all_board_bounds.bottom)+m_doc->m_space_y, m_units, TRUE, FALSE, TRUE, 3);
+			file.WriteString("PCB multiplication step: X = " + str1 + "; Y = " + str2 + "\n");
+			::MakeCStringFromDimension(&str1, m_doc->m_space_x, m_units, TRUE, FALSE, TRUE, 3);
+			::MakeCStringFromDimension(&str2, m_doc->m_space_y, m_units, TRUE, FALSE, TRUE, 3);
+			file.WriteString("PCB edge to edge clearance: X = " + str1 + "; Y = " + str2 + "\n");
+			::MakeCStringFromDimension(&str1, m_doc->m_n_x, NM, FALSE, FALSE, FALSE, 0);
+			::MakeCStringFromDimension(&str2, m_doc->m_n_y, NM, FALSE, FALSE, FALSE, 0);
+			file.WriteString("Total PCB of multiplication: X = " + str1 + "; Y = " + str2 + "\n");
+		}
 	}
 	int num_parts = 0;
 	int num_parts_with_fp = 0;
@@ -508,10 +530,40 @@ void CDlgReport::OnBnClickedOk()
 				str1 += temp;
 			}
 			str1 = str1.TrimRight();
-			if( str1.GetLength() )
+			if (str1.GetLength())
 			{
 				bREAL = 1;
-				file.WriteString( str1 + "\n" );
+				file.WriteString(str1 + "\n");
+
+				// MULTIPLICATION
+				if (m_doc->m_n_x > 1 || m_doc->m_n_y > 1)
+				{
+					part = m_pl->GetPart(ref_des[ip]);
+					for (int iy = 1; iy < m_doc->m_n_y; iy++)
+					{
+						int sh_y = iy * (all_board_bounds.top - all_board_bounds.bottom + m_doc->m_space_y);
+						for (int ix = 0; ix < m_doc->m_n_x; ix++)
+						{
+							int sh_x = ix * (all_board_bounds.right - all_board_bounds.left + m_doc->m_space_x);
+							CString cent_x, cent_y;
+							//
+							CPoint centroid_pt = m_pl->GetCentroidPoint(part);
+							::MakeCStringFromDimension(&cent_x, centroid_pt.x + sh_x, m_units, FALSE, FALSE, TRUE, dp);
+							::MakeCStringFromDimension(&cent_y, centroid_pt.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
+							//
+							str1.Format(format_str, ref_des[ip], package[ip], value[ip], footprint[ip],
+								pins[ip], holes[ip], side[ip], angle[ip], cent_x, cent_y, p1_x[ip], p1_y[ip]);
+							CArray< CString >* g_w_str = &dot_w[ip];
+							for (int id = 0; id < g_w_str->GetSize(); id++)
+							{
+								CString temp;
+								temp.Format(dot_format_str, dot_w[ip][id], dot_x[ip][id], dot_y[ip][id]);
+								str1 += temp;
+							}
+							file.WriteString(str1 + "\n");
+						}
+					}
+				}
 			}
 		}
 		if(!bREAL)
