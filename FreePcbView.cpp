@@ -23211,14 +23211,16 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	m_Doc->m_footprint_cache_map.SetAt(footprint->m_name, footprint);
 	footprint->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
 	int sz = m_Doc->m_outline_poly.GetSize();
-	footprint->m_outline_poly.SetSize(sz);	
+	footprint->m_outline_poly.SetSize(0);	
 	for (int ib = 0; ib < sz; ib++ )
 	{
 		if (m_Doc->m_outline_poly[ib].GetLayer() == LAY_BOARD_OUTLINE ||
 			m_Doc->m_outline_poly[ib].GetLayer() == LAY_PAD_THRU)
 		{
 			id boid(ID_PART_LINES, ID_OUTLINE, ib, ID_CORNER, 0);
-			footprint->m_outline_poly[ib].Start(ib >= max_index ? LAY_FP_PAD_THRU : LAY_FP_VISIBLE_GRID,
+			int fp = footprint->m_outline_poly.GetSize();
+			footprint->m_outline_poly.SetSize(fp + 1);
+			footprint->m_outline_poly[fp].Start(ib >= max_index ? LAY_FP_PAD_THRU : LAY_FP_VISIBLE_GRID,
 				m_Doc->m_outline_poly[ib].GetW(),
 				NM_PER_MIL,
 				m_Doc->m_outline_poly[ib].GetX(0),
@@ -23226,12 +23228,12 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 				0, &boid, NULL);
 			for (int ic = 1; ic <= m_Doc->m_outline_poly[ib].GetContourEnd(0); ic++)
 			{
-				footprint->m_outline_poly[ib].AppendCorner(
+				footprint->m_outline_poly[fp].AppendCorner(
 					m_Doc->m_outline_poly[ib].GetX(ic),
 					m_Doc->m_outline_poly[ib].GetY(ic),
 					m_Doc->m_outline_poly[ib].GetSideStyle(m_Doc->m_outline_poly[ib].GetIndexCornerBack(ic)), 0);
 				if (m_Doc->m_outline_poly[ib].GetContourEnd(m_Doc->m_outline_poly[ib].GetNumContour(ic)) == ic)
-					footprint->m_outline_poly[ib].Close(m_Doc->m_outline_poly[ib].GetSideStyle(ic));
+					footprint->m_outline_poly[fp].Close(m_Doc->m_outline_poly[ib].GetSideStyle(ic));
 			}
 		}
 	}
