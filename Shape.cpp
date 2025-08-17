@@ -50,6 +50,34 @@ padstack::padstack()
 	x_rel = 0;
 	y_rel = 0;	
 	angle = 0;
+	{
+		top.shape = PAD_ROUND;
+		top.size_X = NM_PER_MM;
+		top.size_Y = NM_PER_MM;
+		top.radius = 0;
+		top.connect_flag = PAD_CONNECT_DEFAULT;
+		inner.shape = PAD_NONE;
+		inner.size_X = 0;
+		inner.size_Y = 0;
+		inner.radius = 0;
+		inner.connect_flag = PAD_CONNECT_DEFAULT;
+		bottom.shape = PAD_NONE;
+		bottom.size_X = 0;
+		bottom.size_Y = 0;
+		bottom.radius = 0;
+		bottom.connect_flag = PAD_CONNECT_DEFAULT;
+		top_mask.shape = PAD_DEFAULT;
+		bottom_mask.shape = PAD_DEFAULT;
+		top_mask.size_X = 0;
+		top_mask.size_Y = 0;
+		bottom_mask.size_X = 0;
+		bottom_mask.size_Y = 0;
+		top_paste.size_X = 0;
+		top_paste.size_Y = 0;
+		bottom_paste.size_X = 0;
+		bottom_paste.size_Y = 0;
+		name = "1";
+	}
 	bounds = rect(0,0,0,0);
 }
 

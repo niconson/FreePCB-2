@@ -470,7 +470,7 @@ void CDlgProjectOptions::OnEnChangeEditName()
 	CString str;
 	m_edit_name.GetWindowText( str ); 
 	if( m_new_project == TRUE && m_folder_changed == FALSE )
-		m_edit_folder.SetWindowText( m_path_to_folder + str );
+		m_edit_folder.SetWindowText( m_path_to_folder + "\\" + str);
 }
 
 void CDlgProjectOptions::OnEnChangeEditFolder()

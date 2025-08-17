@@ -1239,7 +1239,7 @@ int LPD = 0;
 					int TW = TH / 7;
 					int w = (panel.m_fields[0]?panel.m_fields[0]:10*NM_PER_MM);
 					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
-						BoardOrigin.y - TH - TH + TW + TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+						BoardOrigin.y + (f_step_y * NM_PER_MIL * n_y) - step_y + (panel.m_fields[1] / 2) - (TH / 2) + TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1268,7 +1268,7 @@ int LPD = 0;
 					int TW = TH / 7;
 					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC&&panel.m_fields[0]? 0 : w),
-						BoardOrigin.y - TH - TH + TW + TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
+						BoardOrigin.y + (f_step_y * NM_PER_MIL * n_y) - step_y + (panel.m_fields[1] / 2) - (TH / 2) + TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1352,7 +1352,7 @@ int LPD = 0;
 					int TW = TH / 7;
 					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
 					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
-						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+						BoardOrigin.y - (panel.m_fields[1] / 2) - (TH / 2) - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1381,7 +1381,7 @@ int LPD = 0;
 					int TW = TH / 7;
 					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC && panel.m_fields[0] ? 0 : w),
-						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
+						BoardOrigin.y - (panel.m_fields[1] / 2) - (TH / 2) - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1464,7 +1464,7 @@ int LPD = 0;
 					int TW = TH / 7;
 					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
 					CText* t = tl->AddText(BoardOrigin.x + TH + (VERTIC && panel.m_fields[0] ? 0 : w),
-						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
+						BoardOrigin.y - (panel.m_fields[1] / 2) - (TH / 2) - TW, 0, 0, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW*2, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1493,7 +1493,7 @@ int LPD = 0;
 					int TW = TH / 7;
 					int w = (panel.m_fields[0] ? panel.m_fields[0] : 10 * NM_PER_MM);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - TH - (VERTIC && panel.m_fields[0] ? 0 : w),
-						BoardOrigin.y - panel.m_fields[1] + TH - TW - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
+						BoardOrigin.y - (panel.m_fields[1] / 2) - (TH / 2) - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW*2, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -3322,10 +3322,7 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 				double shift_y = range_y / (double)panel.m_holes[1] * 4.0;
 				int field_0 = (panel.m_fields[0] ? panel.m_fields[0] : -20 * NM_PER_MM);
 				int field_1 = (panel.m_fields[1] ? panel.m_fields[1] : -20 * NM_PER_MM);
-				//if (panel.m_fields[0] == 0)
-				//	VERTIC = 0;
-				//else if (panel.m_fields[1] == 0)
-				//	VERTIC = 1;
+
 				for (int io = 0; io < panel.m_holes[1] / 4; io++)
 				{
 					if (panel.m_fields[1])
@@ -3391,6 +3388,15 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 						CShape * s = part->shape;
 						if( s )
 						{
+							if( n_x <= 1 && n_y <= 1)
+								if (s->m_outline_poly.GetSize())
+									if (s->m_outline_poly[s->m_outline_poly.GetSize() - 1].GetLayer() == LAY_FP_VISIBLE_GRID)
+									{
+										// this is system footprint for panel, ignore
+										// go to next part
+										part = part->next;
+										continue; 
+									}
 							// get all pins
 							for( int ip=0; ip<s->GetNumPins(); ip++ )
 							{

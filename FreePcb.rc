@@ -274,11 +274,19 @@ BEGIN
             MENUITEM "Èםגונעטנמגאעü צגועא",         ID_INVERTCOLORS
             MENUITEM "Ïמלוםÿעü לוסעאלט טחמבנאזוםטÿ", ID_SWAPIMAGES
         END
-        POPUP "Ìמבטכüםûי ךמםעףנ ט למסע"
+        POPUP "Ôנוחונםûי ךמםעףנ"
         BEGIN
-            MENUITEM "Ôנוחא 1.5לל, למסע 3 מעג. ןמ 0.3לל",   ID_MBO_1
-            MENUITEM "Ôנוחא 2לל, למסע 4 מעג. ןמ 0.3לל",     ID_MBO_2
-            MENUITEM "Ôנוחא 3לל, למסע 4 מעג. ןמ 0.5לל",     ID_MBO_3
+            MENUITEM "Ôנוחא 1לל, למסע 3 מעג. ןמ 0.25לל",    ID_MBO_0
+            MENUITEM "Ôנוחא 1.5לל, למסע 3 מעג. ןמ 0.375לל", ID_MBO_1
+            MENUITEM "Ôנוחא 2לל, למסע 3 מעג. ןמ 0.5לל",     ID_MBO_2
+            MENUITEM "Ôנוחא 2.5לל, למסע 5 מעג. ןמ 0.4לל",   ID_MBO_3
+            MENUITEM "Ôנוחא 3לל, למסע 5 מעג. ןמ 0.5לל",     ID_MBO_4
+            MENUITEM "Ôנוחא 3.5לל, למסע 5 מעג. ןמ 0.6לל",   ID_MBO_5
+            MENUITEM "Ôנוחא 4לל, למסע 5 מעג. ןמ 0.7לל",     ID_MBO_6
+            MENUITEM "Ôנוחא 4.5לל, למסע 5 מעג. ןמ 0.8לל",   ID_MBO_7
+            MENUITEM "Ôנוחא 5לל, למסע 5 מעג. ןמ 0.9לל",     ID_MBO_8
+            MENUITEM "Ôנוחא 6לל, למסע 5 מעג. ןמ 1.1לל",     ID_MBO_9
+            MENUITEM "Ôנוחא 7לל, למסע 5 מעג. ןמ 1.3לל",     ID_MBO_10
         END
     END
     POPUP "Óעטכטעû"

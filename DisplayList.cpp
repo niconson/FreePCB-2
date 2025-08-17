@@ -896,7 +896,16 @@ void CDisplayList::Draw( CDC * dDC, int draw_layer )
 	for( int order=(MAX_LAYERS-1); order>=0; order-- )
 	{
 		int layer = m_layer_in_order[order];
-		//
+		// switch on other DC
+		if (order <= m_order_for_layer[LAY_HILITE] && pDC == botDC)
+		{
+			if (topDC)
+			{
+				topDC->BitBlt(m_org_x, m_org_y, m_max_x - m_org_x, m_max_y - m_org_y,
+					botDC, m_org_x, m_org_y, SRCCOPY);
+				pDC = topDC;
+			}
+		}
 		// if layer is invisible 
 		// or layer = 0
 		if( !m_vis[layer] || layer == LAY_SELECTION )
@@ -909,16 +918,6 @@ void CDisplayList::Draw( CDC * dDC, int draw_layer )
 				continue;
 		}
 		//
-		// switch on other DC
-		if( order <= m_order_for_layer[LAY_HILITE] && pDC == botDC ) 
-		{
-			if( topDC )
-			{
-				topDC->BitBlt(	m_org_x, m_org_y, m_max_x-m_org_x, m_max_y-m_org_y,
-								botDC, m_org_x, m_org_y, SRCCOPY ) ;
-				pDC = topDC;
-			}
-		}
 		int dsp = (INT_MAX/m_pcbu_per_wu)-1;
 		dl_element * el = &m_start;
 		

@@ -9,8 +9,8 @@ enum
 	// layout layers
 	LAY_SELECTION = 0,
 	LAY_BACKGND,
-	LAY_VISIBLE_GRID,
 	LAY_HILITE,
+	LAY_VISIBLE_GRID,
 	LAY_DRC_ERROR,
 	LAY_BOARD_OUTLINE,
 	LAY_SCRIBING,
@@ -36,8 +36,8 @@ enum
 	// footprint layers
 	LAY_FP_SELECTION = 0,
 	LAY_FP_BACKGND,
-	LAY_FP_VISIBLE_GRID,
 	LAY_FP_HILITE,
+	LAY_FP_VISIBLE_GRID,
 	LAY_FP_SILK_TOP,
 	LAY_FP_SILK_BOTTOM,
 	LAY_FP_CENTROID,
@@ -118,8 +118,8 @@ static char layer_str[32][64] =
 {
 	"движение",
 	"фон доски",
-	"линии сетки",
 	"подсветка",
+	"линии сетки",
 	"тестирование",
 	"контур платы",
 	"скрайбинг (V)",
@@ -153,8 +153,8 @@ static char fp_layer_str[NUM_FP_LAYERS][64] =
 {
 	"движение",
 	"фон доски",
-	"линии сетки",
 	"подсветка",
+	"линии сетки",
 	"шёлк верх",
 	"шёлк низ",
 	"центроид",

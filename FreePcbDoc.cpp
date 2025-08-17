@@ -8212,7 +8212,10 @@ void CFreePcbDoc::DRC()
 		}
 		if( s )
 		{
-			//if( s->m_name.Right(4) == FOOTPRINT_ERR )
+			if (s->m_outline_poly.GetSize())
+				if (s->m_outline_poly[s->m_outline_poly.GetSize() - 1].GetLayer() == LAY_FP_VISIBLE_GRID)
+					continue; // this is system footprint, ignore
+			//
 			if(s->m_package.Compare("ERROR") == 0 )
 			{
 				CString err_foot = s->m_name;//.Left( s->m_name.GetLength() - 4 );
@@ -14261,15 +14264,19 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 				for (int icont = start; icont < m_outline_poly[ib].GetNumCorners(); icont++)
 				{
 					m_outline_poly[sz].AppendCorner(m_outline_poly[ib].GetX(icont), m_outline_poly[ib].GetY(icont), m_outline_poly[ib].GetSideStyle(m_outline_poly[ib].GetIndexCornerBack(icont)), 0);
-					if (m_outline_poly[ib].GetContourEnd(m_outline_poly[ib].GetNumContour(icont)) == icont ||
-						icont == (m_outline_poly[ib].GetNumCorners()-1))
+					if (m_outline_poly[ib].GetContourEnd(m_outline_poly[ib].GetNumContour(icont)) == icont)
 						m_outline_poly[sz].Close(m_outline_poly[ib].GetSideStyle(icont));
 				}
 			}
-			while (m_outline_poly.GetSize() > 1)
+			sz--;
+			while (sz >= 0)
 			{
-				m_outline_poly[0].Undraw();
-				m_outline_poly.RemoveAt(0);
+				if (m_outline_poly[sz].GetLayer() == LAY_BOARD_OUTLINE)
+				{
+					m_outline_poly[sz].Undraw();
+					m_outline_poly.RemoveAt(sz);
+				}
+				sz--;
 			}
 		}
 	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
@@ -14313,10 +14320,11 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 	if (MakePanel)
 		if (MakePanel->x > 1 || MakePanel->y > 1)
 		{
-			if (m_outline_poly[0].GetNumContours() > 1)
+			int iPANEL = m_outline_poly.GetSize() - 1;
+			if (m_outline_poly[iPANEL].GetNumContours() > 1)
 			{
-				int start = m_outline_poly[0].GetContourStart(1);
-				int end = m_outline_poly[0].GetNumCorners();
+				int start = m_outline_poly[iPANEL].GetContourStart(1);
+				int end = m_outline_poly[iPANEL].GetNumCorners();
 				for (int ix = 0; ix < m_n_x; ix++)
 				{
 					int x_offset = ix * (BOARD.right - BOARD.left + m_space_x);
@@ -14327,16 +14335,17 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 						int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y);
 						for (int ic = start; ic < end; ic++)
 						{
-							m_outline_poly[0].AppendCorner(	m_outline_poly[0].GetX(ic) + x_offset, 
-															m_outline_poly[0].GetY(ic) + y_offset, 
-															m_outline_poly[0].GetSideStyle(m_outline_poly[0].GetIndexCornerBack(ic)), 0);
-							if (m_outline_poly[0].GetContourEnd(m_outline_poly[0].GetNumContour(ic)) == ic)
-								m_outline_poly[0].Close(m_outline_poly[0].GetSideStyle(ic));
+							m_outline_poly[iPANEL].AppendCorner(	m_outline_poly[iPANEL].GetX(ic) + x_offset,
+															m_outline_poly[iPANEL].GetY(ic) + y_offset,
+															m_outline_poly[iPANEL].GetSideStyle(m_outline_poly[iPANEL].GetIndexCornerBack(ic)), 0);
+							if (m_outline_poly[iPANEL].GetContourEnd(m_outline_poly[iPANEL].GetNumContour(ic)) == ic)
+								m_outline_poly[iPANEL].Close(m_outline_poly[iPANEL].GetSideStyle(ic));
 						}
 					}
 				}
 			}
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
+			int gAng = 0;
 			for( cpart* BRD_PART = m_plist->GetFirstPart(); BRD_PART; BRD_PART= m_plist->GetNextPart(BRD_PART) )
 				if (BRD_PART->shape)
 				{
@@ -14345,26 +14354,31 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 						CPolyLine* pp = &BRD_PART->shape->m_outline_poly[i];
 						if (pp->GetLayer() == LAY_FP_VISIBLE_GRID)
 						{
+							gAng |= BRD_PART->angle;
 							for (int ix = 0; ix < m_n_x; ix++)
 							{
-								int x_offset = ix * (BOARD.right - BOARD.left + m_space_x);
+								int x_offset = ix * (BOARD.right - BOARD.left + m_space_x) + BRD_PART->x;
 								for (int iy = 0; iy < m_n_y; iy++)
 								{
-									int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y);
+									int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y) + BRD_PART->y;
 									int sz = m_outline_poly.GetSize();
 									m_outline_poly.SetSize(sz + 1);
 									id bid(ID_POLYLINE, ID_BOARD, sz);
 									m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, pp->GetX(0)+x_offset, pp->GetY(0)+y_offset, 0, &bid, NULL);
 									for (int ic = 1; ic < pp->GetNumCorners(); ic++)
 									{
-										m_outline_poly[sz].AppendCorner(pp->GetX(ic)+x_offset, pp->GetY(ic)+y_offset, pp->GetSideStyle(ic-1), 0);
+										m_outline_poly[sz].AppendCorner(pp->GetX(ic)+x_offset, pp->GetY(ic)+y_offset, pp->GetSideStyle(pp->GetIndexCornerBack(ic)), 0);
+										if (pp->GetContourEnd(pp->GetNumContour(ic)) == ic)
+											m_outline_poly[sz].Close(pp->GetSideStyle(ic));
 									}
-									m_outline_poly[sz].Close(pp->GetSideStyle(0));
+									
 								}
 							}
 						}
 					}
 				}
+			if (gAng)
+				AfxMessageBox(G_LANGUAGE ? "Системный футпринт с фрезерным контуром для панелизации должен быть размещён с нулевым углом!" : "The system footprint with the milling contour for panelization must be placed with a zero angle!", MB_ICONERROR);
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
 		}
 	return BOARD;

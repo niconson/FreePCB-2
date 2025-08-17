@@ -276,9 +276,17 @@ ON_COMMAND(ID_ALIGN_MIDPOINT_X, OnAlignMiddleX )
 ON_COMMAND(ID_ALIGN_MIDPOINT_Y, OnAlignMiddleY )
 ON_COMMAND(ID_ALIGN_45_X, OnAlign45X )
 ON_COMMAND(ID_ALIGN_45_Y, OnAlign45Y )
-ON_COMMAND(ID_MBO_1, OnMobileBoardOutline1)
-ON_COMMAND(ID_MBO_2, OnMobileBoardOutline2)
-ON_COMMAND(ID_MBO_3, OnMobileBoardOutline3)
+ON_COMMAND(ID_MBO_0, OnMobileBoardOutline1)
+ON_COMMAND(ID_MBO_1, OnMobileBoardOutline2)
+ON_COMMAND(ID_MBO_2, OnMobileBoardOutline3)
+ON_COMMAND(ID_MBO_3, OnMobileBoardOutline4)
+ON_COMMAND(ID_MBO_4, OnMobileBoardOutline5)
+ON_COMMAND(ID_MBO_5, OnMobileBoardOutline6)
+ON_COMMAND(ID_MBO_6, OnMobileBoardOutline7)
+ON_COMMAND(ID_MBO_7, OnMobileBoardOutline8)
+ON_COMMAND(ID_MBO_8, OnMobileBoardOutline9)
+ON_COMMAND(ID_MBO_9, OnMobileBoardOutline10)
+ON_COMMAND(ID_MBO_10, OnMobileBoardOutline11)
 //
 //ON_UPDATE_COMMAND_UI_RANGE(1, ID_ADD_POLYLINE, OnRangeCmds)
 //ON_UPDATE_COMMAND_UI_RANGE(ID_ADD_GRAPHICLINE, ID_MAX_NUM_COMMANDS, OnRangeCmds)
@@ -23073,18 +23081,49 @@ void CFreePcbView::JumpToPin( cpart * sel_p, id sid )
 		SetForegroundWindow();
 	}
 }
-
 void CFreePcbView::OnMobileBoardOutline1()
 {
-	MobileBoardOutline(1500000,3,300000);
+	MobileBoardOutline(1000000,0,0);
 }
 void CFreePcbView::OnMobileBoardOutline2()
 {
-	MobileBoardOutline(2000000, 4, 300000);
+	MobileBoardOutline(1500000, 0, 0);
 }
 void CFreePcbView::OnMobileBoardOutline3()
 {
-	MobileBoardOutline(3000000, 4, 500000);
+	MobileBoardOutline(2000000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline4()
+{
+	MobileBoardOutline(2500000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline5()
+{
+	MobileBoardOutline(3000000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline6()
+{
+	MobileBoardOutline(3500000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline7()
+{
+	MobileBoardOutline(4000000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline8()
+{
+	MobileBoardOutline(4500000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline9()
+{
+	MobileBoardOutline(5000000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline10()
+{
+	MobileBoardOutline(6000000, 0, 0);
+}
+void CFreePcbView::OnMobileBoardOutline11()
+{
+	MobileBoardOutline(7000000, 0, 0);
 }
 void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 {
@@ -23096,6 +23135,14 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 		AfxMessageBox(G_LANGUAGE?"Сначала добавьте линию контура печатной платы! (BOARD_OUTLINE)":"First add board outline!");
 		return;
 	}
+	CString ref = "BOARD";
+	cpart* MobileP = m_Doc->m_plist->GetPart(ref);
+	if (MobileP)
+	{
+		int answ = AfxMessageBox(G_LANGUAGE ? "У вас уже есть фрезерный контур, хотите сгенерировать новый, а старый удалить?" : "Do you already have a milling contour and want to generate a new one and delete the old one?", MB_ICONQUESTION|MB_OKCANCEL);
+		if (answ == IDCANCEL)
+			return;
+	}
 	m_Doc->AddBoardHoles();
 	int max_index = m_Doc->m_outline_poly.GetSize();
 	for (int ib = 0; ib < max_index; ib++)
@@ -23103,6 +23150,7 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 		id gid = m_Doc->m_outline_poly[ib].GetId();
 		if (gid.st != ID_BOARD)
 			continue;
+		
 		for (int i = 0; i < m_Doc->m_outline_poly[ib].GetNumCorners(); i++)
 		{
 			int x1 = m_Doc->m_outline_poly[ib].GetX(i);
@@ -23121,107 +23169,247 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 				int sz = m_Doc->m_outline_poly.GetSize();
 				m_Doc->m_outline_poly.SetSize(sz + 1);
 				id bid(ID_POLYLINE, ID_BOARD, sz);
-				m_Doc->m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
+				m_Doc->m_outline_poly[sz].Start(LAY_PAD_THRU, bW, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
 				for (int b = 1; b < num_brd_points; b++)
 				{
 					m_Doc->m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
 				}
 				m_Doc->m_outline_poly[sz].Close();
+				m_Doc->ProjectCombineBoard(LAY_PAD_THRU);
+				SimplifyPoly(&m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1], Frez / 7);
+				if (m_Doc->m_outline_poly.GetSize() > max_index + 1)
+				{
+					int x0 = m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1].GetX(0);
+					int y0 = m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1].GetY(0);
+					if (m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 2].TestPointInside( x0, y0 ) )
+					{
+						m_Doc->m_outline_poly[sz].Undraw();
+						m_Doc->m_outline_poly.SetSize(sz);
+					}
+				}
 			}
 			if (n < i)
 				break;
 		}
 	}
-	m_Doc->ProjectCombineBoard(LAY_BOARD_OUTLINE);
+	
 	//
+	if (MobileP)
+		m_Doc->m_plist->UndrawPart(MobileP);
 	CString foot_str = "MOBILE_BOARD_OUTLINE";
 	void * ptr = NULL;
 	BOOL bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
 	CShape* footprint = (CShape*)ptr;
-	if(footprint == NULL || bInCache == 0)
+	if (footprint == NULL || bInCache == 0)
 		footprint = new CShape;
+	else
+	{
+		footprint->m_outline_poly.RemoveAll();
+		footprint->m_padstack.RemoveAll();
+	}
 	footprint->m_name = foot_str;
 	m_Doc->m_footprint_cache_map.SetAt(footprint->m_name, footprint);
 	footprint->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
-	//
-	//
-	//
-	foot_str = "MOBILE_PCB_CONNECTOR";
-	ptr = NULL;
-	bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
-	CShape* connector = (CShape*)ptr;
-	if (connector == NULL || bInCache == 0)
-		connector = new CShape;
-	connector->m_name = foot_str;
-	m_Doc->m_footprint_cache_map.SetAt(connector->m_name, connector);
-	connector->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
-	connector->m_outline_poly.SetSize(2);
-	id boid(ID_PART_LINES, ID_OUTLINE, 0, ID_CORNER, 0);
-	connector->m_outline_poly[0].Start (LAY_FP_VISIBLE_GRID, bW, NM_PER_MIL, -2000000, 0, 0, &boid, NULL);
-	connector->m_outline_poly[0].AppendCorner(-3000000, 1000000, 2, 0);
-	connector->m_outline_poly[0].AppendCorner(-3000000, 2000000, 0, 0);
-	connector->m_outline_poly[0].AppendCorner( 3000000, 2000000, 0, 0);
-	connector->m_outline_poly[0].AppendCorner( 3000000, 1000000, 0, 0);
-	connector->m_outline_poly[0].AppendCorner( 2000000, 0, 2, 0);
-	connector->m_outline_poly[0].AppendCorner( 3000000,-1000000, 2, 0);
-	connector->m_outline_poly[0].AppendCorner( 3000000,-2000000, 0, 0);
-	connector->m_outline_poly[0].AppendCorner(-3000000,-2000000, 0, 0);
-	connector->m_outline_poly[0].AppendCorner(-3000000,-1000000, 0, 0);
-	connector->m_outline_poly[0].Close(2);
-	boid.Set(ID_PART_LINES, ID_OUTLINE, 1, ID_CORNER, 0);
-	connector->m_outline_poly[1].Start(LAY_FP_SILK_TOP, bW, NM_PER_MIL, -2000000, 0, 0, &boid, NULL);
-	connector->m_outline_poly[1].AppendCorner(-3000000, 1000000, 2, 0);
-	connector->m_outline_poly[1].AppendCorner(-3000000, 2000000, 0, 0);
-	connector->m_outline_poly[1].AppendCorner(3000000, 2000000, 0, 0);
-	connector->m_outline_poly[1].AppendCorner(3000000, 1000000, 0, 0);
-	connector->m_outline_poly[1].AppendCorner(2000000, 0, 2, 0);
-	connector->m_outline_poly[1].AppendCorner(3000000, -1000000, 2, 0);
-	connector->m_outline_poly[1].AppendCorner(3000000, -2000000, 0, 0);
-	connector->m_outline_poly[1].AppendCorner(-3000000, -2000000, 0, 0);
-	connector->m_outline_poly[1].AppendCorner(-3000000, -1000000, 0, 0);
-	connector->m_outline_poly[1].Close(2);
-	//
-	//
-	//
 	int sz = m_Doc->m_outline_poly.GetSize();
 	footprint->m_outline_poly.SetSize(sz);	
 	for (int ib = 0; ib < sz; ib++ )
 	{
-		id boid(ID_PART_LINES, ID_OUTLINE, ib, ID_CORNER, 0);
-		footprint->m_outline_poly[ib].Start(ib>=max_index?LAY_FP_PAD_THRU: LAY_FP_VISIBLE_GRID,
-			m_Doc->m_outline_poly[ib].GetW(),
-			NM_PER_MIL,
-			m_Doc->m_outline_poly[ib].GetX(0),
-			m_Doc->m_outline_poly[ib].GetY(0),
-			0, &boid, NULL);
-		for (int ic = 0; ic <= m_Doc->m_outline_poly[ib].GetContourEnd(0); ic++)
+		if (m_Doc->m_outline_poly[ib].GetLayer() == LAY_BOARD_OUTLINE ||
+			m_Doc->m_outline_poly[ib].GetLayer() == LAY_PAD_THRU)
 		{
-			footprint->m_outline_poly[ib].AppendCorner(
-				m_Doc->m_outline_poly[ib].GetX(ic),
-				m_Doc->m_outline_poly[ib].GetY(ic), 0, 0);
+			id boid(ID_PART_LINES, ID_OUTLINE, ib, ID_CORNER, 0);
+			footprint->m_outline_poly[ib].Start(ib >= max_index ? LAY_FP_PAD_THRU : LAY_FP_VISIBLE_GRID,
+				m_Doc->m_outline_poly[ib].GetW(),
+				NM_PER_MIL,
+				m_Doc->m_outline_poly[ib].GetX(0),
+				m_Doc->m_outline_poly[ib].GetY(0),
+				0, &boid, NULL);
+			for (int ic = 1; ic <= m_Doc->m_outline_poly[ib].GetContourEnd(0); ic++)
+			{
+				footprint->m_outline_poly[ib].AppendCorner(
+					m_Doc->m_outline_poly[ib].GetX(ic),
+					m_Doc->m_outline_poly[ib].GetY(ic),
+					m_Doc->m_outline_poly[ib].GetSideStyle(m_Doc->m_outline_poly[ib].GetIndexCornerBack(ic)), 0);
+				if (m_Doc->m_outline_poly[ib].GetContourEnd(m_Doc->m_outline_poly[ib].GetNumContour(ic)) == ic)
+					footprint->m_outline_poly[ib].Close(m_Doc->m_outline_poly[ib].GetSideStyle(ic));
+			}
 		}
-		footprint->m_outline_poly[ib].Close();
 	}
-	CString ref = "BOARD";
-	cpart* MobileP = m_Doc->m_plist->GetPart(ref);
-	if(MobileP == NULL)
-		MobileP = m_Doc->m_plist->Add(footprint, &ref, 0, 0, 0, 0, 1, 1);
-	if (MobileP)
+	CPoint P[4];
+	int angle[4] = { 0,0,0,0 };
+	int np = 0;
+	sz = footprint->m_outline_poly.GetSize();
+	for (int i = 0; i < sz; i++)
 	{
-		m_Doc->m_plist->ResizeRefText(MobileP, 0, 0, 0, 0);
-		m_Doc->m_plist->ResizeValueText(MobileP, 0, 0, 0, 0);
-		m_Doc->m_plist->DrawPart(MobileP);
+		footprint->m_outline_poly[i].SetUtility(0);
+		for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
+			footprint->m_outline_poly[i].SetUtility(ii, 0);
 	}
-	ref = "CONNECTOR";
-	MobileP = m_Doc->m_plist->GetPart(ref);
+	while (np < 4)
+	{
+		int maxLenX = 0,
+			maxLenY = 0,
+			bestX = 0,
+			bestY = 0,
+			bestI = -1,
+			bestII = -1,
+			bestA = 0;
+		for (int i = 0; i < sz; i++)
+		{
+			if (footprint->m_outline_poly[i].GetLayer() != LAY_FP_VISIBLE_GRID)
+				continue;
+			for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
+			{
+				if (footprint->m_outline_poly[i].GetUtility(ii))
+					continue;
+				int n = footprint->m_outline_poly[i].GetIndexCornerNext(ii);
+				int x1 = footprint->m_outline_poly[i].GetX(ii);
+				int y1 = footprint->m_outline_poly[i].GetY(ii);
+				int x2 = footprint->m_outline_poly[i].GetX(n);
+				int y2 = footprint->m_outline_poly[i].GetY(n);
+				if (abs(x1 - x2) < _2540)
+				{
+					if (abs(y1 - y2) > maxLenY)
+					{
+						maxLenY = abs(y1 - y2);
+						bestX = x1;
+						bestY = (y1 + y2) / 2;
+						bestI = i;
+						bestII = ii;
+						bestA = 90;
+					}
+				}
+				if (abs(y1 - y2) < _2540)
+				{
+					if (abs(x1 - x2) > maxLenX)
+					{
+						maxLenX = abs(x1 - x2);
+						bestX = (x1 + x2) / 2;
+						bestY = y1;
+						bestI = i;
+						bestII = ii;
+						bestA = 0;
+					}
+				}
+				if (n < i)
+					break;
+			}
+		}
+		if (bestX || bestY)
+		{
+			P[np] = CPoint(bestX, bestY);
+			angle[np] = bestA;
+			if(bestA == 0)
+				if (footprint->m_outline_poly[bestI].TestPointInside(bestX, bestY + NM_PER_MIL))
+					angle[np] += 180;
+			if (bestA == 90)
+				if (footprint->m_outline_poly[bestI].TestPointInside(bestX + NM_PER_MIL, bestY))
+					angle[np] += 180;
+			footprint->m_outline_poly[bestI].SetUtility(bestII, 1);
+			np++;
+		}
+		else
+			break;
+	}
+	for (int ip = 0; ip < np; ip++)
+	{
+		sz = footprint->m_outline_poly.GetSize();
+		footprint->m_outline_poly.SetSize(sz + 1);
+		id boid(ID_PART_LINES, ID_OUTLINE, sz, ID_CORNER, 0);
+		CPoint pt(-Frez / 2, 0);
+		CPoint org(0, 0);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].Start(LAY_FP_VISIBLE_GRID, bW, NM_PER_MIL, pt.x, pt.y, 0, &boid, NULL);
+		pt.SetPoint(-Frez, Frez / 2);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
+		pt.SetPoint(-Frez, Frez);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+		pt.SetPoint(Frez, Frez);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+		pt.SetPoint(Frez, Frez / 2);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+		pt.SetPoint(Frez / 2, 0);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
+		pt.SetPoint(Frez, -Frez / 2);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
+		pt.SetPoint(Frez, -Frez);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+		pt.SetPoint(-Frez, -Frez);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+		pt.SetPoint(-Frez, -Frez / 2);
+		RotatePoint(&pt, angle[ip], org);
+		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+		footprint->m_outline_poly[sz].Close(2,FALSE);
+		footprint->m_outline_poly[sz].MoveOrigin(P[ip].x, P[ip].y);
+		if( angle[ip] == 0)
+			footprint->m_outline_poly[sz].MoveOrigin(0, Frez / 2);
+		else if (angle[ip] == 90)
+			footprint->m_outline_poly[sz].MoveOrigin(Frez / 2, 0);
+		else if (angle[ip] == 180)
+			footprint->m_outline_poly[sz].MoveOrigin(0, -Frez / 2);
+		else if (angle[ip] == 270)
+			footprint->m_outline_poly[sz].MoveOrigin(-Frez / 2, 0);
+		padstack pstack;
+		pstack = padstack();
+		pstack.top.shape = PAD_NONE;
+		int SWITCH = 2000000;
+		pstack.hole_size = Frez<=SWITCH?Frez/4:(Frez/5-100000);
+		pstack.top_mask.shape = PAD_NONE;
+		pstack.bottom_mask.shape = PAD_NONE;
+		pstack.x_rel = P[ip].x;
+		pstack.y_rel = P[ip].y;
+		footprint->m_padstack.Add(pstack);
+		int step = (Frez / 2) - (Frez <= SWITCH ? (Frez / 10) : (Frez / 4));
+		if (angle[ip] == 90 || angle[ip] == 270)
+		{
+			pstack.y_rel = P[ip].y + step;
+			footprint->m_padstack.Add(pstack);
+			pstack.y_rel = P[ip].y - step;
+			footprint->m_padstack.Add(pstack);
+			if (Frez > SWITCH)
+			{
+				pstack.y_rel = P[ip].y + step*2;
+				footprint->m_padstack.Add(pstack);
+				pstack.y_rel = P[ip].y - step*2;
+				footprint->m_padstack.Add(pstack);
+			}
+		}
+		if (angle[ip] == 0 || angle[ip] == 180)
+		{
+			pstack.x_rel = P[ip].x + step;
+			footprint->m_padstack.Add(pstack);
+			pstack.x_rel = P[ip].x - step;
+			footprint->m_padstack.Add(pstack);
+			if (Frez > SWITCH)
+			{
+				pstack.x_rel = P[ip].x + step*2;
+				footprint->m_padstack.Add(pstack);
+				pstack.x_rel = P[ip].x - step*2;
+				footprint->m_padstack.Add(pstack);
+			}
+		}
+	}
 	if (MobileP == NULL)
-		MobileP = m_Doc->m_plist->Add(connector, &ref, 0, 0, 0, 0, 1, 1);
+		MobileP = m_Doc->m_plist->Add(footprint, &ref, 0, 0, 0, 0, 1, 1);
+	else
+		m_Doc->m_plist->PartFootprintChanged(MobileP, footprint);
 	if (MobileP)
 	{
+		MobileP->x = 0;
+		MobileP->y = 0;
+		MobileP->angle = 0;
 		m_Doc->m_plist->ResizeRefText(MobileP, 0, 0, 0, 0);
 		m_Doc->m_plist->ResizeValueText(MobileP, 0, 0, 0, 0);
 		m_Doc->m_plist->DrawPart(MobileP);
 	}
 	OnRangeCmds(NULL);
-	m_Doc->AddBoardHoles(TRUE);
+	m_Doc->CancelBoardHoles();
 }

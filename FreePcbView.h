@@ -1154,6 +1154,14 @@ public:
 	afx_msg void OnMobileBoardOutline1();
 	afx_msg void OnMobileBoardOutline2();
 	afx_msg void OnMobileBoardOutline3();
+	afx_msg void OnMobileBoardOutline4();
+	afx_msg void OnMobileBoardOutline5();
+	afx_msg void OnMobileBoardOutline6();
+	afx_msg void OnMobileBoardOutline7();
+	afx_msg void OnMobileBoardOutline8();
+	afx_msg void OnMobileBoardOutline9();
+	afx_msg void OnMobileBoardOutline10();
+	afx_msg void OnMobileBoardOutline11();
 	void MobileBoardOutline(int Frez, int n_holes, int d_holes);
 	//
 	afx_msg void OnRangeCmds( CCmdUI * CMD );

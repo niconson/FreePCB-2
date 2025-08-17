@@ -3763,3 +3763,33 @@ void CStringToLegalFileName(CString* fileName)
 			fileName->SetAt(ism, 'A' + abs(up));
 		}
 }
+
+int SimplifyPoly(CPolyLine* poly, int val)
+{
+	int n_deleted = 0;
+	for (int i = 0; i < poly->GetNumContours(); i++)
+	{
+		int start = poly->GetContourStart(i);
+		int end = poly->GetContourEnd(i);
+		int max_del = end - start - 2;
+		int i_del = 0;
+		for (int ii = end; ii >= start; ii--)
+		{
+			int n = poly->GetIndexCornerNext(ii);
+			int segL = Distance(poly->GetX(ii), poly->GetY(ii), poly->GetX(n), poly->GetY(n));
+			int p = poly->GetIndexCornerBack(ii);
+			int preL = Distance(poly->GetX(p), poly->GetY(p), poly->GetX(ii), poly->GetY(ii));
+			CPoint pv(poly->GetX(p), poly->GetY(p));
+			CPoint v(poly->GetX(ii), poly->GetY(ii));
+			CPoint nv(poly->GetX(n), poly->GetY(n));
+			float angle = Angle(pv, v, nv);
+			if (segL < val && preL < val && abs(angle) < 60.0 && i_del < max_del)
+			{
+				poly->DeleteCorner(ii, 1, 1, FALSE);
+				n_deleted++;
+				i_del++;
+			}
+		}
+	}
+	return n_deleted;
+}
