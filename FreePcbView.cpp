@@ -23143,14 +23143,43 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 		if (answ == IDCANCEL)
 			return;
 	}
-	m_Doc->AddBoardHoles();
+	CString foot_str = "MOBILE_BOARD_OUTLINE";
+	void* ptr = NULL;
+	BOOL bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
+	CShape* footprint = (CShape*)ptr;
+	if (footprint == NULL || bInCache == 0)
+	{
+		footprint = new CShape;
+		footprint->m_name = foot_str;
+		m_Doc->m_footprint_cache_map.SetAt(footprint->m_name, footprint);
+		footprint->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
+		footprint->m_outline_poly.SetSize(0);
+	}
+	else
+	{
+		if (MobileP)
+		{
+			// delete contours
+			//for (int idel=m_Doc->m_outline_poly.GetSize()-1; idel>=0; idel--)
+			//	if (m_Doc->m_outline_poly[idel].GetLayer() == LAY_FP_VISIBLE_GRID)
+			//		footprint->m_outline_poly.RemoveAt(idel);
+			// delete cutout
+			//if (m_Doc->m_outline_poly.GetSize())
+			//	footprint->m_outline_poly.RemoveAt(m_Doc->m_outline_poly.GetSize()-1);
+		}
+		else
+		{
+			footprint->m_outline_poly.RemoveAll();
+			footprint->m_padstack.RemoveAll();
+		}
+	}	
+	m_Doc->AddBoardHoles(); // after delete contours and delete cutout !
 	int max_index = m_Doc->m_outline_poly.GetSize();
 	for (int ib = 0; ib < max_index; ib++)
 	{
 		id gid = m_Doc->m_outline_poly[ib].GetId();
 		if (gid.st != ID_BOARD)
 			continue;
-		
 		for (int i = 0; i < m_Doc->m_outline_poly[ib].GetNumCorners(); i++)
 		{
 			int x1 = m_Doc->m_outline_poly[ib].GetX(i);
@@ -23192,41 +23221,32 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 				break;
 		}
 	}
-	
 	//
 	if (MobileP)
-		m_Doc->m_plist->UndrawPart(MobileP);
-	CString foot_str = "MOBILE_BOARD_OUTLINE";
-	void * ptr = NULL;
-	BOOL bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
-	CShape* footprint = (CShape*)ptr;
-	if (footprint == NULL || bInCache == 0)
-		footprint = new CShape;
-	else
-	{
-		footprint->m_outline_poly.RemoveAll();
-		footprint->m_padstack.RemoveAll();
-	}
-	footprint->m_name = foot_str;
-	m_Doc->m_footprint_cache_map.SetAt(footprint->m_name, footprint);
-	footprint->selection = rect(0, 0, NM_PER_MM, NM_PER_MM);
+		m_Doc->m_plist->UndrawPart(MobileP); // after AddBoardHoles() !
+	//	
 	int sz = m_Doc->m_outline_poly.GetSize();
-	footprint->m_outline_poly.SetSize(0);	
 	for (int ib = 0; ib < sz; ib++ )
 	{
-		if (m_Doc->m_outline_poly[ib].GetLayer() == LAY_BOARD_OUTLINE ||
-			m_Doc->m_outline_poly[ib].GetLayer() == LAY_PAD_THRU)
+		int gL = m_Doc->m_outline_poly[ib].GetLayer();
+		if (gL == LAY_BOARD_OUTLINE || gL == LAY_PAD_THRU)
 		{
 			id boid(ID_PART_LINES, ID_OUTLINE, ib, ID_CORNER, 0);
 			int fp = footprint->m_outline_poly.GetSize();
 			footprint->m_outline_poly.SetSize(fp + 1);
-			footprint->m_outline_poly[fp].Start(ib >= max_index ? LAY_FP_PAD_THRU : LAY_FP_VISIBLE_GRID,
+			//const CPolyLine new_poly;
+			//footprint->m_outline_poly.InsertAt(0, new_poly, 1);
+			//for (int icopy = fp; icopy > 0; icopy--)
+			//	footprint->m_outline_poly[fp].Copy(&footprint->m_outline_poly[fp - 1]);
+			//
+			footprint->m_outline_poly[fp].Start(gL == LAY_BOARD_OUTLINE ? LAY_FP_VISIBLE_GRID : LAY_FP_PAD_THRU,
 				m_Doc->m_outline_poly[ib].GetW(),
 				NM_PER_MIL,
 				m_Doc->m_outline_poly[ib].GetX(0),
 				m_Doc->m_outline_poly[ib].GetY(0),
 				0, &boid, NULL);
-			for (int ic = 1; ic <= m_Doc->m_outline_poly[ib].GetContourEnd(0); ic++)
+			int iend = (gL == LAY_BOARD_OUTLINE ? m_Doc->m_outline_poly[ib].GetNumCorners() : m_Doc->m_outline_poly[ib].GetContourEnd(0)+1 );
+			for (int ic = 1; ic < iend; ic++)
 			{
 				footprint->m_outline_poly[fp].AppendCorner(
 					m_Doc->m_outline_poly[ib].GetX(ic),
@@ -23237,170 +23257,172 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 			}
 		}
 	}
-	CPoint P[4];
-	int angle[4] = { 0,0,0,0 };
-	int np = 0;
-	sz = footprint->m_outline_poly.GetSize();
-	for (int i = 0; i < sz; i++)
+	if (MobileP == NULL)
 	{
-		footprint->m_outline_poly[i].SetUtility(0);
-		for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
-			footprint->m_outline_poly[i].SetUtility(ii, 0);
-	}
-	while (np < 4)
-	{
-		int maxLenX = 0,
-			maxLenY = 0,
-			bestX = 0,
-			bestY = 0,
-			bestI = -1,
-			bestII = -1,
-			bestA = 0;
+		CPoint P[4];
+		int angle[4] = { 0,0,0,0 };
+		int np = 0;
+		sz = footprint->m_outline_poly.GetSize();
 		for (int i = 0; i < sz; i++)
 		{
-			if (footprint->m_outline_poly[i].GetLayer() != LAY_FP_VISIBLE_GRID)
-				continue;
+			footprint->m_outline_poly[i].SetUtility(0);
 			for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
+				footprint->m_outline_poly[i].SetUtility(ii, 0);
+		}
+		while (np < 4)
+		{
+			int maxLenX = 0,
+				maxLenY = 0,
+				bestX = 0,
+				bestY = 0,
+				bestI = -1,
+				bestII = -1,
+				bestA = 0;
+			for (int i = 0; i < sz; i++)
 			{
-				if (footprint->m_outline_poly[i].GetUtility(ii))
+				if (footprint->m_outline_poly[i].GetLayer() != LAY_FP_VISIBLE_GRID)
 					continue;
-				int n = footprint->m_outline_poly[i].GetIndexCornerNext(ii);
-				int x1 = footprint->m_outline_poly[i].GetX(ii);
-				int y1 = footprint->m_outline_poly[i].GetY(ii);
-				int x2 = footprint->m_outline_poly[i].GetX(n);
-				int y2 = footprint->m_outline_poly[i].GetY(n);
-				if (abs(x1 - x2) < _2540)
+				for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
 				{
-					if (abs(y1 - y2) > maxLenY)
+					if (footprint->m_outline_poly[i].GetUtility(ii))
+						continue;
+					int n = footprint->m_outline_poly[i].GetIndexCornerNext(ii);
+					int x1 = footprint->m_outline_poly[i].GetX(ii);
+					int y1 = footprint->m_outline_poly[i].GetY(ii);
+					int x2 = footprint->m_outline_poly[i].GetX(n);
+					int y2 = footprint->m_outline_poly[i].GetY(n);
+					if (abs(x1 - x2) < _2540)
 					{
-						maxLenY = abs(y1 - y2);
-						bestX = x1;
-						bestY = (y1 + y2) / 2;
-						bestI = i;
-						bestII = ii;
-						bestA = 90;
+						if (abs(y1 - y2) > maxLenY)
+						{
+							maxLenY = abs(y1 - y2);
+							bestX = x1;
+							bestY = (y1 + y2) / 2;
+							bestI = i;
+							bestII = ii;
+							bestA = 90;
+						}
 					}
+					if (abs(y1 - y2) < _2540)
+					{
+						if (abs(x1 - x2) > maxLenX)
+						{
+							maxLenX = abs(x1 - x2);
+							bestX = (x1 + x2) / 2;
+							bestY = y1;
+							bestI = i;
+							bestII = ii;
+							bestA = 0;
+						}
+					}
+					if (n < i)
+						break;
 				}
-				if (abs(y1 - y2) < _2540)
+			}
+			if (bestX || bestY)
+			{
+				P[np] = CPoint(bestX, bestY);
+				angle[np] = bestA;
+				if (bestA == 0)
+					if (footprint->m_outline_poly[bestI].TestPointInside(bestX, bestY + NM_PER_MIL))
+						angle[np] += 180;
+				if (bestA == 90)
+					if (footprint->m_outline_poly[bestI].TestPointInside(bestX + NM_PER_MIL, bestY))
+						angle[np] += 180;
+				footprint->m_outline_poly[bestI].SetUtility(bestII, 1);
+				np++;
+			}
+			else
+				break;
+		}
+		for (int ip = 0; ip < np; ip++)
+		{
+			sz = footprint->m_outline_poly.GetSize();
+			footprint->m_outline_poly.SetSize(sz + 1);
+			id boid(ID_PART_LINES, ID_OUTLINE, sz, ID_CORNER, 0);
+			CPoint pt(-Frez / 2, 0);
+			CPoint org(0, 0);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].Start(LAY_FP_VISIBLE_GRID, bW, NM_PER_MIL, pt.x, pt.y, 0, &boid, NULL);
+			pt.SetPoint(-Frez, Frez / 2);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
+			pt.SetPoint(-Frez, Frez);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+			pt.SetPoint(Frez, Frez);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+			pt.SetPoint(Frez, Frez / 2);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+			pt.SetPoint(Frez / 2, 0);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
+			pt.SetPoint(Frez, -Frez / 2);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
+			pt.SetPoint(Frez, -Frez);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+			pt.SetPoint(-Frez, -Frez);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+			pt.SetPoint(-Frez, -Frez / 2);
+			RotatePoint(&pt, angle[ip], org);
+			footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
+			footprint->m_outline_poly[sz].Close(2, FALSE);
+			footprint->m_outline_poly[sz].MoveOrigin(P[ip].x, P[ip].y);
+			if (angle[ip] == 0)
+				footprint->m_outline_poly[sz].MoveOrigin(0, Frez / 2);
+			else if (angle[ip] == 90)
+				footprint->m_outline_poly[sz].MoveOrigin(Frez / 2, 0);
+			else if (angle[ip] == 180)
+				footprint->m_outline_poly[sz].MoveOrigin(0, -Frez / 2);
+			else if (angle[ip] == 270)
+				footprint->m_outline_poly[sz].MoveOrigin(-Frez / 2, 0);
+			padstack pstack;
+			pstack = padstack();
+			pstack.top.shape = PAD_NONE;
+			int SWITCH = 2000000;
+			pstack.hole_size = Frez <= SWITCH ? Frez / 4 : (Frez / 5 - 100000);
+			pstack.top_mask.shape = PAD_NONE;
+			pstack.bottom_mask.shape = PAD_NONE;
+			pstack.x_rel = P[ip].x;
+			pstack.y_rel = P[ip].y;
+			footprint->m_padstack.Add(pstack);
+			int step = (Frez / 2) - (Frez <= SWITCH ? (Frez / 10) : (Frez / 4));
+			if (angle[ip] == 90 || angle[ip] == 270)
+			{
+				pstack.y_rel = P[ip].y + step;
+				footprint->m_padstack.Add(pstack);
+				pstack.y_rel = P[ip].y - step;
+				footprint->m_padstack.Add(pstack);
+				if (Frez > SWITCH)
 				{
-					if (abs(x1 - x2) > maxLenX)
-					{
-						maxLenX = abs(x1 - x2);
-						bestX = (x1 + x2) / 2;
-						bestY = y1;
-						bestI = i;
-						bestII = ii;
-						bestA = 0;
-					}
+					pstack.y_rel = P[ip].y + step * 2;
+					footprint->m_padstack.Add(pstack);
+					pstack.y_rel = P[ip].y - step * 2;
+					footprint->m_padstack.Add(pstack);
 				}
-				if (n < i)
-					break;
 			}
-		}
-		if (bestX || bestY)
-		{
-			P[np] = CPoint(bestX, bestY);
-			angle[np] = bestA;
-			if(bestA == 0)
-				if (footprint->m_outline_poly[bestI].TestPointInside(bestX, bestY + NM_PER_MIL))
-					angle[np] += 180;
-			if (bestA == 90)
-				if (footprint->m_outline_poly[bestI].TestPointInside(bestX + NM_PER_MIL, bestY))
-					angle[np] += 180;
-			footprint->m_outline_poly[bestI].SetUtility(bestII, 1);
-			np++;
-		}
-		else
-			break;
-	}
-	for (int ip = 0; ip < np; ip++)
-	{
-		sz = footprint->m_outline_poly.GetSize();
-		footprint->m_outline_poly.SetSize(sz + 1);
-		id boid(ID_PART_LINES, ID_OUTLINE, sz, ID_CORNER, 0);
-		CPoint pt(-Frez / 2, 0);
-		CPoint org(0, 0);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].Start(LAY_FP_VISIBLE_GRID, bW, NM_PER_MIL, pt.x, pt.y, 0, &boid, NULL);
-		pt.SetPoint(-Frez, Frez / 2);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
-		pt.SetPoint(-Frez, Frez);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
-		pt.SetPoint(Frez, Frez);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
-		pt.SetPoint(Frez, Frez / 2);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
-		pt.SetPoint(Frez / 2, 0);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
-		pt.SetPoint(Frez, -Frez / 2);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 2, 0);
-		pt.SetPoint(Frez, -Frez);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
-		pt.SetPoint(-Frez, -Frez);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
-		pt.SetPoint(-Frez, -Frez / 2);
-		RotatePoint(&pt, angle[ip], org);
-		footprint->m_outline_poly[sz].AppendCorner(pt.x, pt.y, 0, 0);
-		footprint->m_outline_poly[sz].Close(2,FALSE);
-		footprint->m_outline_poly[sz].MoveOrigin(P[ip].x, P[ip].y);
-		if( angle[ip] == 0)
-			footprint->m_outline_poly[sz].MoveOrigin(0, Frez / 2);
-		else if (angle[ip] == 90)
-			footprint->m_outline_poly[sz].MoveOrigin(Frez / 2, 0);
-		else if (angle[ip] == 180)
-			footprint->m_outline_poly[sz].MoveOrigin(0, -Frez / 2);
-		else if (angle[ip] == 270)
-			footprint->m_outline_poly[sz].MoveOrigin(-Frez / 2, 0);
-		padstack pstack;
-		pstack = padstack();
-		pstack.top.shape = PAD_NONE;
-		int SWITCH = 2000000;
-		pstack.hole_size = Frez<=SWITCH?Frez/4:(Frez/5-100000);
-		pstack.top_mask.shape = PAD_NONE;
-		pstack.bottom_mask.shape = PAD_NONE;
-		pstack.x_rel = P[ip].x;
-		pstack.y_rel = P[ip].y;
-		footprint->m_padstack.Add(pstack);
-		int step = (Frez / 2) - (Frez <= SWITCH ? (Frez / 10) : (Frez / 4));
-		if (angle[ip] == 90 || angle[ip] == 270)
-		{
-			pstack.y_rel = P[ip].y + step;
-			footprint->m_padstack.Add(pstack);
-			pstack.y_rel = P[ip].y - step;
-			footprint->m_padstack.Add(pstack);
-			if (Frez > SWITCH)
+			if (angle[ip] == 0 || angle[ip] == 180)
 			{
-				pstack.y_rel = P[ip].y + step*2;
+				pstack.x_rel = P[ip].x + step;
 				footprint->m_padstack.Add(pstack);
-				pstack.y_rel = P[ip].y - step*2;
+				pstack.x_rel = P[ip].x - step;
 				footprint->m_padstack.Add(pstack);
+				if (Frez > SWITCH)
+				{
+					pstack.x_rel = P[ip].x + step * 2;
+					footprint->m_padstack.Add(pstack);
+					pstack.x_rel = P[ip].x - step * 2;
+					footprint->m_padstack.Add(pstack);
+				}
 			}
 		}
-		if (angle[ip] == 0 || angle[ip] == 180)
-		{
-			pstack.x_rel = P[ip].x + step;
-			footprint->m_padstack.Add(pstack);
-			pstack.x_rel = P[ip].x - step;
-			footprint->m_padstack.Add(pstack);
-			if (Frez > SWITCH)
-			{
-				pstack.x_rel = P[ip].x + step*2;
-				footprint->m_padstack.Add(pstack);
-				pstack.x_rel = P[ip].x - step*2;
-				footprint->m_padstack.Add(pstack);
-			}
-		}
-	}
-	if (MobileP == NULL)
 		MobileP = m_Doc->m_plist->Add(footprint, &ref, 0, 0, 0, 0, 1, 1);
+	}
 	else
 		m_Doc->m_plist->PartFootprintChanged(MobileP, footprint);
 	if (MobileP)

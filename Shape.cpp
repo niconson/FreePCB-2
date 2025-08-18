@@ -2108,12 +2108,17 @@ int CShape::WriteFootprint( CStdioFile * file )
 					ws(m_outline_poly[ip].GetX(ic),m_units), ws(m_outline_poly[ip].GetY(ic),m_units),
 					m_outline_poly[ip].GetSideStyle(ic-1) );
 				file->WriteString( line );
+				if (m_outline_poly[ip].GetContourEnd(m_outline_poly[ip].GetContour(ic)) == ic && m_outline_poly[ip].GetClosed())
+				{
+					line.Format("    close_polyline: %d\n", m_outline_poly[ip].GetSideStyle(ic));
+					file->WriteString(line);
+				}
 			}
-			if( m_outline_poly[ip].GetClosed() )
-			{
-				line.Format( "    close_polyline: %d\n", m_outline_poly[ip].GetSideStyle(nc-1) );
-				file->WriteString( line );
-			}
+			//if( m_outline_poly[ip].GetClosed() )
+			//{
+			//	line.Format( "    close_polyline: %d\n", m_outline_poly[ip].GetSideStyle(nc-1) );
+			//	file->WriteString( line );
+			//}
 			CString * oScad = m_outline_poly[ip].GetOpenscadData();
 			if( oScad->GetLength() )
 			{
