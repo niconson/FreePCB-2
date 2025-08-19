@@ -524,7 +524,7 @@ void CDlgReport::OnBnClickedOk()
 		file.WriteString( str1 + "\n" );
 		//
 		// header
-		str1.Format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", "REF_XX", "PACKAGE", "VALUE", "FOOTPRINT", "PINS", "HOLES",
+		str1.Format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", "REFXX", "PACKAGE", "VALUE", "FOOTPRINT", "PINS", "HOLES",
 			"SIDE", "ANGLE", "CENT-X", "CENT-Y", "PIN1-X", "PIN1-Y");
 		for (int id = 0; id < maxnum_dots; id++)
 		{
@@ -591,7 +591,7 @@ void CDlgReport::OnBnClickedOk()
 								::MakeCStringFromDimension(&pt1x, pt1.x + sh_x, m_units, FALSE, FALSE, TRUE, dp);
 								::MakeCStringFromDimension(&pt1y, pt1.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
 							}
-							str1.Format("%s_%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], ix, iy, package[ip], value[ip], footprint[ip],
+							str1.Format("%s_%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], iy, ix, package[ip], value[ip], footprint[ip],
 								pins[ip], holes[ip], side[ip], angle[ip], cent_x, cent_y, pt1x, pt1y);
 
 							// glue_pt
