@@ -133,6 +133,7 @@ void CDlgReport::OnBnClickedOk()
 		CString mess = G_LANGUAGE == 0 ? ("Unable to open file \" " + fn + "\""):("Не открывается файл \" " + fn + "\"");
 		AfxMessageBox( mess, MB_OK ); 
 		OnCancel();
+		return;
 	}
 	file.WriteString( "Project report (default units = " + str_units + ")\n" );   
 	file.WriteString( "============================================\n" );
@@ -309,6 +310,7 @@ void CDlgReport::OnBnClickedOk()
 			AfxMessageBox(mess, MB_OK);
 			file.Close();
 			OnCancel();
+			return;
 		}
 		
 		// make array of pointers to ref_des strings, used for sorting
