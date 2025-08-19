@@ -300,6 +300,17 @@ void CDlgReport::OnBnClickedOk()
 	}
 	if( !(m_flags & NO_PARTS_LIST) )
 	{
+		CStdioFile csv;
+		CString fn_csv = m_doc->m_path_to_folder + "\\related_files\\reports\\report.csv";
+		ok = csv.Open(fn_csv, CFile::modeCreate | CFile::modeWrite);
+		if (!ok)
+		{
+			CString mess = G_LANGUAGE == 0 ? ("Unable to open file \" " + fn_csv + "\"") : ("Не открывается файл \" " + fn_csv + "\"");
+			AfxMessageBox(mess, MB_OK);
+			file.Close();
+			OnCancel();
+		}
+		
 		// make array of pointers to ref_des strings, used for sorting
 		int nparts = m_pl->GetNumParts();
 		CString ** ref_ptr = (CString**)malloc( nparts * sizeof(CString*) );
@@ -498,6 +509,8 @@ void CDlgReport::OnBnClickedOk()
 		CString dot_format_str;
 		dot_format_str.Format( "  %%%ds  %%%ds  %%%ds", 
 				maxlen_dot_w, maxlen_dot_x, maxlen_dot_y );
+		//
+		// header
 		str1.Format( format_str, "REF", "PACKAGE", "VALUE", "FOOTPRINT", "PINS", "HOLES",
 			"SIDE", "ANGLE", "CENT-X", "CENT-Y", "PIN1-X", "PIN1-Y" );
 		for( int id=0; id<maxnum_dots; id++ ) 
@@ -507,6 +520,19 @@ void CDlgReport::OnBnClickedOk()
 			str1 += temp;
 		}
 		file.WriteString( str1 + "\n" );
+		//
+		// header
+		str1.Format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", "REF_XX", "PACKAGE", "VALUE", "FOOTPRINT", "PINS", "HOLES",
+			"SIDE", "ANGLE", "CENT-X", "CENT-Y", "PIN1-X", "PIN1-Y");
+		for (int id = 0; id < maxnum_dots; id++)
+		{
+			CString temp;
+			temp.Format("%s;%s;%s;", "GLUE-W", "GLUE-X", "GLUE-Y");
+			str1 += temp;
+		}
+		csv.WriteString(str1 + "\n");
+		//
+		//
 		str1.Format( format_str, "---", "-------", "-----", "---------", "----", "-----",
 			"----", "-----", "------", "------", "------", "------" );
 		for( int id=0; id<maxnum_dots; id++ )
@@ -539,36 +565,70 @@ void CDlgReport::OnBnClickedOk()
 				if (m_doc->m_n_x > 1 || m_doc->m_n_y > 1)
 				{
 					part = m_pl->GetPart(ref_des[ip]);
-					for (int iy = 1; iy < m_doc->m_n_y; iy++)
+					for (int iy = 0; iy < m_doc->m_n_y; iy++)
 					{
 						int sh_y = iy * (all_board_bounds.top - all_board_bounds.bottom + m_doc->m_space_y);
 						for (int ix = 0; ix < m_doc->m_n_x; ix++)
 						{
 							int sh_x = ix * (all_board_bounds.right - all_board_bounds.left + m_doc->m_space_x);
+
+							// centroid_pt
 							CString cent_x, cent_y;
-							//
 							CPoint centroid_pt = m_pl->GetCentroidPoint(part);
 							::MakeCStringFromDimension(&cent_x, centroid_pt.x + sh_x, m_units, FALSE, FALSE, TRUE, dp);
 							::MakeCStringFromDimension(&cent_y, centroid_pt.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
-							//
-							str1.Format(format_str, ref_des[ip], package[ip], value[ip], footprint[ip],
-								pins[ip], holes[ip], side[ip], angle[ip], cent_x, cent_y, p1_x[ip], p1_y[ip]);
-							CArray< CString >* g_w_str = &dot_w[ip];
-							for (int id = 0; id < g_w_str->GetSize(); id++)
+
+							// pin1_pt
+							CString pt1x, pt1y;
+							int index_p1 = part->shape->GetPinIndexByName("1", -1);
+							if (index_p1 == -1)
+								index_p1 = part->shape->GetPinIndexByName("A1", -1);
+							if (index_p1 != -1)
 							{
+								CPoint pt1 = m_pl->GetPinPoint(part, index_p1, part->side, part->angle);
+								::MakeCStringFromDimension(&pt1x, pt1.x + sh_x, m_units, FALSE, FALSE, TRUE, dp);
+								::MakeCStringFromDimension(&pt1y, pt1.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
+							}
+							str1.Format("%s_%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], ix, iy, package[ip], value[ip], footprint[ip],
+								pins[ip], holes[ip], side[ip], angle[ip], cent_x, cent_y, pt1x, pt1y);
+
+							// glue_pt
+							for (int idot = 0; idot < g_w_str->GetSize(); idot++)
+							{
+								int g_w;
+								CPoint g_pt;
+								if(idot < part->shape->m_glue.GetSize())
+								{
+									g_w = part->shape->m_glue[idot].w;
+									if (g_w == 0)
+										g_w = m_doc->m_default_glue_w;
+									g_pt = m_pl->GetGluePoint(part, idot);
+								}
+								else
+								{
+									g_w = m_doc->m_default_glue_w;
+									g_pt = m_pl->GetCentroidPoint(part);
+								}
+								CString glue1, glue2, glue3;
+								::MakeCStringFromDimension(&glue1, g_w, m_units, FALSE, FALSE, TRUE, dp);
+								::MakeCStringFromDimension(&glue2, g_pt.x + sh_x, m_units, FALSE, FALSE, TRUE, dp);
+								::MakeCStringFromDimension(&glue3, g_pt.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
 								CString temp;
-								temp.Format(dot_format_str, dot_w[ip][id], dot_x[ip][id], dot_y[ip][id]);
+								temp.Format("%s;%s;%s;", glue1, glue2, glue3);
 								str1 += temp;
 							}
-							file.WriteString(str1 + "\n");
+							csv.WriteString(str1 + "\n");
 						}
 					}
 				}
 			}
 		}
-		if(!bREAL)
-			file.WriteString( "No selected parts\n" );
-		//
+		if (!bREAL)
+		{
+			file.WriteString("No selected parts\n");
+			csv.WriteString("No selected parts;;;\n");
+		}
+		csv.Close();
 		delete ref_ptr;
 	}
 	if( !(m_flags & NO_CAM_PARAMS) )  

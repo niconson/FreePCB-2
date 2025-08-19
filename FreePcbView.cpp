@@ -23083,7 +23083,7 @@ void CFreePcbView::JumpToPin( cpart * sel_p, id sid )
 }
 void CFreePcbView::OnMobileBoardOutline1()
 {
-	MobileBoardOutline(1000000,0,0);
+	MobileBoardOutline(1000000, 0, 0);
 }
 void CFreePcbView::OnMobileBoardOutline2()
 {
@@ -23139,11 +23139,11 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	cpart* MobileP = m_Doc->m_plist->GetPart(ref);
 	if (MobileP)
 	{
-		int answ = AfxMessageBox(G_LANGUAGE ? "У вас уже есть фрезерный контур, хотите сгенерировать новый, а старый удалить?" : "Do you already have a milling contour and want to generate a new one and delete the old one?", MB_ICONQUESTION|MB_OKCANCEL);
+		int answ = AfxMessageBox(G_LANGUAGE ? "У вас уже есть фрезерный контур, хотите сгенерировать новый? \n(Подсказка: мостики переходов сохранятся. Перед генерацией нового контура удалите старый контур и старый вырез в футпринте MILLING_BOARD_OUTLINE)" : "Do you already have a milling contour and want to generate a new one and delete the old one?", MB_ICONQUESTION|MB_OKCANCEL);
 		if (answ == IDCANCEL)
 			return;
 	}
-	CString foot_str = "MOBILE_BOARD_OUTLINE";
+	CString foot_str = "MILLING_BOARD_OUTLINE";
 	void* ptr = NULL;
 	BOOL bInCache = m_Doc->m_footprint_cache_map.Lookup(foot_str, ptr);
 	CShape* footprint = (CShape*)ptr;
@@ -23242,15 +23242,15 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 			footprint->m_outline_poly[fp].Start(gL == LAY_BOARD_OUTLINE ? LAY_FP_VISIBLE_GRID : LAY_FP_PAD_THRU,
 				m_Doc->m_outline_poly[ib].GetW(),
 				NM_PER_MIL,
-				m_Doc->m_outline_poly[ib].GetX(0),
-				m_Doc->m_outline_poly[ib].GetY(0),
+				m_Doc->m_outline_poly[ib].GetX(0) - (MobileP ? MobileP->x : 0),
+				m_Doc->m_outline_poly[ib].GetY(0) - (MobileP ? MobileP->y : 0),
 				0, &boid, NULL);
 			int iend = (gL == LAY_BOARD_OUTLINE ? m_Doc->m_outline_poly[ib].GetNumCorners() : m_Doc->m_outline_poly[ib].GetContourEnd(0)+1 );
 			for (int ic = 1; ic < iend; ic++)
 			{
 				footprint->m_outline_poly[fp].AppendCorner(
-					m_Doc->m_outline_poly[ib].GetX(ic),
-					m_Doc->m_outline_poly[ib].GetY(ic),
+					m_Doc->m_outline_poly[ib].GetX(ic) - (MobileP ? MobileP->x : 0),
+					m_Doc->m_outline_poly[ib].GetY(ic) - (MobileP ? MobileP->y : 0),
 					m_Doc->m_outline_poly[ib].GetSideStyle(m_Doc->m_outline_poly[ib].GetIndexCornerBack(ic)), 0);
 				if (m_Doc->m_outline_poly[ib].GetContourEnd(m_Doc->m_outline_poly[ib].GetNumContour(ic)) == ic)
 					footprint->m_outline_poly[fp].Close(m_Doc->m_outline_poly[ib].GetSideStyle(ic));
@@ -23422,14 +23422,14 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 			}
 		}
 		MobileP = m_Doc->m_plist->Add(footprint, &ref, 0, 0, 0, 0, 1, 1);
+		MobileP->x = 0;
+		MobileP->y = 0;
+		MobileP->angle = 0;
 	}
 	else
 		m_Doc->m_plist->PartFootprintChanged(MobileP, footprint);
 	if (MobileP)
 	{
-		MobileP->x = 0;
-		MobileP->y = 0;
-		MobileP->angle = 0;
 		m_Doc->m_plist->ResizeRefText(MobileP, 0, 0, 0, 0);
 		m_Doc->m_plist->ResizeValueText(MobileP, 0, 0, 0, 0);
 		m_Doc->m_plist->DrawPart(MobileP);

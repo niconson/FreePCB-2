@@ -2114,11 +2114,6 @@ int CShape::WriteFootprint( CStdioFile * file )
 					file->WriteString(line);
 				}
 			}
-			//if( m_outline_poly[ip].GetClosed() )
-			//{
-			//	line.Format( "    close_polyline: %d\n", m_outline_poly[ip].GetSideStyle(nc-1) );
-			//	file->WriteString( line );
-			//}
 			CString * oScad = m_outline_poly[ip].GetOpenscadData();
 			if( oScad->GetLength() )
 			{

@@ -7500,6 +7500,11 @@ void CFreePcbDoc::OnFileGenerateReportFile()
 		{
 			CString report = m_path_to_folder + "\\related_files\\reports\\report.txt";
 			ShellExecute(	NULL, "open", report, NULL, m_path_to_folder, SW_SHOWNORMAL);
+			if (!(m_report_flags & dlg.NO_PARTS_LIST))
+			{
+				report = m_path_to_folder + "\\related_files\\reports\\report.csv";
+				ShellExecute(NULL, "open", "\"" + m_app_dir + "\\CSVFileView.exe\"", report, m_path_to_folder, SW_SHOWNORMAL);
+			}
 		}
 	}
 }
@@ -14344,6 +14349,7 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 					}
 				}
 			}
+			m_view->UpdateWindow();
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
 			int gAng = 0;
 			for( cpart* BRD_PART = m_plist->GetFirstPart(); BRD_PART; BRD_PART= m_plist->GetNextPart(BRD_PART) )
@@ -14355,30 +14361,57 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 						if (pp->GetLayer() == LAY_FP_VISIBLE_GRID)
 						{
 							gAng |= BRD_PART->angle;
-							for (int ix = 0; ix < m_n_x; ix++)
+							int x_offset = BRD_PART->x;
+							int y_offset = BRD_PART->y;
+							int sz = m_outline_poly.GetSize();
+							m_outline_poly.SetSize(sz + 1);
+							id bid(ID_POLYLINE, ID_BOARD, sz);
+							m_outline_poly[sz].Start(LAY_FP_VISIBLE_GRID, bW, NM_PER_MIL, pp->GetX(0)+x_offset, pp->GetY(0)+y_offset, 0, &bid, NULL);
+							for (int ic = 1; ic < pp->GetNumCorners(); ic++)
 							{
-								int x_offset = ix * (BOARD.right - BOARD.left + m_space_x) + BRD_PART->x;
-								for (int iy = 0; iy < m_n_y; iy++)
-								{
-									int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y) + BRD_PART->y;
-									int sz = m_outline_poly.GetSize();
-									m_outline_poly.SetSize(sz + 1);
-									id bid(ID_POLYLINE, ID_BOARD, sz);
-									m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, pp->GetX(0)+x_offset, pp->GetY(0)+y_offset, 0, &bid, NULL);
-									for (int ic = 1; ic < pp->GetNumCorners(); ic++)
-									{
-										m_outline_poly[sz].AppendCorner(pp->GetX(ic)+x_offset, pp->GetY(ic)+y_offset, pp->GetSideStyle(pp->GetIndexCornerBack(ic)), 0);
-										if (pp->GetContourEnd(pp->GetNumContour(ic)) == ic)
-											m_outline_poly[sz].Close(pp->GetSideStyle(ic));
-									}
-									
-								}
+								m_outline_poly[sz].AppendCorner(pp->GetX(ic)+x_offset, pp->GetY(ic)+y_offset, pp->GetSideStyle(pp->GetIndexCornerBack(ic)), 0);
+								if (pp->GetContourEnd(pp->GetNumContour(ic)) == ic)
+									m_outline_poly[sz].Close(pp->GetSideStyle(ic), FALSE);
 							}
+							m_outline_poly[sz].Draw();
 						}
 					}
 				}
 			if (gAng)
 				AfxMessageBox(G_LANGUAGE ? "Системный футпринт с фрезерным контуром для панелизации должен быть размещён с нулевым углом!" : "The system footprint with the milling contour for panelization must be placed with a zero angle!", MB_ICONERROR);
+			m_view->UpdateWindow();
+			ProjectCombineBoard(LAY_FP_VISIBLE_GRID);
+			for (int ipo = m_outline_poly.GetSize()-1; ipo >= 0; ipo--)
+			{
+				if (m_outline_poly[ipo].GetLayer() != LAY_FP_VISIBLE_GRID)
+					continue;
+				SimplifyPoly(&m_outline_poly[ipo], NM_PER_MIL * 10);
+				m_outline_poly[ipo].SetLayer(LAY_BOARD_OUTLINE);
+				for (int ix = 0; ix < m_n_x; ix++)
+				{
+					int x_offset = ix * (BOARD.right - BOARD.left + m_space_x);
+					for (int iy = 0; iy < m_n_y; iy++)
+					{
+						int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y);
+						if (ix == 0 && iy == 0)
+							continue;
+						int sz = m_outline_poly.GetSize();
+						m_outline_poly.SetSize(sz + 1);
+						id bid(ID_POLYLINE, ID_BOARD, sz);
+						CPolyLine* pp = &m_outline_poly[ipo];
+						m_outline_poly[sz].Start(LAY_BOARD_OUTLINE, bW, NM_PER_MIL, pp->GetX(0) + x_offset, pp->GetY(0) + y_offset, 0, &bid, NULL);
+						for (int ic = 1; ic < pp->GetNumCorners(); ic++)
+						{
+							m_outline_poly[sz].AppendCorner(pp->GetX(ic) + x_offset, pp->GetY(ic) + y_offset, pp->GetSideStyle(pp->GetIndexCornerBack(ic)), 0);
+							if (pp->GetContourEnd(pp->GetNumContour(ic)) == ic)
+								m_outline_poly[sz].Close(pp->GetSideStyle(ic),FALSE);
+						}
+						m_outline_poly[sz].Draw();
+					}
+				}
+				m_outline_poly[ipo].Draw();
+			}
+			m_view->UpdateWindow();
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
 		}
 	return BOARD;
