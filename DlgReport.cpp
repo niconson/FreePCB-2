@@ -142,22 +142,7 @@ void CDlgReport::OnBnClickedOk()
 	file.WriteString( "Default library folder: " + m_doc->m_full_lib_dir + "\n" );
 	CMap <int,int,int,int> hole_size_map;
 	//
-	RECT all_board_bounds;
-	all_board_bounds.left = INT_MAX;
-	all_board_bounds.bottom = INT_MAX;
-	all_board_bounds.right = INT_MIN;
-	all_board_bounds.top = INT_MIN;
-	for (int ib = 0; ib < m_doc->m_outline_poly.GetSize(); ib++)
-	{
-		id bid = m_doc->m_outline_poly[ib].GetId();
-		if (bid.st == ID_BOARD)
-		{
-			m_doc->m_outline_poly[ib].RecalcRectC(0);
-			RECT r;
-			r = m_doc->m_outline_poly[ib].GetBounds();
-			SwellRect(&all_board_bounds, r);
-		}
-	}
+	RECT all_board_bounds = m_doc->GetBoardRect();
 	//
 	if( !(m_flags & NO_PCB_STATS) )
 	{
@@ -182,16 +167,16 @@ void CDlgReport::OnBnClickedOk()
 			totalRect.top = all_board_bounds.bottom + ((all_board_bounds.top - all_board_bounds.bottom) * m_doc->m_n_y) + (m_doc->m_space_y * (m_doc->m_n_y - 1)) + m_doc->m_panel_fields[1];
 			::MakeCStringFromDimension(&str1, (totalRect.right-totalRect.left), m_units, TRUE, FALSE, TRUE, 3);
 			::MakeCStringFromDimension(&str2, (totalRect.top-totalRect.bottom), m_units, TRUE, FALSE, TRUE, 3);
-			file.WriteString("PCB multiplication size: X = " + str1 + "; Y = " + str2 + "\n");
+			file.WriteString("PCB panel size: X = " + str1 + "; Y = " + str2 + "\n");
 			::MakeCStringFromDimension(&str1, (all_board_bounds.right - all_board_bounds.left)+m_doc->m_space_x, m_units, TRUE, FALSE, TRUE, 3);
 			::MakeCStringFromDimension(&str2, (all_board_bounds.top - all_board_bounds.bottom)+m_doc->m_space_y, m_units, TRUE, FALSE, TRUE, 3);
-			file.WriteString("PCB multiplication step: X = " + str1 + "; Y = " + str2 + "\n");
+			file.WriteString("PCB panel step: X = " + str1 + "; Y = " + str2 + "\n");
 			::MakeCStringFromDimension(&str1, m_doc->m_space_x, m_units, TRUE, FALSE, TRUE, 3);
 			::MakeCStringFromDimension(&str2, m_doc->m_space_y, m_units, TRUE, FALSE, TRUE, 3);
 			file.WriteString("PCB edge to edge clearance: X = " + str1 + "; Y = " + str2 + "\n");
 			::MakeCStringFromDimension(&str1, m_doc->m_n_x, NM, FALSE, FALSE, FALSE, 0);
 			::MakeCStringFromDimension(&str2, m_doc->m_n_y, NM, FALSE, FALSE, FALSE, 0);
-			file.WriteString("Total PCB of multiplication: X = " + str1 + "; Y = " + str2 + "\n");
+			file.WriteString("Panelization: X = " + str1 + "; Y = " + str2 + "\n");
 		}
 	}
 	int num_parts = 0;
@@ -533,8 +518,6 @@ void CDlgReport::OnBnClickedOk()
 			str1 += temp;
 		}
 		csv.WriteString(str1 + "\n");
-		//
-		//
 		str1.Format( format_str, "---", "-------", "-----", "---------", "----", "-----",
 			"----", "-----", "------", "------", "------", "------" );
 		for( int id=0; id<maxnum_dots; id++ )
@@ -544,9 +527,50 @@ void CDlgReport::OnBnClickedOk()
 			str1 += temp;
 		}
 		file.WriteString( str1 + "\n" );
+		if (m_doc->m_n_x > 1 || m_doc->m_n_y > 1)
+		{
+			int iRep = 1;
+			CString rep_x, rep_y;
+			CPoint* pt = GetRepperPoint(0, &all_board_bounds);
+			::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
+			::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
+			str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+				"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+			csv.WriteString(str1 + "\n");
+			iRep++;
+			if (m_doc->m_panel_ref_count == 0 || m_doc->m_panel_ref_count == 2)
+			{
+				pt = GetRepperPoint(1, &all_board_bounds);
+				::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
+				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
+				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+				csv.WriteString(str1 + "\n");
+				iRep++;
+			}
+			if (m_doc->m_panel_ref_count == 1 || m_doc->m_panel_ref_count == 2)
+			{
+				pt = GetRepperPoint(2, &all_board_bounds);
+				::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
+				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
+				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+				csv.WriteString(str1 + "\n");
+				iRep++;
+				pt = GetRepperPoint(3, &all_board_bounds);
+				::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
+				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
+				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+				csv.WriteString(str1 + "\n");
+				iRep++;
+			}
+		}
 		int bREAL = 0;
 		for( int ip=0; ip<ref_des.GetSize(); ip++ )
 		{
+			if (package[ip] == "MILLING_BOARD_OUTLINE")
+				continue;
 			CString pad_ref_des;
 			str1.Format( format_str, ref_des[ip], package[ip], value[ip], footprint[ip],
 				pins[ip], holes[ip], side[ip], angle[ip], c_x[ip], c_y[ip], p1_x[ip], p1_y[ip] );
@@ -592,7 +616,7 @@ void CDlgReport::OnBnClickedOk()
 								::MakeCStringFromDimension(&pt1y, pt1.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
 							}
 							str1.Format("%s_%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], iy, ix, package[ip], value[ip], footprint[ip],
-								pins[ip], holes[ip], side[ip], angle[ip], cent_x, cent_y, pt1x, pt1y);
+								pins[ip], holes[ip], side[ip].Trim(), angle[ip], cent_x, cent_y, pt1x, pt1y);
 
 							// glue_pt
 							for (int idot = 0; idot < g_w_str->GetSize(); idot++)

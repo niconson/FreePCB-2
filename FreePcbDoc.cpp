@@ -7499,11 +7499,11 @@ void CFreePcbDoc::OnFileGenerateReportFile()
 		if( ip > 0 )
 		{
 			CString report = m_path_to_folder + "\\related_files\\reports\\report.txt";
-			ShellExecute(	NULL, "open", report, NULL, m_path_to_folder, SW_SHOWNORMAL);
+			ShellExecute(	NULL, "open", "\"" + report + "\"", NULL, m_path_to_folder, SW_SHOWNORMAL);
 			if (!(m_report_flags & dlg.NO_PARTS_LIST))
 			{
 				report = m_path_to_folder + "\\related_files\\reports\\report.csv";
-				ShellExecute(NULL, "open", "\"" + m_app_dir + "\\CSVFileView.exe\"", report, m_path_to_folder, SW_SHOWNORMAL);
+				ShellExecute(NULL, "open", "\"" + m_app_dir + "\\CSVFileView.exe\"", "\"" + report + "\"", m_path_to_folder, SW_SHOWNORMAL);
 			}
 		}
 	}
@@ -8219,6 +8219,8 @@ void CFreePcbDoc::DRC()
 		{
 			if (s->m_outline_poly.GetSize())
 				if (s->m_outline_poly[s->m_outline_poly.GetSize() - 1].GetLayer() == LAY_FP_VISIBLE_GRID)
+					continue; // this is system footprint, ignore
+				else if (s->m_outline_poly[0].GetLayer() == LAY_FP_VISIBLE_GRID)
 					continue; // this is system footprint, ignore
 			//
 			if(s->m_package.Compare("ERROR") == 0 )
@@ -14284,6 +14286,7 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 				sz--;
 			}
 		}
+	BOOL CUT_PRESENT = 0;
 	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
 	{
 		for( int io=0; io<p->m_outline_stroke.GetSize(); io++ )
@@ -14304,6 +14307,7 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 							if( m_outline_poly[i_op].TestPointInside( GET[gp].x, GET[gp].y ) )
 							{
 								bInside = 1;
+								CUT_PRESENT = TRUE;
 								break;
 							}
 						}
@@ -14340,15 +14344,17 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 						int y_offset = iy * (BOARD.top - BOARD.bottom + m_space_y);
 						for (int ic = start; ic < end; ic++)
 						{
-							m_outline_poly[iPANEL].AppendCorner(	m_outline_poly[iPANEL].GetX(ic) + x_offset,
-															m_outline_poly[iPANEL].GetY(ic) + y_offset,
-															m_outline_poly[iPANEL].GetSideStyle(m_outline_poly[iPANEL].GetIndexCornerBack(ic)), 0);
+							m_outline_poly[iPANEL].AppendCorner(m_outline_poly[iPANEL].GetX(ic) + x_offset,
+								m_outline_poly[iPANEL].GetY(ic) + y_offset,
+								m_outline_poly[iPANEL].GetSideStyle(m_outline_poly[iPANEL].GetIndexCornerBack(ic)), 0);
 							if (m_outline_poly[iPANEL].GetContourEnd(m_outline_poly[iPANEL].GetNumContour(ic)) == ic)
 								m_outline_poly[iPANEL].Close(m_outline_poly[iPANEL].GetSideStyle(ic));
 						}
 					}
 				}
 			}
+			else if (CUT_PRESENT)
+				AfxMessageBox(G_LANGUAGE ? "Неверный размер полей при наличии фрезерного контура! С такими параметрами контур мультизаготовки создать невозможно. Необходимо увеличить размер полей" : "Incorrect edge field with milling contour! It is impossible to create a multi-blank contour with such parameters. It is necessary to increase the board edge field");
 			m_view->UpdateWindow();
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
 			int gAng = 0;

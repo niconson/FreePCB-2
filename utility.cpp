@@ -11,6 +11,8 @@ LARGE_INTEGER PerfFreq, tStart, tStop;
 int PerfFreqAdjust;
 int OverheadTicks;
 
+extern CFreePcbApp theApp;
+
 // function to find inflection-pont to create a "dogleg" of two straight-line segments
 // where one segment is vertical or horizontal and the other is at 45 degrees or 90 degrees
 // enter with:
@@ -3792,4 +3794,42 @@ int SimplifyPoly(CPolyLine* poly, int val)
 		}
 	}
 	return n_deleted;
+}
+
+CPoint * GetRepperPoint(int ipt, RECT * op_rect)//int ipt, CPoint BoardOrigin, double f_step_x, double f_step_y, int step_x, int step_y)
+{
+	static CPoint REP(0, 0);
+	double field_0 = max(theApp.m_Doc->m_panel_fields[0], theApp.m_Doc->m_panel_fields[1]);// : 10 * NM_PER_MM);
+	double field_1 = max(theApp.m_Doc->m_panel_fields[0], theApp.m_Doc->m_panel_fields[1]);// : 10 * NM_PER_MM);
+	BOOL VERTIC = 1;
+	if (abs(op_rect->top - op_rect->bottom) < abs(op_rect->right - op_rect->left))
+		VERTIC = 0;
+	if (theApp.m_Doc->m_panel_fields[0] < theApp.m_Doc->m_panel_fields[1])
+		VERTIC = 0;
+	else if (theApp.m_Doc->m_panel_fields[1] < theApp.m_Doc->m_panel_fields[0])
+		VERTIC = 1;
+	double f_step_x = ((double)op_rect->right - (double)op_rect->left + (double)theApp.m_Doc->m_space_x) / (double)NM_PER_MIL;	// mils
+	double f_step_y = ((double)op_rect->top - (double)op_rect->bottom + (double)theApp.m_Doc->m_space_y) / (double)NM_PER_MIL;	// mils
+	CPoint BoardOrigin(op_rect->left, op_rect->bottom);
+	if (ipt == 0)
+	{
+		REP.x = (double)BoardOrigin.x - (double)(field_0 / 2) + (VERTIC ? 0 : field_0);
+		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : 0);
+	}
+	else if (ipt == 1)
+	{
+		REP.x = (double)BoardOrigin.x + (double)(field_0 / 2) + (f_step_x * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_x) - (double)theApp.m_Doc->m_space_x - (VERTIC ? 0 : field_0);
+		REP.y = (double)BoardOrigin.y + (double)(field_1 / 2) + (f_step_y * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_y) - (double)theApp.m_Doc->m_space_y - (VERTIC ? field_1 : 0);
+	}
+	else if (ipt == 2)
+	{
+		REP.x = (double)BoardOrigin.x - (double)(field_0 / 2) + (VERTIC ? 0 : field_0);
+		REP.y = (double)BoardOrigin.y + (double)(field_1 / 2) + (f_step_y * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_y) - (double)theApp.m_Doc->m_space_y - (VERTIC ? field_1 : 0);
+	}
+	else if (ipt == 3)
+	{
+		REP.x = (double)BoardOrigin.x + (double)(field_0 / 2) + (f_step_x * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_x) - (double)theApp.m_Doc->m_space_x - (VERTIC ? 0 : field_0);
+		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : 0);
+	}
+	return &REP;
 }

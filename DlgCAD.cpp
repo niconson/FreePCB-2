@@ -116,8 +116,6 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 		// entry
 		m_panel_hole_cnt.AddString("4");
 		m_panel_hole_cnt.AddString("8");
-		m_panel_hole_cnt.AddString("16");
-		m_panel_hole_cnt.AddString("32");
 		m_panel_reference.AddString("RoundedType1");
 		m_panel_reference.AddString("RoundedType2");
 		m_panel_reference.AddString("RectType1");
