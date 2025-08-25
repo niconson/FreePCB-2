@@ -892,8 +892,8 @@ public:
 	BOOL ThisGroupContainsGluedParts();
 	void MarkAllOutlinePoly( int utility, int layer );
 	void MoveGroup( int dx, int dy, BOOL unroute );
-	void RotateGroup( int angle, BOOL unroute, int x=0, int y=0 );
-	void RotateGroup( int angle );
+	void RotateGroup( int angle, BOOL unroute, int x, int y );
+	void RotateGroup( int angle, BOOL dlg=TRUE );
 	void MergeGroup();
 	void MergeGroup(int merge0);
 	void ExplodeGroup();	
@@ -938,7 +938,7 @@ public:
 	void TracesRadiusUpDown(BOOL UP);
 	void AlignSegments( cnet * n, int ic, int iv, BOOL mirror, float ang=0.0, BOOL svUndoInfo=TRUE );
 	void AlignSides( int type, int ic, int iv);
-	void OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges=0 );
+	void OnGroupPaste( int bwDialog, BOOL bSaveMerges=0 );
 	void OnInfoBoxMess( int command, int n_str, CArray<CString> *str, BOOL bIronScale=0 );
 	CWnd * OnSendMess( CString mess, HWND Win = NULL );
 	

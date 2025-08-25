@@ -170,4 +170,4 @@ CSize GetTextHeight( SMFontUtil * smfontutil );
 BYTE getbit( int rgstr, int bit );
 void CStringToLegalFileName(CString* fileName);
 int SimplifyPoly(CPolyLine* poly, int val);
-CPoint* GetRepperPoint(int ipt, RECT * op_rect);// int ipt, CPoint BoardOrigin, double f_step_x, double f_step_y, int step_x, int step_y);
+CPoint* GetRepperPoint(int ipt, RECT * op_rect, int * FREZ = NULL);// int ipt, CPoint BoardOrigin, double f_step_x, double f_step_y, int step_x, int step_y);

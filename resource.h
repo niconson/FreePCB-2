@@ -90,6 +90,7 @@
 #define ID_NONE_NOSELECTION             200
 #define ID_ADD_OP                       201
 #define ID_OP_CORNER_MOVE               202
+#define ID_ADD_SYMMETRICAL_BLANK        203
 #define ID_OP_CORNER_EDIT               204
 #define ID_OP_SIDE_ADDCORNER            205
 #define ID_OP_SIDE_INSERTCORNER         205
@@ -200,6 +201,7 @@
 #define IDD_DIALOG4                     328
 #define IDD_MY_MESSAGE                  328
 #define IDD_VIA                         329
+#define IDD_ADD_SYMMETRICAL_BLANK		330
 #define IDD_AREA_LAYER                  331
 #define IDD_MY_MESSAGE2                 332
 #define IDD_GROUP_PASTE                 333
@@ -937,7 +939,9 @@
 #define IDC_CODE                        1553
 #define IDC_REF2                        1553
 #define IDC_STATIC_EX_R2                1554
+#define IDC_COMBO_Y                     1554
 #define IDC_EXTRUSION_SCALE             1555
+#define IDC_COMBO_X                     1555
 #define IDC_STATIC_EX3                  1556
 #define IDC_HULL                        1557
 #define IDC_LIKE_CAP                    1558
@@ -1163,18 +1167,17 @@
 #define ID_FILE_CAM19                   33019
 #define ID_FILE_CAM20                   33020
 #define ID_FILE_CAM21                   33021
-#define ID_MBO_0						33099
-#define ID_MBO_1						33100
-#define ID_MBO_2						33101
-#define ID_MBO_3						33102
-#define ID_MBO_4						33103
-#define ID_MBO_5						33104
-#define ID_MBO_6						33105
-#define ID_MBO_7						33106
-#define ID_MBO_8						33107
-#define ID_MBO_9						33108
-#define ID_MBO_10						33109
-
+#define ID_MBO_0                        33099
+#define ID_MBO_1                        33100
+#define ID_MBO_2                        33101
+#define ID_MBO_3                        33102
+#define ID_MBO_4                        33103
+#define ID_MBO_5                        33104
+#define ID_MBO_6                        33105
+#define ID_MBO_7                        33106
+#define ID_MBO_8                        33107
+#define ID_MBO_9                        33108
+#define ID_MBO_10                       33109
 
 // Next default values for new objects
 // 
@@ -1183,7 +1186,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        362
 #define _APS_NEXT_COMMAND_VALUE         32944
-#define _APS_NEXT_CONTROL_VALUE         1554
+#define _APS_NEXT_CONTROL_VALUE         1556
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

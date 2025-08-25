@@ -414,6 +414,7 @@ public:
 	afx_msg void SwitchTo__ECDS();
 	void SwitchTo_ECDS( BOOL standby = FALSE );
 	afx_msg void AddViaGrid();
+	afx_msg void AddSymmetricalBlank();
 	afx_msg void OnSelectProjectFolder();
 	afx_msg void OnReloadMenu();
 	afx_msg BOOL OnSpeedFile( UINT CMD );

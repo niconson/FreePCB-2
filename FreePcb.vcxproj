@@ -181,6 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Additional.cpp" />
+    <ClCompile Include="AddSymmetricalBlank.cpp" />
     <ClCompile Include="afxasert.cpp" />
     <ClCompile Include="Cuid.cpp" />
     <ClCompile Include="DesignRules.cpp" />
@@ -284,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Additional.h" />
+    <ClInclude Include="AddSymmetricalBlank.h" />
     <ClInclude Include="DlgAddArea.h" />
     <ClInclude Include="DlgAddCode.h" />
     <ClInclude Include="DlgAddHole.h" />

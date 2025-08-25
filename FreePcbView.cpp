@@ -16689,11 +16689,12 @@ void CFreePcbView::DeleteGroup( BOOL wMerge )
 	OnRangeCmds( NULL );
 }
 //===============================================================================================
-void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
+void CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
 {
 #define ELEMENT_SELECTED 1
 	static int NoItems = 0;
 	void * vp;
+
 	// pointers to group lists
 	CPartList * g_pl = m_Doc->clip_plist;
 	CTextList * g_tl = m_Doc->clip_tlist;
@@ -16720,7 +16721,7 @@ void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
 				}
 		}
 	CDlgGroupPaste dlg;	
-	if( !check_one_pin && m_Doc->m_netlist_completed ) // PROTECTED
+	if( !check_one_pin && m_Doc->m_netlist_completed) // PROTECTED
 	{
 		dlg.Initialize( NULL );
 		static int wwm = 0;
@@ -16735,7 +16736,7 @@ void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
 	else
 		dlg.Initialize( g_nl );
 	int ret = IDOK;
-	if(!bwDialog)
+	if(bwDialog == 0)
 	{
 		if ( m_Doc->clip_plist->GetNumParts() || m_Doc->clip_nlist->GetNumNets() )
 			ret = dlg.DoModal();
@@ -16755,21 +16756,29 @@ void CFreePcbView::OnGroupPaste( BOOL bwDialog, BOOL bSaveMerges )
 			dlg.m_dx = 0;
 			dlg.m_dy = 0;
 		}
-		if ( m_Doc->clip_plist->GetNumParts() )
+		if (bwDialog == 2)
 		{
-			dlg.m_position_option = 0;
+			dlg.m_net_name_option = 1;
+			dlg.m_net_rename_option = 0;
+		}
+		else
+		{
+			if (m_Doc->clip_plist->GetNumParts())
+			{
+				dlg.m_position_option = 0;
 
-			CRect wr;
-			GetWindowRect( wr );
-			CPoint cur_p;
-			cur_p.x = (wr.right+wr.left)/2;
-			cur_p.y = (wr.top+wr.bottom)/2;
-			SetCursorPos( cur_p.x, cur_p.y );
-			m_from_pt = m_dlist->ScreenToPCB( cur_p );
-			m_last_cursor_point = m_last_mouse_point = m_from_pt;
+				CRect wr;
+				GetWindowRect(wr);
+				CPoint cur_p;
+				cur_p.x = (wr.right + wr.left) / 2;
+				cur_p.y = (wr.top + wr.bottom) / 2;
+				SetCursorPos(cur_p.x, cur_p.y);
+				m_from_pt = m_dlist->ScreenToPCB(cur_p);
+				m_last_cursor_point = m_last_mouse_point = m_from_pt;
 
-			dlg.m_dx = m_last_cursor_point.x;
-			dlg.m_dy = m_last_cursor_point.y;
+				dlg.m_dx = m_last_cursor_point.x;
+				dlg.m_dy = m_last_cursor_point.y;
+			}
 		}
 	}
 	if( ret == IDOK )
@@ -18436,16 +18445,17 @@ void CFreePcbView::OnGroupRotate()
 	RotateGroup(90);	
 }
 
-void CFreePcbView::RotateGroup( int angle )
+void CFreePcbView::RotateGroup( int angle, BOOL dlg )
 {
-	if( !ThisGroupContainsGluedParts() )
-		return;
+	if( dlg )
+		if( !ThisGroupContainsGluedParts() )
+			return;
 	SelectContour(1);
 	for( cpart * p=m_Doc->m_plist->GetFirstPart(); p; p=m_Doc->m_plist->GetNextPart(p) )
 		if( p->selected )
 			PartHasNoInterPinTraces( p );
 	m_dlist->CancelHighLight();
-	RotateGroup(angle,TRUE);
+	RotateGroup(angle,TRUE,0,0);
 	m_Doc->m_nlist->OptimizeConnections( m_Doc->m_auto_ratline_disable, 
 										 m_Doc->m_auto_ratline_min_pins );
 	if( m_merge_show ) // RotateGroup
@@ -23259,8 +23269,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	}
 	if (MobileP == NULL)
 	{
-		CPoint P[4];
-		int angle[4] = { 0,0,0,0 };
+		const int NP = 5;
+		CPoint P[NP];
+		int angle[NP] = { 0,0,0,0,0 };
 		int np = 0;
 		sz = footprint->m_outline_poly.GetSize();
 		for (int i = 0; i < sz; i++)
@@ -23269,10 +23280,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 			for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
 				footprint->m_outline_poly[i].SetUtility(ii, 0);
 		}
-		while (np < 4)
+		while (np < NP)
 		{
-			int maxLenX = 0,
-				maxLenY = 0,
+			int maxLen = 0,
 				bestX = 0,
 				bestY = 0,
 				bestI = -1,
@@ -23293,9 +23303,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 					int y2 = footprint->m_outline_poly[i].GetY(n);
 					if (abs(x1 - x2) < _2540)
 					{
-						if (abs(y1 - y2) > maxLenY)
+						if (abs(y1 - y2) > maxLen)
 						{
-							maxLenY = abs(y1 - y2);
+							maxLen = abs(y1 - y2);
 							bestX = x1;
 							bestY = (y1 + y2) / 2;
 							bestI = i;
@@ -23305,9 +23315,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 					}
 					if (abs(y1 - y2) < _2540)
 					{
-						if (abs(x1 - x2) > maxLenX)
+						if (abs(x1 - x2) > maxLen)
 						{
-							maxLenX = abs(x1 - x2);
+							maxLen = abs(x1 - x2);
 							bestX = (x1 + x2) / 2;
 							bestY = y1;
 							bestI = i;

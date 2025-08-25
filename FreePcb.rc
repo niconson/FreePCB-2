@@ -276,18 +276,19 @@ BEGIN
         END
         POPUP "Фрезерный контур"
         BEGIN
-            MENUITEM "Фреза 1мм, мост 3 отв. по 0.25мм",    ID_MBO_0
+            MENUITEM "Фреза 1мм, мост 3 отв. по 0.25мм", ID_MBO_0
             MENUITEM "Фреза 1.5мм, мост 3 отв. по 0.375мм", ID_MBO_1
-            MENUITEM "Фреза 2мм, мост 3 отв. по 0.5мм",     ID_MBO_2
-            MENUITEM "Фреза 2.5мм, мост 5 отв. по 0.4мм",   ID_MBO_3
-            MENUITEM "Фреза 3мм, мост 5 отв. по 0.5мм",     ID_MBO_4
-            MENUITEM "Фреза 3.5мм, мост 5 отв. по 0.6мм",   ID_MBO_5
-            MENUITEM "Фреза 4мм, мост 5 отв. по 0.7мм",     ID_MBO_6
-            MENUITEM "Фреза 4.5мм, мост 5 отв. по 0.8мм",   ID_MBO_7
-            MENUITEM "Фреза 5мм, мост 5 отв. по 0.9мм",     ID_MBO_8
-            MENUITEM "Фреза 6мм, мост 5 отв. по 1.1мм",     ID_MBO_9
-            MENUITEM "Фреза 7мм, мост 5 отв. по 1.3мм",     ID_MBO_10
+            MENUITEM "Фреза 2мм, мост 3 отв. по 0.5мм", ID_MBO_2
+            MENUITEM "Фреза 2.5мм, мост 5 отв. по 0.4мм", ID_MBO_3
+            MENUITEM "Фреза 3мм, мост 5 отв. по 0.5мм", ID_MBO_4
+            MENUITEM "Фреза 3.5мм, мост 5 отв. по 0.6мм", ID_MBO_5
+            MENUITEM "Фреза 4мм, мост 5 отв. по 0.7мм", ID_MBO_6
+            MENUITEM "Фреза 4.5мм, мост 5 отв. по 0.8мм", ID_MBO_7
+            MENUITEM "Фреза 5мм, мост 5 отв. по 0.9мм", ID_MBO_8
+            MENUITEM "Фреза 6мм, мост 5 отв. по 1.1мм", ID_MBO_9
+            MENUITEM "Фреза 7мм, мост 5 отв. по 1.3мм", ID_MBO_10
         END
+        MENUITEM "Симметризация мультизаготовки", ID_ADD_SYMMETRICAL_BLANK
     END
     POPUP "Утилиты"
     BEGIN
@@ -1283,11 +1284,11 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,36,9,110,16
     GROUPBOX        "",IDC_STATIC,145,9,29,16
     LTEXT           "Защитная маска низ",IDC_STATIC,44,184,90,8
-    LTEXT           "Видимая сетка",IDC_STATIC,44,49,56,8
+    LTEXT           "Видимая сетка",IDC_STATIC,44,60,56,8
     GROUPBOX        "",IDC_STATIC,173,20,29,180
     GROUPBOX        "",IDC_STATIC,173,9,29,16
     LTEXT           "Метки ошибок",IDC_STATIC,44,72,62,8
-    LTEXT           "Подсветка",IDC_STATIC,44,60,61,8
+    LTEXT           "Подсветка",IDC_STATIC,44,49,61,8
     LTEXT           "Отверстия",IDC_STATIC,44,161,80,8
     LTEXT           "Защитная маска верх",IDC_STATIC,44,172,90,8
     LTEXT           "Внутр. 7",IDC_STATIC,251,117,39,8
@@ -2647,11 +2648,11 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,36,9,110,16
     GROUPBOX        "",IDC_STATIC,145,9,29,16
     LTEXT           "Защитная маска низ",IDC_STATIC,44,184,90,8
-    LTEXT           "Видимая сетка",IDC_STATIC,44,49,54,8
+    LTEXT           "Видимая сетка",IDC_STATIC,44,61,54,8
     GROUPBOX        "",IDC_STATIC,173,20,29,180
     GROUPBOX        "",IDC_STATIC,173,9,29,16
     LTEXT           "Метки ошибок",IDC_STATIC,44,72,57,8
-    LTEXT           "Подсветка",IDC_STATIC,44,60,51,8
+    LTEXT           "Подсветка",IDC_STATIC,44,50,51,8
     LTEXT           "Отверстия",IDC_STATIC,44,161,80,8
     LTEXT           "Защитная маска верх",IDC_STATIC,44,172,90,8
     LTEXT           "Внутр. 7",IDC_STATIC,251,117,36,8
@@ -2808,6 +2809,24 @@ BEGIN
     DEFPUSHBUTTON   "Apply",IDOK,216,224,50,14
     PUSHBUTTON      "Отмена",IDCANCEL,432,224,50,14,NOT WS_VISIBLE
     EDITTEXT        IDC_CODE,0,2,483,221,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL | NOT WS_TABSTOP
+END
+
+IDD_ADD_SYMMETRICAL_BLANK DIALOGEX 0, 0, 293, 83
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Добавить симметричную заготовку"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_COMBO_X,160,18,118,95,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "1:1",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_DISABLED | WS_GROUP,27,55,33,10
+    CONTROL         "2:1",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,73,55,31,10
+    CONTROL         "1:2",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,27,28,35,10
+    CONTROL         "2:2",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,73,28,30,10
+    DEFPUSHBUTTON   "Готово",IDOK,161,58,42,14
+    PUSHBUTTON      "Отмена",IDCANCEL,227,58,42,14
+    LTEXT           "dX:",IDC_STATIC,137,20,19,8
+    GROUPBOX        "Вариант расположения",IDC_STATIC,7,7,110,69
+    COMBOBOX        IDC_COMBO_Y,160,34,118,95,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "dY:",IDC_STATIC,137,36,19,8
 END
 
 
@@ -3375,6 +3394,14 @@ BEGIN
         TOPMARGIN, 2
         BOTTOMMARGIN, 239
     END
+
+    IDD_ADD_SYMMETRICAL_BLANK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 76
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -3655,6 +3682,11 @@ BEGIN
 END
 
 IDD_WIZ_QUAD AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADD_SYMMETRICAL_BLANK AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

@@ -309,6 +309,9 @@
     <ClCompile Include="DlgAddModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddSymmetricalBlank.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DlgAddPoly.h">
@@ -615,6 +618,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DlgAddModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddSymmetricalBlank.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

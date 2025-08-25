@@ -36,6 +36,7 @@
 #include "DlgProtection.h"
 #include "RectArray.h"
 #include "SpeedFiles.h"
+#include "AddSymmetricalBlank.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -126,6 +127,7 @@ BEGIN_MESSAGE_MAP(CFreePcbDoc, CDocument)
 	ON_COMMAND(ID_SWITCH_TO_ECDS, SwitchTo__ECDS)
 	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 	ON_COMMAND(ID_ADD_VIAS_GRID, AddViaGrid)
+	ON_COMMAND(ID_ADD_SYMMETRICAL_BLANK, AddSymmetricalBlank)
 	ON_COMMAND(ID_CHANNEL_DUPLICATION, ChannelDuplication)
 	ON_COMMAND(ID_PROTECTION, OnProtection)
 	ON_COMMAND(ID_IMAGE1, OnAddTopImage)
@@ -2459,7 +2461,7 @@ void CFreePcbDoc::ReadGraphics( CStdioFile * pcb_file, CArray<CPolyLine> * ssm )
 int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropData )
 {
 	int err, pos, np;
-	int layer_info_number = 0;
+	int layer_info_number = -1;
 	CArray<CString> p;
 	CString in_str, key_str;
 	BOOL m_org_changed = FALSE;
@@ -3203,6 +3205,8 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 		}
 		if( m_fp_snap_angle != 0 && m_fp_snap_angle != 45 && m_fp_snap_angle != 90 )
 			m_fp_snap_angle = m_snap_angle;
+		m_vis[LAY_HILITE] = TRUE;
+		m_dlist->m_vis[LAY_HILITE] = TRUE;
 		CMainFrame * frm = (CMainFrame*)AfxGetMainWnd();
 		frm->m_wndMyToolBar.SetLists( &m_visible_grid, &m_part_grid, &m_routing_grid,
 			m_visual_grid_spacing, m_part_grid_spacing, m_routing_grid_spacing, m_snap_angle, m_units );
@@ -13176,7 +13180,76 @@ void CFreePcbDoc::AddViaGrid()
 	}
 }
 
+void CFreePcbDoc::AddSymmetricalBlank()
+{
+	CDlgAddSymmetricalBlank dlg;
+	dlg.Initialize(2, m_space_x, m_space_y, m_units);
+	int ret = dlg.DoModal();
+	if (ret == IDOK)
+	{
+		int mem_nl_comp = m_netlist_completed;
+		m_netlist_completed = 0;
 
+		RECT pcbr = GetBoardRect();
+		OnEditSelectAll();
+		CString s = "pcb-1";
+		int merge0 = m_mlist->AddNew(s, 0);
+		m_view->MergeGroup(merge0);
+		if (dlg.m_var == 2)
+		{
+			m_view->MoveOrigin(-pcbr.right-(dlg.m_dx/2), -pcbr.top-(dlg.m_dy/2));
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+			OnEditSelectAll();
+			m_view->OnGroupCopy();
+			m_view->OnGroupPaste(2, 1);
+			m_view->TurnGroup();
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+		}
+		else if (dlg.m_var == 3)
+		{
+			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
+			m_view->RotateGroup(-90,0);
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+			OnEditSelectAll();
+			m_view->OnGroupCopy();
+			m_view->OnGroupPaste(2, 1);
+			m_view->TurnGroup();
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+			OnEditSelectAll();
+			m_view->RotateGroup(90,0);
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+		}
+		else if (dlg.m_var == 4)
+		{
+			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+			OnEditSelectAll();
+			m_view->OnGroupCopy();
+			m_view->OnGroupPaste(2, 1);
+			m_view->RotateGroup(-180, 0);
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+			m_view->MoveGroup(0, pcbr.top - pcbr.bottom + dlg.m_dy,0);
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+			OnEditSelectAll();
+			m_view->OnGroupCopy();
+			m_view->OnGroupPaste(2, 1);
+			m_view->TurnGroup();
+			m_view->OnViewAllElements();
+			m_view->UpdateWindow();
+		}
+		// restore 
+		m_netlist_completed = mem_nl_comp;
+	}
+	m_view->OnRangeCmds(NULL);
+}
 
 void CFreePcbDoc::ChannelDuplication()
 {

@@ -246,6 +246,7 @@ void CDlgGroupPaste::Initialize( CNetList * grp_nlist )
 	m_value_as_text = 0;
 	m_dx = 0;
 	m_dy = 0;
+	m_pin_net_option = 0;
 	if( m_grp_nlist )
 		grp_nlist->ExportNetListInfo( &gnl );
 }

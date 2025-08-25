@@ -3796,9 +3796,23 @@ int SimplifyPoly(CPolyLine* poly, int val)
 	return n_deleted;
 }
 
-CPoint * GetRepperPoint(int ipt, RECT * op_rect)//int ipt, CPoint BoardOrigin, double f_step_x, double f_step_y, int step_x, int step_y)
+CPoint * GetRepperPoint(int ipt, RECT * op_rect, int * FREZ)//int ipt, CPoint BoardOrigin, double f_step_x, double f_step_y, int step_x, int step_y)
 {
 	static CPoint REP(0, 0);
+
+	int swell = 0;
+	cpart* pMILLING = theApp.m_Doc->m_plist->GetPart("BOARD");
+	if (pMILLING)
+	{
+		RECT part_r;
+		if (theApp.m_Doc->m_plist->GetPartBoundingRect(pMILLING, &part_r))
+			swell = (part_r.right - part_r.left - op_rect->right + op_rect->left) / 4;
+	}
+	if (swell < 0 || swell > 10 * NM_PER_MM)
+		swell = 0;
+	if (FREZ)
+		*FREZ = swell;
+
 	double field_0 = max(theApp.m_Doc->m_panel_fields[0], theApp.m_Doc->m_panel_fields[1]);// : 10 * NM_PER_MM);
 	double field_1 = max(theApp.m_Doc->m_panel_fields[0], theApp.m_Doc->m_panel_fields[1]);// : 10 * NM_PER_MM);
 	BOOL VERTIC = 1;
@@ -3813,23 +3827,23 @@ CPoint * GetRepperPoint(int ipt, RECT * op_rect)//int ipt, CPoint BoardOrigin, d
 	CPoint BoardOrigin(op_rect->left, op_rect->bottom);
 	if (ipt == 0)
 	{
-		REP.x = (double)BoardOrigin.x - (double)(field_0 / 2) + (VERTIC ? 0 : field_0);
-		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : 0);
+		REP.x = (double)BoardOrigin.x - (double)(field_0 / 2) + (VERTIC ? -swell : field_0);
+		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : -swell);
 	}
 	else if (ipt == 1)
 	{
-		REP.x = (double)BoardOrigin.x + (double)(field_0 / 2) + (f_step_x * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_x) - (double)theApp.m_Doc->m_space_x - (VERTIC ? 0 : field_0);
-		REP.y = (double)BoardOrigin.y + (double)(field_1 / 2) + (f_step_y * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_y) - (double)theApp.m_Doc->m_space_y - (VERTIC ? field_1 : 0);
+		REP.x = (double)BoardOrigin.x + (double)(field_0 / 2) + (f_step_x * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_x) - (double)theApp.m_Doc->m_space_x - (VERTIC ? -swell : field_0);
+		REP.y = (double)BoardOrigin.y + (double)(field_1 / 2) + (f_step_y * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_y) - (double)theApp.m_Doc->m_space_y - (VERTIC ? field_1 : -swell);
 	}
 	else if (ipt == 2)
 	{
-		REP.x = (double)BoardOrigin.x - (double)(field_0 / 2) + (VERTIC ? 0 : field_0);
-		REP.y = (double)BoardOrigin.y + (double)(field_1 / 2) + (f_step_y * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_y) - (double)theApp.m_Doc->m_space_y - (VERTIC ? field_1 : 0);
+		REP.x = (double)BoardOrigin.x - (double)(field_0 / 2) + (VERTIC ? -swell : field_0);
+		REP.y = (double)BoardOrigin.y + (double)(field_1 / 2) + (f_step_y * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_y) - (double)theApp.m_Doc->m_space_y - (VERTIC ? field_1 : -swell);
 	}
 	else if (ipt == 3)
 	{
-		REP.x = (double)BoardOrigin.x + (double)(field_0 / 2) + (f_step_x * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_x) - (double)theApp.m_Doc->m_space_x - (VERTIC ? 0 : field_0);
-		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : 0);
+		REP.x = (double)BoardOrigin.x + (double)(field_0 / 2) + (f_step_x * (double)NM_PER_MIL * (double)theApp.m_Doc->m_n_x) - (double)theApp.m_Doc->m_space_x - (VERTIC ? -swell : field_0);
+		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : -swell);
 	}
 	return &REP;
 }

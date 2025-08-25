@@ -371,6 +371,8 @@ void CDlgReport::OnBnClickedOk()
 			dp = 3;
 		else
 			ASSERT(0);
+		BOOL bTOP_PART_PRESENT = 0;
+		BOOL bBOTTOM_PART_PRESENT = 0;
 		for( int ip=0; ip<nparts; ip++ )
 		{
 			part = m_pl->GetPart( *ref_ptr[ip] );			
@@ -392,6 +394,12 @@ void CDlgReport::OnBnClickedOk()
 			angle[ip] = "";
 			if( part->shape )  
 			{
+				if (part->side == 0)
+					bTOP_PART_PRESENT = 1;
+				else 
+					bBOTTOM_PART_PRESENT = 1;
+
+				//
 				package[ip] = part->shape->m_package;
 				BOOL bSMT = TRUE;
 				int nholes = 0;
@@ -534,18 +542,36 @@ void CDlgReport::OnBnClickedOk()
 			CPoint* pt = GetRepperPoint(0, &all_board_bounds);
 			::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
 			::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
-			str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
-				"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
-			csv.WriteString(str1 + "\n");
+			if (bTOP_PART_PRESENT)
+			{
+				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+				csv.WriteString(str1 + "\n");
+			}
+			if (bBOTTOM_PART_PRESENT)
+			{
+				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
+				csv.WriteString(str1 + "\n");
+			}
 			iRep++;
 			if (m_doc->m_panel_ref_count == 0 || m_doc->m_panel_ref_count == 2)
 			{
 				pt = GetRepperPoint(1, &all_board_bounds);
 				::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
 				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
-				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
-					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
-				csv.WriteString(str1 + "\n");
+				if (bTOP_PART_PRESENT)
+				{
+					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+						"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+					csv.WriteString(str1 + "\n");
+				}
+				if (bBOTTOM_PART_PRESENT)
+				{
+					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+						"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
+					csv.WriteString(str1 + "\n");
+				}
 				iRep++;
 			}
 			if (m_doc->m_panel_ref_count == 1 || m_doc->m_panel_ref_count == 2)
@@ -553,16 +579,34 @@ void CDlgReport::OnBnClickedOk()
 				pt = GetRepperPoint(2, &all_board_bounds);
 				::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
 				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
-				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
-					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
-				csv.WriteString(str1 + "\n");
+				if (bTOP_PART_PRESENT)
+				{
+					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+						"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+					csv.WriteString(str1 + "\n");
+				}
+				if (bBOTTOM_PART_PRESENT)
+				{
+					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+						"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
+					csv.WriteString(str1 + "\n");
+				}
 				iRep++;
 				pt = GetRepperPoint(3, &all_board_bounds);
 				::MakeCStringFromDimension(&rep_x, pt->x, m_units, FALSE, FALSE, TRUE, dp);
 				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
-				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
-					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
-				csv.WriteString(str1 + "\n");
+				if (bTOP_PART_PRESENT)
+				{
+					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+						"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
+					csv.WriteString(str1 + "\n");
+				}
+				if (bBOTTOM_PART_PRESENT)
+				{
+					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+						"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
+					csv.WriteString(str1 + "\n");
+				}
 				iRep++;
 			}
 		}
