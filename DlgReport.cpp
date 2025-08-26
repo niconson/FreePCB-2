@@ -380,6 +380,7 @@ void CDlgReport::OnBnClickedOk()
 				ASSERT(0);
 			if( !part->selected )
 				continue;
+			//
 			ref_ptr[ip] = &part->ref_des;
 			ref_des[ip] = part->ref_des;
 			value[ip] = part->value;
@@ -485,6 +486,8 @@ void CDlgReport::OnBnClickedOk()
 					maxlen_dot_y = max( maxlen_dot_y, temp.GetLength() );
 				}
 			}
+			if (package[ip] == "MILLING_BOARD_OUTLINE")
+				continue;
 			maxlen_ref_des = max( maxlen_ref_des, ref_des[ip].GetLength() );
 			maxlen_package = max( maxlen_package, package[ip].GetLength() );
 			maxlen_value = max( maxlen_value, value[ip].GetLength() );
@@ -517,7 +520,7 @@ void CDlgReport::OnBnClickedOk()
 		file.WriteString( str1 + "\n" );
 		//
 		// header
-		str1.Format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", "REFXX", "PACKAGE", "VALUE", "FOOTPRINT", "PINS", "HOLES",
+		str1.Format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", "REFXX", "UID", "PACKAGE", "VALUE", "FOOTPRINT", "PINS", "HOLES",
 			"SIDE", "ANGLE", "CENT-X", "CENT-Y", "PIN1-X", "PIN1-Y");
 		for (int id = 0; id < maxnum_dots; id++)
 		{
@@ -659,7 +662,13 @@ void CDlgReport::OnBnClickedOk()
 								::MakeCStringFromDimension(&pt1x, pt1.x + sh_x, m_units, FALSE, FALSE, TRUE, dp);
 								::MakeCStringFromDimension(&pt1y, pt1.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
 							}
-							str1.Format("%s_%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], iy, ix, package[ip], value[ip], footprint[ip],
+							CString addsuff="";
+							if (ref_des[ip].Find("|") == -1)
+								addsuff = "|0";
+							CString uid_str = ""; 
+							if( value[ip].GetLength() && package[ip].GetLength() )
+								uid_str = value[ip] + "@" + package[ip];
+							str1.Format("%s%s%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], addsuff, iy, ix, uid_str, package[ip], value[ip], footprint[ip],
 								pins[ip], holes[ip], side[ip].Trim(), angle[ip], cent_x, cent_y, pt1x, pt1y);
 
 							// glue_pt

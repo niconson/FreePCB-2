@@ -16899,7 +16899,7 @@ void CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
 				if( ref_des_map.Lookup( new_ref, vp ) )
 				{
 					CString nr = new_ref;
-					for(int num_r=0; num_r<20; num_r++)
+					for(int num_r=1; num_r<20; num_r++)
 					{
 						nr.Format("%s|%d",new_ref, num_r);
 						if( ref_des_map.Lookup( nr, vp ) == 0 )
@@ -23329,7 +23329,7 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 						break;
 				}
 			}
-			if (bestX || bestY)
+			if ((bestX || bestY) && (maxLen > NM_PER_MM*4 || np == 0))
 			{
 				P[np] = CPoint(bestX, bestY);
 				angle[np] = bestA;

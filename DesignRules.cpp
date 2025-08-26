@@ -148,6 +148,7 @@ dl_element * GetPadElement( part_pin * pin, int layer )
 	{
 		if( pin->dl_els[il] )
 			if( getbit( pin->dl_els[il]->layers_bitmap, layer ) )
+			//if( pin->dl_els[il]->layers_bitmap & (1<< layer) )
 				return pin->dl_els[il];
 	}
 	return pin->dl_hole;
