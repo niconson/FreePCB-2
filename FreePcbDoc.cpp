@@ -37,6 +37,7 @@
 #include "RectArray.h"
 #include "SpeedFiles.h"
 #include "AddSymmetricalBlank.h"
+#include "Additional.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -1301,7 +1302,6 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 		theApp.AddMRUFile( &m_pcb_full_path );
 	}
 	full_path = full_path + "\\" + *filename;
-	//
 	CStdioFile pcb_file;
 	err = pcb_file.Open( LPCSTR(full_path), CFile::modeCreate | CFile::modeWrite, NULL );
 	if( !err )
@@ -1325,6 +1325,7 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			pcb_file.Close();
 			bNoFilesOpened = FALSE;
 			m_auto_elapsed = 0;
+			SavePcbView(this);
 		}
 		catch( CString * err_str )
 		{

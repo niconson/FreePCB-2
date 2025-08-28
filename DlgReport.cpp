@@ -547,13 +547,13 @@ void CDlgReport::OnBnClickedOk()
 			::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
 			if (bTOP_PART_PRESENT)
 			{
-				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+				str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 					"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
 				csv.WriteString(str1 + "\n");
 			}
 			if (bBOTTOM_PART_PRESENT)
 			{
-				str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+				str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 					"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
 				csv.WriteString(str1 + "\n");
 			}
@@ -565,13 +565,13 @@ void CDlgReport::OnBnClickedOk()
 				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
 				if (bTOP_PART_PRESENT)
 				{
-					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 						"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
 					csv.WriteString(str1 + "\n");
 				}
 				if (bBOTTOM_PART_PRESENT)
 				{
-					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 						"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
 					csv.WriteString(str1 + "\n");
 				}
@@ -584,13 +584,13 @@ void CDlgReport::OnBnClickedOk()
 				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
 				if (bTOP_PART_PRESENT)
 				{
-					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 						"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
 					csv.WriteString(str1 + "\n");
 				}
 				if (bBOTTOM_PART_PRESENT)
 				{
-					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 						"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
 					csv.WriteString(str1 + "\n");
 				}
@@ -600,13 +600,13 @@ void CDlgReport::OnBnClickedOk()
 				::MakeCStringFromDimension(&rep_y, pt->y, m_units, FALSE, FALSE, TRUE, dp);
 				if (bTOP_PART_PRESENT)
 				{
-					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 						"1", "0", "top", "0", rep_x, rep_y, rep_x, rep_y);
 					csv.WriteString(str1 + "\n");
 				}
 				if (bBOTTOM_PART_PRESENT)
 				{
-					str1.Format("REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep,
+					str1.Format("REP%d;REP%d;REP%d;REP%d;REP%d;%s;%s;%s;%s;%s;%s;%s;%s;", iRep, iRep, iRep, iRep, iRep,
 						"1", "0", "bottom", "0", rep_x, rep_y, rep_x, rep_y);
 					csv.WriteString(str1 + "\n");
 				}
