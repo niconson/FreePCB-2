@@ -62,7 +62,7 @@ void SavePcbViewWriteSegment(CStdioFile* f, int x, int y, int x2, int y2, int w,
 		cds_layer = 19;
 	else if (L == LAY_TOP_COPPER || L == LAY_BOTTOM_COPPER)
 		cds_layer = 20;
-	else if (L == LAY_MASK_TOP || L == LAY_MASK_BOTTOM)
+	else if (L == LAY_SM_TOP || L == LAY_SM_BOTTOM)
 		cds_layer = 21;
 	else if (L == LAY_SILK_TOP || L == LAY_SILK_BOTTOM)
 		cds_layer = 22;
@@ -84,14 +84,15 @@ void SavePcbViewWriteRndRect(CStdioFile* f, int x, int y, int w, int h, int r, i
 {
 	int np = 20;
 	CPoint rnd[20];
-	float radius = min(h, w) / 2;
+	int radius = min(h, w) / 2;
+	radius = min(r, radius);
 	int cds_layer;
 	BOOL flipFlag = 0;
 	if (L == LAY_BOARD_OUTLINE)
 		cds_layer = 19;
 	else if (L == LAY_TOP_COPPER || L == LAY_BOTTOM_COPPER)
 		cds_layer = 20;
-	else if (L == LAY_MASK_TOP || L == LAY_MASK_BOTTOM)
+	else if (L == LAY_SM_TOP || L == LAY_SM_BOTTOM)
 		cds_layer = 21;
 	else if (L == LAY_SILK_TOP || L == LAY_SILK_BOTTOM)
 		cds_layer = 22;
@@ -105,7 +106,7 @@ void SavePcbViewWriteRndRect(CStdioFile* f, int x, int y, int w, int h, int r, i
 	int nv = Gen_RndRectPoly(x, y, w, h, radius, -a, &rnd[0], np);
 	if (nv)
 	{
-		line.Format("outline: %d %d %d %d %d %d %d %d\n", np, 1, cds_layer, NM_PER_MIL, -1, -1, -1, 0);
+		line.Format("outline: %d %d %d %d %d %d %d %d\n", nv, 1, cds_layer, NM_PER_MIL*4, -1, -1, -1, 0);
 		f->WriteString(line);
 		for (int i = 0; i < nv; i++)
 		{
@@ -129,7 +130,7 @@ void SavePcbViewWritePolyline(CStdioFile* f, CPolyLine* p, int L)
 	}
 	else if (L == LAY_TOP_COPPER || L == LAY_BOTTOM_COPPER)
 		cds_layer = 20;
-	else if (L == LAY_MASK_TOP || L == LAY_MASK_BOTTOM)
+	else if (L == LAY_SM_TOP || L == LAY_SM_BOTTOM)
 		cds_layer = 21;
 	else if (L == LAY_SILK_TOP || L == LAY_SILK_BOTTOM)
 		cds_layer = 22;
@@ -242,9 +243,150 @@ void SavePcbView(CFreePcbDoc* doc)
 					(p->GetLayer() == LAY_REFINE_BOT && page == 1))
 					SavePcbViewWritePolyline(&f, p, p->GetLayer());
 			}
+			f.WriteString("=====================================================================\n");
 			for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
 			{
-
+				int cds_layer = 0;
+				for (int ip = 0; ip < p->pin.GetSize(); ip++)
+				{
+					for (int iel = 0; iel < p->pin[ip].dl_els.GetSize(); iel++)
+					{
+						dl_element* el = p->pin[ip].dl_els.GetAt(iel);
+						if (el)
+						{
+							for (int step = 0; step < 2; step++)
+							{
+								cds_layer = 0; 
+								switch (step)
+								{
+								case 0:
+									if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
+										(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
+										cds_layer = 20;
+									break;
+								case 1:
+									if ((getbit(el->layers_bitmap, LAY_SM_TOP) && page == 0) ||
+										(getbit(el->layers_bitmap, LAY_SM_BOTTOM) && page == 1))
+										cds_layer = 21;
+									break;
+								default:
+									break;
+								}
+								if (cds_layer)
+								{
+									if (el->gtype == DL_RECT || el->gtype == DL_RRECT || el->gtype == DL_CIRC)
+									{
+										RECT Get;
+										el->dlist->Get_Rect(el, &Get);
+										int xc = (Get.left + Get.right) / 2;
+										int yc = (Get.bottom + Get.top) / 2;
+										int w = abs(Get.right - Get.left);
+										int h = abs(Get.top - Get.bottom);
+										if (el->gtype == DL_RECT)
+											SavePcbViewWriteRndRect(&f, xc, yc, w, h, 0, 0, step ? LAY_SM_TOP : LAY_TOP_COPPER);
+										else if (el->gtype == DL_CIRC)
+											SavePcbViewWriteRndRect(&f, xc, yc, w, h, w / 2, 0, step ? LAY_SM_TOP : LAY_TOP_COPPER);
+										else
+											SavePcbViewWriteRndRect(&f, xc, yc, w, h, el->el_w * m_pcbu_per_wu, 0, step ? LAY_SM_TOP : LAY_TOP_COPPER);
+									}
+									else if (el->gtype == DL_POLYGON)
+									{
+										CPoint Get[20];
+										int np = 20;
+										el->dlist->Get_Points(el, Get, &np);
+										if (np > 2)
+										{
+											CString line;
+											line.Format("outline: %d %d %d %d %d %d %d %d\n", np, 1, cds_layer, el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
+											f.WriteString(line);
+											for (int i = 0; i < np; i++)
+											{
+												line.Format("  corner: %d %d %d %d %d\n", i + 1, page ? -Get[i].x : Get[i].x, Get[i].y, 0, 0);
+												f.WriteString(line);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					dl_element* el = p->pin[ip].dl_hole;
+					if (el)
+					{
+						RECT Get;
+						el->dlist->Get_Rect(el, &Get);
+						int xc = (Get.left + Get.right) / 2;
+						int yc = (Get.bottom + Get.top) / 2;
+						int w = abs(Get.right - Get.left);
+						SavePcbViewWriteRndRect(&f, xc, yc, w, w, w / 2, 0, LAY_PAD_THRU);
+					}
+				}
+				for (int i = 0; i < p->m_outline_stroke.GetSize(); i++)
+				{
+					cds_layer = 0;
+					dl_element* el = p->m_outline_stroke.GetAt(i);
+					if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
+						(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
+						cds_layer = 20;
+					else if ((getbit(el->layers_bitmap, LAY_SILK_TOP) && page == 0) ||
+						(getbit(el->layers_bitmap, LAY_SILK_BOTTOM) && page == 1))
+						cds_layer = 22;
+					else if ((getbit(el->layers_bitmap, LAY_REFINE_TOP) && page == 0) ||
+						(getbit(el->layers_bitmap, LAY_REFINE_BOT) && page == 1))
+						cds_layer = 23;
+					if (cds_layer == 0)
+						continue;
+					if (el->gtype == DL_POLYGON)
+					{
+						CArray<CPoint> * arr = el->dlist->Get_Points(el, NULL, NULL);
+						int np = arr->GetSize();
+						CPoint* Get = new CPoint[np];
+						el->dlist->Get_Points(el, Get, &np);
+						if (np > 2)
+						{
+							CString line;
+							line.Format("outline: %d %d %d %d %d %d %d %d\n", np, 1, cds_layer, el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
+							f.WriteString(line);
+							for (int i = 0; i < np; i++)
+							{
+								line.Format("  corner: %d %d %d %d %d\n", i + 1, page ? -Get[i].x : Get[i].x, Get[i].y, 0, 0);
+								f.WriteString(line);
+							}
+						}
+						delete Get;
+					}
+					else if (el->gtype == DL_POLYLINE)
+					{
+						CArray<CPoint>* arr = el->dlist->Get_Points(el, NULL, NULL);
+						int np = arr->GetSize();
+						CPoint* Get = new CPoint[np];
+						el->dlist->Get_Points(el, Get, &np);
+						if (np > 2)
+						{
+							CString line;
+							line.Format("polyline: %d %d %d %d %d %d %d %d\n", np, 1, cds_layer, el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
+							f.WriteString(line);
+							for (int i = 0; i < np; i++)
+							{
+								line.Format("  corner: %d %d %d %d %d\n", i + 1, page ? -Get[i].x : Get[i].x, Get[i].y, 0, 0);
+								f.WriteString(line);
+							}
+						}
+						delete Get;
+					}
+				}
+				CString RefText = p->ref_des;
+				RECT partR;
+				doc->m_plist->GetPartBoundingRect(p, &partR);
+				int tx = (partR.left + partR.right) / 2;
+				int ty = (partR.top + partR.bottom) / 2;
+				CString line;
+				line.Format("polyline: %d %d %d %d %d %d %d %d\n", 2, 0, 17, NM_PER_MIL, -1, -1, -1, 0);
+				f.WriteString(line);
+				line.Format("  corner: %d %d %d %d %d\n", 1, page ? -tx+NM_PER_MIL : tx+NM_PER_MIL, ty, 0, 0);
+				f.WriteString(line);
+				line.Format("  corner: %d %d %d %d %d\n", 2, page ? -tx+NM_PER_MIL : tx+NM_PER_MIL, ty, 0, 0);
+				f.WriteString(line);
 			}
 		}
 		f.WriteString("[end]\n");
