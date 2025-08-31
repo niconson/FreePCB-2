@@ -1,6 +1,16 @@
 #include "stdafx.h"
 #include "RectArray.h"
 int page;
+enum CDS_LAYER
+{
+	LBOARD=19,
+	LCOPPER,
+	LMASK,
+	LHOLES,
+	LSILK,
+	LNOTES,
+	LDEF
+};
 //======================================================================================
 //--------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------
@@ -59,19 +69,19 @@ void SavePcbViewWriteSegment(CStdioFile* f, int x, int y, int x2, int y2, int w,
 	int cds_layer;
 	BOOL flipFlag = 0;
 	if (L == LAY_BOARD_OUTLINE)
-		cds_layer = 19;
+		cds_layer = LBOARD;
 	else if (L == LAY_TOP_COPPER || L == LAY_BOTTOM_COPPER)
-		cds_layer = 20;
+		cds_layer = LCOPPER;
 	else if (L == LAY_SM_TOP || L == LAY_SM_BOTTOM)
-		cds_layer = 21;
+		cds_layer = LMASK;
 	else if (L == LAY_SILK_TOP || L == LAY_SILK_BOTTOM)
-		cds_layer = 22;
+		cds_layer = LSILK;
 	else if (L == LAY_REFINE_TOP || L == LAY_REFINE_BOT)
-		cds_layer = 23;
+		cds_layer = LNOTES;
 	else if (L == LAY_PAD_THRU)
-		cds_layer = 24;
+		cds_layer = LHOLES;
 	else
-		cds_layer = 25;
+		cds_layer = LDEF;
 	CString line;
 	line.Format("polyline: %d %d %d %d %d %d %d %d\n", 2, 0, cds_layer, w, -1, -1, -1, 0);
 	f->WriteString(line);
@@ -89,19 +99,19 @@ void SavePcbViewWriteRndRect(CStdioFile* f, int x, int y, int w, int h, int r, i
 	int cds_layer;
 	BOOL flipFlag = 0;
 	if (L == LAY_BOARD_OUTLINE)
-		cds_layer = 19;
+		cds_layer = LBOARD;
 	else if (L == LAY_TOP_COPPER || L == LAY_BOTTOM_COPPER)
-		cds_layer = 20;
+		cds_layer = LCOPPER;
 	else if (L == LAY_SM_TOP || L == LAY_SM_BOTTOM)
-		cds_layer = 21;
+		cds_layer = LMASK;
 	else if (L == LAY_SILK_TOP || L == LAY_SILK_BOTTOM)
-		cds_layer = 22;
+		cds_layer = LSILK;
 	else if (L == LAY_REFINE_TOP || L == LAY_REFINE_BOT)
-		cds_layer = 23;
+		cds_layer = LNOTES;
 	else if (L == LAY_PAD_THRU)
-		cds_layer = 24;
+		cds_layer = LHOLES;
 	else
-		cds_layer = 25;
+		cds_layer = LDEF;
 	CString line;
 	int nv = Gen_RndRectPoly(x, y, w, h, radius, -a, &rnd[0], np);
 	if (nv)
@@ -125,21 +135,21 @@ void SavePcbViewWritePolyline(CStdioFile* f, CPolyLine* p, int L)
 	int cl = p->GetClosed();
 	if (L == LAY_BOARD_OUTLINE)
 	{
-		cds_layer = 19;
+		cds_layer = LBOARD;
 		ht = 20;
 	}
 	else if (L == LAY_TOP_COPPER || L == LAY_BOTTOM_COPPER)
-		cds_layer = 20;
+		cds_layer = LCOPPER;
 	else if (L == LAY_SM_TOP || L == LAY_SM_BOTTOM)
-		cds_layer = 21;
+		cds_layer = LMASK;
 	else if (L == LAY_SILK_TOP || L == LAY_SILK_BOTTOM)
-		cds_layer = 22;
+		cds_layer = LSILK;
 	else if (L == LAY_REFINE_TOP || L == LAY_REFINE_BOT)
-		cds_layer = 23;
+		cds_layer = LNOTES;
 	else if (L == LAY_PAD_THRU)
-		cds_layer = 24;
+		cds_layer = LHOLES;
 	else
-		cds_layer = 25;
+		cds_layer = LDEF;
 	CString line;
 	if(cl)
 		line.Format("outline: %d %d %d %d %d %d %d %d\n", np, ht, cds_layer, pw, -1, -1, -1, 0);
@@ -165,7 +175,7 @@ void SavePcbView(CFreePcbDoc* doc)
 {
 	CStdioFile f;
 	CString f_name;
-	f_name.Format("%s%s\\PCBVIEW.cds", doc->m_path_to_folder, freeasy_netlist);
+	f_name.Format("%s%s\\%s.fpc.PCBVIEW", doc->m_path_to_folder, freeasy_netlist, doc->m_name);
 	int ok = f.Open(f_name, CFile::modeCreate | CFile::modeWrite);
 	if (!ok)
 	{
@@ -177,12 +187,12 @@ void SavePcbView(CFreePcbDoc* doc)
 	{
 		f.WriteString("[options]\n");
 		f.WriteString("n_additional_layers: 10\n");
-		f.WriteString("layer_info: \"нижний 3\" 13 255 0 255 1\n");
-		f.WriteString("layer_info: \"нижний 4\" 14 160 160 160 1\n");
-		f.WriteString("layer_info: \"нижний 5\" 15 255 255 255 1\n");
-		f.WriteString("layer_info: \"нижний 6\" 16 0 255 0 1\n");
-		f.WriteString("layer_info: \"нижний 7\" 17 0 0 0 1\n");
-		f.WriteString("layer_info: \"нижний 8\" 18 128 128 255 1\n");
+		f.WriteString("layer_info: \"контурный\" 13 0 115 60 1\n");
+		f.WriteString("layer_info: \"медный\" 14 40 165 90 1\n");
+		f.WriteString("layer_info: \"защитный\" 15 155 155 191 1\n");
+		f.WriteString("layer_info: \"фрезерный\" 16 235 235 235 1\n");
+		f.WriteString("layer_info: \"шёлковый\" 17 254 254 254 1\n");
+		f.WriteString("layer_info: \"чертёжный\" 18 128 64 0 1\n");
 		f.WriteString("[graphics]\n");
 		for (page = 0; page < 2; page++)
 		{
@@ -243,10 +253,11 @@ void SavePcbView(CFreePcbDoc* doc)
 					(p->GetLayer() == LAY_REFINE_BOT && page == 1))
 					SavePcbViewWritePolyline(&f, p, p->GetLayer());
 			}
-			f.WriteString("=====================================================================\n");
+			//f.WriteString("=====================================================================\n");
+			int cds_layer = 0;
 			for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
 			{
-				int cds_layer = 0;
+				cds_layer = 0;
 				for (int ip = 0; ip < p->pin.GetSize(); ip++)
 				{
 					for (int iel = 0; iel < p->pin[ip].dl_els.GetSize(); iel++)
@@ -262,12 +273,12 @@ void SavePcbView(CFreePcbDoc* doc)
 								case 0:
 									if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
 										(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
-										cds_layer = 20;
+										cds_layer = LCOPPER;
 									break;
 								case 1:
 									if ((getbit(el->layers_bitmap, LAY_SM_TOP) && page == 0) ||
 										(getbit(el->layers_bitmap, LAY_SM_BOTTOM) && page == 1))
-										cds_layer = 21;
+										cds_layer = LMASK;
 									break;
 								default:
 									break;
@@ -327,13 +338,13 @@ void SavePcbView(CFreePcbDoc* doc)
 					dl_element* el = p->m_outline_stroke.GetAt(i);
 					if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
 						(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
-						cds_layer = 20;
+						cds_layer = LCOPPER;
 					else if ((getbit(el->layers_bitmap, LAY_SILK_TOP) && page == 0) ||
 						(getbit(el->layers_bitmap, LAY_SILK_BOTTOM) && page == 1))
-						cds_layer = 22;
+						cds_layer = LSILK;
 					else if ((getbit(el->layers_bitmap, LAY_REFINE_TOP) && page == 0) ||
 						(getbit(el->layers_bitmap, LAY_REFINE_BOT) && page == 1))
-						cds_layer = 23;
+						cds_layer = LNOTES;
 					if (cds_layer == 0)
 						continue;
 					if (el->gtype == DL_POLYGON)
@@ -374,19 +385,104 @@ void SavePcbView(CFreePcbDoc* doc)
 						}
 						delete Get;
 					}
+					else if (el->gtype == DL_LINES_ARRAY)
+					{
+						CArray<CPoint>* arr = el->dlist->Get_Points(el, NULL, NULL);
+						int np = arr->GetSize();
+						CPoint* Get = new CPoint[np];
+						el->dlist->Get_Points(el, Get, &np);
+						for (int i = 0; i < np - 1; i += 2)
+						{
+							CString line;
+							line.Format("outline: %d %d %d %d %d %d %d %d\n", 2, 1, cds_layer, el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
+							f.WriteString(line);
+							line.Format("  corner: %d %d %d %d %d\n", 1, page ? -Get[i].x : Get[i].x, Get[i].y, 0, 0);
+							f.WriteString(line);
+							line.Format("  corner: %d %d %d %d %d\n", 2, page ? -Get[i + 1].x : Get[i + 1].x, Get[i + 1].y, 0, 0);
+							f.WriteString(line);
+						}
+						delete Get;
+					}
 				}
-				CString RefText = p->ref_des;
-				RECT partR;
-				doc->m_plist->GetPartBoundingRect(p, &partR);
-				int tx = (partR.left + partR.right) / 2;
-				int ty = (partR.top + partR.bottom) / 2;
-				CString line;
-				line.Format("polyline: %d %d %d %d %d %d %d %d\n", 2, 0, 17, NM_PER_MIL, -1, -1, -1, 0);
-				f.WriteString(line);
-				line.Format("  corner: %d %d %d %d %d\n", 1, page ? -tx+NM_PER_MIL : tx+NM_PER_MIL, ty, 0, 0);
-				f.WriteString(line);
-				line.Format("  corner: %d %d %d %d %d\n", 2, page ? -tx+NM_PER_MIL : tx+NM_PER_MIL, ty, 0, 0);
-				f.WriteString(line);
+				if ((p->side == 0 && page == 0) || (p->side && page))
+				{
+					CString RefText = p->ref_des;
+					if (p->value.GetLength())
+					{
+						RefText += "|" + p->value;
+						if (p->shape)
+							if (p->shape->m_package.GetLength())
+								RefText += "'" + p->shape->m_package;
+					}
+					RefText += "|C"; // alignment by center
+					RECT partR;
+					doc->m_plist->GetPartBoundingRect(p, &partR);
+					int partW = partR.right - partR.left;
+					int partH = partR.top - partR.bottom;
+					int tx = (partR.left + partR.right) / 2;
+					int ty = (partR.top + partR.bottom) / 2;
+					CString line;
+					line.Format("polyline: %d %d %d %d %d %d %d %d\n", 2, 0, 17, NM_PER_MIL, -1, -1, -1, 0);
+					f.WriteString(line);
+					line.Format("  corner: %d %d %d %d %d\n", 1, page ? -tx + NM_PER_MIL : tx + NM_PER_MIL, ty, 0, 0);
+					f.WriteString(line);
+					line.Format("  corner: %d %d %d %d %d\n", 2, page ? -tx + NM_PER_MIL : tx + NM_PER_MIL, ty, 0, 0);
+					f.WriteString(line);
+					line.Format("description: \"%s\" %d %d %d %d %d %d %d %d %d %d\n", RefText,
+						page ? -tx : tx,
+						ty,
+						14, // layer
+						partH > partW ? -90 : 0, // angle
+						p->m_ref_size,
+						p->m_ref_w,
+						-1,
+						-1,
+						doc->m_smfontutil->m_font_number,
+						0);
+					f.WriteString(line);
+				}
+			}
+			for (dl_element* el = doc->m_dlist->Get_Start(); el->next; el = el->next)
+			{
+				if (el->visible == 0)
+					continue;
+				CText* t = (CText*)el->ptr;
+				if(t == NULL)
+					continue;
+				else if(el->id.st == ID_REF_TXT)
+					continue;
+				else if (el->id.st == ID_VALUE_TXT)
+					continue;
+				cds_layer = 0;
+				if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
+					(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
+					cds_layer = LCOPPER;
+				else if ((getbit(el->layers_bitmap, LAY_SILK_TOP) && page == 0) ||
+					(getbit(el->layers_bitmap, LAY_SILK_BOTTOM) && page == 1))
+					cds_layer = LSILK;
+				else if ((getbit(el->layers_bitmap, LAY_REFINE_TOP) && page == 0) ||
+					(getbit(el->layers_bitmap, LAY_REFINE_BOT) && page == 1))
+					cds_layer = LNOTES;
+				if (cds_layer == 0)
+					continue;
+				if (el->gtype == DL_LINES_ARRAY)
+				{
+					CArray<CPoint>* arr = el->dlist->Get_Points(el, NULL, NULL);
+					int np = arr->GetSize();
+					CPoint* Get = new CPoint[np];
+					el->dlist->Get_Points(el, Get, &np);
+					for (int i = 0; i < np - 1; i += 2)
+					{
+						CString line;
+						line.Format("outline: %d %d %d %d %d %d %d %d\n", 2, 1, cds_layer, el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
+						f.WriteString(line);
+						line.Format("  corner: %d %d %d %d %d\n", 1, page ? -Get[i].x : Get[i].x, Get[i].y, 0, 0);
+						f.WriteString(line);
+						line.Format("  corner: %d %d %d %d %d\n", 2, page ? -Get[i + 1].x : Get[i + 1].x, Get[i + 1].y, 0, 0);
+						f.WriteString(line);
+					}
+					delete Get;
+				}
 			}
 		}
 		f.WriteString("[end]\n");
