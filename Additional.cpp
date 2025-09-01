@@ -225,7 +225,7 @@ void SavePcbView(CFreePcbDoc* doc)
 							int vh = n->connect[i].vtx[ii + 1].via_hole_w;
 							dl_element* el = n->connect[i].vtx[ii + 1].dl_el;
 							if (el)
-								SavePcbViewWriteRndRect(&f, x2, y2, vw, vw, vw / 2, 0, L);
+								SavePcbViewWriteRndRect(&f, x2, y2, vw, vw, vw / 2, 0, LAY_TOP_COPPER);
 							el = n->connect[i].vtx[ii + 1].dl_hole;
 							if (el)
 								SavePcbViewWriteRndRect(&f, x2, y2, vh, vh, vh / 2, 0, LAY_PAD_THRU);
@@ -449,12 +449,13 @@ void SavePcbView(CFreePcbDoc* doc)
 				CText* t = (CText*)el->ptr;
 				if(t == NULL)
 					continue;
-				else if(el->id.st == ID_REF_TXT)
+				if (el->id.st == ID_VALUE_TXT)
 					continue;
-				else if (el->id.st == ID_VALUE_TXT)
-					continue;
+				//-----------------------------------
 				cds_layer = 0;
-				if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
+				if (el->id.st == ID_REF_TXT)
+					cds_layer = LNOTES + 1;
+				else if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
 					(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
 					cds_layer = LCOPPER;
 				else if ((getbit(el->layers_bitmap, LAY_SILK_TOP) && page == 0) ||

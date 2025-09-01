@@ -1325,7 +1325,9 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			pcb_file.Close();
 			bNoFilesOpened = FALSE;
 			m_auto_elapsed = 0;
+			AddBoardHoles();
 			SavePcbView(this);
+			CancelBoardHoles();
 		}
 		catch( CString * err_str )
 		{
