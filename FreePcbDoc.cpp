@@ -1328,6 +1328,7 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			AddBoardHoles();
 			SavePcbView(this);
 			CancelBoardHoles();
+			m_project_modified = 0;
 		}
 		catch( CString * err_str )
 		{
@@ -6273,7 +6274,7 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 					noMess = 0;
 				}
 				//excl areas
-				int bUndo = 0;
+				int bUndoA = 0;
 				int na = net->nareas;
 				int mem_hatch = net->area[ia].poly->GetHatch();
 				int mem_wid = net->area[ia].poly->GetW();
@@ -6295,7 +6296,7 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 					setbit(	crop_flags, MC_VALIDATE );
 					{
 						AddBoardHoles();
-						bUndo = 1;
+						bUndoA = 1;
 					}
 					m_view->SaveUndoInfoForArea( net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, m_undo_list );
 					if (mem_hatch != CPolyLine::NO_HATCH)
@@ -6395,7 +6396,7 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 					}
 				}
 				m_dlg_log->UpdateWindow();
-				if( bUndo )
+				if( bUndoA )
 				{
 					OnEditUndo();		// undo the area change first
 					CancelBoardHoles();	  
@@ -14289,7 +14290,8 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 	static CArray<CPolyLine> mem_polylines;
 	RECT BOARD;
 	BOARD.left = BOARD.right = BOARD.bottom = BOARD.top = 0;
-	if( m_outline_poly.GetSize() == 0 )
+
+	if (m_outline_poly.GetSize() == 0 && bCANCEL == 0)
 		return BOARD;
 
 	if( bCANCEL && mem_polylines.GetSize() == 0 )

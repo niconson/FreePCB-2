@@ -372,7 +372,7 @@ void SavePcbView(CFreePcbDoc* doc)
 						int np = arr->GetSize();
 						CPoint* Get = new CPoint[np];
 						el->dlist->Get_Points(el, Get, &np);
-						if (np > 2)
+						if (np >= 2)
 						{
 							CString line;
 							line.Format("polyline: %d %d %d %d %d %d %d %d\n", np, 1, cds_layer, el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
@@ -453,9 +453,7 @@ void SavePcbView(CFreePcbDoc* doc)
 					continue;
 				//-----------------------------------
 				cds_layer = 0;
-				if (el->id.st == ID_REF_TXT)
-					cds_layer = LNOTES + 1;
-				else if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
+				if ((getbit(el->layers_bitmap, LAY_TOP_COPPER) && page == 0) ||
 					(getbit(el->layers_bitmap, LAY_BOTTOM_COPPER) && page == 1))
 					cds_layer = LCOPPER;
 				else if ((getbit(el->layers_bitmap, LAY_SILK_TOP) && page == 0) ||
@@ -466,6 +464,8 @@ void SavePcbView(CFreePcbDoc* doc)
 					cds_layer = LNOTES;
 				if (cds_layer == 0)
 					continue;
+				if (el->id.st == ID_REF_TXT)
+					cds_layer = LNOTES + 1;
 				if (el->gtype == DL_LINES_ARRAY)
 				{
 					CArray<CPoint>* arr = el->dlist->Get_Points(el, NULL, NULL);
