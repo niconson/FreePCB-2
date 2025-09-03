@@ -455,7 +455,7 @@ void CFreePcbDoc::OnFileNew()
 		m_view->SetCursorMode( CUR_NONE_SELECTED );
 
 		// force redraw of window title
-		m_project_modified = FALSE;
+		ProjectModified(FALSE);
 		m_project_modified_since_autosave = FALSE;
 		m_auto_elapsed = 0;
 		m_view->m_sel_mask = ~0;
@@ -1325,10 +1325,12 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			pcb_file.Close();
 			bNoFilesOpened = FALSE;
 			m_auto_elapsed = 0;
+
+			// Save Pcb View for Schemator
 			AddBoardHoles();
 			SavePcbView(this);
 			CancelBoardHoles();
-			m_project_modified = 0;
+			ProjectModified(FALSE);
 		}
 		catch( CString * err_str )
 		{

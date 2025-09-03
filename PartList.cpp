@@ -1926,7 +1926,7 @@ int CPartList::DrawPart( cpart * part )
 	int len4 = selection.top - selection.bottom;
 	if( selection.left >= INT_MAX )
 	{
-		if( part->m_ref_vis == 0 || part->m_ref_size != NM_PER_MIL*50 )
+		/*if (part->m_ref_vis == 0 || part->m_ref_size != NM_PER_MIL * 50)
 		{
 			CString strp;
 			strp.Format(G_LANGUAGE == 0 ? 
@@ -1943,14 +1943,14 @@ int CPartList::DrawPart( cpart * part )
 			UndrawPart(part);
 			DrawPart(part);
 			return PL_NOERR;
-		}
+		}*/
 		pts[0].x = selection.left =		part->x;
 		pts[0].y = selection.bottom =	part->y;
 		pts[1].x = selection.left =		part->x;
-		pts[1].y = selection.top =		part->y+NM_PER_MIL*10;
-		pts[2].x = selection.right =	part->x+NM_PER_MIL*10;
-		pts[2].y = selection.top =		part->y+NM_PER_MIL*10;
-		pts[3].x = selection.right =	part->x+NM_PER_MIL*10;
+		pts[1].y = selection.top =		part->y+NM_PER_MIL*100;
+		pts[2].x = selection.right =	part->x+NM_PER_MIL*100;
+		pts[2].y = selection.top =		part->y+NM_PER_MIL*100;
+		pts[3].x = selection.right =	part->x+NM_PER_MIL*100;
 		pts[3].y = selection.bottom =	part->y;
 	}
 	else if( len3+len4 < len1+len2 )

@@ -12464,6 +12464,8 @@ void CFreePcbView::OnRefProperties()
 				{
 					if( dlg.m_ref_not_use && p->m_ref_size == 0 )
 						continue;
+					if (p->ref_des.Left(3) == "VIA")
+						continue;
 					m_Doc->m_plist->ResizeRefText(	p, 
 													dlg.m_height, 
 													dlg.m_width, 
