@@ -23271,9 +23271,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	}
 	if (MobileP == NULL)
 	{
-		const int NP = 5;
+		const int NP = 8;
 		CPoint P[NP];
-		int angle[NP] = { 0,0,0,0,0 };
+		int angle[NP] = { 0,0,0,0,0,0,0,0 };
 		int np = 0;
 		sz = footprint->m_outline_poly.GetSize();
 		for (int i = 0; i < sz; i++)
@@ -23303,7 +23303,7 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 					int y1 = footprint->m_outline_poly[i].GetY(ii);
 					int x2 = footprint->m_outline_poly[i].GetX(n);
 					int y2 = footprint->m_outline_poly[i].GetY(n);
-					if (abs(x1 - x2) < _2540)
+					if (abs(x1 - x2) < _2540*2)
 					{
 						if (abs(y1 - y2) > maxLen)
 						{
@@ -23315,7 +23315,7 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 							bestA = 90;
 						}
 					}
-					if (abs(y1 - y2) < _2540)
+					if (abs(y1 - y2) < _2540*2)
 					{
 						if (abs(x1 - x2) > maxLen)
 						{
@@ -23331,18 +23331,82 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 						break;
 				}
 			}
-			if ((bestX || bestY) && (maxLen > NM_PER_MM*4 || np == 0))
+			if ((bestI >= 0) && (maxLen > NM_PER_MM*8 || np == 0))
 			{
 				P[np] = CPoint(bestX, bestY);
 				angle[np] = bestA;
+				BOOL FAILED = 0;
 				if (bestA == 0)
-					if (footprint->m_outline_poly[bestI].TestPointInside(bestX, bestY + NM_PER_MIL))
+				{
+					if (footprint->m_outline_poly[bestI].TestPointInside(bestX, bestY + NM_PER_MM))
+					{
 						angle[np] += 180;
+						for (int iv = 0; iv < sz; iv++)
+						{
+							if (iv == bestI)
+								continue;
+							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
+								continue;
+							if (footprint->m_outline_poly[iv].TestPointInside(bestX, bestY - Frez - NM_PER_MM))
+							{
+								FAILED = 1;
+								break;
+							}
+						}
+					}
+					else
+					{
+						for (int iv = 0; iv < sz; iv++)
+						{
+							if (iv == bestI)
+								continue;
+							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
+								continue;
+							if (footprint->m_outline_poly[iv].TestPointInside(bestX, bestY + Frez + NM_PER_MM))
+							{
+								FAILED = 1;
+								break;
+							}
+						}
+					}
+				}
 				if (bestA == 90)
-					if (footprint->m_outline_poly[bestI].TestPointInside(bestX + NM_PER_MIL, bestY))
+				{
+					if (footprint->m_outline_poly[bestI].TestPointInside(bestX + NM_PER_MM, bestY))
+					{
 						angle[np] += 180;
+						for (int iv = 0; iv < sz; iv++)
+						{
+							if(iv == bestI)
+								continue;
+							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
+								continue;
+							if (footprint->m_outline_poly[iv].TestPointInside(bestX - Frez - NM_PER_MM, bestY))
+							{
+								FAILED = 1;
+								break;
+							}
+						}
+					}
+					else
+					{
+						for (int iv = 0; iv < sz; iv++)
+						{
+							if (iv == bestI)
+								continue;
+							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
+								continue;
+							if (footprint->m_outline_poly[iv].TestPointInside(bestX + Frez + NM_PER_MM, bestY))
+							{
+								FAILED = 1;
+								break;
+							}
+						}
+					}
+				}
 				footprint->m_outline_poly[bestI].SetUtility(bestII, 1);
-				np++;
+				if (FAILED == 0)
+					np++;
 			}
 			else
 				break;

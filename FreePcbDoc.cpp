@@ -4163,50 +4163,50 @@ void CFreePcbDoc::PartProperties()
 	dlg.Initialize( &pl, ip, TRUE, FALSE, FALSE, 0, (m_netlist_completed+(2*getbit(m_view->m_protected,PROTECT))), &m_footprint_cache_map, 
 		&m_footlibfoldermap, m_units, m_dlg_log, &m_part_search );
 	int ret = dlg.DoModal();
-	if( ret == IDOK )
+	if (ret == IDOK)
 	{
 		BOOL bNEW_EVENT = TRUE;
-		m_view->SaveUndoInfoForGroup( CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list );
+		m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
 		m_full_lib_dir = *m_footlibfoldermap.GetDefaultFolder();
-		cpart * find = NULL;
+		cpart* find = NULL;
 		CString nRef;
 		m_view->m_Doc->m_plist->MarkAllParts(0);
 		do
 		{
 			find = NULL;
-			for( int ipl=pl.GetSize()-1; ipl>=0; ipl-- )
-			{	
-				if( pl[ipl].part == NULL )
+			for (int ipl = pl.GetSize() - 1; ipl >= 0; ipl--)
+			{
+				if (pl[ipl].part == NULL)
 					continue;
-				if( pl[ipl].part->utility == UTILITY )
+				if (pl[ipl].part->utility == UTILITY)
 					continue;
-				if( pl[ipl].ref_des.Compare( pl[ipl].part->ref_des ) )
+				if (pl[ipl].ref_des.Compare(pl[ipl].part->ref_des))
 				{
 					find = pl[ipl].part;
 					nRef = pl[ipl].ref_des;
 					// test on ref match 
 					CString find_str = pl[ipl].ref_des;
-					cpart * gP;
+					cpart* gP;
 					BOOL REP;
-					do{
-						gP = m_view->m_Doc->m_plist->GetPart( find_str );
+					do {
+						gP = m_view->m_Doc->m_plist->GetPart(find_str);
 
 						//break if null
-						if( !gP )
+						if (!gP)
 							break;
 
 						//break if repeat
-						if( gP->utility == UTILITY )
+						if (gP->utility == UTILITY)
 							break;
-						
+
 						REP = 0;
-						for( int f=pl.GetSize()-1; f>=0; f-- )
+						for (int f = pl.GetSize() - 1; f >= 0; f--)
 						{
-							if( pl[f].part == NULL )
+							if (pl[f].part == NULL)
 								continue;
-							if( pl[f].part->utility == UTILITY )
+							if (pl[f].part->utility == UTILITY)
 								continue;
-							if( gP->ref_des.Compare( pl[f].part->ref_des ) == 0 )
+							if (gP->ref_des.Compare(pl[f].part->ref_des) == 0)
 							{
 								find_str = pl[f].ref_des;
 								find = gP;
@@ -4215,41 +4215,48 @@ void CFreePcbDoc::PartProperties()
 								break;
 							}
 						}
-					}while( REP );
+					} while (REP);
 					// end test
 					break;
-				}	
+				}
 			}
-			if( find )
+			if (find)
 			{
-				if( m_netlist_completed )
+				if (m_netlist_completed)
 				{
-					if( m_nlist->PartCheckConnect( find ) )
-						if( find->shape->GetNumPins() > 1 )
+					if (m_nlist->PartCheckConnect(find))
+						if (find->shape->GetNumPins() > 1)
 						{
 							CString str = " Warning, netlist is protected.\n It is impossible to change the part ref.";
 							CDlgMyMessageBox dlg;
-							dlg.Initialize( str );
+							dlg.Initialize(str);
 							dlg.DoModal();
 							m_view->g_bShow_nl_lock_Warning = !dlg.bDontShowBoxState;
 							return;
 						}
 				}
-				id pid( ID_PART_DEF );
-				m_view->NewSelect( find, &pid,0,0 );
-				m_view->SaveUndoInfoForPart( find, CPartList::UNDO_PART_MODIFY, &nRef, bNEW_EVENT, m_undo_list );
+				id pid(ID_PART_DEF);
+				m_view->NewSelect(find, &pid, 0, 0);
+				m_view->SaveUndoInfoForPart(find, CPartList::UNDO_PART_MODIFY, &nRef, bNEW_EVENT, m_undo_list);
 				find->utility = UTILITY;
 			}
-		}while( find ); 
+		} while (find);
 		//
 		// see if ref_des has changed
-		m_plist->ImportPartListInfo( &pl, 0 );
-		if( m_view->m_sel_part->shape )
+		m_plist->ImportPartListInfo(&pl, 0);
+		if (m_view->m_sel_part->shape)
 		{
-			if( m_view->m_sel_part->shape->m_name.Compare( msh ) == 0 )
-				if( m_view->m_sel_part->shape->Compare( &sh ) == 0 )
+			if (m_view->m_sel_part->shape->m_name.Compare(msh) == 0)
+				if (m_view->m_sel_part->shape->Compare(&sh) == 0)
 					ResetUndoState(); // footprint was replaced
 			m_view->m_sel_part->shape->m_package = dlg.m_package;
+		}
+		if (m_view->m_sel_part->ref_des.Left(3) == "VIA")
+		{
+			m_view->m_sel_part->m_ref_vis = 0;
+			m_view->m_sel_part->m_ref_size = 0;
+			m_view->m_sel_part->m_ref_w = 0;
+			m_plist->DrawPart(m_view->m_sel_part);
 		}
 		m_dlist->CancelHighLight();
 		m_view->HighlightGroup();
