@@ -34,6 +34,7 @@ CText::CText( CDisplayList * dlist, int x, int y, int angle, int mirror,
 	m_nchars = str_ptr->GetLength();
 	m_dlist = dlist;
 	m_selected = 0;
+	m_utility = 0;
 	net_Ptr = NULL;
 	if( smfontutil )
 		Draw( dlist, smfontutil );
@@ -715,6 +716,12 @@ CText * CTextList::GetNextText( int * it )
 		return NULL;
 }
 
+void CTextList::MarkAllTexts(int u)
+{
+	int it = 0;
+	for (CText* t = GetFirstText(); t; t = GetNextText(&it))
+		t->m_utility = u;
+}
 
 // get bounding rectangle for all text strings
 // return FALSE if no text strings

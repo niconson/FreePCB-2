@@ -207,6 +207,8 @@ void SavePcbView(CFreePcbDoc* doc)
 			{
 				for (int i = 0; i < n->nconnects; i++)
 				{
+					if (n->connect[i].utility == 0)
+						continue;
 					for (int ii = 0; ii < n->connect[i].nsegs; ii++)
 					{
 						int L = n->connect[i].seg[ii].layer;
@@ -234,8 +236,10 @@ void SavePcbView(CFreePcbDoc* doc)
 				}
 				for (int i = 0; i < n->nareas; i++)
 				{
+					if (n->area[i].utility == 0)
+						continue;
 					CPolyLine* p = n->area[i].poly;
-					if(p->GetHatch())
+					if(p->GetHatch() || p->GetW())
 						if ((p->GetLayer() == LAY_TOP_COPPER && page == 0) ||
 							(p->GetLayer() == LAY_BOTTOM_COPPER && page == 1))
 							SavePcbViewWritePolyline(&f, p, p->GetLayer());
@@ -244,6 +248,8 @@ void SavePcbView(CFreePcbDoc* doc)
 			for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
 			{
 				CPolyLine* p = &doc->m_outline_poly.GetAt(i);
+				if (p->GetUtility() == 0)
+					continue;
 				if (p->GetLayer() == LAY_BOARD_OUTLINE)
 					SavePcbViewWritePolyline(&f, p, LAY_BOARD_OUTLINE);
 				if ((p->GetLayer() == LAY_SILK_TOP && page == 0) ||
@@ -257,6 +263,8 @@ void SavePcbView(CFreePcbDoc* doc)
 			int cds_layer = 0;
 			for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
 			{
+				if (p->utility == 0)
+					continue;
 				cds_layer = 0;
 				for (int ip = 0; ip < p->pin.GetSize(); ip++)
 				{
@@ -440,16 +448,38 @@ void SavePcbView(CFreePcbDoc* doc)
 						doc->m_smfontutil->m_font_number,
 						0);
 					f.WriteString(line);
+					if (p->dl_ref_el)
+					{
+						if (p->dl_ref_el->gtype == DL_LINES_ARRAY)
+						{
+							CArray<CPoint>* arr = p->dl_ref_el->dlist->Get_Points(p->dl_ref_el, NULL, NULL);
+							int np = arr->GetSize();
+							CPoint* Get = new CPoint[np];
+							p->dl_ref_el->dlist->Get_Points(p->dl_ref_el, Get, &np);
+							for (int i = 0; i < np - 1; i += 2)
+							{
+								CString line;
+								line.Format("outline: %d %d %d %d %d %d %d %d\n", 2, 1, (LNOTES + 1), p->dl_ref_el->el_w * m_pcbu_per_wu, -1, -1, -1, 0);
+								f.WriteString(line);
+								line.Format("  corner: %d %d %d %d %d\n", 1, page ? -Get[i].x : Get[i].x, Get[i].y, 0, 0);
+								f.WriteString(line);
+								line.Format("  corner: %d %d %d %d %d\n", 2, page ? -Get[i + 1].x : Get[i + 1].x, Get[i + 1].y, 0, 0);
+								f.WriteString(line);
+							}
+							delete Get;
+						}
+					}
 				}
 			}
-			for (dl_element* el = doc->m_dlist->Get_Start(); el->next; el = el->next)
+			int it = 0;
+			for (CText* t=doc->m_tlist->GetFirstText(); t; t = doc->m_tlist->GetNextText(&it))
 			{
+				if (t->m_utility == 0)
+					continue;
+				dl_element* el = t->dl_el;
+				if (el == NULL)
+					continue;
 				if (el->visible == 0)
-					continue;
-				CText* t = (CText*)el->ptr;
-				if(t == NULL)
-					continue;
-				if (el->id.st == ID_VALUE_TXT)
 					continue;
 				//-----------------------------------
 				cds_layer = 0;
@@ -464,8 +494,6 @@ void SavePcbView(CFreePcbDoc* doc)
 					cds_layer = LNOTES;
 				if (cds_layer == 0)
 					continue;
-				if (el->id.st == ID_REF_TXT)
-					cds_layer = LNOTES + 1;
 				if (el->gtype == DL_LINES_ARRAY)
 				{
 					CArray<CPoint>* arr = el->dlist->Get_Points(el, NULL, NULL);
@@ -491,4 +519,104 @@ void SavePcbView(CFreePcbDoc* doc)
 	}
 }
 
-
+void MarkLegalElementsForExport(CFreePcbDoc* doc)
+{
+	doc->m_view->MarkAllOutlinePoly(0,-1);
+	doc->m_plist->MarkAllParts(0);
+	doc->m_nlist->MarkAllNets(0);
+	doc->m_tlist->MarkAllTexts(0);
+	
+	// find legal board outline
+	int nonLegalBoard = 0;
+	for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
+	{
+		if (p->ref_des.Find("|") >= 0)
+		{
+			for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+			{
+				if (i >= 32)
+					break;
+				CPolyLine* po = &doc->m_outline_poly.GetAt(i);
+				if (po->GetLayer() != LAY_BOARD_OUTLINE)
+					setbit(nonLegalBoard, i);
+				if (po->TestPointInside(p->x, p->y))
+					setbit(nonLegalBoard, i);
+			}
+		}
+	}
+	int iLegal = -1;
+	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+	{
+		if (i >= 32)
+			break;
+		if (getbit(nonLegalBoard, i) == 0)
+			iLegal = i;
+	}
+	if (iLegal == -1)
+	{
+		doc->m_view->MarkAllOutlinePoly(1, -1);
+		doc->m_plist->MarkAllParts(1);
+		doc->m_nlist->MarkAllNets(1);
+		doc->m_tlist->MarkAllTexts(1);
+		return;
+	}
+		
+	CPolyLine* LegalBoard = &doc->m_outline_poly.GetAt(iLegal);
+	RECT LegalRect = LegalBoard->GetCornerBounds(0);
+	for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
+	{
+		if (p->x > LegalRect.right)
+			continue;
+		if (p->x < LegalRect.left)
+			continue;
+		if (p->y > LegalRect.top)
+			continue;
+		if (p->y < LegalRect.bottom)
+			continue;
+		if (LegalBoard->TestPointInside(p->x, p->y))
+			p->utility = 1; // Legal part
+	}
+	for (cnet* n = doc->m_nlist->GetFirstNet(); n; n = doc->m_nlist->GetNextNet())
+	{
+		for (int i = 0; i < n->nconnects; i++)
+		{
+			if (n->pin[n->connect[i].start_pin].part->utility)
+				n->connect[i].utility = 1; // Legal connect
+		}
+		for (int i = 0; i < n->nareas; i++)
+		{
+			CPolyLine* po = n->area[i].poly;
+			RECT aR = po->GetCornerBounds(0);
+			if (RectsIntersection(LegalRect, aR) <= 0)
+				continue;
+			if (LegalBoard->TestPointInside(po->GetX(0), po->GetY(0)))
+				n->area[i].utility = 1; // Legal area
+		}
+	}
+	int it = 0;
+	for (CText* t = doc->m_tlist->GetFirstText(); t; t = doc->m_tlist->GetNextText(&it))
+	{
+		if (t->m_x > LegalRect.right)
+			continue;
+		if (t->m_x < LegalRect.left)
+			continue;
+		if (t->m_y > LegalRect.top)
+			continue;
+		if (t->m_y < LegalRect.bottom)
+			continue;
+		if (LegalBoard->TestPointInside(t->m_x, t->m_y))
+			t->m_utility = 1; // Legal text
+	}
+	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+	{
+		if (i == iLegal)
+			continue;
+		CPolyLine* po = &doc->m_outline_poly.GetAt(i);
+		RECT pR = po->GetCornerBounds(0);
+		if (RectsIntersection(LegalRect, pR) <= 0)
+			continue;
+		if (LegalBoard->TestPointInside(po->GetX(0), po->GetY(0)))
+			po->SetUtility(1); // Legal polyline
+	}
+	LegalBoard->SetUtility(1);
+}

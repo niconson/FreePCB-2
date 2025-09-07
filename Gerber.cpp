@@ -1178,7 +1178,7 @@ int LPD = 0;
 			if (layer == LAY_SCRIBING)
 			{
 				// stroke outline with aperture to create clearance
-				CAperture panel_ap(CAperture::AP_CIRCLE, _2540, 0);
+				CAperture panel_ap(CAperture::AP_CIRCLE, _2540*4, 0);
 				ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
 				if (PASS1)
 				{
@@ -1238,7 +1238,7 @@ int LPD = 0;
 				if (layer == LAY_SILK_TOP && panel.m_text[0].GetLength())
 				{
 					str = panel.m_text[0];
-					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1]) / 4;
 					int TW = TH / 7;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (w),
@@ -1267,7 +1267,7 @@ int LPD = 0;
 				if (layer == LAY_SILK_BOTTOM && panel.m_text[1].GetLength())
 				{
 					str = panel.m_text[1];
-					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1]) / 4;
 					int TW = TH / 7;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - (w),
@@ -1341,7 +1341,7 @@ int LPD = 0;
 				if (layer == LAY_TOP_COPPER && panel.m_text[2].GetLength())
 				{
 					str = panel.m_text[2];
-					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1]) / 4;
 					int TW = TH / 7;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (w),
@@ -1370,7 +1370,7 @@ int LPD = 0;
 				if (layer == LAY_BOTTOM_COPPER && panel.m_text[3].GetLength())
 				{
 					str = panel.m_text[3];
-					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1]) / 4;
 					int TW = TH / 7;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - (w),
@@ -1443,7 +1443,7 @@ int LPD = 0;
 				if (layer == LAY_SM_TOP && panel.m_text[2].GetLength())
 				{
 					str = panel.m_text[2];
-					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1]) / 4;
 					int TW = TH / 7;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (w),
@@ -1472,7 +1472,7 @@ int LPD = 0;
 				if (layer == LAY_SM_BOTTOM && panel.m_text[3].GetLength())
 				{
 					str = panel.m_text[3];
-					int TH = abs(panel.m_fields[1] - panel.m_holes[0]) / 4;
+					int TH = abs(panel.m_fields[1]) / 4;
 					int TW = TH / 7;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - (w),
@@ -1500,6 +1500,44 @@ int LPD = 0;
 				}
 			}
 		}
+		if(op) for (int i = 0; i < op->GetSize(); i++)
+		{
+			CPolyLine* poly = &(*op)[i];
+			int pW = poly->GetW();
+			int pL = poly->GetLayer();
+			if (pL != LAY_BOARD_OUTLINE)
+				continue;
+			int pCl = poly->GetClosed();
+			BOOL poly_OK = (layer == poly->GetLayer() || (flags & GERBER_BOARD_OUTLINE));
+
+			// stroke outline with aperture to create clearance
+			CAperture sm_ap(CAperture::AP_CIRCLE, abs(pW), 0);
+			ChangeAperture(&sm_ap, &current_ap, &ap_array, PASS0, f);
+			// stroke outline with aperture to create clearance
+			int nc = poly->GetNumCorners();
+			if (pCl == 0)
+				nc--;
+			if (PASS1 && poly_OK) for (int ico = 0; ico < poly->GetNumContours(); ico++)
+			{
+				int cst = poly->GetContourStart(ico);
+				int cend = poly->GetContourEnd(ico);
+				cend = min(cend, nc - 1);
+				int last_x = poly->GetX(cst);
+				int last_y = poly->GetY(cst);
+				::WriteMoveTo(f, last_x, last_y, LIGHT_OFF);
+				for (int ic = cst; ic <= cend; ic++)
+				{
+					last_x = poly->GetX(ic);
+					last_y = poly->GetY(ic);
+					int in = poly->GetIndexCornerNext(ic);
+					int x = poly->GetX(in);
+					int y = poly->GetY(in);
+					int style = poly->GetSideStyle(ic);
+					::WritePolygonSide(f, last_x, last_y, x, y, style, N_SIDES_APPROX_ARC, LIGHT_ON);
+				}
+			}
+		}
+		
 		// step and repeat for panelization
 		if( PASS1 )
 		{
@@ -2973,16 +3011,16 @@ int LPD = 0;
 			}
 		}
 
-		// draw solder mask cutouts, board outlines, outlines graphic
+		// draw solder mask cutouts, outlines of graphic
 		if( op )
 		{
-			for( int i=0; i<op->GetSize(); i++ )
+			if(layer != LAY_BOARD_OUTLINE) for( int i=0; i<op->GetSize(); i++ )
 			{
 				CPolyLine * poly = &(*op)[i];
 				int pW = poly->GetW();
 				int pL = poly->GetLayer();
 				int pCl = poly->GetClosed();
-				BOOL poly_OK = (layer == poly->GetLayer() || ((flags & GERBER_BOARD_OUTLINE) && pL == LAY_BOARD_OUTLINE));
+				BOOL poly_OK = (layer == poly->GetLayer());
 				if (poly_OK)
 				{
 					if (pL == LAY_SILK_TOP || pL == LAY_SILK_BOTTOM)

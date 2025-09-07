@@ -54,6 +54,7 @@ public:
 	CString m_str;
 	int m_merge;  // merge with other obj
 	int m_submerge;  // submerge with other obj
+	int m_utility;
 	CDisplayList * m_dlist;
 	dl_element * dl_el;
 	dl_element * dl_sel;
@@ -93,6 +94,7 @@ public:
 	CText * GetFirstText();
 	CText * GetNextText( int * it );
 	int GetNumTexts(){ return text_ptr.GetSize();};
+	void MarkAllTexts(int u=0);
 	BOOL GetTextBoundaries( RECT * r );
 	BOOL GetTextRectOnPCB( CText * t, RECT * r );
 	void ReassignCopperLayers( int n_new_layers, int * layer );

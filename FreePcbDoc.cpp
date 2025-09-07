@@ -1328,6 +1328,7 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 
 			// Save Pcb View for Schemator
 			AddBoardHoles();
+			MarkLegalElementsForExport(this);
 			SavePcbView(this);
 			CancelBoardHoles();
 			ProjectModified(FALSE);
@@ -7244,9 +7245,12 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 
 		
 		AddBoardHoles();
+		MarkLegalElementsForExport(this);
 		for( int i=0; i<m_outline_poly.GetSize(); i++ )
 		{
 			CPolyLine * bp = &m_outline_poly.GetAt(i);
+			if (bp->GetUtility() == 0)
+				continue;
 			if( bp->GetLayer() == LAY_BOARD_OUTLINE )
 			{
 				str.Format( "    color( \"green\" )\n" );
@@ -7339,7 +7343,6 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				file.WriteString( "        }\n" );
 			}
 		}
-		CancelBoardHoles();
 		//
 		// закрываем BO module
 		//
@@ -7354,6 +7357,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			file.WriteString( str );
 			for( cpart * pp=m_plist->GetFirstPart(); pp; pp=m_plist->GetNextPart(pp) )
 			{
+				if (pp->utility == 0)
+					continue;
 				if( shapes.GetAt(i) == pp->shape )
 				{
 					double px = pp->x / mu;
@@ -7494,7 +7499,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			else
 				bShellEx = TRUE;
 		}
-
+		CancelBoardHoles();
 		if( bShellEx )
 			ShellExecute(	NULL, "open", newpath, NULL, NULL, SW_SHOWNORMAL);
 	}
@@ -14330,6 +14335,16 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 	int bW = 0;
 	RECT op_rect = GetBoardRect(&bW);
 	BOARD = op_rect;
+	// test bounds
+	{
+		long long bW = BOARD.right - BOARD.left;
+		long long bH = BOARD.top - BOARD.bottom;
+		if (bW * (long long)m_n_x > INT_MAX / 2 || bH * (long long)m_n_y > INT_MAX / 2)
+		{
+			AfxMessageBox(G_LANGUAGE?"Один из размеров панели печатных плат выходит за допустимые рамки":"One of the PCB panel dimensions is out of tolerance", MB_ICONERROR);
+			return BOARD;
+		}
+	}
 	///m_view->SaveUndoInfoForOutlinePoly( m_view->UNDO_OP, TRUE, m_undo_list ); n.u.
 	if (MakePanel) 
 		if(MakePanel->x > 1 || MakePanel->y > 1)

@@ -9459,6 +9459,7 @@ void CFreePcbView::CancelSelection( BOOL hDialog )
 	// mark 0
 	m_Doc->m_nlist->MarkAllNets(0);
 	m_Doc->m_plist->MarkAllParts(0);
+	m_Doc->m_tlist->MarkAllTexts(0);
 	MarkAllOutlinePoly(0,-1);
 
 	// dlg log
