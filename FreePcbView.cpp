@@ -5858,7 +5858,7 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 					m_Doc->m_nlist->SetAreaConnections( m_sel_net, m_sel_ia );
 				}
 				int mem_n_areas = m_sel_net->nareas-1;
-				m_Doc->AddBoardHoles();
+				m_Doc->AddBoardHoles(); // valid
 				m_Doc->m_nlist->AddCutoutsForArea(	m_sel_net, 
 													m_sel_ia, 
 													cropNet, 

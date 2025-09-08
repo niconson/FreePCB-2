@@ -1327,11 +1327,12 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			m_auto_elapsed = 0;
 
 			// Save Pcb View for Schemator
-			AddBoardHoles();
+			AddBoardHoles(); // valid
 			MarkLegalElementsForExport(this);
 			SavePcbView(this);
 			CancelBoardHoles();
-			ProjectModified(FALSE);
+			if (bBackup)
+				ProjectModified(FALSE);
 		}
 		catch( CString * err_str )
 		{
@@ -6305,7 +6306,7 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 					setbit(	crop_flags, MC_ALL_NETS );
 					setbit(	crop_flags, MC_VALIDATE );
 					{
-						AddBoardHoles();
+						AddBoardHoles(); // valid
 						bUndoA = 1;
 					}
 					m_view->SaveUndoInfoForArea( net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, m_undo_list );
@@ -7244,7 +7245,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		file.WriteString( str );
 
 		
-		AddBoardHoles();
+		AddBoardHoles(); // valid
 		MarkLegalElementsForExport(this);
 		for( int i=0; i<m_outline_poly.GetSize(); i++ )
 		{
@@ -8184,7 +8185,7 @@ void CFreePcbDoc::RemoveOrphanMerges()
 void CFreePcbDoc::DRC()
 {
 	const int MAXERRORS = 499;
-	AddBoardHoles();
+	AddBoardHoles(); // valid
 	CString PrevValueStr = "__";
 	CString d_str, x_str, y_str;
 	CString str;
@@ -13200,6 +13201,18 @@ void CFreePcbDoc::AddViaGrid()
 
 void CFreePcbDoc::AddSymmetricalBlank()
 {
+	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+	{
+		if (p->ref_des.Find("|") >= 0)
+		{
+			AfxMessageBox(G_LANGUAGE ? "Нельзя сделать симметризацию, "\
+				"если в проекте присутствуют детали в обозначении которых "\
+				"используется символ скрытого текста - вертикальная черта" : \
+				"Symmetrization cannot be performed if the project contains "\
+				"parts in the designation of which the hidden text symbol - a vertical bar - is used.");
+			return;
+		}
+	}
 	CDlgAddSymmetricalBlank dlg;
 	dlg.Initialize(2, m_space_x, m_space_y, m_units);
 	int ret = dlg.DoModal();
@@ -14305,7 +14318,7 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 	RECT BOARD;
 	BOARD.left = BOARD.right = BOARD.bottom = BOARD.top = 0;
 
-	if (m_outline_poly.GetSize() == 0 && bCANCEL == 0)
+	if (m_outline_poly.GetSize() == 0 && mem_polylines.GetSize() == 0)
 		return BOARD;
 
 	if( bCANCEL && mem_polylines.GetSize() == 0 )
