@@ -21076,9 +21076,12 @@ void CFreePcbView::OnInfoBoxMess( int command, int n_str, CArray<CString> *str, 
 
 	if( command == C_UNSEL )
 	{
-		if( bIronScale )
-			m_Doc->m_dlist->CancelHighLight();
-		else
+		//if (bIronScale)
+		//{
+		//	m_Doc->m_dlist->CancelHighLight();
+		//	OnRangeCmds(NULL);
+		//}
+		//else
 			CancelSelection();
 	}
 	else if( command == C_SHOW )

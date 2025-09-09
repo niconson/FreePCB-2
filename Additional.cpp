@@ -353,6 +353,8 @@ void SavePcbView(CFreePcbDoc* doc)
 					else if ((getbit(el->layers_bitmap, LAY_REFINE_TOP) && page == 0) ||
 						(getbit(el->layers_bitmap, LAY_REFINE_BOT) && page == 1))
 						cds_layer = LNOTES;
+					else if (getbit(el->layers_bitmap, LAY_PAD_THRU))
+						cds_layer = LHOLES;
 					if (cds_layer == 0)
 						continue;
 					if (el->gtype == DL_POLYGON)
@@ -539,7 +541,9 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 				CPolyLine* po = &doc->m_outline_poly.GetAt(i);
 				if (po->GetLayer() != LAY_BOARD_OUTLINE)
 					setbit(nonLegalBoard, i);
-				if (po->TestPointInside(p->x, p->y))
+				else if( po->GetClosed() == 0)
+					setbit(nonLegalBoard, i);
+				else if (po->TestPointInside(p->x, p->y))
 					setbit(nonLegalBoard, i);
 			}
 		}

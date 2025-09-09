@@ -1327,12 +1327,14 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			m_auto_elapsed = 0;
 
 			// Save Pcb View for Schemator
-			AddBoardHoles(); // valid
-			MarkLegalElementsForExport(this);
-			SavePcbView(this);
-			CancelBoardHoles();
 			if (bBackup)
-				ProjectModified(FALSE);
+			{
+				//AddBoardHoles(); // valid
+				MarkLegalElementsForExport(this);
+				SavePcbView(this);
+				//CancelBoardHoles();
+				//ProjectModified(FALSE);
+			}
 		}
 		catch( CString * err_str )
 		{

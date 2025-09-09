@@ -2081,6 +2081,8 @@ void CPolyLine::Hatch()
 //
 BOOL CPolyLine::TestPointInside( int x, int y, int num_c )
 {
+	if (GetClosed() == 0)
+		return 0;
 	float st_angle;
 	float back_angle; 
 	float diff_angle;
