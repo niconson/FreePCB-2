@@ -13242,8 +13242,9 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		}
 		else if (dlg.m_var == 3)
 		{
+			m_view->RotateGroup(-90, 0);
+			pcbr = GetBoardRect();
 			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
-			m_view->RotateGroup(-90,0);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
 			OnEditSelectAll();
