@@ -530,22 +530,26 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 	
 	// find legal board outline
 	int nonLegalBoard = 0;
-	for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
+	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
 	{
-		if (p->ref_des.Find("|") >= 0)
+		if (i >= 32)
+			break;
+		CPolyLine* po = &doc->m_outline_poly.GetAt(i);
+		if (po->GetLayer() != LAY_BOARD_OUTLINE)
+			setbit(nonLegalBoard, i);
+		else if( po->GetClosed() == 0)
+			setbit(nonLegalBoard, i);
+		else for (cpart* p = doc->m_plist->GetFirstPart(); p;)
 		{
-			for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+			if (po->TestPointInside(p->x, p->y))
 			{
-				if (i >= 32)
-					break;
-				CPolyLine* po = &doc->m_outline_poly.GetAt(i);
-				if (po->GetLayer() != LAY_BOARD_OUTLINE)
+				if (p->ref_des.Find("|") >= 0)
 					setbit(nonLegalBoard, i);
-				else if( po->GetClosed() == 0)
-					setbit(nonLegalBoard, i);
-				else if (po->TestPointInside(p->x, p->y))
-					setbit(nonLegalBoard, i);
+				break;
 			}
+			p = doc->m_plist->GetNextPart(p);
+			if( p == NULL )
+				setbit(nonLegalBoard, i);
 		}
 	}
 	int iLegal = -1;
