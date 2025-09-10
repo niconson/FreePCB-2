@@ -541,12 +541,18 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 			setbit(nonLegalBoard, i);
 		else for (cpart* p = doc->m_plist->GetFirstPart(); p;)
 		{
-			if (po->TestPointInside(p->x, p->y))
+			if (p->shape)
 			{
-				if (p->ref_des.Find("|") >= 0)
-					setbit(nonLegalBoard, i);
-				break;
-			}
+				if (p->shape->m_name != "MILLING_BOARD_OUTLINE")
+				{
+					if (po->TestPointInside(p->x, p->y))
+					{
+						if (p->ref_des.Find("|") >= 0)
+							setbit(nonLegalBoard, i);
+						break;
+					}
+				}	
+			}	
 			p = doc->m_plist->GetNextPart(p);
 			if( p == NULL )
 				setbit(nonLegalBoard, i);
@@ -581,6 +587,9 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 			continue;
 		if (p->y < LegalRect.bottom)
 			continue;
+		if(p->shape)
+			if(p->shape->m_name == "MILLING_BOARD_OUTLINE")
+				continue;
 		if (LegalBoard->TestPointInside(p->x, p->y))
 			p->utility = 1; // Legal part
 	}
