@@ -635,7 +635,7 @@ void CDlgReport::OnBnClickedOk()
 				file.WriteString(str1 + "\n");
 
 				// MULTIPLICATION
-				if (m_doc->m_n_x > 1 || m_doc->m_n_y > 1)
+				if (m_doc->m_n_x >= 1 || m_doc->m_n_y >= 1)
 				{
 					part = m_pl->GetPart(ref_des[ip]);
 					for (int iy = 0; iy < m_doc->m_n_y; iy++)

@@ -6,3 +6,4 @@ void SavePcbViewWriteRndRect(CStdioFile* f, int x, int y, int w, int h, int r, i
 void SavePcbViewWriteSegment(CStdioFile* f, int x, int y, int x2, int y2, int w, int L);
 void SavePcbViewWritePolyline(CStdioFile* f, CPolyLine* p, int L);
 void MarkLegalElementsForExport( CFreePcbDoc* doc );
+void SelectLegalElements( CFreePcbDoc* doc );

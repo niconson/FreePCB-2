@@ -13222,18 +13222,21 @@ void CFreePcbDoc::AddSymmetricalBlank()
 	{
 		int mem_nl_comp = m_netlist_completed;
 		m_netlist_completed = 0;
-
 		RECT pcbr = GetBoardRect();
-		OnEditSelectAll();
-		CString s = "pcb-1";
-		int merge0 = m_mlist->AddNew(s, 0);
+		MarkLegalElementsForExport(this);
+		SelectLegalElements(this);
+		CString m1 = "pcb-1";
+		CString m2 = "pcb-2";
+		int merge0 = m_mlist->GetIndex(m1);
+		if(merge0 == -1)
+			merge0 = m_mlist->AddNew(m1, 0);
 		m_view->MergeGroup(merge0);
 		if (dlg.m_var == 2)
 		{
 			m_view->MoveOrigin(-pcbr.right-(dlg.m_dx/2), -pcbr.top-(dlg.m_dy/2));
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
-			OnEditSelectAll();
+			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
 			m_view->TurnGroup();
@@ -13244,16 +13247,20 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		{
 			m_view->RotateGroup(-90, 0);
 			pcbr = GetBoardRect();
-			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
+			m_view->MoveOrigin(-pcbr.right - (dlg.m_dy / 2), -pcbr.top - (dlg.m_dx / 2));
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
-			OnEditSelectAll();
+			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
 			m_view->TurnGroup();
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
-			OnEditSelectAll();
+			m_view->NewSelectM(NULL, merge0);
+			int merge1 = m_mlist->GetIndex(m1);
+			if (merge1 == -1)
+				ASSERT(0);
+			m_view->NewSelectM(NULL, merge1);
 			m_view->RotateGroup(90,0);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
@@ -13263,7 +13270,7 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
-			OnEditSelectAll();
+			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
 			m_view->RotateGroup(-180, 0);
@@ -13272,7 +13279,11 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			m_view->MoveGroup(0, pcbr.top - pcbr.bottom + dlg.m_dy,0);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
-			OnEditSelectAll();
+			m_view->NewSelectM(NULL, merge0);
+			int merge1 = m_mlist->GetIndex(m1);
+			if (merge1 == -1)
+				ASSERT(0);
+			m_view->NewSelectM(NULL, merge1);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
 			m_view->TurnGroup();

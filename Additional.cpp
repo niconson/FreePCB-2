@@ -543,15 +543,16 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 		{
 			if (p->shape)
 			{
-				if (p->shape->m_name != "MILLING_BOARD_OUTLINE")
-				{
-					if (po->TestPointInside(p->x, p->y))
+				if(p->ref_des.Left(3) != "VIA")
+					if (p->shape->m_name != "MILLING_BOARD_OUTLINE")
 					{
-						if (p->ref_des.Find("|") >= 0)
-							setbit(nonLegalBoard, i);
-						break;
-					}
-				}	
+						if (po->TestPointInside(p->x, p->y))
+						{
+							if (p->ref_des.Find("|") >= 0)
+								setbit(nonLegalBoard, i);
+							break;
+						}
+					}	
 			}	
 			p = doc->m_plist->GetNextPart(p);
 			if( p == NULL )
@@ -604,10 +605,16 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 		{
 			CPolyLine* po = n->area[i].poly;
 			RECT aR = po->GetCornerBounds(0);
-			if (RectsIntersection(LegalRect, aR) <= 0)
+			if (RectsIntersection(LegalRect, aR) < 0)
 				continue;
 			if (LegalBoard->TestPointInside(po->GetX(0), po->GetY(0)))
 				n->area[i].utility = 1; // Legal area
+			else
+			{
+				int d = Distance(po->GetX(0), po->GetY(0), LegalBoard->GetX(0), LegalBoard->GetY(0));
+				if(d < _2540)
+					n->area[i].utility = 1; // Legal area
+			}
 		}
 	}
 	int it = 0;
@@ -632,8 +639,60 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 		RECT pR = po->GetCornerBounds(0);
 		if (RectsIntersection(LegalRect, pR) <= 0)
 			continue;
-		if (LegalBoard->TestPointInside(po->GetX(0), po->GetY(0)))
-			po->SetUtility(1); // Legal polyline
+		int nc = po->GetNumCorners();
+		if(nc > 0)
+			if (LegalBoard->TestPointInside(po->GetX(0), po->GetY(0)))
+				if (LegalBoard->TestPointInside(po->GetX(nc-1), po->GetY(nc-1)))
+					po->SetUtility(1); // Legal polyline
 	}
 	LegalBoard->SetUtility(1);
+}
+
+void SelectLegalElements(CFreePcbDoc* doc)
+{
+	id sid(ID_PART, ID_SEL_RECT, 0, 0, 0);
+	for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
+	{
+		if (p->utility)
+			doc->m_view->NewSelect(p, &sid, 0, 0, 0);
+	}
+	for (cnet* n = doc->m_nlist->GetFirstNet(); n; n = doc->m_nlist->GetNextNet())
+	{
+		for (int i = 0; i < n->nconnects; i++)
+		{
+			if (n->connect[i].utility)
+				for (int ii = 0; ii < n->connect[i].nsegs; ii++)
+				{
+					sid.Set(ID_NET, ID_CONNECT, i, ID_SEG, ii);
+					doc->m_view->NewSelect(n, &sid, 0, 0, 0);
+				}		
+		}
+		for (int i = 0; i < n->nareas; i++)
+		{
+			sid.Set(ID_NET, ID_AREA, i, ID_SIDE, 0);
+			if(n->area[i].utility)
+				doc->m_view->NewSelect(n, &sid, 0, 0, 0);
+		}
+	}
+	int it = 0;
+	sid.Set(ID_TEXT_DEF);
+	for (CText* t = doc->m_tlist->GetFirstText(); t; t = doc->m_tlist->GetNextText(&it))
+	{
+		if (t->m_utility)
+			doc->m_view->NewSelect(t, &sid, 0, 0, 0);
+	}
+	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+	{
+		CPolyLine* po = &doc->m_outline_poly.GetAt(i);
+		if (po->GetUtility())
+		{
+			sid.Set(ID_POLYLINE, ID_GRAPHIC, i, ID_SIDE, 0);
+			if (po->GetLayer() == LAY_BOARD_OUTLINE)
+				sid.st = ID_BOARD;
+			else if (po->GetLayer() == LAY_SM_TOP || po->GetLayer() == LAY_SM_BOTTOM)
+				sid.st = ID_SM_CUTOUT;
+			doc->m_view->NewSelect(NULL, &sid, 0, 0, 0);
+		}
+	}
+	doc->m_view->SelectContour();
 }
