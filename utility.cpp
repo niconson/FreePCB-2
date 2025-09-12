@@ -3711,7 +3711,7 @@ int GetPartAngleForReportedAngle( int angle, int cent_angle, int side )
 {
 	int a = ccw(angle);
 	if( side )
-		a = (a + 180)%360;
+		a = (a + 180) % 360;
 	a = (a + cent_angle) % 360;  
 	return a;
 }
@@ -3805,7 +3805,7 @@ CPoint * GetRepperPoint(int ipt, RECT * op_rect, int * FREZ)//int ipt, CPoint Bo
 	if (pMILLING)
 	{
 		RECT part_r;
-		if (theApp.m_Doc->m_plist->GetPartBoundingRect(pMILLING, &part_r))
+		if (theApp.m_Doc->m_plist->GetPartMillingCRect(pMILLING, &part_r))
 			swell = (part_r.right - part_r.left - op_rect->right + op_rect->left) / 4;
 	}
 	if (swell < 0 || swell > 10 * NM_PER_MM)

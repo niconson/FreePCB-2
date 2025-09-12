@@ -843,6 +843,33 @@ int CPartList::GetPartBoundingRect( cpart * part, RECT * part_r )
 	return 0;
 }
 
+// Get milling contour rect for panelization
+int CPartList::GetPartMillingCRect(cpart* part, RECT* part_r)
+{
+	if (!part)
+		return 0;
+	if (!part->shape)
+		return 0;
+	if (part->dl_sel)
+	{
+		part_r->left = part_r->bottom = INT_MAX;
+		part_r->right = part_r->top = INT_MIN;
+		for (int i = 0; i < part->shape->m_outline_poly.GetSize(); i++)
+		{
+			CPolyLine* p = &part->shape->m_outline_poly.GetAt(i);
+			if (p->GetLayer() == LAY_FP_PAD_THRU)
+			{
+				RECT r = p->GetBounds();
+				SwellRect(part_r, r);
+			}
+		}
+		if (part_r->left == INT_MAX)
+			*part_r = rect(0, 0, 0, 0);
+		return 1;
+	}
+	return 0;
+}
+
 int CPartList::GetPinsBoundingRect	( cpart * part, RECT * pins_r )
 {
 	if( !part )
@@ -2684,6 +2711,8 @@ cpart * CPartList::AddFromString( CString * str )
 				y = my_atoi( &p[1] );
 				side = my_atoi( &p[2] );
 				angle = my_atoi( &p[3] );
+				if (angle < 0)
+					angle += 360;
 				glued = my_atoi( &p[4] );
 			}
 			else

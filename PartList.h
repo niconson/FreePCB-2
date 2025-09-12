@@ -263,6 +263,7 @@ public:
 	void SetPinAnnularRing( int ring ){ m_annular_ring = ring; };
 	void OptimizeRatlinesOnPin( cnet * pinnet, int innet );
 	int GetPartBoundingRect	( cpart * part, RECT * part_r );
+	int GetPartMillingCRect ( cpart * part, RECT * part_r );
 	int GetPinsBoundingRect	( cpart * part, RECT * pins_r );
 	int GetPartThruPadsRect	( cpart * part, RECT * ThruPads );
 	int GetRefBoundingRect	( cpart * part, RECT * ref_r );
