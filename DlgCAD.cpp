@@ -45,6 +45,8 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REF4, m_check_ref4);
 	DDX_Control(pDX, IDC_V_CUTOUT_X, m_button_v_cut_x);
 	DDX_Control(pDX, IDC_V_CUTOUT_Y, m_button_v_cut_y);
+	DDX_Control(pDX, IDC_V_CUTOUT_X2, m_button_v_cut_mx);
+	DDX_Control(pDX, IDC_V_CUTOUT_Y2, m_button_v_cut_my);
 	DDX_Control(pDX, IDC_PANEL_HOLE_CNT, m_panel_hole_cnt);
 	DDX_Control(pDX, IDC_SELECT_REF, m_panel_reference);
 	//
@@ -215,15 +217,15 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 			m_check_ref3.SetCheck(1);
 		else
 			m_check_ref4.SetCheck(1);
-		if (m_panel.m_scribing == 1 )
+		//
+		if (getbit(m_panel.m_scribing, 0))
 			m_button_v_cut_x.SetCheck(1);
-		else if (m_panel.m_scribing == 2)
+		if (getbit(m_panel.m_scribing, 1))
 			m_button_v_cut_y.SetCheck(1);
-		else if (m_panel.m_scribing)
-		{
-			m_button_v_cut_x.SetCheck(1);
-			m_button_v_cut_y.SetCheck(1);
-		}
+		if (getbit(m_panel.m_scribing, 2))
+			m_button_v_cut_mx.SetCheck(1);
+		if (getbit(m_panel.m_scribing, 3))
+			m_button_v_cut_my.SetCheck(1);
 		//
 		m_dpi.SetWindowTextA( m_dpi_str );
 		m_png_aa.SetWindowTextA( m_png_aa_str );
@@ -1098,14 +1100,17 @@ void CDlgCAD::GetFields()
 		m_panel.m_ref_count = 1;
 	else
 		m_panel.m_ref_count = 2;
-	if (m_button_v_cut_x.GetCheck() && m_button_v_cut_y.GetCheck())
-		m_panel.m_scribing = 3;
-	else if (m_button_v_cut_x.GetCheck())
-		m_panel.m_scribing = 1;
-	else if (m_button_v_cut_y.GetCheck())
-		m_panel.m_scribing = 2;
-	else
-		m_panel.m_scribing = 0;
+
+	m_panel.m_scribing = 0;
+	if (m_button_v_cut_x.GetCheck())
+		setbit(m_panel.m_scribing, 0);
+	if (m_button_v_cut_y.GetCheck())
+		setbit(m_panel.m_scribing, 1);
+	if (m_button_v_cut_mx.GetCheck())
+		setbit(m_panel.m_scribing, 2);
+	if (m_button_v_cut_my.GetCheck())
+		setbit(m_panel.m_scribing, 3);
+
 	m_edit_panel_field_x.GetWindowText(str);
 	m_panel.m_fields[0] = atof(str) * mult;
 	m_edit_panel_field_y.GetWindowText(str);

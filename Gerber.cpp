@@ -1182,7 +1182,7 @@ int LPD = 0;
 				ChangeAperture(&panel_ap, &current_ap, &ap_array, PASS0, f);
 				if (PASS1)
 				{
-					if (panel.m_scribing == 1 || panel.m_scribing == 3)
+					if (getbit(panel.m_scribing, 0))
 					{
 						for (int istep = 0; istep < n_y; istep++)
 						{
@@ -1204,9 +1204,19 @@ int LPD = 0;
 									BoardOrigin.x + panel.m_fields[0] + (f_step_x * NM_PER_MIL * n_x) - step_x, 
 									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep) + (op_rect.top - op_rect.bottom), LIGHT_ON);
 							}
+							if (getbit(panel.m_scribing, 2))
+							{
+								int new_y = BoardOrigin.y + (f_step_y * NM_PER_MIL * istep) + (op_rect.top - op_rect.bottom) / 2;
+								::WriteMoveTo(f,
+									BoardOrigin.x - panel.m_fields[0],
+									new_y, LIGHT_OFF);
+								::WriteMoveTo(f,
+									BoardOrigin.x + panel.m_fields[0] + (f_step_x * NM_PER_MIL * n_x) - step_x,
+									new_y, LIGHT_ON);
+							}
 						}
 					}
-					if (panel.m_scribing == 2 || panel.m_scribing == 3)
+					if (getbit(panel.m_scribing, 1))
 					{
 						for (int istep = 0; istep < n_x; istep++)
 						{
@@ -1226,6 +1236,16 @@ int LPD = 0;
 									BoardOrigin.y - panel.m_fields[1], LIGHT_OFF);
 								::WriteMoveTo(f, 
 									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left), 
+									BoardOrigin.y + panel.m_fields[1] + (f_step_y * NM_PER_MIL * n_y) - step_y, LIGHT_ON);
+							}
+							if (getbit(panel.m_scribing, 3))
+							{
+								int new_x = BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left) / 2;
+								::WriteMoveTo(f,
+									new_x,
+									BoardOrigin.y - panel.m_fields[1], LIGHT_OFF);
+								::WriteMoveTo(f,
+									new_x,
 									BoardOrigin.y + panel.m_fields[1] + (f_step_y * NM_PER_MIL * n_y) - step_y, LIGHT_ON);
 							}
 						}

@@ -148,6 +148,8 @@ public:
 	CButton m_check_ref4;
 	CButton m_button_v_cut_x;
 	CButton m_button_v_cut_y;
+	CButton m_button_v_cut_mx;
+	CButton m_button_v_cut_my;
 	CComboBox m_panel_hole_cnt;
 	CComboBox m_panel_reference;
 	//

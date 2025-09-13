@@ -201,7 +201,7 @@
 #define IDD_DIALOG4                     328
 #define IDD_MY_MESSAGE                  328
 #define IDD_VIA                         329
-#define IDD_ADD_SYMMETRICAL_BLANK		330
+#define IDD_ADD_SYMMETRICAL_BLANK       330
 #define IDD_AREA_LAYER                  331
 #define IDD_MY_MESSAGE2                 332
 #define IDD_GROUP_PASTE                 333
@@ -459,6 +459,8 @@
 #define IDC_V_CUTOUT_X                  1175
 #define IDC_V_CUTOUT_Y                  1176
 #define IDC_CHECK_PREVIEW               1177
+#define IDC_V_CUTOUT_X2                 1177
+#define IDC_V_CUTOUT_Y2                 1178
 #define IDC_BMP_QUAD                    1179
 #define IDC_EDIT_WIZ_HPINS              1180
 #define IDC_EDIT_WIZ_VPINS              1181
