@@ -462,7 +462,9 @@
 #define IDC_V_CUTOUT_X2                 1177
 #define IDC_V_CUTOUT_Y2                 1178
 #define IDC_BMP_QUAD                    1179
+#define IDC_180_DEG_1                   1179
 #define IDC_EDIT_WIZ_HPINS              1180
+#define IDC_180_DEG_2                   1180
 #define IDC_EDIT_WIZ_VPINS              1181
 #define IDC_EDIT_WIZ_HD                 1182
 #define IDC_COMBO_WIZ_SHAPE             1183

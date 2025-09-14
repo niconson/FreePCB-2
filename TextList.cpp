@@ -36,6 +36,8 @@ CText::CText( CDisplayList * dlist, int x, int y, int angle, int mirror,
 	m_selected = 0;
 	m_utility = 0;
 	net_Ptr = NULL;
+	dl_sel = NULL;
+	dl_el = NULL;
 	if( smfontutil )
 		Draw( dlist, smfontutil );
 	else
@@ -55,6 +57,8 @@ CText::~CText()
 void CText::Draw( CDisplayList * dlist, SMFontUtil * smfontutil, CArray<CPoint> * m_stroke )
 {
 	// draw text
+	if (dl_el)
+		Undraw();
 	m_dlist = dlist;
 	id id( ID_TEXT, ID_STROKE );
 	CArray<CPoint> strk;
@@ -198,9 +202,11 @@ void CText::Undraw()
 {
 	if( m_dlist )
 	{
-		m_dlist->Remove( dl_sel );
+		if(dl_sel)
+			m_dlist->Remove( dl_sel );
 		dl_sel = NULL;
-		m_dlist->Remove( dl_el );
+		if(dl_el)
+			m_dlist->Remove( dl_el );
 		dl_el = NULL;
 		m_dlist = NULL;		// indicated that it is not drawn
 	}

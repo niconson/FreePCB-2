@@ -47,6 +47,7 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_V_CUTOUT_Y, m_button_v_cut_y);
 	DDX_Control(pDX, IDC_V_CUTOUT_X2, m_button_v_cut_mx);
 	DDX_Control(pDX, IDC_V_CUTOUT_Y2, m_button_v_cut_my);
+	DDX_Control(pDX, IDC_180_DEG_1, m_button_text_rot);
 	DDX_Control(pDX, IDC_PANEL_HOLE_CNT, m_panel_hole_cnt);
 	DDX_Control(pDX, IDC_SELECT_REF, m_panel_reference);
 	//
@@ -226,6 +227,8 @@ void CDlgCAD::DoDataExchange(CDataExchange* pDX)
 			m_button_v_cut_mx.SetCheck(1);
 		if (getbit(m_panel.m_scribing, 3))
 			m_button_v_cut_my.SetCheck(1);
+		if (getbit(m_panel.m_scribing, 4))
+			m_button_text_rot.SetCheck(1);
 		//
 		m_dpi.SetWindowTextA( m_dpi_str );
 		m_png_aa.SetWindowTextA( m_png_aa_str );
@@ -1110,6 +1113,8 @@ void CDlgCAD::GetFields()
 		setbit(m_panel.m_scribing, 2);
 	if (m_button_v_cut_my.GetCheck())
 		setbit(m_panel.m_scribing, 3);
+	if (m_button_text_rot.GetCheck())
+		setbit(m_panel.m_scribing, 4);
 
 	m_edit_panel_field_x.GetWindowText(str);
 	m_panel.m_fields[0] = atof(str) * mult;

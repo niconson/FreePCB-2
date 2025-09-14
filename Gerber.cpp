@@ -1292,6 +1292,13 @@ int LPD = 0;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - (w),
 						BoardOrigin.y + (f_step_y * NM_PER_MIL * n_y) - step_y + (panel.m_fields[1] / 2) + frez_D - (TH / 2) + TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
+					if (getbit(panel.m_scribing,4))
+					{
+						t->m_x = BoardOrigin.x + (w);
+						t->m_y = BoardOrigin.y + (f_step_y * NM_PER_MIL * n_y) - step_y + (panel.m_fields[1] / 2) + frez_D + (TH / 2) + TW;
+						t->m_angle = 180;
+						t->Draw(t->m_dlist, t->m_smfontutil);
+					}
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1395,6 +1402,13 @@ int LPD = 0;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - (w),
 						BoardOrigin.y - (panel.m_fields[1] / 2) - frez_D - (TH / 2) - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
+					if (getbit(panel.m_scribing, 4))
+					{
+						t->m_x = BoardOrigin.x + (w);
+						t->m_y = BoardOrigin.y - (panel.m_fields[1] / 2) - frez_D + (TH / 2) - TW;
+						t->m_angle = 180;
+						t->Draw(t->m_dlist, t->m_smfontutil);
+					}
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
@@ -1497,6 +1511,13 @@ int LPD = 0;
 					int w = max(panel.m_fields[0], panel.m_fields[1]);
 					CText* t = tl->AddText(BoardOrigin.x + (f_step_x * NM_PER_MIL * n_x) - step_x - (w),
 						BoardOrigin.y - (panel.m_fields[1] / 2) - frez_D - (TH / 2) - TW, 0, 1, 0, LAY_SILK_TOP, TH, TW, &str);
+					if (getbit(panel.m_scribing, 4))
+					{
+						t->m_x = BoardOrigin.x + (w);
+						t->m_y = BoardOrigin.y - (panel.m_fields[1] / 2) - frez_D + (TH / 2) - TW;
+						t->m_angle = 180;
+						t->Draw(t->m_dlist, t->m_smfontutil);
+					}
 					// draw text
 					CAperture text_ap(CAperture::AP_CIRCLE, TW*2, 0);
 					ChangeAperture(&text_ap, &current_ap, &ap_array, PASS0, f);
