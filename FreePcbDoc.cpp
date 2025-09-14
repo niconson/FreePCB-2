@@ -13221,7 +13221,10 @@ void CFreePcbDoc::AddSymmetricalBlank()
 	if (ret == IDOK)
 	{
 		int mem_nl_comp = m_netlist_completed;
+		int mem_pr_int = m_auto_interval; // autosave disable
 		m_netlist_completed = 0;
+		m_auto_interval = 0;
+		//
 		RECT pcbr = GetBoardRect();
 		MarkLegalElementsForExport(this);
 		SelectLegalElements(this);
@@ -13292,6 +13295,7 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		}
 		// restore 
 		m_netlist_completed = mem_nl_comp;
+		m_auto_interval = mem_pr_int;
 	}
 	m_view->OnRangeCmds(NULL);
 }

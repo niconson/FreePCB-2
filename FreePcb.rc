@@ -2713,8 +2713,8 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,60,221,10
     CONTROL         "Защитить этот проект, если присутствует архивная папка CAM",IDC_PROTECT_ARCH_PRESENT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,73,242,10
-    CONTROL         "Разрешить редактирование",IDC_RADIO_EE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,15,106,10
-    CONTROL         "Отключить редактирование",IDC_RADIO_DE,"Button",BS_AUTORADIOBUTTON,13,28,108,10
+    CONTROL         "Разрешить редактирование",IDC_RADIO_EE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,15,130,10
+    CONTROL         "Отключить редактирование",IDC_RADIO_DE,"Button",BS_AUTORADIOBUTTON,13,28,135,10
     DEFPUSHBUTTON   "",IDCANCEL,360,7,16,14,NOT WS_VISIBLE
     GROUPBOX        "Разрешение на редактирование этого проекта",-1,7,3,177,42
     GROUPBOX        "Глобальная автоматическая защита",-1,7,47,369,56
