@@ -482,6 +482,8 @@ BEGIN
         MENUITEM "Удалить вырез",               ID_AREAEDGE_DELETECUTOUT
         MENUITEM "Удалить полигон",             ID_AREAEDGE_DELETE
         MENUITEM SEPARATOR
+        MENUITEM "Сохранить как данные AutoCAD DXF", ID_GROUP_SAVETODXF
+        MENUITEM SEPARATOR
         MENUITEM "Режим статической подсветки", ID_STATIC_HIGHLIGHT
     END
     POPUP "Polyline Corner"
@@ -498,6 +500,8 @@ BEGIN
         MENUITEM "Преобразовать в дугу CW",     ID_OP_SIDE_CONVERTTOARC_CW
         MENUITEM "Преобразовать в дугу CCW",    ID_OP_SIDE_CONVERTTOARC_CCW
         MENUITEM "Аппроксимировать дугу",       ID_APPROXIMATION_ARC
+        MENUITEM SEPARATOR
+        MENUITEM "Сохранить как данные AutoCAD DXF", ID_GROUP_SAVETODXF
         MENUITEM SEPARATOR
         MENUITEM "Исключить из слияния",        ID_REMOVEMERGE
         MENUITEM "Удалить полилинию",           ID_OP_SIDE_DELETEOUTLINE
@@ -536,6 +540,7 @@ BEGIN
         MENUITEM "Аппроксимировать дугу",       ID_APPROXIMATION_ARC
         MENUITEM SEPARATOR
         MENUITEM "Сохранить в файл...",         ID_GROUP_SAVETOFILE
+        MENUITEM "Сохранить полигоны в AutoCAD DXF", ID_GROUP_SAVETODXF
         MENUITEM SEPARATOR
         MENUITEM "Режим статической подсветки", ID_STATIC_HIGHLIGHT
     END
@@ -1093,8 +1098,8 @@ BEGIN
     EDITTEXT        IDC_EDIT_LIBRARY_FOLDER,74,42,367,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BUTTON_LIB,447,42,18,12
     EDITTEXT        IDC_EDIT_NUM_LAYERS,121,69,32,12,ES_AUTOHSCROLL
-    CONTROL         "Разрешить контакт SMT-падов с полигонами",IDC_CHECK1,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,86,181,10
+    CONTROL         "Разрешить контакт SMT-падов с полигонами G36",IDC_CHECK1,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,86,194,10
     EDITTEXT        IDC_EDIT_GLUE_W,187,119,38,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_DEF_TRACE_W,51,148,38,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_DEF_VIA_W,119,148,39,12,ES_AUTOHSCROLL

@@ -1111,6 +1111,8 @@ public:
 	afx_msg void OnGroupStaticHighlight();
 	afx_msg void OnGroupCancelHighlight();
 	void GroupCancelHighlight();
+	afx_msg void OnGenerateDXF();
+	void GenerateAutoCadDXFForPoly(CPolyLine* p, CStdioFile* f);
 	afx_msg void OnApproximationArc();
 	afx_msg void OnGroupAlignParts();
 	afx_msg void OnGroupCopy();

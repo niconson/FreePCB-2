@@ -239,6 +239,7 @@ ON_COMMAND(ID_STATIC_HIGHLIGHT, OnGroupStaticHighlight)
 ON_COMMAND(ID_CANCEL_HIGHLIGHT, OnGroupCancelHighlight)
 ON_COMMAND(ID_ALIGN_PARTS, OnGroupAlignParts)
 ON_COMMAND(ID_APPROXIMATION_ARC, OnApproximationArc)
+ON_COMMAND(ID_GROUP_SAVETODXF, OnGenerateDXF)
 ON_COMMAND(ID_GROUP_COPY, OnGroupCopy)
 ON_COMMAND(ID_GROUP_CUT, OnGroupCut)
 ON_COMMAND(ID_GROUP_DELETE, OnGroupDelete)
@@ -17506,6 +17507,143 @@ void CFreePcbView::GroupCancelHighlight()
 	m_Doc->m_dlist->CancelHighLight( TRUE );
 	SetCursorMode(CUR_NONE_SELECTED);
 	OnRangeCmds(NULL);
+}
+void CFreePcbView::OnGenerateDXF()
+{
+	CStdioFile f;
+	if (f.Open(m_Doc->m_app_dir + "\\open.dxf", CFile::modeCreate | CFile::modeWrite, NULL))
+	{
+		//int sFont = 1;
+		//if (getbit(m_sel_flags, FLAG_SEL_TEXT))
+		//	if (AfxMessageBox(G_LANGUAGE == 0 ?
+		//		"Want to use Openscad font to reduce file size?" :
+		//		"Хотите использовать шрифт Openscad для оптимизации размера генерируемого файла?", MB_YESNO) == IDYES)
+		//		sFont = 0;
+		
+		CString s;
+		f.WriteString("0\n");
+		f.WriteString("SECTION\n");
+		f.WriteString("2\n");
+		f.WriteString("ENTITIES\n");
+		if (::RemoveColinearSegments(&m_Doc->m_outline_poly))
+			AfxMessageBox(G_LANGUAGE == 0 ?
+				"Some segments were removed due to collinearity" :
+				"Некоторые сегменты были удалены из-за коллинеарности");
+		for (int i = 0; i < m_Doc->m_outline_poly.GetSize(); i++)
+		{
+			if (m_Doc->m_outline_poly.GetAt(i).GetSideSel() == 0)
+				continue;
+			GenerateAutoCadDXFForPoly(&m_Doc->m_outline_poly.GetAt(i), &f);
+		}
+		for (cnet* n = m_Doc->m_nlist->GetFirstNet(); n; n = m_Doc->m_nlist->GetNextNet())
+		{
+			for (int i = 0; i < n->nareas; i++)
+			{
+				if(n->area[i].poly->GetSideSel() == 0)
+					continue;
+				GenerateAutoCadDXFForPoly(n->area[i].poly, &f);
+			}
+		}
+		f.WriteString("0\n");
+		f.WriteString("ENDSEC\n");
+		f.WriteString("0\n");
+		f.WriteString("EOF\n");
+		f.Close();
+	}
+	ShellExecute(NULL, "open", "open.dxf", NULL, m_Doc->m_app_dir, SW_SHOWNORMAL);
+}
+void CFreePcbView::GenerateAutoCadDXFForPoly(CPolyLine * p, CStdioFile * f)
+{
+	double h = (double)(m_Doc->m_units == MM ? NM_PER_MM : NM_PER_MIL);
+	int L = p->GetLayer();
+	for (int ii = 0; ii < p->GetNumSides(); ii++)
+	{
+		double gx1 = p->GetX(ii);
+		double gy1 = p->GetY(ii);
+		int inx = p->GetIndexCornerNext(ii);
+		double gx2 = p->GetX(inx);
+		double gy2 = p->GetY(inx);
+		int stl = p->GetSideStyle(ii);
+		if (stl == 0)
+		{
+			f->WriteString("0\n");
+			f->WriteString("LINE\n");
+			f->WriteString("8\n");
+			CString s = layer_str[L];
+			f->WriteString(s + "\n");
+			f->WriteString("10\n");
+			s.Format("%.3f\n", gx1 / h);
+			f->WriteString(s);
+			f->WriteString("20\n");
+			s.Format("%.3f\n", gy1 / h);
+			f->WriteString(s);
+			f->WriteString("11\n");
+			s.Format("%.3f\n", gx2 / h);
+			f->WriteString(s);
+			f->WriteString("21\n");
+			s.Format("%.3f\n", gy2 / h);
+			f->WriteString(s);
+		}
+		else
+		{
+			CPoint P[10];
+			int np = Generate_Arc(gx1, gy1, gx2, gy2, stl, P, 9);
+			for (int ip = 0; ip < np - 1; ip++)
+			{
+				f->WriteString("0\n");
+				f->WriteString("LINE\n");
+				f->WriteString("8\n");
+				CString s = layer_str[L];
+				f->WriteString(s + "\n");
+				f->WriteString("10\n");
+				s.Format("%.3f\n", P[ip].x / h);
+				f->WriteString(s);
+				f->WriteString("20\n");
+				s.Format("%.3f\n", P[ip].y / h);
+				f->WriteString(s);
+				f->WriteString("11\n");
+				s.Format("%.3f\n", P[ip + 1].x / h);
+				f->WriteString(s);
+				f->WriteString("21\n");
+				s.Format("%.3f\n", P[ip + 1].y / h);
+				f->WriteString(s);
+			}
+		}
+	}
+	if (p->GetHatch() == 1 ||
+		p->GetHatch() > 2)
+	{
+		int nh = p->GetHatchSize();
+		for (int ic = 0; ic < nh; ic++)
+		{
+			dl_element* GetH = p->GetHatchLoc(ic);
+			CArray<CPoint>* pA = GetH->dlist->Get_Points(GetH, NULL, 0);
+			int np = pA->GetSize();
+			CPoint* P = new CPoint[np];//new012
+			GetH->dlist->Get_Points(GetH, P, &np);
+			for (int ip = 0; ip + 1 < np; ip += 2)
+			{
+				f->WriteString("0\n");
+				f->WriteString("LINE\n");
+				f->WriteString("8\n");
+				CString s = layer_str[L];
+				f->WriteString(s + "\n");
+				f->WriteString("10\n");
+				s.Format("%.3f\n", P[ip].x / h);
+				f->WriteString(s);
+				f->WriteString("20\n");
+				s.Format("%.3f\n", P[ip].y / h);
+				f->WriteString(s);
+				f->WriteString("11\n");
+				s.Format("%.3f\n", P[ip + 1].x / h);
+				f->WriteString(s);
+				f->WriteString("21\n");
+				s.Format("%.3f\n", P[ip + 1].y / h);
+				f->WriteString(s);
+			}
+			delete P;//new012
+		}
+	}
 }
 void CFreePcbView::OnApproximationArc()
 {

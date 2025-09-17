@@ -53,6 +53,7 @@
 #define ID_RATLINE_LOCKCONNECTION       162
 #define ID_NONE_ADDPART                 163
 #define ID_NONE_ADDTEXT                 164
+#define ID_GROUP_SAVETODXF				165
 #define ID_NONE_ADDBOARDOUTLINE         166
 #define ID_NONE_ADDCOPPERAREA           167
 #define ID_TEXT_MOVE                    168
