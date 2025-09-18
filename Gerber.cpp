@@ -3244,7 +3244,17 @@ int LPD = 0;
 				}
 			}
 		}
-
+		if (PASS1)
+		{
+			if (layer != LAY_BOARD_OUTLINE)
+			{	
+				if (n_x > 1 || n_y > 1)
+				{
+					f->WriteString( "\nG04 EOF Step and Repeat for panelization *\n" );
+					f->WriteString( "%SR*%\n" );
+				}
+			}
+		}
 		// end of file
 		//if( PASS1 )
 		//	f->WriteString( "M00*\n" );

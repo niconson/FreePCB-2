@@ -4466,12 +4466,33 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 					{
 						if( CPolyLine * po = n->area[iarea].poly )
 						{
-							int aW = 0;
-							if( m_active_layer == LAY_SM_TOP && po->GetLayer() == LAY_BOTTOM_COPPER )
-								aW = NM_PER_MIL*10/m_pcbu_per_wu;
-							else if( m_active_layer == LAY_SM_BOTTOM && po->GetLayer() == LAY_TOP_COPPER )
-								aW = NM_PER_MIL*10/m_pcbu_per_wu;
-							po->SetHatchVisible( (int)!m_Doc->m_nlist->m_dis_hatch, aW );
+							//int aW = 0;
+							//if( m_active_layer == LAY_SM_TOP && po->GetLayer() == LAY_BOTTOM_COPPER )
+							//	aW = NM_PER_MIL*10/m_pcbu_per_wu;
+							//else if( m_active_layer == LAY_SM_BOTTOM && po->GetLayer() == LAY_TOP_COPPER )
+							//	aW = NM_PER_MIL*10/m_pcbu_per_wu;
+							//else
+							{
+								//aW = NM_PER_MIL * 10 / m_pcbu_per_wu;
+								//if (m_active_layer == LAY_SM_TOP && po->GetLayer() == LAY_TOP_COPPER)
+								//	aW = 0;
+								//else if (m_active_layer == LAY_SM_BOTTOM && po->GetLayer() == LAY_BOTTOM_COPPER)
+								//	aW = 0;
+							}
+							if (m_active_layer == LAY_SM_TOP)
+							{
+								if (po->GetLayer() == LAY_TOP_COPPER)
+									po->SetHatchVisible((int)!m_Doc->m_nlist->m_dis_hatch);
+								else 
+									po->SetHatchVisible(1);
+							}
+							if (m_active_layer == LAY_SM_BOTTOM)
+							{
+								if (po->GetLayer() == LAY_BOTTOM_COPPER)
+									po->SetHatchVisible((int)!m_Doc->m_nlist->m_dis_hatch);
+								else
+									po->SetHatchVisible(1);
+							}
 						}
 					}
 				}
@@ -10254,7 +10275,7 @@ void CFreePcbView::OnAddArea()
 			m_polyline_hatch = dlg.m_hatch;
 			m_polyline_width = dlg.m_width;
 			CPolyLine * bP = &m_Doc->m_outline_poly.GetAt(sid.i);
-			int iarea = m_Doc->m_nlist->AddArea( dlg.m_net, mod_active_layer, bP->GetX(0), bP->GetY(0), m_polyline_hatch );
+			int iarea = m_Doc->m_nlist->AddArea( dlg.m_net, dlg.m_layer, bP->GetX(0), bP->GetY(0), m_polyline_hatch );
 			if( iarea >= 0 )
 			{
 				dlg.m_net->area[iarea].poly->SetW( m_polyline_width );

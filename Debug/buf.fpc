@@ -3,7 +3,7 @@
 app_folder: "D:\FreePCBDev\FreePCB-2\.\Debug"
 version: 2.427
 file_version: 2.427
-project_name: "Driver-01"
+project_name: "buf"
 library_folder: "d:\works\fp_lib"
 full_library_folder: "d:\works\fp_lib\lib"
 CAM_folder: "D:\Works\ѕлат‘орм на русском\Projects\Led\version-01\CAM(Driver-01)(9-14-2025)"
@@ -11,8 +11,8 @@ ses_file_path: ""
 netlist_completed: "0"
 part_search: ""
 png_settings: "800 0.05"
-netlist_file_path: "D:\–азработки\Projects\duxahtech\Led\version-01\related_files\CDS_netlist\Driver-01.fpc.net"
-SMT_connect_copper: "1"
+netlist_file_path: ""
+SMT_connect_copper: "0"
 default_glue_width: "635000"
 dsn_flags: "3"
 dsn_bounds_poly: "0"
@@ -25,9 +25,9 @@ m_client_rect_left: 0
 m_client_rect_right: 1487
 m_client_rect_bottom: 711
 m_client_rect_top: 0
-m_org_x: -38841
-m_org_y: -13353
-m_scale_factor: 50624
+m_org_x: -43234
+m_org_y: -16777
+m_scale_factor: 63603
 part_line_visible: 1
 merge_shown: 1
 pdf_pin1: 0.700000
@@ -35,7 +35,7 @@ pdf_use_font: -889000 889000 -635000
 units: MM
 
 m_sel_mask: 2147483645
-m_visible_layers: -84225
+m_visible_layers: 131071
 m_top_layer: 13
 m_grid_style: 0
 visible_grid_spacing: 20000000.000000
@@ -192,8 +192,8 @@ cam_n_y: 10
 cam_space_x: 5000000
 cam_space_y: 5000000
 
-report_options: 4123
-drc_check_unrouted: 1
+report_options: 0
+drc_check_unrouted: 0
 drc_trace_width: 170000
 drc_pad_pad: 199000
 drc_pad_trace: 199000
@@ -224,1147 +224,593 @@ n_copper_layers: 2
   layer_info: "контур платы" 5 0 115 60 1 0 185 120 1
   layer_info: "скрайбинг (V)" 6 255 0 128 1 127 127 127 0
   layer_info: "заметки верх" 7 128 64 0 1 255 0 0 0
-  layer_info: "заметки низ" 8 128 64 0 0 128 128 128 0
+  layer_info: "заметки низ" 8 128 64 0 1 128 128 128 0
   layer_info: "эл. св€зи" 9 0 0 128 1 0 0 160 1
   layer_info: "шЄлк верх" 10 178 178 178 1 255 255 255 1
-  layer_info: "шЄлк низ" 11 255 170 170 0 255 255 255 0
+  layer_info: "шЄлк низ" 11 255 170 170 1 255 255 255 0
   layer_info: "отверсти€" 12 235 235 235 1 255 255 255 1
   layer_info: "вид верх" 13 77 77 122 1 230 230 230 1
-  layer_info: "вид низ" 14 222 111 111 0 127 127 127 0
+  layer_info: "вид низ" 14 222 111 111 1 127 127 127 0
   layer_info: "медь верх" 15 40 165 90 1 47 255 182 1
-  layer_info: "медь низ" 16 30 90 50 0 10 100 20 0
+  layer_info: "медь низ" 16 30 90 50 1 10 100 20 0
 
 [footprints]
 
-name: "Pad2x2"
-author: "Duxah"
-package: "Pad2x2"
-description: "Pads"
-  units: NM
-  sel_rect: -1525270 -1024890 1525270 1024890
-  ref_text: 900000 1300000 700000 0 150000
-  value_text: 700000 1200000 -300000 0 100000
-  centroid: 0 0 0 0
-  n_pins: 1
-    pin: "1" 0 0 0 0 ""
-      top_pad: 5 2000000 1500000 1500000 1000000 3
-      top_mask: 4 2000000 1000000 1000000 400000
-
-name: "Package"
-author: "Ivex"
-package: "Package"
-  units: NM
-  sel_rect: -14114310 -7614300 14114300 7614300
-  ref_text: 1270000 1950000 -4000000 0 177800
-  value_text: 1270000 1950000 -6540000 0 177800
-  centroid: 0 0 0 0
-  outline_polyline: 177800 -14000000 -6500000 1 0 4
-    next_corner: -13000000 -7500000 2
-    next_corner: 13000000 -7500000 0
-    next_corner: 14000000 -6500000 2
-    next_corner: 14000000 6500000 0
-    next_corner: 13000000 7500000 2
-    next_corner: -13000000 7500000 0
-    next_corner: -14000010 6500000 2
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 10.000, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -14000000 -6500000 0 0 4
-    next_corner: -13000000 -7500000 2
-    next_corner: 13000000 -7500000 0
-    next_corner: 14000000 -6500000 2
-    next_corner: 14000000 6500000 0
-    next_corner: 13000000 7500000 2
-    next_corner: -13000000 7500000 0
-    next_corner: -14000010 6500000 2
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// Like a cap //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  9.900 ])|    {|        *corner1*, 0.0 ])|        {|            // linear_extrude( 1.000, scale= 1.000 )|            hull()|            for(ang=[0:10:90.5])|            linear_extrude( 1.000*(ang>0.5?sin(ang):sin(10)/3.0), convexity=Convexity )|            offset(r=1.000*(cos(ang)-1))|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -11500000 -5000000 0 0 4
-    next_corner: -18500000 -5000000 0
-    next_corner: -23500000 0 1
-    next_corner: -18500000 5000000 1
-    next_corner: -11500000 5000000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// Like a cap //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        // linear_extrude( 2.000, scale= 1.000 )|        hull()|        for(ang=[0:10:90.5])|        linear_extrude( 2.000*(ang>0.5?sin(ang):sin(10)/3.0), convexity=Convexity )|        offset(r=2.000*(cos(ang)-1))|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -18500000 2000000 0 0 4
-    next_corner: -20500000 0 2
-    next_corner: -18500000 -2000000 2
-    next_corner: -16500000 0 2
-    close_polyline: 2
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 4.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 18500000 -2000000 0 0 4
-    next_corner: 20500000 0 2
-    next_corner: 18500000 2000000 2
-    next_corner: 16500000 0 2
-    close_polyline: 2
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 4.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 11500000 5000000 0 0 4
-    next_corner: 18500000 5000000 0
-    next_corner: 23500000 0 1
-    next_corner: 18500000 -5000000 1
-    next_corner: 11500000 -5000000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// Like a cap //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        // linear_extrude( 2.000, scale= 1.000 )|        hull()|        for(ang=[0:10:90.5])|        linear_extrude( 2.000*(ang>0.5?sin(ang):sin(10)/3.0), convexity=Convexity )|        offset(r=2.000*(cos(ang)-1))|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -12500000 6000000 0 0 4
-    next_corner: -12500000 -6000000 0
-    next_corner: 12500000 -6000000 0
-    next_corner: 12500000 6000000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 10.400, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -15500000 -5000000 0 1 4
-    next_corner: -14000000 -3500000 2
-    next_corner: -13500000 -3500000 0
-    next_corner: -13500000 -5500000 0
-    next_corner: -15500000 -5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  8.000,  2.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 90.000,  0.000,  0.000 ])|            {|                linear_extrude( 6.000, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 177800 -13500000 3000000 0 1 4
-    next_corner: -17100000 3000000 0
-    next_corner: -17100000 3480000 0
-    next_corner: -17000000 3500000 0
-    next_corner: -15500000 5000000 2
-    next_corner: -15480000 5500000 0
-    next_corner: -13500000 5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 2 1 27.000 -6.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        rotate([ 0.000,  -90.000,  0.000 ])|        {|            $fn = 40;|            rotate_extrude( angle= 360.000, convexity=Convexity ) |            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -13500000 3000000 0 0 4
-    next_corner: -17100000 3000000 0
-    next_corner: -17100000 3480000 0
-    next_corner: -17000000 3500000 0
-    next_corner: -15500000 5000000 2
-    next_corner: -15480000 5500000 0
-    next_corner: -13500000 5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 2 1 27.000 -6.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 27.000,  0.000,  0.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 0.000,  -90.000,  180.000 ])|            {|                $fn = 40;|                rotate_extrude( angle= 360.000, convexity=Convexity ) |                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 177800 15500000 -5000000 0 1 4
-    next_corner: 14000000 -3500000 1
-    next_corner: 13500000 -3500000 0
-    next_corner: 13500000 -5500000 0
-    next_corner: 15500000 -5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  8.000,  2.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 90.000,  0.000,  0.000 ])|            {|                linear_extrude( 6.000, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 177800 -18000000 8500000 0 0 4
-    next_corner: -18000000 -8500000 0
-    next_corner: 18000000 -8500000 0
-    next_corner: 18000000 8500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -10.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 10.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -6000000 -5000000 0 0 4
-    next_corner: -7000000 -6000000 2
-    next_corner: -6000000 -7000000 2
-    next_corner: -5000000 -6000000 2
-    close_polyline: 2
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 4 1 1 4.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  2.500 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 90.000,  0.000,  0.000 ])|            {|                linear_extrude( 5.000, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  n_pins: 0
-
-name: "CD54"
-author: "Ivex"
-package: "CD54"
-  units: NM
-  sel_rect: -1614300 -2414300 5514300 2414300
-  ref_text: 1270000 1950000 -4000000 0 177800
-  value_text: 1270000 1950000 -6540000 0 177800
-  centroid: 0 1950000 0 0
-  openscad_hole: "translate([0,0,0]) // (automatic adjustment when moving the footprint origin)"
-  openscad_hole: "scale([1,1,1])     // (automatic adjustment when changing the project units)"
-  openscad_hole: "{"
-  openscad_hole: "    //-------------------"
-  openscad_hole: "    // add your code here, for example:"
-  openscad_hole: "    color(`white`)"
-  openscad_hole: "    translate([0.3,-0.5,3.25])"
-  openscad_hole: "    rotate([0,0,0])"
-  openscad_hole: "    linear_extrude(1, convexity=Convexity)"
-  openscad_hole: "    text(`22uH`,1);"
-  openscad_hole: "    //-------------------"
-  openscad_hole: "}"
-  outline_polyline: 177800 -1500000 -2300000 1 0 4
-    next_corner: 5400000 -2300000 0
-    next_corner: 5400000 2300000 0
-    next_corner: -1500000 2300000 0
-    close_polyline: 0
-  outline_polyline: 127000 -5875000 11375000 0 0 4
-    next_corner: -8375000 8875000 2
-    next_corner: -5875000 6375000 2
-    next_corner: -5375000 6375000 0
-    next_corner: -2875000 8875000 2
-    next_corner: -5375000 11375000 2
-    close_polyline: 0
-    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 3.200, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 127000 -5625000 8875000 0 0 4
-    next_corner: -1875000 8875000 0
-    next_corner: -1875000 9625000 0
-    next_corner: -3625000 9625000 0
-    next_corner: -3375000 9875000 0
-    next_corner: -3625000 10125000 0
-    next_corner: -3375000 10375000 0
-    next_corner: -3625000 10625000 0
-    next_corner: -3375000 10875000 0
-    next_corner: -3625000 11125000 0
-    next_corner: -3375000 11375000 0
-    next_corner: -3625000 11625000 0
-    next_corner: -625000 11625000 0
-    next_corner: -625000 8875000 0
-    close_polyline: 0
-    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Maroon` )|{|    translate([ 0.000,  0.000,  -0.200 ])|    {|        *corner1*, 0.0 ])|        {|            $fn = 40;|            rotate_extrude( angle= 360.000, convexity=Convexity ) |            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  n_pins: 2
-    pin: "1" 0 0 0 0 ""
-      top_pad: 3 4000000 1250000 1250000 0
-    pin: "2" 0 3900000 0 0 ""
-      top_pad: 3 4000000 1250000 1250000 0
-
-name: "CC0805"
-author: "i"
-package: "CC0805"
-description: "Capasitors"
-  units: NM
-  sel_rect: -1445260 -674370 1445260 674370
-  ref_text: 600000 -2500000 0 0 100000
-  value_text: 500000 -2500000 -1000000 0 50000
-  centroid: 0 0 0 0
-  outline_polyline: 150000 1000000 500000 0 0 7
-    next_corner: -1000000 500000 0
-    next_corner: -1000000 -500000 0
-    next_corner: 1000000 -500000 0
-    close_polyline: 0
-    openscad_data: "// Global rotation 0.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  n_pins: 2
-    pin: "1" 0 -920000 0 0 ""
-      top_pad: 4 1300000 500000 500000 0
-    pin: "2" 0 920000 0 0 ""
-      top_pad: 4 1300000 500000 500000 0
-
-name: "C0402"
-author: "Ivex"
-package: "R0402"
-  units: NM
-  sel_rect: -864300 -814300 2164300 814300
-  ref_text: 1270000 650000 1700000 0 177800
-  value_text: 1270000 650000 -840000 0 177800
-  centroid: 0 650000 0 0
-  outline_polyline: 177800 -750000 700000 1 0 4
-    next_corner: 2050000 700000 0
-    next_corner: 2050000 -700000 0
-    next_corner: -750000 -700000 0
-    close_polyline: 0
-  outline_polyline: 100000 -2300000 2900000 0 0 7
-    next_corner: -2300000 2100000 0
-    next_corner: -700000 2100000 0
-    next_corner: -700000 2900000 0
-    close_polyline: 0
-    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|// |// |// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Brown` )|{|    translate([ 0.000,  0.000,  0.200 ])|    {|        linear_extrude( 0.700, scale= 1.000 )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 100000 -2300000 2900000 0 0 7
-    next_corner: -2300000 2100000 0
-    next_corner: -1900000 2100000 0
-    next_corner: -1900000 2900000 0
-    close_polyline: 0
-    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|// Consider line width //|// matrix: 2 1 1 1.200 0.000 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    minkowski()|    {|        $fn = 20;|        translate([ 0.000,  0.000,  0.200 ])|        {|            linear_extrude( 0.700, scale= 1.000 )|            {|                polygon([ *content* ]);|            }|        }|        sphere( *width* );|    }|}|"
-  n_pins: 2
-    pin: "1" 0 0 0 0 ""
-      top_pad: 3 800000 450000 450000 0
-    pin: "2" 0 1300000 0 0 ""
-      top_pad: 3 800000 450000 450000 0
-
-name: "SMTDIODE"
-author: "Ivex"
-package: "SMTDIODE"
-description: "none"
-  units: MIL
-  sel_rect: -58 -60 266 60
-  ref_text: 50 131 99 0 7
-  value_text: 50 131 -1 0 7
-  centroid: 0 104 0 0
-  outline_polyline: 7 -57 59 1 0 4
-    next_corner: 265 59 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 265 59 1 0 4
-    next_corner: 265 -59 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 265 -59 1 0 4
-    next_corner: -57 -59 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 -57 -59 1 0 4
-    next_corner: -57 59 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 50 50 1 0 4
-    next_corner: 50 -50 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 -50 50 1 0 4
-    next_corner: -50 -50 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 60 50 1 0 4
-    next_corner: 60 -50 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 60 50 1 0 4
-    next_corner: 60 55 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 50 50 1 0 4
-    next_corner: 50 55 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 50 -50 1 0 4
-    next_corner: 50 -55 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 60 -50 1 0 4
-    next_corner: 60 -55 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 -50 50 1 0 4
-    next_corner: -50 55 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 -50 -50 1 0 4
-    next_corner: -50 -55 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
-  outline_polyline: 7 -96.177559 255.905512 0 0 7
-    next_corner: -135.547638 295.275591 2
-    next_corner: -174.917717 255.905512 2
-    next_corner: -135.547638 216.535433 2
-    close_polyline: 2
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|// Rotation around vertex1 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Cornsilk` )|{|    *corner1*, 0.0 ])|    {|        rotate([ 0.000,  90.000,  0.000 ])|        {|            linear_extrude( 5.400, scale= 1.000, convexity=2 )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 15 -96.177559 255.905512 0 0 4
-    next_corner: -135.547638 216.535433 1
-    next_corner: -174.917717 255.905512 1
-    next_corner: -135.547638 295.275591 1
-    close_polyline: 1
-    openscad_data: "// Consider line width //|// Global rotation 0.000 //|// Global lift 0.000mm //|// matrix: 2 1 1 4.400 0.000 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    minkowski()|    {|        $fn = 20;|        *corner1*, 0.0 ])|        {|            rotate([ 0.000,  90.000,  0.000 ])|            {|                linear_extrude( 1.200, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|        sphere( *width* );|    }|}|"
-  n_pins: 2
-    pin: "1" 0 0 0 0 ""
-      top_pad: 4 95 39 39 12
-    pin: "2" 0 208 0 0 ""
-      top_pad: 4 95 39 39 12
-
-name: "MSOP-8T"
-author: "Allan Wright @ freepcb.com"
-package: "MSOP-8T"
-description: "SOP,0.65mm pitch;8 pin,3.05mm W X 3.05mm L X 1.10mm H body (w/thermal tab)"
-  units: NM
-  sel_rect: -3124200 -1766300 3124200 1987400
-  ref_text: 1270000 0 3050000 0 177800
-  value_text: 1270000 0 -4320000 0 177800
-  centroid: 0 0 0 0
-  text: "4" 1000000 -2800000 -2400000 0 100000 0 4
-  text: "5" 1000000 2058720 -2377850 0 100000 0 4
-  text: "8" 1000000 2482550 1422070 0 100000 0 4
-  outline_polyline: 177800 -1525000 1454000 1 0 4
-    next_corner: -1525000 1652000 0
-    next_corner: 1525000 1652000 0
-    next_corner: 1525000 1454000 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 90.0 //|"
-  outline_polyline: 177800 -1525000 -1454000 1 0 4
-    next_corner: -1525000 -1652000 0
-    next_corner: 1525000 -1652000 0
-    next_corner: 1525000 -1454000 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 90.0 //|"
-  outline_polyline: 254000 -2160000 1708000 1 0 4
-    next_corner: -2033000 1835000 1
-    next_corner: -1906000 1708000 1
-    next_corner: -2033000 1581000 1
-    close_polyline: 1
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 90.0 //|"
-  outline_polyline: 150000 -12100000 8700000 0 0 4
-    next_corner: -12100000 5300000 0
-    next_corner: -8900000 5300000 0
-    next_corner: -8900000 8700000 0
-    close_polyline: 0
-    openscad_data: "// Global rotation 90.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.2,0.2,0.2]` )|{|    translate([ 0.000,  0.000,  0.010 ])|    {|        *corner1*, 0.0 ])|        {|            *center1*, 0.0 ])|            {|                linear_extrude( 0.510, scale= 0.900, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 150000 -12100000 8700000 0 0 4
-    next_corner: -12100000 5300000 0
-    next_corner: -8900000 5300000 0
-    next_corner: -8900000 8700000 0
-    close_polyline: 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 90.0 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 3.200,  0.000,  0.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 0.000,  180.000,  0.000 ])|            {|                *center1*, 0.0 ])|                {|                    linear_extrude( 0.510, scale= 0.900, convexity=Convexity )|                    {|                        polygon([ *content* ]);|                    }|                }|            }|        }|    }|}|"
-  outline_polyline: 150000 -11650000 9700000 0 0 4
-    next_corner: -11650000 8500000 0
-    next_corner: -11300000 8500000 0
-    next_corner: -11300000 9700000 0
-    close_polyline: 0
-    openscad_data: "// Global lift 0.0mm //|// Global rotation 90.0 //|// matrix: 4 2 1 0.650 -4.200 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    translate([ 0.000,  0.000,  -0.500 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 0.500, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  n_pins: 11
-    pin: "1" 0 -2300000 975000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "2" 0 -2300000 325000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "3" 0 -2300000 -325000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "4" 0 -2300000 -975000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "5" 0 2300000 -975000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "6" 0 2300000 -325000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "7" 0 2300000 325000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "8" 0 2300000 975000 0 ""
-      top_pad: 3 450000 800000 800000 0
-    pin: "9" 500000 0 0 0 ""
-      top_pad: 3 2500000 925000 925000 0 3
-      inner_pad: 0 0 0 0 0 3
-      bottom_pad: 0 0 0 0 0 3
-    pin: "9" 500000 500000 -800000 0 ""
-      top_pad: 0 450000 800000 800000 0 3
-      inner_pad: 0 0 0 0 0 3
-      bottom_pad: 0 450000 800000 800000 0 3
-    pin: "9" 500000 -500000 -800000 0 ""
-      top_pad: 0 450000 800000 800000 0 3
-      inner_pad: 0 0 0 0 0 3
-      bottom_pad: 0 450000 800000 800000 0 3
-
 [board]
 
-outline: 4 0 254000 1 1 -1
-  corner: 1 -26500000 12999997 0 0
-  corner: 2 -2500000 13000001 0 0
-  corner: 3 -2500000 2500000 0 0
-  corner: 4 -26500000 2500000 0 0
+outline: 4 67 254000 1 0 -1
+  corner: 1 -2499999 2500001 0 0
+  corner: 2 -2499999 19299999 0 0
+  corner: 3 -19800001 19299999 0 0
+  corner: 4 -19800001 2500001 0 0
 
-outline: 4 3 254000 1 0 -1
-  corner: 1 -2500000 -13000000 0 0
-  corner: 2 -26500000 -13000000 0 0
-  corner: 3 -26500000 -2500000 0 0
+outline: 4 68 254000 1 0 -1
+  corner: 1 -19800000 -2500000 0 0
+  corner: 2 -19800000 -19300000 0 0
+  corner: 3 -2500000 -19300000 0 0
   corner: 4 -2500000 -2500000 0 0
 
 
 [solder_mask_cutouts]
 
-sm_cutout: 4 1 13 254000 1 -1
-  corner: 1 -3600000 6999999 0 0
-  corner: 2 -3600000 7500001 0 0
-  corner: 3 -5400000 7499999 0 0
-  corner: 4 -5400000 7000000 0 0
-
-sm_cutout: 4 1 13 254000 0 -1
-  corner: 1 -25400000 -7000000 0 0
-  corner: 2 -25400000 -7500000 0 0
-  corner: 3 -23600000 -7500000 0 0
-  corner: 4 -23600000 -7000000 0 0
-
 
 [graphics]
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17920370 4604650 0
+  corner: 2 -17298070 4604651 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18063879 4652910 0
+  corner: 2 -17920370 4604650 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18207390 4796420 0
+  corner: 2 -18063879 4652910 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18254380 4939930 0
+  corner: 2 -18207390 4796420 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18254380 5465711 0
+  corner: 2 -18254380 4939930 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18207390 5609220 0
+  corner: 2 -18254380 5465711 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18063879 5752729 0
+  corner: 2 -18207390 5609220 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17920370 5799721 0
+  corner: 2 -18063879 5752729 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17633350 5799720 0
+  corner: 2 -17920370 5799721 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17489840 5752731 0
+  corner: 2 -17633350 5799720 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17346330 5609221 0
+  corner: 2 -17489840 5752731 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17298069 5465710 0
+  corner: 2 -17346330 5609221 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17298070 4509400 0
+  corner: 2 -17298069 5465710 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17394590 4174120 0
+  corner: 2 -17298070 4509400 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17633349 3838840 0
+  corner: 2 -17394590 4174120 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17920370 3648341 0
+  corner: 2 -17633349 3838840 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17873380 10199000 0
+  corner: 2 -17299340 10199000 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18016890 10152010 0
+  corner: 2 -17873380 10199000 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18160400 10008501 0
+  corner: 2 -18016890 10152010 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18208660 9864990 0
+  corner: 2 -18160400 10008501 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18208660 9339211 0
+  corner: 2 -18208660 9864990 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18160400 9195701 0
+  corner: 2 -18208660 9339211 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18016890 9052190 0
+  corner: 2 -18160400 9195701 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17873380 9003931 0
+  corner: 2 -18016890 9052190 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17299340 9003930 0
+  corner: 2 -17873380 9003931 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17299340 8047621 0
+  corner: 2 -17299340 9003930 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18208660 8047620 0
+  corner: 2 -17299340 8047621 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18015620 13643239 0
+  corner: 2 -18015619 14599551 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17298069 14122032 0
+  corner: 2 -18302640 14122030 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17681609 12448172 0
+  corner: 2 -17298069 14122032 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4784760 14675751 0
+  corner: 2 -4258980 14675751 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4928270 14627491 0
+  corner: 2 -4784760 14675751 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5071780 14483981 0
+  corner: 2 -4928270 14627491 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5120040 14340471 0
+  corner: 2 -5071780 14483981 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5120040 13814690 0
+  corner: 2 -5120040 14340471 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5071780 13671180 0
+  corner: 2 -5120040 13814690 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4928269 13527669 0
+  corner: 2 -5071780 13671180 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4737770 13480681 0
+  corner: 2 -4928269 13527669 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4546000 13480680 0
+  corner: 2 -4737770 13480681 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4928269 13432420 0
+  corner: 2 -4784760 13480681 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5071780 13288910 0
+  corner: 2 -4928269 13432420 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5120039 13145399 0
+  corner: 2 -5071780 13288910 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5120040 12858380 0
+  corner: 2 -5120039 13145399 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5071780 12714871 0
+  corner: 2 -5120040 12858380 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4928270 12571360 0
+  corner: 2 -5071780 12714871 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4784760 12523101 0
+  corner: 2 -4928270 12571360 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4258980 12523101 0
+  corner: 2 -4784760 12523101 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4210720 10275201 0
+  corner: 2 -5167030 10275200 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5120040 8793111 0
+  corner: 2 -4210720 10275201 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5167030 8649600 0
+  corner: 2 -5120040 8793111 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5167030 8506090 0
+  corner: 2 -5167030 8649600 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5120040 8314321 0
+  corner: 2 -5167030 8506090 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4976530 8170810 0
+  corner: 2 -5120040 8314321 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4784759 8123821 0
+  corner: 2 -4976530 8170810 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4594260 8123820 0
+  corner: 2 -4784759 8123821 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4402490 8170810 0
+  corner: 2 -4594260 8123820 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4258980 8314321 0
+  corner: 2 -4402490 8170810 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4210720 8506091 0
+  corner: 2 -4258980 8314321 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4928269 3724541 0
+  corner: 2 -4928269 5875921 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4450750 4202060 0
+  corner: 2 -4928269 3724541 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -17200000 6900001 0
+  corner: 2 -16199999 6900000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -17200000 11300001 0
+  corner: 2 -16200000 11300002 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -17200000 15699999 0
+  corner: 2 -16199999 15700001 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -6199999 15700000 0
+  corner: 2 -5200000 15700000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -6200000 11300000 0
+  corner: 2 -5200000 11300000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -6200000 6900001 0
+  corner: 2 -5200000 6900000 0
+
+polyline: 7 1 10 100000 0 -1
+  corner: 1 -6200000 17900001 0 0
+  corner: 2 -6199999 4700001 0 0
+  corner: 3 -16200000 4700001 0 0
+  corner: 4 -16200001 17899999 0 0
+  corner: 5 -8400000 10500000 0 1
+  corner: 6 -11999999 14100001 2 1
+  corner: 7 -14400000 11700000 0 1
+
+polyline: 7 1 10 100000 0 -1
+  corner: 1 -16100000 -17900000 0 0
+  corner: 2 -16100000 -4700000 0 0
+  corner: 3 -6100000 -4700000 0 0
+  corner: 4 -6100000 -17900000 0 0
+  corner: 5 -13900000 -10500000 0 1
+  corner: 6 -10300000 -14100000 2 1
+  corner: 7 -7900000 -11700000 0 1
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -16100000 -6900000 0
+  corner: 2 -17100000 -6900000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -16100000 -11300000 0
+  corner: 2 -17100000 -11300000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -16100000 -15700000 0
+  corner: 2 -17100000 -15700000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -5100000 -15700000 0
+  corner: 2 -6100000 -15700000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -5100000 -11300000 0
+  corner: 2 -6100000 -11300000 0
+
+line: 2 0 10 200000 0 -1
+  corner: 1 -5100000 -6900000 0
+  corner: 2 -6100000 -6900000 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17849250 -4202060 0
+  corner: 2 -17371730 -3724540 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17371730 -3724540 0
+  corner: 2 -17371730 -5875920 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18089280 -8506090 0
+  corner: 2 -18041020 -8314320 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18041020 -8314320 0
+  corner: 2 -17897510 -8170810 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17897510 -8170810 0
+  corner: 2 -17705740 -8123820 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17705740 -8123820 0
+  corner: 2 -17515240 -8123820 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17515240 -8123820 0
+  corner: 2 -17323470 -8170810 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17323470 -8170810 0
+  corner: 2 -17179960 -8314320 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17179960 -8314320 0
+  corner: 2 -17132970 -8506090 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17132970 -8506090 0
+  corner: 2 -17132970 -8649600 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17132970 -8649600 0
+  corner: 2 -17179960 -8793110 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17179960 -8793110 0
+  corner: 2 -18089280 -10275200 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18089280 -10275200 0
+  corner: 2 -17132970 -10275200 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -18041020 -12523100 0
+  corner: 2 -17515240 -12523100 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17515240 -12523100 0
+  corner: 2 -17371730 -12571360 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17371730 -12571360 0
+  corner: 2 -17228220 -12714870 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17228220 -12714870 0
+  corner: 2 -17179960 -12858380 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17179960 -12858380 0
+  corner: 2 -17179960 -13145400 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17179960 -13145400 0
+  corner: 2 -17228220 -13288910 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17228220 -13288910 0
+  corner: 2 -17371730 -13432420 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17371730 -13432420 0
+  corner: 2 -17515240 -13480680 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17754000 -13480680 0
+  corner: 2 -17562230 -13480680 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17562230 -13480680 0
+  corner: 2 -17371730 -13527670 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17371730 -13527670 0
+  corner: 2 -17228220 -13671180 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17228220 -13671180 0
+  corner: 2 -17179960 -13814690 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17179960 -13814690 0
+  corner: 2 -17179960 -14340470 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17179960 -14340470 0
+  corner: 2 -17228220 -14483980 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17228220 -14483980 0
+  corner: 2 -17371730 -14627490 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17371730 -14627490 0
+  corner: 2 -17515240 -14675750 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -17515240 -14675750 0
+  corner: 2 -18041020 -14675750 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4618390 -12448170 0
+  corner: 2 -5001930 -14122030 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5001930 -14122030 0
+  corner: 2 -3997360 -14122030 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4284380 -13643240 0
+  corner: 2 -4284380 -14599550 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4091340 -8047620 0
+  corner: 2 -5000660 -8047620 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5000660 -8047620 0
+  corner: 2 -5000660 -9003930 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5000660 -9003930 0
+  corner: 2 -4426620 -9003930 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4426620 -9003930 0
+  corner: 2 -4283110 -9052190 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4283110 -9052190 0
+  corner: 2 -4139600 -9195700 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4139600 -9195700 0
+  corner: 2 -4091340 -9339210 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4091340 -9339210 0
+  corner: 2 -4091340 -9864990 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4091340 -9864990 0
+  corner: 2 -4139600 -10008500 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4139600 -10008500 0
+  corner: 2 -4283110 -10152010 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4283110 -10152010 0
+  corner: 2 -4426620 -10199000 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4426620 -10199000 0
+  corner: 2 -5000660 -10199000 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4379630 -3648340 0
+  corner: 2 -4666650 -3838840 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4666650 -3838840 0
+  corner: 2 -4905410 -4174120 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4905410 -4174120 0
+  corner: 2 -5001930 -4509400 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5001930 -4509400 0
+  corner: 2 -5001930 -5465710 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -5001930 -5465710 0
+  corner: 2 -4953670 -5609220 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4953670 -5609220 0
+  corner: 2 -4810160 -5752730 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4810160 -5752730 0
+  corner: 2 -4666650 -5799720 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4666650 -5799720 0
+  corner: 2 -4379630 -5799720 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4379630 -5799720 0
+  corner: 2 -4236120 -5752730 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4236120 -5752730 0
+  corner: 2 -4092610 -5609220 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4092610 -5609220 0
+  corner: 2 -4045620 -5465710 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4045620 -5465710 0
+  corner: 2 -4045620 -4939930 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4045620 -4939930 0
+  corner: 2 -4092610 -4796420 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4092610 -4796420 0
+  corner: 2 -4236120 -4652910 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4236120 -4652910 0
+  corner: 2 -4379630 -4604650 0
+
+line: 2 0 7 299720 0 -1
+  corner: 1 -4379630 -4604650 0
+  corner: 2 -5001930 -4604650 0
 
 
 [parts]
 
-part: R1
-  ref_text: 700000 100000 0 2393470 115719 1
-  shape: "C0402"
-  merge: 0 -1
-  value: "910k" 700000 100000 0 -1450000 -650000 0
-  pos: -8500000 -10170334 0 0 0
-
-part: KT1
-  ref_text: 700000 100000 0 -900000 -2009666 1
-  shape: "Pad2x2"
-  merge: 0 -1
-  pos: -24500000 -8890334 0 0 0
-
-part: KT3
-  ref_text: 700000 100000 270 1850000 -900001 1
-  shape: "Pad2x2"
-  merge: 0 -1
-  pos: -4500000 -11499999 0 0 0
-
-part: KT4
-  ref_text: 700000 100000 270 1840000 -870000 1
-  shape: "Pad2x2"
-  merge: 0 -1
-  pos: -4500000 -8000000 0 0 0
-
-part: L1
-  ref_text: 700000 100000 180 6539470 -715173 1
-  shape: "CD54"
-  merge: 0 -1
-  value: "22uH" 700000 100000 0 0 0 0
-  pos: -14600000 -5500000 0 180 0
-
-part: DC14
-  ref_text: 700000 100000 270 3872120 -1222100 1
-  shape: "MSOP-8T"
-  merge: 0 -1
-  value: "PAM2841" 700000 100000 0 -1855000 -2160000 0
-  pos: -15083860 -10265330 0 0 0
-
-part: R2
-  ref_text: 700000 100000 270 -1093524 -480084 1
-  shape: "C0402"
-  merge: 0 -1
-  value: "30k" 700000 100000 0 -1450000 -650000 0
-  pos: -10190000 -8640330 0 90 0
-
-part: KT2
-  ref_text: 700000 100000 180 973840 1924081 1
-  shape: "Pad2x2"
-  merge: 0 -1
-  pos: -24500000 -4499999 0 180 0
-
-part: VD3
-  ref_text: 700000 100000 270 7742410 -1004205 1
-  shape: "SMTDIODE"
-  merge: 0 -1
-  value: "SS12|(SS13,SS14,SS15)" 700000 100000 0 3327400 -25400 0
-  pos: -11000000 -5000000 0 0 0
-
-part: R3
-  ref_text: 700000 100000 0 2243599 -384050 1
-  shape: "C0402"
-  merge: 0 -1
-  value: "10E" 700000 100000 0 -1450000 -650000 0
-  pos: -9999999 -12000000 0 0 0
-
-part: C4
-  ref_text: 700000 100000 270 3060830 -655147 1
-  shape: "C0402"
-  merge: 0 -1
-  value: "0.1" 700000 100000 0 -1300000 -650000 0
-  pos: -21500000 -11740333 0 0 0
-
-part: C1
-  ref_text: 700000 100000 270 3060830 -495791 1
-  shape: "C0402"
-  merge: 0 -1
-  value: "1.0" 700000 100000 0 -1300000 -650000 0
-  pos: -21500000 -9440334 0 0 0
-
-part: C3
-  ref_text: 700000 100000 90 1979230 1238820 1
-  shape: "CC0805"
-  merge: 0 -1
-  value: "10.0" 700000 100000 0 -1300000 -650000 0
-  pos: -21499999 -6920000 0 270 0
-
-part: C2
-  ref_text: 700000 100000 90 265038 -1043460 1
-  shape: "C0402"
-  merge: 0 -1
-  value: "1.0" 700000 100000 0 650000 -840000 0
-  pos: -8500000 -8640334 0 270 0
-
-part: VIA1
-  ref_text: 0 0 0 0 0 0
-  shape: "Package"
-  merge: 0 -1
-  pos: -14500000 -7750000 0 180 0
-
-part: R1|1
-  ref_text: 700000 100000 0 2393470 115719 1
-  shape: "C0402"
-  merge: 1 -1
-  value: "910k" 700000 100000 0 -1450000 -650000 0
-  pos: -20500000 10170333 0 180 0
-
-part: KT1|1
-  ref_text: 700000 100000 0 -900000 -2009666 1
-  shape: "Pad2x2"
-  merge: 1 -1
-  pos: -4500000 8890333 0 180 0
-
-part: KT3|1
-  ref_text: 700000 100000 270 1850000 -900001 1
-  shape: "Pad2x2"
-  merge: 1 -1
-  pos: -24500000 11499998 0 180 0
-
-part: KT4|1
-  ref_text: 700000 100000 270 1840000 -870000 1
-  shape: "Pad2x2"
-  merge: 1 -1
-  pos: -24500000 8000001 0 180 0
-
-part: L1|1
-  ref_text: 700000 100000 180 6539470 -715173 1
-  shape: "CD54"
-  merge: 1 -1
-  value: "22uH" 700000 100000 0 0 0 0
-  pos: -14400000 5500000 0 0 0
-
-part: DC14|1
-  ref_text: 700000 100000 270 3872120 -1222100 1
-  shape: "MSOP-8T"
-  merge: 1 -1
-  value: "PAM2841" 700000 100000 0 -1855000 -2160000 0
-  pos: -13916140 10265330 0 180 0
-
-part: R2|1
-  ref_text: 700000 100000 270 -1093524 -480084 1
-  shape: "C0402"
-  merge: 1 -1
-  value: "30k" 700000 100000 0 -1450000 -650000 0
-  pos: -18810000 8640331 0 270 0
-
-part: KT2|1
-  ref_text: 700000 100000 180 973840 1924081 1
-  shape: "Pad2x2"
-  merge: 1 -1
-  pos: -4500000 4499999 0 0 0
-
-part: VD3|1
-  ref_text: 700000 100000 270 7742410 -1004205 1
-  shape: "SMTDIODE"
-  merge: 1 -1
-  value: "SS12|(SS13,SS14,SS15)" 700000 100000 0 3327400 -25400 0
-  pos: -18000000 5000000 0 180 0
-
-part: R3|1
-  ref_text: 700000 100000 0 2243599 -384050 1
-  shape: "C0402"
-  merge: 1 -1
-  value: "10E" 700000 100000 0 -1450000 -650000 0
-  pos: -19000002 11999999 0 180 0
-
-part: C4|1
-  ref_text: 700000 100000 270 3060830 -655147 1
-  shape: "C0402"
-  merge: 1 -1
-  value: "0.1" 700000 100000 0 -1300000 -650000 0
-  pos: -7500000 11740333 0 180 0
-
-part: C1|1
-  ref_text: 700000 100000 270 3060830 -495791 1
-  shape: "C0402"
-  merge: 1 -1
-  value: "1.0" 700000 100000 0 -1300000 -650000 0
-  pos: -7500000 9440334 0 180 0
-
-part: C3|1
-  ref_text: 700000 100000 90 1979230 1238820 1
-  shape: "CC0805"
-  merge: 1 -1
-  value: "10.0" 700000 100000 0 -1300000 -650000 0
-  pos: -7500001 6920000 0 90 0
-
-part: C2|1
-  ref_text: 700000 100000 90 265038 -1043460 1
-  shape: "C0402"
-  merge: 1 -1
-  value: "1.0" 700000 100000 0 650000 -840000 0
-  pos: -20500000 8640333 0 90 0
-
-part: VIA1|1
-  ref_text: 0 0 0 0 0 0
-  shape: "Package"
-  merge: 1 -1
-  pos: -14500000 7750000 0 0 0
-
 [nets]
 
-net: "SET_$G5" 2 1 0 0 0 0 1
-  pin: 1 KT1|1.1
-  pin: 2 DC14|1.3
-  connect: 1 1 0 5 0 1
-    vtx: 1 -11616140 10590329 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -6539658 10590329 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -6199873 10250666 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -6199510 9230640 0 0 0 0 0
-    seg: 4 15 400000 0 0
-    vtx: 5 -5859150 8891551 0 0 0 0 0
-    seg: 5 15 400000 0 0
-    vtx: 6 -4500000 8890333 15 0 0 0 0
-
-net: "+E" 5 2 2 0 0 0 1
-  pin: 1 L1.2
-  pin: 2 DC14.2
-  pin: 3 KT2.1
-  pin: 4 C1.2
-  pin: 5 C3.2
-  connect: 1 1 3 3 0 0
-    vtx: 1 -17383860 -9940330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -18676645 -9940334 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -19176647 -9440332 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -20200000 -9440334 15 0 0 0 0
-  connect: 2 3 -1 1 0 0
-    vtx: 1 -20200000 -9440334 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -20200000 -7209055 0 0 0 0 0
-  area: 1 4 15 0 0 0 -1 0
-    corner: 1 -26000890 -7486630 0 0
-    corner: 2 -26000890 -3500400 0 0
-    corner: 3 -16784120 -3500400 0 0
-    corner: 4 -16784120 -7486630 0 1
-  area: 2 10 15 1 300000 0 -1 0
-    corner: 1 -16784120 -7486630 0 0
-    corner: 2 -20395499 -7486630 0 0
-    corner: 3 -20395499 -7112751 0 0
-    corner: 4 -20622749 -6885501 0 0
-    corner: 5 -22377249 -6885501 0 0
-    corner: 6 -22604499 -7112751 0 0
-    corner: 7 -22604499 -7486630 0 0
-    corner: 8 -25911460 -7486630 0 0
-    corner: 9 -25911460 -3500400 0 0
-    corner: 10 -16784120 -3500400 0 1
-
-net: "OUT-" 3 2 0 0 0 0 1
-  pin: 1 KT3.1
-  pin: 2 DC14.6
-  pin: 3 R3.2
-  connect: 1 2 1 5 0 0
-    vtx: 1 -8699999 -12000000 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -8700950 -11398530 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -9093380 -11004830 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -10975608 -11004651 0 0 0 0 0
-    seg: 4 15 400000 0 0
-    vtx: 5 -11389925 -10590334 0 0 0 0 0
-    seg: 5 15 400000 0 0
-    vtx: 6 -12783860 -10590330 15 0 0 0 0
-  connect: 2 2 0 3 0 0
-    vtx: 1 -8699999 -12000000 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -7284900 -12000510 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -6784520 -11500130 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -4500000 -11499999 15 0 0 0 0
-
-net: "SET" 2 1 0 0 0 0 1
-  pin: 1 KT1.1
-  pin: 2 DC14.3
-  connect: 1 1 0 5 0 0
-    vtx: 1 -17383860 -10590330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -22460342 -10590329 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -22800127 -10250665 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -22800490 -9230640 0 0 0 0 0
-    seg: 4 15 400000 0 0
-    vtx: 5 -23140850 -8891550 0 0 0 0 0
-    seg: 5 15 400000 0 0
-    vtx: 6 -24500000 -8890334 15 0 0 0 0
-
-net: "GND_$G5" 9 8 4 0 0 0 1
-  pin: 1 DC14|1.1
-  pin: 2 DC14|1.5
-  pin: 3 DC14|1.9
-  pin: 4 R2|1.1
-  pin: 5 R3|1.1
-  pin: 6 C4|1.1
-  pin: 7 C1|1.1
-  pin: 8 C3|1.1
-  pin: 9 C2|1.1
-  connect: 1 5 -1 1 0 1
-    vtx: 1 -7500000 11740333 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -6608278 11740333 0 1 1000000 500000 0
-  connect: 2 8 3 2 0 1
-    vtx: 1 -20500000 8640333 15 0 0 0 0
-    seg: 1 15 800100 0 0
-    vtx: 2 -19643124 8640334 0 1 1000000 500000 0
-    seg: 2 15 800100 0 0
-    vtx: 3 -18810000 8640331 15 0 0 0 0
-  connect: 3 4 1 3 0 1
-    vtx: 1 -19000002 11999999 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -18026206 12000000 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -17266540 11240334 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -16216140 11240329 15 0 0 0 0
-  connect: 4 0 -1 2 0 1
-    vtx: 1 -11616140 9290331 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -11166990 9290338 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -11166990 8585362 0 1 1000000 500000 0
-  connect: 5 0 -1 2 0 1
-    vtx: 1 -11616140 9290331 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -12066140 9290330 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -12066140 8585361 0 1 1000000 500000 0
-  connect: 6 7 6 2 0 1
-    vtx: 1 -7500001 7840000 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -7500001 8668594 0 1 1000000 500000 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -7500000 9440334 15 0 0 0 0
-  connect: 7 2 1 2 0 1
-    vtx: 1 -13916140 10265330 12 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -13916141 11240330 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -16216140 11240329 15 0 0 0 0
-  connect: 8 6 5 1 0 1
-    vtx: 1 -7500000 9440334 15 0 0 0 0
-    seg: 1 9 0 0 0
-    vtx: 2 -7500000 11740333 15 0 0 0 0
-  area: 1 4 16 0 0 1 -1 0
-    corner: 1 -26063648 12564460 0 0
-    corner: 2 -2935540 12564461 0 0
-    corner: 3 -2935541 2936450 0 0
-    corner: 4 -26063648 2936451 0 1
-  area: 2 4 16 0 0 1 -1 0
-    corner: 1 -6744146 7575762 0 0
-    corner: 2 -6744146 9208160 0 0
-    corner: 3 -20361988 9208159 0 0
-    corner: 4 -20361988 7575761 0 1
-  area: 3 4 16 1 300000 1 -1 0
-    corner: 1 -20361988 9208159 0 0
-    corner: 2 -6744146 9208160 0 0
-    corner: 3 -6744146 7575762 0 0
-    corner: 4 -20361988 7575761 0 1
-  area: 4 29 16 1 300000 1 -1 0
-    corner: 1 -26063648 12564460 0 0
-    corner: 2 -2935540 12564461 0 0
-    corner: 3 -2935541 2936450 0 0
-    corner: 4 -26063648 2936451 0 1
-    corner: 5 -20361988 6759761 0 0
-    corner: 6 -6744145 6759760 0 0
-    corner: 7 -6431876 6821876 0 0
-    corner: 8 -6167146 6998762 0 0
-    corner: 9 -5990260 7263492 0 0
-    corner: 10 -5928146 7575763 0 0
-    corner: 11 -5928146 9208161 0 0
-    corner: 12 -5990260 9520431 0 0
-    corner: 13 -6167146 9785161 0 0
-    corner: 14 -6431876 9962047 0 0
-    corner: 15 -6744146 10024161 0 0
-    corner: 16 -20361990 10024159 0 0
-    corner: 17 -20674260 9962046 0 0
-    corner: 18 -20780294 9891196 0 0
-    corner: 19 -20938988 9785161 0 0
-    corner: 20 -21115874 9520430 0 0
-    corner: 21 -21177988 9208160 0 0
-    corner: 22 -21177988 9208156 0 0
-    corner: 23 -21177988 7575768 0 0
-    corner: 24 -21177988 7575761 0 0
-    corner: 25 -21126178 7315301 0 0
-    corner: 26 -21115872 7263492 0 0
-    corner: 27 -21045022 7157457 0 0
-    corner: 28 -20938988 6998761 0 0
-    corner: 29 -20674256 6821876 0 1
-
-net: "GND" 9 8 4 0 0 0 1
-  pin: 1 DC14.1
-  pin: 2 DC14.5
-  pin: 3 DC14.9
-  pin: 4 R2.1
-  pin: 5 R3.1
-  pin: 6 C4.1
-  pin: 7 C1.1
-  pin: 8 C3.1
-  pin: 9 C2.1
-  connect: 1 5 -1 1 0 0
-    vtx: 1 -21500000 -11740333 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -22391721 -11740333 0 1 1000000 500000 0
-  connect: 2 8 3 2 0 0
-    vtx: 1 -8500000 -8640334 15 0 0 0 0
-    seg: 1 15 800100 0 0
-    vtx: 2 -9356876 -8640333 0 1 1000000 500000 0
-    seg: 2 15 800100 0 0
-    vtx: 3 -10190000 -8640330 15 0 0 0 0
-  connect: 3 4 1 3 0 0
-    vtx: 1 -9999999 -12000000 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -10973795 -12000000 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -11733461 -11240334 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -12783860 -11240330 15 0 0 0 0
-  connect: 4 0 -1 2 0 0
-    vtx: 1 -17383860 -9290330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -17833010 -9290337 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -17833010 -8585361 0 1 1000000 500000 0
-  connect: 5 0 -1 2 0 0
-    vtx: 1 -17383860 -9290330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -16933860 -9290330 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -16933860 -8585361 0 1 1000000 500000 0
-  connect: 6 7 6 2 0 0
-    vtx: 1 -21499999 -7840000 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -21499999 -8668594 0 1 1000000 500000 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -21500000 -9440334 15 0 0 0 0
-  connect: 7 2 1 2 0 0
-    vtx: 1 -15083860 -10265330 12 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -15083860 -11240330 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -12783860 -11240330 15 0 0 0 0
-  connect: 8 6 5 1 0 -1
-    vtx: 1 -21500000 -9440334 15 0 0 0 0
-    seg: 1 9 0 0 0
-    vtx: 2 -21500000 -11740333 15 0 0 0 0
-  area: 1 4 16 0 0 0 -1 0
-    corner: 1 -2936351 -12564460 0 0
-    corner: 2 -26064460 -12564460 0 0
-    corner: 3 -26064460 -2936451 0 0
-    corner: 4 -2936351 -2936451 0 1
-  area: 2 4 16 0 0 0 -1 0
-    corner: 1 -22255854 -7575761 0 0
-    corner: 2 -22255854 -9208160 0 0
-    corner: 3 -8638011 -9208160 0 0
-    corner: 4 -8638012 -7575761 0 1
-  area: 3 4 16 1 300000 0 -1 0
-    corner: 1 -8638011 -9208160 0 0
-    corner: 2 -22255854 -9208160 0 0
-    corner: 3 -22255854 -7575761 0 0
-    corner: 4 -8638012 -7575761 0 1
-  area: 4 29 16 1 300000 0 -1 0
-    corner: 1 -2936351 -12564460 0 0
-    corner: 2 -26064460 -12564460 0 0
-    corner: 3 -26064460 -2936451 0 0
-    corner: 4 -2936351 -2936451 0 1
-    corner: 5 -8638013 -6759761 0 0
-    corner: 6 -22255855 -6759761 0 0
-    corner: 7 -22568124 -6821876 0 0
-    corner: 8 -22832854 -6998762 0 0
-    corner: 9 -23009740 -7263492 0 0
-    corner: 10 -23071854 -7575762 0 0
-    corner: 11 -23071854 -9208161 0 0
-    corner: 12 -23009740 -9520430 0 0
-    corner: 13 -22832854 -9785160 0 0
-    corner: 14 -22568124 -9962046 0 0
-    corner: 15 -22255854 -10024160 0 0
-    corner: 16 -8638011 -10024160 0 0
-    corner: 17 -8325741 -9962046 0 0
-    corner: 18 -8219706 -9891196 0 0
-    corner: 19 -8061012 -9785160 0 0
-    corner: 20 -7884126 -9520430 0 0
-    corner: 21 -7822011 -9208160 0 0
-    corner: 22 -7822013 -9208155 0 0
-    corner: 23 -7822013 -7575767 0 0
-    corner: 24 -7822012 -7575761 0 0
-    corner: 25 -7873822 -7315301 0 0
-    corner: 26 -7884127 -7263491 0 0
-    corner: 27 -7954978 -7157456 0 0
-    corner: 28 -8061013 -6998762 0 0
-    corner: 29 -8325743 -6821876 0 1
-
-net: "SW_$G5" 3 1 2 0 0 0 1
-  pin: 1 L1|1.1
-  pin: 2 DC14|1.8
-  pin: 3 VD3|1.1
-  connect: 1 1 -1 1 0 1
-    vtx: 1 -16216140 9290331 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -16116140 8613971 0 0 0 0 0
-  area: 1 7 15 0 0 1 -1 0
-    corner: 1 -18876638 3500400 0 0
-    corner: 2 -18876638 5954644 0 0
-    corner: 3 -16989680 7841601 0 0
-    corner: 4 -16989680 9490990 0 0
-    corner: 5 -14790936 9490990 0 0
-    corner: 6 -13148949 7849003 0 0
-    corner: 7 -13148950 3500400 0 1
-  area: 2 10 15 1 300000 1 -1 0
-    corner: 1 -18876638 5954644 0 0
-    corner: 2 -16989680 7841601 0 0
-    corner: 3 -16989680 9260830 0 0
-    corner: 4 -15295640 9260830 0 0
-    corner: 5 -15295640 8788080 0 0
-    corner: 6 -15068390 8560830 0 0
-    corner: 7 -13860776 8560830 0 0
-    corner: 8 -13148949 7849003 0 0
-    corner: 9 -13148950 3500400 0 0
-    corner: 10 -18876638 3500400 0 1
-
-net: "OUT-_$G5" 3 2 0 0 0 0 1
-  pin: 1 KT3|1.1
-  pin: 2 DC14|1.6
-  pin: 3 R3|1.2
-  connect: 1 2 1 5 0 1
-    vtx: 1 -20300002 11999999 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -20299050 11398530 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -19906620 11004829 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -18024392 11004651 0 0 0 0 0
-    seg: 4 15 400000 0 0
-    vtx: 5 -17610074 10590335 0 0 0 0 0
-    seg: 5 15 400000 0 0
-    vtx: 6 -16216140 10590330 15 0 0 0 0
-  connect: 2 2 0 3 0 1
-    vtx: 1 -20300002 11999999 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -21715100 12000511 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -22215480 11500128 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -24500000 11499998 15 0 0 0 0
-
-net: "+E_$G5" 5 2 2 0 0 0 1
-  pin: 1 L1|1.2
-  pin: 2 DC14|1.2
-  pin: 3 KT2|1.1
-  pin: 4 C1|1.2
-  pin: 5 C3|1.2
-  connect: 1 1 3 3 0 1
-    vtx: 1 -11616140 9940331 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -10323355 9940335 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -9823353 9440332 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -8800000 9440334 15 0 0 0 0
-  connect: 2 3 -1 1 0 1
-    vtx: 1 -8800000 9440334 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -8800000 7209056 0 0 0 0 0
-  area: 1 4 15 0 0 1 -1 0
-    corner: 1 -2999110 7486630 0 0
-    corner: 2 -2999110 3500401 0 0
-    corner: 3 -12215880 3500400 0 0
-    corner: 4 -12215880 7486630 0 1
-  area: 2 10 15 1 300000 1 -1 0
-    corner: 1 -12215880 7486630 0 0
-    corner: 2 -8604501 7486630 0 0
-    corner: 3 -8604501 7112752 0 0
-    corner: 4 -8377251 6885501 0 0
-    corner: 5 -6622751 6885501 0 0
-    corner: 6 -6395501 7112751 0 0
-    corner: 7 -6395501 7486631 0 0
-    corner: 8 -3088540 7486631 0 0
-    corner: 9 -3088539 3500402 0 0
-    corner: 10 -12215880 3500400 0 1
-
-net: "NET00002" 3 2 0 0 0 0 1
-  pin: 1 R1.1
-  pin: 2 DC14.7
-  pin: 3 R2.2
-  connect: 1 2 1 1 0 0
-    vtx: 1 -10190000 -9940330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -12783860 -9940330 15 0 0 0 0
-  connect: 2 2 0 2 0 0
-    vtx: 1 -10190000 -9940330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -9960000 -10170333 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -8500000 -10170334 15 0 0 0 0
-
-net: "NET00001" 2 1 0 0 0 0 1
-  pin: 1 DC14.4
-  pin: 2 C4.2
-  connect: 1 1 0 3 0 0
-    vtx: 1 -20200000 -11740333 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -19397279 -11740333 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -18897279 -11240333 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -17383860 -11240330 15 0 0 0 0
-
-net: "NET00001_$G5" 2 1 0 0 0 0 1
-  pin: 1 DC14|1.4
-  pin: 2 C4|1.2
-  connect: 1 1 0 3 0 1
-    vtx: 1 -8800000 11740333 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -9602720 11740333 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -10102721 11240333 0 0 0 0 0
-    seg: 3 15 400000 0 0
-    vtx: 4 -11616140 11240329 15 0 0 0 0
-
-net: "NET00002_$G5" 3 2 0 0 0 0 1
-  pin: 1 R1|1.1
-  pin: 2 DC14|1.7
-  pin: 3 R2|1.2
-  connect: 1 2 1 1 0 1
-    vtx: 1 -18810000 9940331 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -16216140 9940331 15 0 0 0 0
-  connect: 2 2 0 2 0 1
-    vtx: 1 -18810000 9940331 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -19040000 10170333 0 0 0 0 0
-    seg: 2 15 400000 0 0
-    vtx: 3 -20500000 10170333 15 0 0 0 0
-
-net: "OUT+_$G5" 4 2 2 0 0 0 1
-  pin: 1 R1|1.2
-  pin: 2 KT4|1.1
-  pin: 3 VD3|1.2
-  pin: 4 C2|1.2
-  connect: 1 1 -1 1 0 1
-    vtx: 1 -24500000 8000001 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -24500000 6721855 0 0 0 0 0
-  connect: 2 0 -1 1 0 1
-    vtx: 1 -21800000 10170333 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -21800000 7664802 0 0 0 0 0
-  area: 1 4 15 0 0 1 -1 0
-    corner: 1 -20099660 7720620 0 0
-    corner: 2 -20099660 3500400 0 0
-    corner: 3 -25998810 3500400 0 0
-    corner: 4 -25998810 7720620 0 1
-  area: 2 4 15 1 300000 1 -1 0
-    corner: 1 -25910650 7720621 0 0
-    corner: 2 -20099660 7720620 0 0
-    corner: 3 -20099660 3500400 0 0
-    corner: 4 -25910650 3500399 0 1
-
-net: "OUT+" 4 2 2 0 0 0 1
-  pin: 1 R1.2
-  pin: 2 KT4.1
-  pin: 3 VD3.2
-  pin: 4 C2.2
-  connect: 1 1 -1 1 0 0
-    vtx: 1 -4500000 -8000000 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -4500000 -6721854 0 0 0 0 0
-  connect: 2 0 -1 1 0 0
-    vtx: 1 -7200000 -10170334 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -7200000 -7664801 0 0 0 0 0
-  area: 1 4 15 0 0 0 -1 0
-    corner: 1 -8900340 -7720620 0 0
-    corner: 2 -8900340 -3500400 0 0
-    corner: 3 -3001190 -3500400 0 0
-    corner: 4 -3001190 -7720620 0 1
-  area: 2 4 15 1 300000 0 -1 0
-    corner: 1 -3089350 -7720620 0 0
-    corner: 2 -8900340 -7720620 0 0
-    corner: 3 -8900340 -3500400 0 0
-    corner: 4 -3089350 -3500400 0 1
-
-net: "SW" 3 1 2 0 0 0 1
-  pin: 1 L1.1
-  pin: 2 DC14.8
-  pin: 3 VD3.1
-  connect: 1 1 -1 1 0 0
-    vtx: 1 -12783860 -9290330 15 0 0 0 0
-    seg: 1 15 400000 0 0
-    vtx: 2 -12883860 -8613971 0 0 0 0 0
-  area: 1 7 15 0 0 0 -1 0
-    corner: 1 -10123362 -3500400 0 0
-    corner: 2 -10123362 -5954644 0 0
-    corner: 3 -12010320 -7841601 0 0
-    corner: 4 -12010320 -9490990 0 0
-    corner: 5 -14209064 -9490990 0 0
-    corner: 6 -15851051 -7849003 0 0
-    corner: 7 -15851050 -3500400 0 1
-  area: 2 10 15 1 300000 0 -1 0
-    corner: 1 -10123362 -5954644 0 0
-    corner: 2 -12010320 -7841601 0 0
-    corner: 3 -12010320 -9260830 0 0
-    corner: 4 -13704360 -9260830 0 0
-    corner: 5 -13704360 -8788080 0 0
-    corner: 6 -13931610 -8560830 0 0
-    corner: 7 -15139224 -8560830 0 0
-    corner: 8 -15851051 -7849003 0 0
-    corner: 9 -15851050 -3500400 0 0
-    corner: 10 -10123362 -3500400 0 1
-
 [texts]
-
-text: "Driver-01" -3900000 -5700000 11 0 1 2000000 400000 0 0 1918985580
-
-text: "Driver-01" -25100000 5699999 11 180 1 2000000 400000 0 1 572531249
 
 [merges]
 
   merge: "pcb-1" 0
-  merge: "pcb-2" 0
 
 [end]

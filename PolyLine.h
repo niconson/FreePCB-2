@@ -175,7 +175,7 @@ public:
 	void SetPtr( void * ptr ){ m_ptr = ptr; };
 	void SetSelBoxSize( int sel_box );
 	void SetHatch( int hatch ){ Undraw(); m_hatch = hatch; Draw(); };
-	void SetHatchVisible( int vis, int el_w=0 );
+	void SetHatchVisible( int vis );
 	void SetDisplayList( CDisplayList * dl );
 	void SetMerge(int merge, BOOL bSUB=0);
 	void SetSideSel(int i, BOOL sel);

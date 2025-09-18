@@ -552,7 +552,7 @@ BOOL Colinear( int x1, int y1, int x2, int y2, int x3, int y3 )
 
 
 // Align
-//Copyright (c) Interpribor TM. All rights reserved.
+//Copyright (c). All rights reserved.
 //Author: Duxah
 //Copying is allowed only with reference to the author.
 CPoint AlignPoints (CPoint p, CPoint pback, CPoint pnext, BOOL CH, float SwitchAngle)

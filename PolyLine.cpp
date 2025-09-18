@@ -2033,49 +2033,35 @@ void CPolyLine::Hatch()
 }
 
 
- void CPolyLine::SetHatchVisible( int vis, int el_w )
- {
-	 static int saved_w = 0;
-	 static int saved_layer = 0;
-
-	 if( el_w )
-	 {
-		 saved_w = el_w;
-		 saved_layer = m_layer;
-	 }
-
-	 if( GetHatch() != CPolyLine::DIAGONAL_FULL )
-		 return;
-	 if( m_dlist )
-	 {
-		 if( m_nhatch != dl_hatch.GetSize() )
-		 {
-			 ASSERT(0);
-			 CString d;
-			 d.Format("m_nhatch = %d  \ndl_hatch.GetSize() = %d", m_nhatch, dl_hatch.GetSize() );
-			 AfxMessageBox( d );
-		 }
-		 for( int h=0; h<m_nhatch; h++ )
-		 {
-			 if( m_layer == saved_layer )
-				 dl_hatch[h]->visible = 1;
-			 else
-				dl_hatch[h]->visible = vis;
-		 }
-		 for( int is=0; is<GetNumSides(); is++ )
-		 {
-			 if( vis || m_layer == saved_layer )
-				 dl_side[is]->el_w = abs(m_w)/m_pcbu_per_wu;
-			 else
-				 dl_side[is]->el_w = 0;
-		 }
-	 }
- }
+void CPolyLine::SetHatchVisible( int vis )
+{
+	if( GetHatch() != CPolyLine::DIAGONAL_FULL )
+		return;
+	if( m_dlist )
+	{
+		if( m_nhatch != dl_hatch.GetSize() )
+		{
+			ASSERT(0);
+			CString d;
+			d.Format("m_nhatch = %d  \ndl_hatch.GetSize() = %d", m_nhatch, dl_hatch.GetSize() );
+			AfxMessageBox( d );
+		}
+		for( int h=0; h<m_nhatch; h++ )
+			dl_hatch[h]->visible = vis;
+		for( int is=0; is<GetNumSides(); is++ )
+		{
+			if( vis )
+				dl_side[is]->el_w = abs(m_w)/m_pcbu_per_wu;
+			else
+				dl_side[is]->el_w = 0;
+		}
+	}
+}
 
 
 
 // test to see if a point is inside polyline
-//Copyright (c) Interpribor TM. All rights reserved.
+//Copyright (c). All rights reserved.
 //Author: Duxah
 //Copying is allowed only with reference to the author.
 //
