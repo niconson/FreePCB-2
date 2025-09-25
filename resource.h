@@ -161,6 +161,12 @@
 #define ID_TOOLS                        273
 #define ID_TOOLS_FOOTPRINTWIZARD        274
 #define IDB_BITMAP_DIP                  277
+#define ID_FILE_GENERATEDXFFILE1		278
+#define ID_FILE_GENERATEDXFFILE2		279
+#define ID_FILE_GENERATEDXFFILE3		280
+#define ID_FILE_GENERATEDXFFILE4		281
+#define ID_FILE_GENERATEDXFFILE5		282
+#define ID_FILE_GENERATEDXFFILE6		283
 #define IDB_BITMAP_SIP                  285
 #define IDD_SAVE_FOOTPRINT              286
 #define ID_Menu287                      287

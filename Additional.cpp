@@ -696,3 +696,378 @@ void SelectLegalElements(CFreePcbDoc* doc)
 	}
 	doc->m_view->SelectContour();
 }
+
+
+
+
+void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
+									CString * crop_net_name,
+									cnet* area_net,
+									int iar,
+									int pad_cl,
+									int seg_cl,
+									int area_cl,
+									int hole_cl,
+									int text_cl,
+									int board_cl,
+									int default_cl,
+									int thrml_cl,
+									int area_width,
+									BOOL gHost)
+{
+	CPolyLine* oP = area_net->area[iar].poly;
+	int oP_L = oP->GetLayer();
+	int oP_H = oP->GetHatch();
+	int oP_W = oP->GetW();
+	int oP_M = oP->GetMerge();
+	cnet* cropNet = doc->m_nlist->GetNetPtrByName(crop_net_name);
+	if (gHost)
+	{
+		if (getbit(doc->m_crop_flags, MC_REMOVE_PREV))
+		{
+			for (int isc = area_net->nareas - 1; isc >= 0; isc--)
+			{
+				if (isc == iar)
+					continue;
+				if (oP_L == area_net->area[isc].poly->GetLayer())
+					if (area_net->area[isc].poly->GetHatch() == CPolyLine::DIAGONAL_FULL)
+					{
+						int mid_p = area_net->area[isc].poly->GetNumCorners() / 2;
+						if (oP->TestPointInside(area_net->area[isc].poly->GetX(0), area_net->area[isc].poly->GetY(0)))
+						{
+							doc->m_nlist->RemoveArea(area_net, isc);
+						}
+						else if (oP->TestPointInside(area_net->area[isc].poly->GetX(mid_p), area_net->area[isc].poly->GetY(mid_p)))
+						{
+							doc->m_nlist->RemoveArea(area_net, isc);
+						}
+					}
+			}
+			doc->m_view->SetDrawLayer(DISABLE_CHANGE_DRAW_LAYER);
+			doc->m_view->UpdateWindow();
+		}
+		iar = doc->m_nlist->AddArea(area_net, oP_L, oP->GetX(0), oP->GetY(0), CPolyLine::NO_HATCH);
+		for (int icc = 0; icc < oP->GetNumContours(); icc++)
+		{
+			int end = oP->GetContourEnd(icc);
+			for (int iop = max(1, oP->GetContourStart(icc)); iop <= end; iop++)
+			{
+				doc->m_nlist->AppendAreaCorner(area_net, iar, oP->GetX(iop), oP->GetY(iop), oP->GetSideStyle(iop - 1), FALSE);
+			}
+			doc->m_nlist->CompleteArea(area_net, iar, oP->GetSideStyle(end));
+		}
+		area_net->area[iar].poly->SetMerge(oP_M);
+	}
+	else
+	{
+		int new_sel_ia = doc->m_nlist->AddArea(area_net, oP_L, oP->GetX(0), oP->GetY(0), oP->GetHatch());
+		for (int icc = 0; icc < oP->GetNumContours(); icc++)
+		{
+			int end = oP->GetContourEnd(icc);
+			for (int iop = max(1, oP->GetContourStart(icc)); iop <= end; iop++)
+			{
+				doc->m_nlist->AppendAreaCorner(area_net, new_sel_ia, oP->GetX(iop), oP->GetY(iop), oP->GetSideStyle(iop - 1), FALSE);
+			}
+			if (icc == oP->GetNumContours() - 1)
+				doc->m_nlist->CompleteArea(area_net, new_sel_ia, oP->GetSideStyle(end));
+			else
+				area_net->area[new_sel_ia].poly->Close(0, 0);
+		}
+		doc->m_nlist->RemoveArea(area_net, iar);
+		iar = new_sel_ia - 1;
+	}
+	int areaW = oP_W;
+	if (getbit(doc->m_crop_flags, MC_WIDTH))
+	{
+		area_net->area[iar].poly->SetW(area_width);
+		areaW = area_net->area[iar].poly->GetW();
+		if (oP_H != CPolyLine::DIAGONAL_FULL)
+			doc->m_nlist->SetAreaHatch(area_net, iar, CPolyLine::NO_HATCH); // m_sel_net->area[m_sel_ia].poly->SetHatch( CPolyLine::NO_HATCH );
+		doc->m_nlist->SetAreaConnections(area_net, iar);
+	}
+	int mem_n_areas = area_net->nareas - 1;
+	doc->AddBoardHoles(); // valid
+	doc->m_nlist->AddCutoutsForArea(area_net,
+									iar,
+									cropNet,
+									pad_cl,
+									seg_cl,			
+									area_cl,			
+									hole_cl,			
+									text_cl,			
+									board_cl,			
+									default_cl,		
+									thrml_cl,			
+									doc->m_thermal_width,		
+									TRUE,
+									doc->m_mlist,
+									doc->m_cam_flags,
+									doc->m_crop_flags);
+	CPolyLine* Apo = area_net->area[iar].poly;
+	if (Apo->GetNumContours() > 1)
+	{
+		int nAreas = 0;
+		doc->m_nlist->ClipAreaPolygon(area_net, iar, -1, FALSE, FALSE, TRUE, &nAreas);
+		doc->ProjectModified(TRUE);
+	}
+	// delete new areas
+	// if it's outside board outline 
+	if (getbit(doc->m_crop_flags, MC_BOARD) || getbit(doc->m_crop_flags, MC_POLYLINES))
+	{
+		for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
+		{
+			int cur_x = area_net->area[i_a].poly->GetX(0);
+			int cur_y = area_net->area[i_a].poly->GetY(0);
+			BOOL remove = 1;
+			for (int sc_p = 0; sc_p < doc->m_outline_poly.GetSize(); sc_p++)
+			{
+				if (doc->m_outline_poly[sc_p].GetLayer() == LAY_BOARD_OUTLINE && getbit(doc->m_crop_flags, MC_BOARD))
+				{
+					if (doc->m_outline_poly[sc_p].TestPointInside(cur_x, cur_y))
+					{
+						remove = 0;
+						break;
+					}
+				}
+			}
+			if (remove == 0) for (int sc_p = 0; sc_p < doc->m_outline_poly.GetSize(); sc_p++)
+			{
+				if (doc->m_outline_poly[sc_p].GetLayer() == LAY_SCRIBING && getbit(doc->m_crop_flags, MC_POLYLINES))
+				{
+					if (doc->m_outline_poly[sc_p].TestPointInside(cur_x, cur_y) &&
+						doc->m_outline_poly[sc_p].GetHatch() == CPolyLine::DIAGONAL_FULL)
+					{
+						remove = 1;
+						break;
+					}
+				}
+			}
+			if (remove)
+			{
+				doc->m_nlist->RemoveArea(area_net, i_a);
+			}
+		}
+	}
+	// delete unconnected areas
+	if (getbit(doc->m_crop_flags, MC_NO_ISLANDS))
+	{
+		doc->m_nlist->SetAreaConnections(area_net);
+		for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
+		{
+			int npins = area_net->area[i_a].npins;
+			int nvias = area_net->area[i_a].nvias;
+			if (npins == 0 && nvias == 0)
+			{
+				doc->m_nlist->RemoveArea(area_net, i_a);
+			}
+		}
+	}
+	// delete new areas
+	// if it's inside main
+	// contour of any area
+	if (getbit(doc->m_crop_flags, MC_AREAS))
+	{
+		doc->m_nlist->SetAreaConnections(area_net);
+		for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
+		{
+			int cur_x = area_net->area[i_a].poly->GetX(0);
+			int cur_y = area_net->area[i_a].poly->GetY(0);
+			BOOL rem = 0;
+			for (cnet* getn = doc->m_nlist->GetFirstNet(); getn; getn = doc->m_nlist->GetNextNet())
+			{
+				for (int i_2 = getn->nareas - 1; i_2 >= 0; i_2--)
+				{
+					if (getn->area[i_2].poly->GetHatch() != CPolyLine::DIAGONAL_FULL)
+						continue;
+					if (getn == area_net && i_a == i_2)
+						continue;
+					if (getn->area[i_2].poly->GetLayer() != oP_L)
+						continue;
+					if (getn->area[i_2].poly->TestPointInside(cur_x, cur_y))
+					{
+						rem = TRUE;
+						break;
+					}
+				}
+				if (rem)
+				{
+					doc->m_nlist->CancelNextNet();
+					break;
+				}
+			}
+			if (rem)
+			{
+				doc->m_nlist->RemoveArea(area_net, i_a);
+			}
+		}
+	}
+	// delete contour
+	// if it's inside different 
+	// contour of same area
+	// or/and when the contour is 
+	// outside this area
+	{
+		for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
+		{
+			///m_sel_net->area[i_a].poly->RecalcRectC(0);
+			RECT rect_A = area_net->area[i_a].poly->GetCornerBounds(0);
+			int g_nc = area_net->area[i_a].poly->GetNumContours();
+			for (int i_c = g_nc - 1; i_c > 0; i_c--)
+			{
+				///m_sel_net->area[i_a].poly->RecalcRectC(i_c);
+				RECT rect_c = area_net->area[i_a].poly->GetCornerBounds(i_c);
+				if ((rect_A.right - rect_A.left) < (rect_c.right - rect_c.left))
+				{
+					area_net->area[i_a].poly->RemoveContour(i_c, FALSE);
+					continue;
+				}
+				//
+				int i_st = area_net->area[i_a].poly->GetContourStart(i_c);
+				int cur_x = area_net->area[i_a].poly->GetX(i_st);
+				int cur_y = area_net->area[i_a].poly->GetY(i_st);
+				//
+				// contour is outside this area
+				if (area_net->area[i_a].poly->TestPointInside(cur_x, cur_y, 0) == 0)
+				{
+					area_net->area[i_a].poly->RemoveContour(i_c, FALSE);
+					continue;
+				}
+				//
+				// inside different contour
+				for (int n_c = area_net->area[i_a].poly->GetNumContours() - 1; n_c > 0; n_c--)
+				{
+					if (n_c == i_c)
+						continue;
+					//
+					if (area_net->area[i_a].poly->TestPointInside(cur_x, cur_y, n_c))
+					{
+						int i_e = area_net->area[i_a].poly->GetContourEnd(i_c);
+						cur_x = area_net->area[i_a].poly->GetX(i_e);
+						cur_y = area_net->area[i_a].poly->GetY(i_e);
+						if (area_net->area[i_a].poly->TestPointInside(cur_x, cur_y, n_c))
+						{
+							area_net->area[i_a].poly->RemoveContour(i_c, FALSE);
+							break;
+						}
+					}
+				}
+			}
+			if (g_nc != area_net->area[i_a].poly->GetNumContours())
+				doc->m_nlist->SetAreaHatch(area_net, i_a); // m_sel_net->area[i_a].poly->Draw();
+		}
+	}
+	// remove thermal stubs
+	// (bad thermal relief)
+	if (getbit(doc->m_crop_flags, MC_NO_THERMAL) == 0) for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
+	{
+		int bCornerDeleted = 0;
+		for (int pin = 0; pin < area_net->area[i_a].npins; pin++)
+		{
+			int pin_index = area_net->area[i_a].pin[pin];
+			cpart* pP = area_net->pin[pin_index].part;
+			if (pP)
+				if (pP->shape)
+				{
+					CString pName = area_net->pin[pin_index].pin_name;
+					int ip = -1;
+					for (ip = pP->shape->GetPinIndexByName(pName, ip);
+						ip >= 0;
+						ip = pP->shape->GetPinIndexByName(pName, ip))
+					{
+						dl_element* sel_el = pP->pin[ip].dl_sel;
+						if (sel_el)
+						{
+							CPoint PTS[4];
+							int np = 4;
+							doc->m_view->m_dlist->Get_Points(sel_el, PTS, &np);
+							if (np == 4)
+							{
+								for (int cr = 0; cr < area_net->area[i_a].poly->GetNumCorners(); cr++)
+								{
+									// test:
+									int numcont = area_net->area[i_a].poly->GetNumContour(cr);
+									int cstart = area_net->area[i_a].poly->GetContourStart(numcont);
+									int cend = area_net->area[i_a].poly->GetContourEnd(numcont);
+									if (cend - cstart < 10)
+									{
+										cr = cend;
+										continue; // fail
+									}
+
+									int curx = area_net->area[i_a].poly->GetX(cr);
+									int cury = area_net->area[i_a].poly->GetY(cr);
+									if (TestPolygon(curx, cury, PTS, np))
+									{
+										int mx = curx;
+										int my = cury;
+										int ne = area_net->area[i_a].poly->GetIndexCornerNext(cr);
+										int nne = area_net->area[i_a].poly->GetIndexCornerNext(ne);
+										int cnt_del = -1;
+										int dist;
+										do
+										{
+											nne = area_net->area[i_a].poly->GetIndexCornerNext(nne);
+											curx = area_net->area[i_a].poly->GetX(nne);
+											cury = area_net->area[i_a].poly->GetY(nne);
+											cnt_del++;
+											//
+											dist = Distance(curx, cury, mx, my);
+											dist += areaW;
+										} while ((dist > (doc->m_thermal_width + _2540) || dist < (doc->m_thermal_width - _2540)) && cnt_del < 3);
+										if (TestPolygon(curx, cury, PTS, np))
+										{
+											dist = Distance(curx, cury, mx, my);
+											dist += areaW;
+											if (dist > (doc->m_thermal_width + _2540))
+												continue;
+											if (dist < (doc->m_thermal_width - _2540))
+												continue;
+											area_net->area[i_a].poly->DeleteCorner(ne, 2 + cnt_del, 0, 0);
+											bCornerDeleted = 1;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+		}
+		if (bCornerDeleted)
+			area_net->area[i_a].poly->Draw();
+	}
+
+	if (gHost)
+	{
+		for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
+			doc->m_nlist->SetAreaHatch(area_net, i_a, CPolyLine::DIAGONAL_FULL); // m_sel_net->area[i_a].poly->SetHatch( CPolyLine::DIAGONAL_FULL );
+	}
+	//
+	if (area_net->nareas <= mem_n_areas)
+	{
+		AfxMessageBox(G_LANGUAGE == 0 ?
+			"There is no copper fill that meets all the criteria" :
+			"Не существует медной заливки, которая бы соответствовала всем критериям");
+		doc->m_view->CancelSelection();
+		doc->CancelBoardHoles();
+		doc->OnEditUndo(); // undo fill copper
+	}
+	else
+	{
+		cnet* mem_n = area_net;
+		doc->m_view->CancelSelection();
+		doc->CancelBoardHoles();
+		area_net = mem_n;
+		for (int i_ar = area_net->nareas - 1; i_ar >= mem_n_areas; i_ar--)
+		{
+			id sel_id = area_net->area[i_ar].poly->GetId();
+			sel_id.sst = ID_SIDE;
+			for (int i_side = 0; i_side < area_net->area[i_ar].poly->GetNumSides(); i_side++)
+			{
+				sel_id.ii = i_side;
+				doc->m_view->NewSelect(area_net, &sel_id, FALSE, 0, 0);
+			}
+		}
+		doc->m_view->SetCursorMode(CUR_GROUP_SELECTED);
+		doc->m_view->HighlightGroup();
+	}
+}

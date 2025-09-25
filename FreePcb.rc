@@ -160,6 +160,23 @@ BEGIN
         MENUITEM "Сохранить проект как библиотеку", ID_FILE_SAVEPROJECTASLIBRARY
         MENUITEM "Конвертировать библиотеку",   ID_FILE_CONVERT
         MENUITEM SEPARATOR
+        POPUP "Генерировать DXF для лазерного гравёра" 
+        BEGIN
+            POPUP "Заштрихованный"
+            BEGIN
+                MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE1
+                MENUITEM SEPARATOR
+                MENUITEM "С расширением в 2 миль",  ID_FILE_GENERATEDXFFILE2
+                MENUITEM "С расширением в 4 миль",  ID_FILE_GENERATEDXFFILE3
+            END
+            POPUP "Без штриховки"
+            BEGIN
+                MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE4
+                MENUITEM SEPARATOR
+                MENUITEM "С расширением в 2 миль",  ID_FILE_GENERATEDXFFILE5
+                MENUITEM "С расширением в 4 миль",  ID_FILE_GENERATEDXFFILE6
+            END
+        END
         MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
         MENUITEM "Генерировать отчёт",          ID_FILE_GENERATEREPORTFILE
         MENUITEM SEPARATOR

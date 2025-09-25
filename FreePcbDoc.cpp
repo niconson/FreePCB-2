@@ -140,6 +140,7 @@ BEGIN_MESSAGE_MAP(CFreePcbDoc, CDocument)
 	ON_COMMAND(ID_FILE_SEL_FOLDER, OnSelectProjectFolder)
 	ON_COMMAND(ID_FILE_RELOAD_MENU, OnReloadMenu)
 	ON_COMMAND_EX_RANGE(ID_FILE_OPEN_FROM_START,ID_FILE_OPEN_FROM_END, OnSpeedFile)
+	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEDXFFILE1, ID_FILE_GENERATEDXFFILE6, OnFileGenerateDXFFile)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -5691,7 +5692,130 @@ void CFreePcbDoc::OutlinePolyUndoCallback( int type, void * ptr, BOOL undo )
 	}
 	delete ptr;
 }
-
+BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
+{
+	int hatch = 1;
+	if (CMD > ID_FILE_GENERATEDXFFILE3)
+	{
+		hatch = 0;
+		CMD -= 3;
+	}
+	float swell = 100.0;
+	if (CMD == ID_FILE_GENERATEDXFFILE2)
+		swell = 50000.0;
+	else if (CMD == ID_FILE_GENERATEDXFFILE3)
+		swell = 100000.0;
+	int num_polylines = m_outline_poly.GetSize();
+	cnet* laser_net = m_nlist->AddNet("LASER__NET", 0, 0, 0);
+	RECT TR = rect(0,0,0,0);
+	TR.left = TR.bottom = INT_MAX;
+	TR.right = TR.top = INT_MIN;
+	MarkLegalElementsForExport(this);
+	for (int i = 0; i < m_outline_poly.GetSize(); i++)
+		if (m_outline_poly.GetAt(i).GetUtility())
+		{
+			RECT r = m_outline_poly.GetAt(i).GetCornerBounds(0);
+			SwellRect(&TR, r);
+		}
+	if (TR.left == INT_MAX)
+		return 0;
+	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
+	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
+	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.top, 0, 0);
+	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.bottom, 0, 0);
+	m_nlist->CompleteArea(laser_net, iar, 0);
+	CString crop_net_name = "";
+	int crop_flags = 0;
+	setbit(crop_flags, MC_PADS);
+	setbit(crop_flags, MC_SEGS);
+	setbit(crop_flags, MC_AREAS);
+	setbit(crop_flags, MC_HOLES);
+	setbit(crop_flags, MC_TEXTS);
+	setbit(crop_flags, MC_POLYLINES);
+	setbit(crop_flags, MC_BOARD);
+	setbit(crop_flags, MC_OCTAGON);
+	setbit(crop_flags, MC_ALL_NETS);
+	setbit(crop_flags, MC_WIDTH);
+	int mem_crop_flags = m_crop_flags;
+	m_crop_flags = crop_flags;
+	CreateClearancesForCopperArea(	this,
+									&crop_net_name,
+									laser_net,
+									iar,
+									swell,
+									swell,
+									swell,
+									swell,
+									swell,
+									swell,
+									swell,
+									swell,
+									50000,
+									FALSE);
+	MarkLegalElementsForExport(this);
+	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+	{
+		if (p->shape && p->utility)
+		{
+			for (int ip = 0; ip < p->shape->GetNumPins(); ip++)
+			{
+				if (p->shape->m_padstack[ip].hole_size)
+				{
+					int hs = p->shape->m_padstack[ip].hole_size;
+					CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
+					int ia = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, pt.x - hs / 2, pt.y, hatch);
+					m_nlist->AppendAreaCorner(laser_net, ia, pt.x, pt.y + hs / 2, 1, 0);
+					m_nlist->AppendAreaCorner(laser_net, ia, pt.x + hs / 2, pt.y, 1, 0);
+					m_nlist->AppendAreaCorner(laser_net, ia, pt.x, pt.y - hs / 2, 1, 0);
+					laser_net->area[ia].poly->SetW(50000);
+					m_nlist->CompleteArea(laser_net, ia, 1);
+					id sel_id = laser_net->area[ia].poly->GetId();
+					sel_id.sst = ID_SIDE;
+					for (int i_side = 0; i_side < laser_net->area[ia].poly->GetNumSides(); i_side++)
+					{
+						sel_id.ii = i_side;
+						m_view->NewSelect(laser_net, &sel_id, FALSE, 0, 0);
+					}
+				}
+			}
+		}
+	}
+	for (cnet* n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet())
+	{
+		for (int ic = 0; ic < n->nconnects; ic++)
+		{
+			for (int iv = 0; iv <= n->connect[ic].nsegs; iv++)
+			{
+				if (n->connect[ic].vtx[iv].via_hole_w)
+					if (n->connect[ic].utility)
+					{
+						int hs = n->connect[ic].vtx[iv].via_hole_w;
+						CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
+						int ia = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, pt.x - hs / 2, pt.y, hatch);
+						m_nlist->AppendAreaCorner(laser_net, ia, pt.x, pt.y + hs / 2, 1, 0);
+						m_nlist->AppendAreaCorner(laser_net, ia, pt.x + hs / 2, pt.y, 1, 0);
+						m_nlist->AppendAreaCorner(laser_net, ia, pt.x, pt.y - hs / 2, 1, 0);
+						laser_net->area[ia].poly->SetW(50000);
+						m_nlist->CompleteArea(laser_net, ia, 1);
+						id sel_id = laser_net->area[ia].poly->GetId();
+						sel_id.sst = ID_SIDE;
+						for (int i_side = 0; i_side < laser_net->area[ia].poly->GetNumSides(); i_side++)
+						{
+							sel_id.ii = i_side;
+							m_view->NewSelect(laser_net, &sel_id, FALSE, 0, 0);
+						}
+					}
+			}
+		}
+	}
+	m_view->OnGenerateDXF();
+	m_view->CancelSelection(0);
+	for (int i = laser_net->nareas - 1; i >= 0; i--)
+		m_nlist->RemoveArea(laser_net, i);
+	m_nlist->RemoveNet(laser_net);
+	m_crop_flags = mem_crop_flags;
+	return TRUE;
+}
 // call dialog to create Gerber and drill files
 void CFreePcbDoc::OnFileGenerateCadFiles()
 {

@@ -1354,7 +1354,7 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 				int w = dl->el_w*m_pcbu_per_wu;
 				int Clearance = default_cl*2 + aW + w;
 				if( getbit( dl->layers_bitmap, LAY_BOARD_OUTLINE ) )
-					Clearance = board_cl*2 + aW + w;
+					Clearance = board_cl*2 + aW + _2540;
 				if( mer_cl > 0 )
 					Clearance = mer_cl*2 + aW + w;
 				if( dl->gtype == DL_LINE || 

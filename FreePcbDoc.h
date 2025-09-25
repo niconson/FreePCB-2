@@ -358,6 +358,7 @@ public:
 	afx_msg void OnAppExit();
 	afx_msg void OnFileConvert();
 	afx_msg void OnEditUndo();
+	afx_msg BOOL OnFileGenerateDXFFile(UINT CMD);
 	afx_msg void OnFileGenerateCadFiles();
 	afx_msg void OnToolsFootprintwizard();
 	afx_msg void OnProjectOptions();
