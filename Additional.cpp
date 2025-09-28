@@ -1013,7 +1013,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 											//
 											dist = Distance(curx, cury, mx, my);
 											dist += areaW;
-										} while ((dist > (doc->m_thermal_width + _2540) || dist < (doc->m_thermal_width - _2540)) && cnt_del < 3);
+										} while ((dist > abs(doc->m_thermal_width) + _2540 || dist < abs(doc->m_thermal_width) - _2540) && cnt_del < 3);
 										if (TestPolygon(curx, cury, PTS, np))
 										{
 											dist = Distance(curx, cury, mx, my);

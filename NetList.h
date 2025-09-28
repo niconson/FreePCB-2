@@ -53,7 +53,8 @@ enum{
 	MC_ALL_LAYERS,
 	MC_WIDTH,
 	MC_REMOVE_PREV,
-	MC_VALIDATE
+	MC_VALIDATE,
+	MC_DXF
 };
 
 typedef class {

@@ -177,6 +177,29 @@ BEGIN
                 MENUITEM "С расширением в 4 миль",  ID_FILE_GENERATEDXFFILE6
             END
         END
+        POPUP "Генерировать G-CODE для фрезерного станка"
+        BEGIN
+            POPUP "Сплошной"
+            BEGIN
+                MENUITEM "Фреза 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE1
+                MENUITEM "Фреза 10 миль (0.25мм)",  ID_FILE_GENERATEHPGLFILE2
+                MENUITEM "Фреза 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE3
+                MENUITEM "Фреза 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE4
+                MENUITEM "Фреза 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE5
+                MENUITEM "Фреза 30 миль (0.75мм)",  ID_FILE_GENERATEHPGLFILE6
+                MENUITEM "Фреза 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE7
+            END
+            POPUP "Контурный"
+            BEGIN
+                MENUITEM "Фреза 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE8
+                MENUITEM "Фреза 10 миль (0.25мм)",  ID_FILE_GENERATEHPGLFILE9
+                MENUITEM "Фреза 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE10
+                MENUITEM "Фреза 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE11
+                MENUITEM "Фреза 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE12
+                MENUITEM "Фреза 30 миль (0.75мм)",  ID_FILE_GENERATEHPGLFILE13
+                MENUITEM "Фреза 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE14
+            END
+        END
         MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
         MENUITEM "Генерировать отчёт",          ID_FILE_GENERATEREPORTFILE
         MENUITEM SEPARATOR
@@ -1925,7 +1948,7 @@ BEGIN
     CONTROL         "Сделать зазор для текстов",IDC_CHECK_TEXTS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,158,110,10
     CONTROL         "Сделать зазор контура платы",IDC_CHECK_BOARD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,173,118,10
     CONTROL         "Сделать зазор для v-cut",IDC_CHECK_POLYLINES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,187,106,10
-    CONTROL         "Как будто всё в одном слое",IDC_CHECK_ANY_LAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,41,130,10
+    CONTROL         "Через объекты других слоёв",IDC_CHECK_ANY_LAYER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,41,130,10
     CONTROL         "Удалить неподключённые островки",IDC_CHECK_DEL_ISLAND,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,167,27,158,10
     EDITTEXT        IDC_CLR_THERMAL,294,200,47,12,ES_AUTOHSCROLL

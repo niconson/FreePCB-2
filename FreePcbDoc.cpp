@@ -141,6 +141,7 @@ BEGIN_MESSAGE_MAP(CFreePcbDoc, CDocument)
 	ON_COMMAND(ID_FILE_RELOAD_MENU, OnReloadMenu)
 	ON_COMMAND_EX_RANGE(ID_FILE_OPEN_FROM_START,ID_FILE_OPEN_FROM_END, OnSpeedFile)
 	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEDXFFILE1, ID_FILE_GENERATEDXFFILE6, OnFileGenerateDXFFile)
+	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEHPGLFILE1, ID_FILE_GENERATEHPGLFILE14, OnFileGenerateHPGLFile)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -5711,9 +5712,12 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 	TR.left = TR.bottom = INT_MAX;
 	TR.right = TR.top = INT_MIN;
 	MarkLegalElementsForExport(this);
+	int LEGAL_BOARD = -1;
 	for (int i = 0; i < m_outline_poly.GetSize(); i++)
 		if (m_outline_poly.GetAt(i).GetUtility())
 		{
+			if (m_outline_poly.GetAt(i).GetLayer() == LAY_BOARD_OUTLINE)
+				LEGAL_BOARD = i;
 			RECT r = m_outline_poly.GetAt(i).GetCornerBounds(0);
 			SwellRect(&TR, r);
 		}
@@ -5736,6 +5740,7 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 	setbit(crop_flags, MC_OCTAGON);
 	setbit(crop_flags, MC_ALL_NETS);
 	setbit(crop_flags, MC_WIDTH);
+	setbit(crop_flags, MC_DXF);
 	int mem_crop_flags = m_crop_flags;
 	m_crop_flags = crop_flags;
 	CreateClearancesForCopperArea(	this,
@@ -5747,12 +5752,20 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 									swell,
 									swell,
 									swell,
-									swell,
+									0,
 									swell,
 									swell,
 									50000,
 									FALSE);
 	MarkLegalElementsForExport(this);
+	for (int ia=laser_net->nareas-1; ia>0; ia--)
+	{
+		int gnc = laser_net->area[ia].poly->GetNumCorners();
+		int x = laser_net->area[ia].poly->GetX(gnc - 1); 
+		int y = laser_net->area[ia].poly->GetY(gnc - 1);
+		if(m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x,y) == 0)
+			m_nlist->RemoveArea(laser_net, ia);
+	}
 	for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
 	{
 		if (p->shape && p->utility)
@@ -5814,6 +5827,208 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 		m_nlist->RemoveArea(laser_net, i);
 	m_nlist->RemoveNet(laser_net);
 	m_crop_flags = mem_crop_flags;
+	return TRUE;
+}
+BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
+{
+	int hatch = 1;
+	if (CMD > ID_FILE_GENERATEHPGLFILE7)
+	{
+		hatch = 0;
+		CMD -= 7;
+	}
+	//
+	float swell = NM_PER_MIL * 8;
+	if (CMD == ID_FILE_GENERATEHPGLFILE2)
+		swell = NM_PER_MIL * 10;
+	else if (CMD == ID_FILE_GENERATEHPGLFILE3)
+		swell = NM_PER_MIL * 12;
+	else if (CMD == ID_FILE_GENERATEHPGLFILE4)
+		swell = NM_PER_MIL * 16;
+	else if (CMD == ID_FILE_GENERATEHPGLFILE5)
+		swell = NM_PER_MIL * 20;
+	else if (CMD == ID_FILE_GENERATEHPGLFILE6)
+		swell = NM_PER_MIL * 30;
+	else if (CMD == ID_FILE_GENERATEHPGLFILE7)
+		swell = NM_PER_MIL * 40;
+	//
+	int num_polylines = m_outline_poly.GetSize();
+	cnet* laser_net = m_nlist->AddNet("LASER__NET", 0, 0, 0);
+	RECT TR = rect(0, 0, 0, 0);
+	TR.left = TR.bottom = INT_MAX;
+	TR.right = TR.top = INT_MIN;
+	MarkLegalElementsForExport(this);
+	int LEGAL_BOARD = -1;
+	for (int i = 0; i < m_outline_poly.GetSize(); i++)
+		if (m_outline_poly.GetAt(i).GetUtility())
+		{
+			if (m_outline_poly.GetAt(i).GetLayer() == LAY_BOARD_OUTLINE)
+				LEGAL_BOARD = i;
+			RECT r = m_outline_poly.GetAt(i).GetCornerBounds(0);
+			SwellRect(&TR, r);
+		}
+	if (TR.left == INT_MAX)
+		return 0;
+	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
+	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
+	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.top, 0, 0);
+	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.bottom, 0, 0);
+	m_nlist->CompleteArea(laser_net, iar, 0);
+	CString crop_net_name = "";
+	int crop_flags = 0;
+	setbit(crop_flags, MC_PADS);
+	setbit(crop_flags, MC_SEGS);
+	setbit(crop_flags, MC_AREAS);
+	setbit(crop_flags, MC_HOLES);
+	setbit(crop_flags, MC_TEXTS);
+	setbit(crop_flags, MC_POLYLINES);
+	setbit(crop_flags, MC_BOARD);
+	setbit(crop_flags, MC_OCTAGON);
+	setbit(crop_flags, MC_ALL_NETS);
+	setbit(crop_flags, MC_WIDTH);
+	setbit(crop_flags, MC_DXF);
+	int mem_crop_flags = m_crop_flags;
+	m_crop_flags = crop_flags;
+	CreateClearancesForCopperArea(	this,
+									&crop_net_name,
+									laser_net,
+									iar,
+									_2540,
+									_2540,
+									_2540,
+									_2540,
+									_2540,
+									0,// board
+									_2540,
+									_2540,
+									swell,
+									FALSE);
+	MarkLegalElementsForExport(this);
+	float convert = NM_PER_MM;
+	if (m_units == MIL)
+		convert = NM_PER_MIL;
+	CStdioFile f;
+	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
+	{
+		CString s;
+		f.WriteString("%\n");
+		f.WriteString(";G-CODE из СхемАтор&ПлатФорм\n");
+		f.WriteString("G21\n");
+		f.WriteString("G40\n");
+		f.WriteString("G49\n");
+		f.WriteString("G53\n");
+		f.WriteString("G80\n");
+		f.WriteString("G90\n");
+		f.WriteString("F200\n");
+		f.WriteString("M3 S500\n");
+		f.WriteString("G4 P2000\n");
+		f.WriteString(";(ось Z настроена так, что при Z=0 инструмент касается поверхности заготовки)\n");
+		for (int area = laser_net->nareas - 1; area >= 0; area--)
+		{
+			int gnc = laser_net->area[area].poly->GetNumCorners();
+			int x = laser_net->area[area].poly->GetX(gnc - 1);
+			int y = laser_net->area[area].poly->GetY(gnc - 1);
+			if (m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x, y))
+			{
+				for (int ia = 0; ia < laser_net->area[area].poly->GetNumCorners(); ia++)
+				{
+					float fx = laser_net->area[area].poly->GetX(ia);
+					float fy = laser_net->area[area].poly->GetY(ia);
+					int numc = laser_net->area[area].poly->GetNumContour(ia);
+					if (laser_net->area[area].poly->GetContourStart(numc) == ia)
+					{
+						f.WriteString("G00 Z0.5\n");
+						s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
+						f.WriteString(s);
+						f.WriteString("G01 Z-0.1\n");
+					}
+					else
+					{
+						s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+						f.WriteString(s);
+					}
+					if (laser_net->area[area].poly->GetContourEnd(numc) == ia)
+					{
+						int cst = laser_net->area[area].poly->GetContourStart(numc);
+						fx = laser_net->area[area].poly->GetX(cst);
+						fy = laser_net->area[area].poly->GetY(cst);
+						s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+						f.WriteString(s);
+					}
+				}
+				CPolyLine* p = laser_net->area[area].poly;
+				if (p->GetHatch() == 1)
+				{
+					int nh = p->GetHatchSize();
+					for (int ic = 0; ic < nh; ic++)
+					{
+						dl_element* GetH = p->GetHatchLoc(ic);
+						CArray<CPoint>* pA = GetH->dlist->Get_Points(GetH, NULL, 0);
+						int np = pA->GetSize();
+						CPoint* P = new CPoint[np];//new012
+						GetH->dlist->Get_Points(GetH, P, &np);
+						for (int ip = 0; ip + 1 < np; ip += 2)
+						{
+							f.WriteString("G00 Z0.5\n");
+							s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
+							f.WriteString(s);
+							f.WriteString("G01 Z-0.1\n");
+							s.Format("G01 X%.4f Y%.4f\n", (float)P[ip+1].x / convert, (float)P[ip+1].y / convert);
+							f.WriteString(s);
+						}
+						delete P;//new012
+					}
+				}
+			}
+		}
+		for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+		{
+			if (p->shape && p->utility)
+			{
+				for (int ip = 0; ip < p->shape->GetNumPins(); ip++)
+				{
+					if (p->shape->m_padstack[ip].hole_size)
+					{
+						int hs = p->shape->m_padstack[ip].hole_size;
+						CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
+						f.WriteString("G00 Z0.5\n");
+						s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+						f.WriteString(s);
+						f.WriteString("G01 Z-0.1\n");
+					}
+				}
+			}
+		}
+		for (cnet* n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet())
+		{
+			for (int ic = 0; ic < n->nconnects; ic++)
+			{
+				for (int iv = 0; iv <= n->connect[ic].nsegs; iv++)
+				{
+					if (n->connect[ic].vtx[iv].via_hole_w)
+						if (n->connect[ic].utility)
+						{
+							int hs = n->connect[ic].vtx[iv].via_hole_w;
+							CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
+							f.WriteString("G00 Z0.5\n");
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+							f.WriteString(s);
+							f.WriteString("G01 Z-0.1\n");
+						}
+				}
+			}
+		}
+		f.WriteString("G00 Z0.5\n");
+		f.WriteString("M5\n");
+		f.WriteString("M30\n");
+		f.Close();
+	}
+	m_view->CancelSelection(0);
+	for (int i = laser_net->nareas - 1; i >= 0; i--)
+		m_nlist->RemoveArea(laser_net, i);
+	m_nlist->RemoveNet(laser_net);
+	m_crop_flags = mem_crop_flags;
+	ShellExecute(NULL, "open", "open.gcode", NULL, m_app_dir, SW_SHOWNORMAL);
 	return TRUE;
 }
 // call dialog to create Gerber and drill files

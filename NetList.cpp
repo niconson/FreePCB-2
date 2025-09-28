@@ -1262,6 +1262,8 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 						continue;
 					else if( getbit( p->m_outline_stroke[io]->layers_bitmap, LAY_TOP_COPPER ) == 0 && getbit( p->m_outline_stroke[io]->layers_bitmap, LAY_BOTTOM_COPPER ) == 0 )
 						continue;
+					else if(p->m_outline_stroke[io]->el_w <= 1 && getbit(selection_flags, MC_DXF))
+						continue;
 					//
 					CArray<CPoint> *arr = m_dlist->Get_Points( p->m_outline_stroke[io], NULL, 0 );
 					if( arr )
@@ -8821,7 +8823,7 @@ int CNetList::TestAreaPolygon( cnet * net, int iarea, int test_contour, int test
 					s.Format(G_LANGUAGE == 0 ? 
 						"This procedure, as it turned out, takes a lot of time. Proceed ? (%s, area %d)":
 						"Ёта процедура, как оказалось, занимает много времени. ѕродолжить? (%s, полигон %d)", net->name, iarea + 1);
-					answ = AfxMessageBox( s, MB_ICONERROR|MB_YESNO );
+					answ = AfxMessageBox( s, MB_ICONINFORMATION|MB_YESNO );
 					if( answ == IDNO )
 						return INT_MAX;
 				}
