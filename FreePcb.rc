@@ -166,38 +166,46 @@ BEGIN
             BEGIN
                 MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE1
                 MENUITEM SEPARATOR
-                MENUITEM "С расширением в 2 миль",  ID_FILE_GENERATEDXFFILE2
-                MENUITEM "С расширением в 4 миль",  ID_FILE_GENERATEDXFFILE3
+                MENUITEM "С расширением в 2 миль (0.05мм)",     ID_FILE_GENERATEDXFFILE2
+                MENUITEM "С расширением в 4 миль (0.1мм)",      ID_FILE_GENERATEDXFFILE3
+                MENUITEM SEPARATOR
+                MENUITEM "Все отверстия",           ID_FILE_GENERATEDXFFILE4
             END
             POPUP "Без штриховки"
             BEGIN
-                MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE4
+                MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE5
                 MENUITEM SEPARATOR
-                MENUITEM "С расширением в 2 миль",  ID_FILE_GENERATEDXFFILE5
-                MENUITEM "С расширением в 4 миль",  ID_FILE_GENERATEDXFFILE6
+                MENUITEM "С расширением в 2 миль (0.05мм)",     ID_FILE_GENERATEDXFFILE6
+                MENUITEM "С расширением в 4 миль (0.1мм)",      ID_FILE_GENERATEDXFFILE7
+                MENUITEM SEPARATOR
+                MENUITEM "Все отверстия",           ID_FILE_GENERATEDXFFILE8
             END
         END
         POPUP "Генерировать G-CODE для фрезерного станка"
         BEGIN
             POPUP "Сплошной"
             BEGIN
-                MENUITEM "Фреза 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE1
-                MENUITEM "Фреза 10 миль (0.25мм)",  ID_FILE_GENERATEHPGLFILE2
-                MENUITEM "Фреза 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE3
-                MENUITEM "Фреза 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE4
-                MENUITEM "Фреза 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE5
-                MENUITEM "Фреза 30 миль (0.75мм)",  ID_FILE_GENERATEHPGLFILE6
-                MENUITEM "Фреза 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE7
+                MENUITEM "Под фрезу 2 миль (0.05мм)",   ID_FILE_GENERATEHPGLFILE1
+                MENUITEM "Под фрезу 4 миль  (0.1мм)",   ID_FILE_GENERATEHPGLFILE2
+                MENUITEM "Под фрезу 8 миль  (0.2мм)",   ID_FILE_GENERATEHPGLFILE3
+                MENUITEM "Под фрезу 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE4
+                MENUITEM "Под фрезу 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE5
+                MENUITEM "Под фрезу 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE6
+                MENUITEM "Под фрезу 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE7
+                MENUITEM SEPARATOR
+                MENUITEM "Все отверстия",               ID_FILE_GENERATEHPGLFILE8
             END
             POPUP "Контурный"
             BEGIN
-                MENUITEM "Фреза 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE8
-                MENUITEM "Фреза 10 миль (0.25мм)",  ID_FILE_GENERATEHPGLFILE9
-                MENUITEM "Фреза 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE10
-                MENUITEM "Фреза 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE11
-                MENUITEM "Фреза 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE12
-                MENUITEM "Фреза 30 миль (0.75мм)",  ID_FILE_GENERATEHPGLFILE13
-                MENUITEM "Фреза 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE14
+                MENUITEM "Под фрезу 2 миль (0.05мм)",   ID_FILE_GENERATEHPGLFILE9
+                MENUITEM "Под фрезу 4 миль (0.1мм)",    ID_FILE_GENERATEHPGLFILE10
+                MENUITEM "Под фрезу 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE11
+                MENUITEM "Под фрезу 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE12
+                MENUITEM "Под фрезу 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE13
+                MENUITEM "Под фрезу 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE14
+                MENUITEM "Под фрезу 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE15
+                MENUITEM SEPARATOR
+                MENUITEM "Все отверстия", ID_FILE_GENERATEHPGLFILE16
             END
         END
         MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
