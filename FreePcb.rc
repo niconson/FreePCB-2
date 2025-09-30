@@ -192,21 +192,19 @@ BEGIN
                 MENUITEM "Под фрезу 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE5
                 MENUITEM "Под фрезу 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE6
                 MENUITEM "Под фрезу 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE7
-                MENUITEM SEPARATOR
-                MENUITEM "Все отверстия",               ID_FILE_GENERATEHPGLFILE8
             END
             POPUP "Контурный"
             BEGIN
-                MENUITEM "Под фрезу 2 миль (0.05мм)",   ID_FILE_GENERATEHPGLFILE9
-                MENUITEM "Под фрезу 4 миль (0.1мм)",    ID_FILE_GENERATEHPGLFILE10
-                MENUITEM "Под фрезу 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE11
-                MENUITEM "Под фрезу 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE12
-                MENUITEM "Под фрезу 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE13
-                MENUITEM "Под фрезу 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE14
-                MENUITEM "Под фрезу 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE15
-                MENUITEM SEPARATOR
-                MENUITEM "Все отверстия", ID_FILE_GENERATEHPGLFILE16
+                MENUITEM "Под фрезу 2 миль (0.05мм)",   ID_FILE_GENERATEHPGLFILE8
+                MENUITEM "Под фрезу 4 миль (0.1мм)",    ID_FILE_GENERATEHPGLFILE9
+                MENUITEM "Под фрезу 8 миль (0.2мм)",    ID_FILE_GENERATEHPGLFILE10
+                MENUITEM "Под фрезу 12 миль (0.3мм)",   ID_FILE_GENERATEHPGLFILE11
+                MENUITEM "Под фрезу 16 миль (0.4мм)",   ID_FILE_GENERATEHPGLFILE12
+                MENUITEM "Под фрезу 20 миль (0.5мм)",   ID_FILE_GENERATEHPGLFILE13
+                MENUITEM "Под фрезу 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE14
             END
+            MENUITEM SEPARATOR
+            MENUITEM "Все отверстия",                   ID_FILE_GENERATEHPGLFILE15
         END
         MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
         MENUITEM "Генерировать отчёт",          ID_FILE_GENERATEREPORTFILE

@@ -1032,6 +1032,64 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 					}
 				}
 		}
+		for (int via = 0; via < area_net->area[i_a].nvias; via++)
+		{
+			int iconn = area_net->area[i_a].vcon[via];
+			int iver = area_net->area[i_a].vtx[via];
+			if (iconn >= area_net->nconnects)
+				continue;
+			if (iver > area_net->connect[iconn].nsegs)
+				continue;
+			int via_wid = area_net->connect[iconn].vtx[iver].via_w;
+			int vx = area_net->connect[iconn].vtx[iver].x;
+			int vy = area_net->connect[iconn].vtx[iver].y;
+			for (int cr = 0; cr < area_net->area[i_a].poly->GetNumCorners(); cr++)
+			{
+				// test:
+				int numcont = area_net->area[i_a].poly->GetNumContour(cr);
+				int cstart = area_net->area[i_a].poly->GetContourStart(numcont);
+				int cend = area_net->area[i_a].poly->GetContourEnd(numcont);
+				if (cend - cstart < 10)
+				{
+					cr = cend;
+					continue; // fail
+				}
+
+				int curx = area_net->area[i_a].poly->GetX(cr);
+				int cury = area_net->area[i_a].poly->GetY(cr);
+				int dist = Distance(curx, cury, vx, vy);
+				if (dist < via_wid/2)
+				{
+					int mx = curx;
+					int my = cury;
+					int ne = area_net->area[i_a].poly->GetIndexCornerNext(cr);
+					int nne = area_net->area[i_a].poly->GetIndexCornerNext(ne);
+					int cnt_del = -1;
+					do
+					{
+						nne = area_net->area[i_a].poly->GetIndexCornerNext(nne);
+						curx = area_net->area[i_a].poly->GetX(nne);
+						cury = area_net->area[i_a].poly->GetY(nne);
+						cnt_del++;
+						//
+						dist = Distance(curx, cury, mx, my);
+						dist += areaW;
+					} while ((dist > abs(doc->m_thermal_width) + _2540 || dist < abs(doc->m_thermal_width) - _2540) && cnt_del < 3);
+					dist = Distance(curx, cury, vx, vy);
+					if (dist < via_wid / 2)
+					{
+						dist = Distance(curx, cury, mx, my);
+						dist += areaW;
+						if (dist > (doc->m_thermal_width + _2540))
+							continue;
+						if (dist < (doc->m_thermal_width - _2540))
+							continue;
+						area_net->area[i_a].poly->DeleteCorner(ne, 2 + cnt_del, 0, 0);
+						bCornerDeleted = 1;
+					}
+				}
+			}
+		}
 		if (bCornerDeleted)
 			area_net->area[i_a].poly->Draw();
 	}

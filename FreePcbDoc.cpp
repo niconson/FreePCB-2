@@ -5833,10 +5833,10 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 {
 	int hatch = 1;
-	if (CMD > ID_FILE_GENERATEHPGLFILE8)
+	if (CMD > ID_FILE_GENERATEHPGLFILE7)
 	{
 		hatch = 0;
-		CMD -= 8;
+		CMD -= 7;
 	}
 	//
 	float swell = NM_PER_MIL * 2;
@@ -5913,8 +5913,16 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
 	{
 		CString s;
+		CString ToolUp = "G00 Z3.0\n";
 		f.WriteString("%\n");
-		f.WriteString(";G-CODE из СхемАтор&ПлатФорм\n");
+		f.WriteString("; G-CODE из СхемАтор&ПлатФорм\n");
+		if (CMD != ID_FILE_GENERATEHPGLFILE8)
+			s.Format("; Инструмент d = %.1f нанометров,\n", swell);
+		else
+			s.Format("; Инструмент сквозного сверления,\n", swell);
+		f.WriteString(s);
+		f.WriteString("; ось Z настроена так, что при Z=0\n");
+		f.WriteString("; инструмент касается поверхности заготовки\n");
 		f.WriteString("G21\n");
 		f.WriteString("G40\n");
 		f.WriteString("G49\n");
@@ -5924,7 +5932,6 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 		f.WriteString("F200\n");
 		f.WriteString("M3 S500\n");
 		f.WriteString("G4 P2000\n");
-		f.WriteString(";(ось Z настроена так, что при Z=0 инструмент касается поверхности заготовки)\n");
 		if (CMD != ID_FILE_GENERATEHPGLFILE8) 
 			for (int area = laser_net->nareas - 1; area >= 0; area--)
 			{
@@ -5940,7 +5947,7 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 						int numc = laser_net->area[area].poly->GetNumContour(ia);
 						if (laser_net->area[area].poly->GetContourStart(numc) == ia)
 						{
-							f.WriteString("G00 Z0.5\n");
+							f.WriteString(ToolUp);
 							s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
 							f.WriteString(s);
 							f.WriteString("G01 Z-0.1\n");
@@ -5972,7 +5979,10 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 							GetH->dlist->Get_Points(GetH, P, &np);
 							for (int ip = 0; ip + 1 < np; ip += 2)
 							{
-								f.WriteString("G00 Z0.5\n");
+								if (ip == 0)
+									f.WriteString("G00 Z2.0\n");
+								else
+									f.WriteString("G00 Z1.0\n");
 								s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
 								f.WriteString(s);
 								f.WriteString("G01 Z-0.1\n");
@@ -5994,10 +6004,41 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 					{
 						int hs = p->shape->m_padstack[ip].hole_size;
 						CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
-						f.WriteString("G00 Z0.5\n");
-						s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-						f.WriteString(s);
-						f.WriteString("G01 Z-0.1\n");
+						if (CMD == ID_FILE_GENERATEHPGLFILE8)
+						{
+							f.WriteString(ToolUp);
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+							f.WriteString(s);
+							f.WriteString("G01 Z-3.0\n");
+						}
+						else if (hs <= swell)
+						{
+							f.WriteString(ToolUp);
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+							f.WriteString(s);
+							f.WriteString("G01 Z-0.1\n");
+						}
+						else
+						{
+							int shift = (hs - swell) / 2;
+							f.WriteString(ToolUp);
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+							f.WriteString(s);
+							f.WriteString("G01 Z-0.1\n");
+							do
+							{
+								s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+								f.WriteString(s);
+								s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
+									(float)pt.x / convert,
+									(float)(pt.y + shift) / convert,
+									(float)(-shift) / convert);
+								f.WriteString(s);
+								shift -= (swell * 6 / 7);
+								if (hatch == 0)
+									break;
+							} while (shift > 0);
+						}
 					}
 				}
 			}
@@ -6013,15 +6054,46 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 						{
 							int hs = n->connect[ic].vtx[iv].via_hole_w;
 							CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
-							f.WriteString("G00 Z0.5\n");
-							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-							f.WriteString(s);
-							f.WriteString("G01 Z-0.1\n");
+							if (CMD == ID_FILE_GENERATEHPGLFILE8)
+							{
+								f.WriteString(ToolUp);
+								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+								f.WriteString(s);
+								f.WriteString("G01 Z-3.0\n");
+							}
+							else if (hs <= swell)
+							{
+								f.WriteString(ToolUp);
+								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+								f.WriteString(s);
+								f.WriteString("G01 Z-0.1\n");
+							}
+							else
+							{
+								int shift = (hs - swell) / 2;
+								f.WriteString(ToolUp);
+								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+								f.WriteString(s);
+								f.WriteString("G01 Z-0.1\n");
+								do
+								{
+									s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+									f.WriteString(s);
+									s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
+										(float)pt.x / convert,
+										(float)(pt.y + shift) / convert,
+										(float)(-shift) / convert);
+									f.WriteString(s);
+									shift -= (swell * 6 / 7);
+									if (hatch == 0)
+										break;
+								} while (shift > 0);
+							}
 						}
 				}
 			}
 		}
-		f.WriteString("G00 Z0.5\n");
+		f.WriteString(ToolUp);
 		f.WriteString("M5\n");
 		f.WriteString("M30\n");
 		f.Close();
