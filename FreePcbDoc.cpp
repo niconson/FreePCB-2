@@ -5905,7 +5905,7 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 										_2540,
 										swell,
 										FALSE);
-	MarkLegalElementsForExport(this);
+	int iLegalBoard = MarkLegalElementsForExport(this);
 	float convert = NM_PER_MM;
 	if (m_units == MIL)
 		convert = NM_PER_MIL;
@@ -5915,85 +5915,115 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 		CString s;
 		CString ToolUp = "G00 Z3.0\n";
 		f.WriteString("%\n");
-		f.WriteString("; G-CODE из СхемАтор&ПлатФорм\n");
+		f.WriteString("; G-CODE from СхемАтор&ПлатФорм\n");
+		f.WriteString("; URL: www.niconson.com/freepcb2\n");
 		if (CMD != ID_FILE_GENERATEHPGLFILE8)
-			s.Format("; Инструмент d = %.1f нанометров,\n", swell);
+		{
+			s.Format("; Tool d = %.1f nanometers,\n", swell);
+			f.WriteString(s);
+		}
 		else
-			s.Format("; Инструмент сквозного сверления,\n", swell);
-		f.WriteString(s);
-		f.WriteString("; ось Z настроена так, что при Z=0\n");
-		f.WriteString("; инструмент касается поверхности заготовки\n");
+			f.WriteString("; Through drilling tool.\n");
+		f.WriteString("; The Z axis is set so that at Z=0 the tool\n");
+		f.WriteString("; touches the surface of the workpiece\n");
+		f.WriteString("G17\n");
 		f.WriteString("G21\n");
 		f.WriteString("G40\n");
 		f.WriteString("G49\n");
 		f.WriteString("G53\n");
 		f.WriteString("G80\n");
 		f.WriteString("G90\n");
+		f.WriteString("G94\n");
 		f.WriteString("F200\n");
 		f.WriteString("M3 S500\n");
 		f.WriteString("G4 P2000\n");
-		if (CMD != ID_FILE_GENERATEHPGLFILE8) 
-			for (int area = laser_net->nareas - 1; area >= 0; area--)
+		RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
+		f.WriteString(";---------------------\n; Left-Bottom Corner:\n");
+		f.WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
+		f.WriteString(s);
+		f.WriteString("G01 Z0.1\n");
+		f.WriteString(";---------------------\n; Right-Top Corner:\n");
+		f.WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
+		f.WriteString(s);
+		f.WriteString("G01 Z0.1\n");
+		f.WriteString(";---------------------\n; Right-Bottom Corner:\n");
+		f.WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
+		f.WriteString(s);
+		f.WriteString("G01 Z0.1\n");
+		f.WriteString(";---------------------\n; Left-Top Corner:\n");
+		f.WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
+		f.WriteString(s);
+		f.WriteString("G01 Z0.1\n");
+		f.WriteString(";---------------------\n");
+		if (CMD == ID_FILE_GENERATEHPGLFILE8)
+		{
+			// none
+		}
+		else for (int area = laser_net->nareas - 1; area >= 0; area--)
+		{
+			int gnc = laser_net->area[area].poly->GetNumCorners();
+			int x = laser_net->area[area].poly->GetX(gnc - 1);
+			int y = laser_net->area[area].poly->GetY(gnc - 1);
+			if (m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x, y))
 			{
-				int gnc = laser_net->area[area].poly->GetNumCorners();
-				int x = laser_net->area[area].poly->GetX(gnc - 1);
-				int y = laser_net->area[area].poly->GetY(gnc - 1);
-				if (m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x, y))
+				for (int ia = 0; ia < laser_net->area[area].poly->GetNumCorners(); ia++)
 				{
-					for (int ia = 0; ia < laser_net->area[area].poly->GetNumCorners(); ia++)
+					float fx = laser_net->area[area].poly->GetX(ia);
+					float fy = laser_net->area[area].poly->GetY(ia);
+					int numc = laser_net->area[area].poly->GetNumContour(ia);
+					if (laser_net->area[area].poly->GetContourStart(numc) == ia)
 					{
-						float fx = laser_net->area[area].poly->GetX(ia);
-						float fy = laser_net->area[area].poly->GetY(ia);
-						int numc = laser_net->area[area].poly->GetNumContour(ia);
-						if (laser_net->area[area].poly->GetContourStart(numc) == ia)
+						f.WriteString(ToolUp);
+						s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
+						f.WriteString(s);
+						f.WriteString("G01 Z-0.1\n");
+					}
+					else
+					{
+						s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+						f.WriteString(s);
+					}
+					if (laser_net->area[area].poly->GetContourEnd(numc) == ia)
+					{
+						int cst = laser_net->area[area].poly->GetContourStart(numc);
+						fx = laser_net->area[area].poly->GetX(cst);
+						fy = laser_net->area[area].poly->GetY(cst);
+						s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+						f.WriteString(s);
+					}
+				}
+				CPolyLine* p = laser_net->area[area].poly;
+				if (p->GetHatch() == 1)
+				{
+					int nh = p->GetHatchSize();
+					for (int ic = 0; ic < nh; ic++)
+					{
+						dl_element* GetH = p->GetHatchLoc(ic);
+						CArray<CPoint>* pA = GetH->dlist->Get_Points(GetH, NULL, 0);
+						int np = pA->GetSize();
+						CPoint* P = new CPoint[np];//new012
+						GetH->dlist->Get_Points(GetH, P, &np);
+						for (int ip = 0; ip + 1 < np; ip += 2)
 						{
-							f.WriteString(ToolUp);
-							s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
+							if (ip == 0)
+								f.WriteString("G00 Z2.0\n");
+							else
+								f.WriteString("G00 Z1.0\n");
+							s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
 							f.WriteString(s);
 							f.WriteString("G01 Z-0.1\n");
-						}
-						else
-						{
-							s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+							s.Format("G01 X%.4f Y%.4f\n", (float)P[ip+1].x / convert, (float)P[ip+1].y / convert);
 							f.WriteString(s);
 						}
-						if (laser_net->area[area].poly->GetContourEnd(numc) == ia)
-						{
-							int cst = laser_net->area[area].poly->GetContourStart(numc);
-							fx = laser_net->area[area].poly->GetX(cst);
-							fy = laser_net->area[area].poly->GetY(cst);
-							s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
-							f.WriteString(s);
-						}
-					}
-					CPolyLine* p = laser_net->area[area].poly;
-					if (p->GetHatch() == 1)
-					{
-						int nh = p->GetHatchSize();
-						for (int ic = 0; ic < nh; ic++)
-						{
-							dl_element* GetH = p->GetHatchLoc(ic);
-							CArray<CPoint>* pA = GetH->dlist->Get_Points(GetH, NULL, 0);
-							int np = pA->GetSize();
-							CPoint* P = new CPoint[np];//new012
-							GetH->dlist->Get_Points(GetH, P, &np);
-							for (int ip = 0; ip + 1 < np; ip += 2)
-							{
-								if (ip == 0)
-									f.WriteString("G00 Z2.0\n");
-								else
-									f.WriteString("G00 Z1.0\n");
-								s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
-								f.WriteString(s);
-								f.WriteString("G01 Z-0.1\n");
-								s.Format("G01 X%.4f Y%.4f\n", (float)P[ip+1].x / convert, (float)P[ip+1].y / convert);
-								f.WriteString(s);
-							}
-							delete P;//new012
-						}
+						delete P;//new012
 					}
 				}
 			}
+		}
 		for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
 		{
 			if (p->shape && p->utility)

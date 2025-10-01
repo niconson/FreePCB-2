@@ -521,7 +521,7 @@ void SavePcbView(CFreePcbDoc* doc)
 	}
 }
 
-void MarkLegalElementsForExport(CFreePcbDoc* doc)
+int MarkLegalElementsForExport(CFreePcbDoc* doc)
 {
 	doc->m_view->MarkAllOutlinePoly(0,-1);
 	doc->m_plist->MarkAllParts(0);
@@ -573,7 +573,7 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 		doc->m_plist->MarkAllParts(1);
 		doc->m_nlist->MarkAllNets(1);
 		doc->m_tlist->MarkAllTexts(1);
-		return;
+		return iLegal;
 	}
 		
 	CPolyLine* LegalBoard = &doc->m_outline_poly.GetAt(iLegal);
@@ -646,6 +646,7 @@ void MarkLegalElementsForExport(CFreePcbDoc* doc)
 					po->SetUtility(1); // Legal polyline
 	}
 	LegalBoard->SetUtility(1);
+	return iLegal;
 }
 
 void SelectLegalElements(CFreePcbDoc* doc)
@@ -960,6 +961,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 	// (bad thermal relief)
 	if (getbit(doc->m_crop_flags, MC_NO_THERMAL) == 0) for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
 	{
+		doc->m_nlist->SetAreaConnections(area_net, i_a);
 		int bCornerDeleted = 0;
 		for (int pin = 0; pin < area_net->area[i_a].npins; pin++)
 		{
@@ -988,7 +990,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 									int numcont = area_net->area[i_a].poly->GetNumContour(cr);
 									int cstart = area_net->area[i_a].poly->GetContourStart(numcont);
 									int cend = area_net->area[i_a].poly->GetContourEnd(numcont);
-									if (cend - cstart < 10)
+									if (cend - cstart < 8)
 									{
 										cr = cend;
 										continue; // fail
@@ -1049,7 +1051,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 				int numcont = area_net->area[i_a].poly->GetNumContour(cr);
 				int cstart = area_net->area[i_a].poly->GetContourStart(numcont);
 				int cend = area_net->area[i_a].poly->GetContourEnd(numcont);
-				if (cend - cstart < 10)
+				if (cend - cstart < 8)
 				{
 					cr = cend;
 					continue; // fail
@@ -1091,7 +1093,12 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 			}
 		}
 		if (bCornerDeleted)
-			area_net->area[i_a].poly->Draw();
+		{
+			if(area_net->area[i_a].poly->GetNumCorners() < 12)
+				doc->m_nlist->RemoveArea(area_net, i_a);
+			else
+				area_net->area[i_a].poly->Draw();
+		}
 	}
 
 	if (gHost)

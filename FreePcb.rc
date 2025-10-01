@@ -160,25 +160,25 @@ BEGIN
         MENUITEM "Сохранить проект как библиотеку", ID_FILE_SAVEPROJECTASLIBRARY
         MENUITEM "Конвертировать библиотеку",   ID_FILE_CONVERT
         MENUITEM SEPARATOR
-        POPUP "Генерировать DXF для лазерного гравёра" 
+        POPUP "Генерировать DXF для лазерного гравёра"
         BEGIN
             POPUP "Заштрихованный"
             BEGIN
-                MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE1
+                MENUITEM "По медному краю",             ID_FILE_GENERATEDXFFILE1
                 MENUITEM SEPARATOR
-                MENUITEM "С расширением в 2 миль (0.05мм)",     ID_FILE_GENERATEDXFFILE2
-                MENUITEM "С расширением в 4 миль (0.1мм)",      ID_FILE_GENERATEDXFFILE3
+                MENUITEM "С расширением в 2 миль (0.05мм)", ID_FILE_GENERATEDXFFILE2
+                MENUITEM "С расширением в 4 миль (0.1мм)", ID_FILE_GENERATEDXFFILE3
                 MENUITEM SEPARATOR
-                MENUITEM "Все отверстия",           ID_FILE_GENERATEDXFFILE4
+                MENUITEM "Все отверстия",               ID_FILE_GENERATEDXFFILE4
             END
             POPUP "Без штриховки"
             BEGIN
-                MENUITEM "По медному краю",         ID_FILE_GENERATEDXFFILE5
+                MENUITEM "По медному краю",             ID_FILE_GENERATEDXFFILE5
                 MENUITEM SEPARATOR
-                MENUITEM "С расширением в 2 миль (0.05мм)",     ID_FILE_GENERATEDXFFILE6
-                MENUITEM "С расширением в 4 миль (0.1мм)",      ID_FILE_GENERATEDXFFILE7
+                MENUITEM "С расширением в 2 миль (0.05мм)", ID_FILE_GENERATEDXFFILE6
+                MENUITEM "С расширением в 4 миль (0.1мм)", ID_FILE_GENERATEDXFFILE7
                 MENUITEM SEPARATOR
-                MENUITEM "Все отверстия",           ID_FILE_GENERATEDXFFILE8
+                MENUITEM "Все отверстия",               ID_FILE_GENERATEDXFFILE8
             END
         END
         POPUP "Генерировать G-CODE для фрезерного станка"
@@ -204,7 +204,7 @@ BEGIN
                 MENUITEM "Под фрезу 40 миль (1.0мм)",   ID_FILE_GENERATEHPGLFILE14
             END
             MENUITEM SEPARATOR
-            MENUITEM "Все отверстия",                   ID_FILE_GENERATEHPGLFILE15
+            MENUITEM "Все отверстия",               ID_FILE_GENERATEHPGLFILE15
         END
         MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
         MENUITEM "Генерировать отчёт",          ID_FILE_GENERATEREPORTFILE
@@ -879,24 +879,25 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 235, 149
+IDD_ABOUTBOX DIALOGEX 0, 0, 266, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "О программе"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,12,20,20
     LTEXT           "Редактор печатных плат ПлатФорм",IDC_STATIC,42,12,129,8,SS_NOPREFIX
-    LTEXT           "© Allan Wright 2003 - 2010,  © duxahtech 2014 - 2025",IDC_STATIC,42,24,179,8
-    DEFPUSHBUTTON   "Готово",IDOK,178,7,50,14,WS_GROUP
-    LTEXT           "Source libraries:",IDC_STATIC,19,66,51,8
-    LTEXT           "© Advanced Interfaces Group, University of Manchester",IDC_STATIC,42,99,180,8
-    LTEXT           "ClibPDF © FastIO Systems Inc.",IDC_STATIC,30,78,101,8
-    LTEXT           "Generic Polygon Clipper",IDC_STATIC,30,90,76,8
-    EDITTEXT        IDC_EDIT1,66,36,162,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "Build",IDC_STATIC,42,36,16,8
-    LTEXT           "Executables:",IDC_STATIC,18,114,42,8
-    LTEXT           "FpcROUTE © 2007 Bruce Parham",IDC_STATIC,30,126,113,8
-    LTEXT           "Additional Copyrights:",IDC_STATIC,12,54,68,8
+    LTEXT           "© Allan Wright 2003 - 2010 (Freepcb-1)",IDC_STATIC,42,24,179,8
+    DEFPUSHBUTTON   "Готово",IDOK,209,7,50,14,WS_GROUP
+    LTEXT           "Source libraries:",IDC_STATIC,19,72,51,8
+    LTEXT           "© Advanced Interfaces Group, University of Manchester",IDC_STATIC,42,107,180,8
+    LTEXT           "ClibPDF © FastIO Systems Inc.",IDC_STATIC,30,84,101,8
+    LTEXT           "Generic Polygon Clipper",IDC_STATIC,30,96,76,8
+    EDITTEXT        IDC_EDIT1,66,48,167,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Build",IDC_STATIC,42,48,16,8
+    LTEXT           "Executables:",IDC_STATIC,18,119,42,8
+    LTEXT           "FpcROUTE © 2007 Bruce Parham (for Freepcb-1)",IDC_STATIC,30,131,185,8
+    LTEXT           "Additional Copyrights:",IDC_STATIC,12,60,68,8
+    LTEXT           "© duxahtech 2014 - 2025 (Freepcb-2, Схематор&&Платформ)",IDC_STATIC,42,36,208,8
 END
 
 IDD_ADD_PART DIALOGEX 0, 0, 470, 333
@@ -2931,9 +2932,9 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 228
+        RIGHTMARGIN, 259
         TOPMARGIN, 7
-        BOTTOMMARGIN, 144
+        BOTTOMMARGIN, 145
     END
 
     IDD_ADD_PART, DIALOG
