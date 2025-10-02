@@ -5938,27 +5938,31 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 		f.WriteString("M3 S500\n");
 		f.WriteString("G4 P2000\n");
 		RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
-		f.WriteString(";---------------------\n; Left-Bottom Corner:\n");
+		f.WriteString(";----------------------\n; Left-Bottom Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
 		f.WriteString(s);
 		f.WriteString("G01 Z0.1\n");
-		f.WriteString(";---------------------\n; Right-Top Corner:\n");
+		f.WriteString("G4 P2000\n");
+		f.WriteString(";----------------------\n; Right-Top Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
 		f.WriteString(s);
 		f.WriteString("G01 Z0.1\n");
-		f.WriteString(";---------------------\n; Right-Bottom Corner:\n");
+		f.WriteString("G4 P2000\n");
+		f.WriteString(";----------------------\n; Right-Bottom Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
 		f.WriteString(s);
 		f.WriteString("G01 Z0.1\n");
-		f.WriteString(";---------------------\n; Left-Top Corner:\n");
+		f.WriteString("G4 P2000\n");
+		f.WriteString(";----------------------\n; Left-Top Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
 		f.WriteString(s);
 		f.WriteString("G01 Z0.1\n");
-		f.WriteString(";---------------------\n");
+		f.WriteString("G4 P2000\n");
+		f.WriteString(";----------------------\n");
 		if (CMD == ID_FILE_GENERATEHPGLFILE8)
 		{
 			// none
@@ -6024,66 +6028,36 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 				}
 			}
 		}
-		for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+		int DIAM;
+		do
 		{
-			if (p->shape && p->utility)
+			DIAM = 0;
+			for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
 			{
-				for (int ip = 0; ip < p->shape->GetNumPins(); ip++)
+				if (p->shape && p->utility)
 				{
-					if (p->shape->m_padstack[ip].hole_size)
+					for (int ip = 0; ip < p->shape->GetNumPins(); ip++)
 					{
-						int hs = p->shape->m_padstack[ip].hole_size;
-						CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
-						if (CMD == ID_FILE_GENERATEHPGLFILE8)
+						if (p->shape->m_padstack[ip].hole_size && p->pin[ip].utility == 0)
 						{
-							f.WriteString(ToolUp);
-							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-							f.WriteString(s);
-							f.WriteString("G01 Z-3.0\n");
-						}
-						else if (hs <= swell)
-						{
-							f.WriteString(ToolUp);
-							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-							f.WriteString(s);
-							f.WriteString("G01 Z-0.1\n");
-						}
-						else
-						{
-							int shift = (hs - swell) / 2;
-							f.WriteString(ToolUp);
-							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
-							f.WriteString(s);
-							f.WriteString("G01 Z-0.1\n");
-							do
+							if (DIAM == 0)
 							{
-								s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+								DIAM = p->shape->m_padstack[ip].hole_size;
+								f.WriteString("G00 Z50\n");
+								f.WriteString("M5\n");
+								f.WriteString("M01\n");
+								f.WriteString(";----------------------\n");
+								s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
 								f.WriteString(s);
-								s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
-									(float)pt.x / convert,
-									(float)(pt.y + shift) / convert,
-									(float)(-shift) / convert);
-								f.WriteString(s);
-								shift -= (swell * 6 / 7);
-								if (hatch == 0)
-									break;
-							} while (shift > 0);
-						}
-					}
-				}
-			}
-		}
-		for (cnet* n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet())
-		{
-			for (int ic = 0; ic < n->nconnects; ic++)
-			{
-				for (int iv = 0; iv <= n->connect[ic].nsegs; iv++)
-				{
-					if (n->connect[ic].vtx[iv].via_hole_w)
-						if (n->connect[ic].utility)
-						{
-							int hs = n->connect[ic].vtx[iv].via_hole_w;
-							CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
+								f.WriteString(";----------------------\n");
+								f.WriteString("M3 S500\n");
+								f.WriteString("G4 P2000\n");
+							}
+							if (p->shape->m_padstack[ip].hole_size != DIAM)
+								continue;
+							p->pin[ip].utility = 1;
+							int hs = p->shape->m_padstack[ip].hole_size;
+							CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
 							if (CMD == ID_FILE_GENERATEHPGLFILE8)
 							{
 								f.WriteString(ToolUp);
@@ -6120,9 +6094,76 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 								} while (shift > 0);
 							}
 						}
+					}
 				}
 			}
-		}
+			for (cnet* n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet())
+			{
+				for (int ic = 0; ic < n->nconnects; ic++)
+				{
+					for (int iv = 0; iv <= n->connect[ic].nsegs; iv++)
+					{
+						if (n->connect[ic].utility)
+							if (n->connect[ic].vtx[iv].via_hole_w && n->connect[ic].vtx[iv].utility == 0)
+							{
+								if (DIAM == 0)
+								{
+									DIAM = n->connect[ic].vtx[iv].via_hole_w;
+									f.WriteString("G00 Z50\n");
+									f.WriteString("M5\n");
+									f.WriteString("M01\n");
+									f.WriteString(";----------------------\n");
+									s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
+									f.WriteString(s);
+									f.WriteString(";----------------------\n");
+									f.WriteString("M3 S500\n");
+									f.WriteString("G4 P2000\n");
+								}
+								if (n->connect[ic].vtx[iv].via_hole_w != DIAM)
+									continue;
+								n->connect[ic].vtx[iv].utility = 1;
+								int hs = n->connect[ic].vtx[iv].via_hole_w;
+								CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
+								if (CMD == ID_FILE_GENERATEHPGLFILE8)
+								{
+									f.WriteString(ToolUp);
+									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+									f.WriteString(s);
+									f.WriteString("G01 Z-3.0\n");
+								}
+								else if (hs <= swell)
+								{
+									f.WriteString(ToolUp);
+									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+									f.WriteString(s);
+									f.WriteString("G01 Z-0.1\n");
+								}
+								else
+								{
+									int shift = (hs - swell) / 2;
+									f.WriteString(ToolUp);
+									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+									f.WriteString(s);
+									f.WriteString("G01 Z-0.1\n");
+									do
+									{
+										s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+										f.WriteString(s);
+										s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
+											(float)pt.x / convert,
+											(float)(pt.y + shift) / convert,
+											(float)(-shift) / convert);
+										f.WriteString(s);
+										shift -= (swell * 6 / 7);
+										if (hatch == 0)
+											break;
+									} while (shift > 0);
+								}
+							}
+					}
+				}
+			}
+		}while (DIAM);
 		f.WriteString(ToolUp);
 		f.WriteString("M5\n");
 		f.WriteString("M30\n");
