@@ -5908,15 +5908,18 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 	int iLegalBoard = MarkLegalElementsForExport(this);
 	float convert = NM_PER_MM;
 	if (m_units == MIL)
-		convert = NM_PER_MIL;
+		convert = NM_PER_MM * 254 / 10;
 	CStdioFile f;
 	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
 	{
 		CString s;
 		CString ToolUp = "G00 Z3.0\n";
+		CString ToolZero = "G00 Z0.0\n";
+		if (m_units == MIL)
+			ToolUp = "G00 Z0.12\n";
 		f.WriteString("%\n");
-		f.WriteString("; G-CODE from СхемАтор&ПлатФорм\n");
-		f.WriteString("; URL: www.niconson.com/freepcb2\n");
+		f.WriteString("; G-code from Schemator&Platform\n");
+		f.WriteString("; info: www.niconson.com/freepcb2\n");
 		if (CMD != ID_FILE_GENERATEHPGLFILE8)
 		{
 			s.Format("; Tool d = %.1f nanometers,\n", swell);
@@ -5924,17 +5927,25 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 		}
 		else
 			f.WriteString("; Through drilling tool.\n");
+		f.WriteString(";-------------IMPORTANT INFO-------------\n");
 		f.WriteString("; The Z axis is set so that at Z=0 the tool\n");
-		f.WriteString("; touches the surface of the workpiece\n");
+		f.WriteString("; touches the surface of the workpiece !\n");
+		f.WriteString(";----------------------------------------\n");
 		f.WriteString("G17\n");
-		f.WriteString("G21\n");
+		if (m_units == MIL)
+			f.WriteString("G20\n");
+		else
+			f.WriteString("G21\n");
 		f.WriteString("G40\n");
 		f.WriteString("G49\n");
 		f.WriteString("G53\n");
 		f.WriteString("G80\n");
 		f.WriteString("G90\n");
 		f.WriteString("G94\n");
-		f.WriteString("F200\n");
+		if (m_units == MIL)
+			f.WriteString("F12\n");
+		else
+			f.WriteString("F300\n");
 		f.WriteString("M3 S500\n");
 		f.WriteString("G4 P2000\n");
 		RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
@@ -5942,25 +5953,41 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
 		f.WriteString(s);
-		f.WriteString("G01 Z0.1\n");
+		///f.WriteString("G01 Z0.1\n");
+		if (m_units == MIL)
+			f.WriteString("G00 Z0.01\n");
+		else
+			f.WriteString("G00 Z0.1\n");
 		f.WriteString("G4 P2000\n");
 		f.WriteString(";----------------------\n; Right-Top Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
 		f.WriteString(s);
-		f.WriteString("G01 Z0.1\n");
+		///f.WriteString("G01 Z0.1\n");
+		if (m_units == MIL)
+			f.WriteString("G00 Z0.01\n");
+		else
+			f.WriteString("G00 Z0.1\n");
 		f.WriteString("G4 P2000\n");
 		f.WriteString(";----------------------\n; Right-Bottom Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
 		f.WriteString(s);
-		f.WriteString("G01 Z0.1\n");
+		///f.WriteString("G01 Z0.1\n");
+		if (m_units == MIL)
+			f.WriteString("G00 Z0.01\n");
+		else
+			f.WriteString("G00 Z0.1\n");
 		f.WriteString("G4 P2000\n");
 		f.WriteString(";----------------------\n; Left-Top Corner:\n");
 		f.WriteString(ToolUp);
 		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
 		f.WriteString(s);
-		f.WriteString("G01 Z0.1\n");
+		///f.WriteString("G01 Z0.1\n");
+		if (m_units == MIL)
+			f.WriteString("G00 Z0.01\n");
+		else
+			f.WriteString("G00 Z0.1\n");
 		f.WriteString("G4 P2000\n");
 		f.WriteString(";----------------------\n");
 		if (CMD == ID_FILE_GENERATEHPGLFILE8)
@@ -5984,7 +6011,11 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 						f.WriteString(ToolUp);
 						s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
 						f.WriteString(s);
-						f.WriteString("G01 Z-0.1\n");
+						f.WriteString(ToolZero);
+						if (m_units == MIL)
+							f.WriteString("G01 Z-0.004\n");
+						else 
+							f.WriteString("G01 Z-0.1\n");
 					}
 					else
 					{
@@ -6013,13 +6044,24 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 						GetH->dlist->Get_Points(GetH, P, &np);
 						for (int ip = 0; ip + 1 < np; ip += 2)
 						{
-							if (ip == 0)
+							if (m_units == MIL)
+							{
+								if (ip == 0)
+									f.WriteString("G00 Z0.08\n");
+								else
+									f.WriteString("G00 Z0.04\n");
+							}
+							else if (ip == 0)
 								f.WriteString("G00 Z2.0\n");
 							else
 								f.WriteString("G00 Z1.0\n");
 							s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
 							f.WriteString(s);
-							f.WriteString("G01 Z-0.1\n");
+							f.WriteString(ToolZero);
+							if (m_units == MIL)
+								f.WriteString("G01 Z-0.004\n");
+							else
+								f.WriteString("G01 Z-0.1\n");
 							s.Format("G01 X%.4f Y%.4f\n", (float)P[ip+1].x / convert, (float)P[ip+1].y / convert);
 							f.WriteString(s);
 						}
@@ -6043,7 +6085,10 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 							if (DIAM == 0)
 							{
 								DIAM = p->shape->m_padstack[ip].hole_size;
-								f.WriteString("G00 Z50\n");
+								if (m_units == MIL)
+									f.WriteString("G00 Z2\n");
+								else
+									f.WriteString("G00 Z50\n");
 								f.WriteString("M5\n");
 								f.WriteString("M01\n");
 								f.WriteString(";----------------------\n");
@@ -6063,14 +6108,22 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 								f.WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 								f.WriteString(s);
-								f.WriteString("G01 Z-3.0\n");
+								f.WriteString(ToolZero);
+								if (m_units == MIL)
+									f.WriteString("G01 Z-0.12\n");
+								else
+									f.WriteString("G01 Z-3.0\n");
 							}
 							else if (hs <= swell)
 							{
 								f.WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 								f.WriteString(s);
-								f.WriteString("G01 Z-0.1\n");
+								f.WriteString(ToolZero);
+								if (m_units == MIL)
+									f.WriteString("G01 Z-0.004\n");
+								else
+									f.WriteString("G01 Z-0.1\n");
 							}
 							else
 							{
@@ -6078,7 +6131,11 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 								f.WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
 								f.WriteString(s);
-								f.WriteString("G01 Z-0.1\n");
+								f.WriteString(ToolZero);
+								if (m_units == MIL)
+									f.WriteString("G01 Z-0.004\n");
+								else
+									f.WriteString("G01 Z-0.1\n");
 								do
 								{
 									s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
@@ -6109,7 +6166,10 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 								if (DIAM == 0)
 								{
 									DIAM = n->connect[ic].vtx[iv].via_hole_w;
-									f.WriteString("G00 Z50\n");
+									if (m_units == MIL)
+										f.WriteString("G00 Z2\n");
+									else
+										f.WriteString("G00 Z50\n");
 									f.WriteString("M5\n");
 									f.WriteString("M01\n");
 									f.WriteString(";----------------------\n");
@@ -6129,14 +6189,22 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 									f.WriteString(ToolUp);
 									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 									f.WriteString(s);
-									f.WriteString("G01 Z-3.0\n");
+									f.WriteString(ToolZero);
+									if (m_units == MIL)
+										f.WriteString("G01 Z-0.12\n");
+									else
+										f.WriteString("G01 Z-3.0\n");
 								}
 								else if (hs <= swell)
 								{
 									f.WriteString(ToolUp);
 									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 									f.WriteString(s);
-									f.WriteString("G01 Z-0.1\n");
+									f.WriteString(ToolZero);
+									if (m_units == MIL)
+										f.WriteString("G01 Z-0.004\n");
+									else
+										f.WriteString("G01 Z-0.1\n");
 								}
 								else
 								{
@@ -6144,7 +6212,11 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 									f.WriteString(ToolUp);
 									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
 									f.WriteString(s);
-									f.WriteString("G01 Z-0.1\n");
+									f.WriteString(ToolZero);
+									if (m_units == MIL)
+										f.WriteString("G01 Z-0.004\n");
+									else
+										f.WriteString("G01 Z-0.1\n");
 									do
 									{
 										s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);

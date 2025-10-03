@@ -1147,6 +1147,8 @@ void CPartList::MarkAllParts( int mark )
 	while( part )
 	{
 		part->utility = mark;
+		for (int i = 0; i < part->pin.GetSize(); i++)
+			part->pin[i].utility = mark;
 		part = GetNextPart( part );
 	}
 }

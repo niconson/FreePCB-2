@@ -317,10 +317,10 @@ void CDlgCrop::SaveCropData( int new_event )
 	}
 	else
 	{
-		if( isel >= 0 )
+		if (isel >= 0)
 			m_combo_settings.GetWindowTextA(str);
-		else
-			ASSERT(0);
+		else if(m_combo_settings.GetCount())
+			m_combo_settings.GetLBText(0, str);
 		m_crop_dat += ("\"" + str + "\" ");
 	}
 	//
