@@ -3426,14 +3426,14 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 				file->WriteString(str);
 				if (panel.m_holes[1] == 8)
 				{
-					if (panel.m_fields[1] > panel.m_holes[0] * 2)
+					if (panel.m_fields[1] - frez_D * 2 > panel.m_holes[0] * 2)
 					{
 						str.Format("X%.6dY%.6d\n", (x1 + x2) / 2, y1);
 						file->WriteString(str);
 						str.Format("X%.6dY%.6d\n", (x1 + x2) / 2, y2);
 						file->WriteString(str);
 					}
-					if (panel.m_fields[0] > panel.m_holes[0] * 2)
+					if (panel.m_fields[0] - frez_D * 2 > panel.m_holes[0] * 2)
 					{
 						str.Format("X%.6dY%.6d\n", x1, (y1 + y2) / 2);
 						file->WriteString(str);

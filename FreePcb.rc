@@ -206,7 +206,7 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "Все отверстия",               ID_FILE_GENERATEHPGLFILE15
         END
-        MENUITEM "Генерировать гербера(CAM-файлы)\tCtrl+G", ID_FILE_GENERATECADFILES
+        MENUITEM "Генерировать GERBER-файлы\tCtrl+G", ID_FILE_GENERATECADFILES
         MENUITEM "Генерировать отчёт",          ID_FILE_GENERATEREPORTFILE
         MENUITEM SEPARATOR
         MENUITEM "Открыть редактор футпринтов", ID_FILE_OPENFOOTPRINTEDITOR
@@ -897,7 +897,7 @@ BEGIN
     LTEXT           "Executables:",IDC_STATIC,18,119,42,8
     LTEXT           "FpcROUTE © 2007 Bruce Parham (for Freepcb-1)",IDC_STATIC,30,131,185,8
     LTEXT           "Additional Copyrights:",IDC_STATIC,12,60,68,8
-    LTEXT           "© duxahtech 2014 - 2025 (Freepcb-2, Схематор&&Платформ)",IDC_STATIC,42,36,208,8
+    LTEXT           "© Lev Nikonov 2014 - 2025 (Freepcb-2, Схематор&&Платформ)",IDC_STATIC,42,36,208,8
 END
 
 IDD_ADD_PART DIALOGEX 0, 0, 470, 333
