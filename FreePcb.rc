@@ -160,9 +160,9 @@ BEGIN
         MENUITEM "Сохранить проект как библиотеку", ID_FILE_SAVEPROJECTASLIBRARY
         MENUITEM "Конвертировать библиотеку",   ID_FILE_CONVERT
         MENUITEM SEPARATOR
-        POPUP "Генерировать DXF для лазерного гравёра"
+        POPUP "Генерировать файл для лазерного гравёра"
         BEGIN
-            POPUP "Заштрихованный"
+            POPUP "DXF-файл заштрихованный"
             BEGIN
                 MENUITEM "По медному краю",             ID_FILE_GENERATEDXFFILE1
                 MENUITEM SEPARATOR
@@ -171,7 +171,7 @@ BEGIN
                 MENUITEM SEPARATOR
                 MENUITEM "Все отверстия",               ID_FILE_GENERATEDXFFILE4
             END
-            POPUP "Без штриховки"
+            POPUP "DXF-файл без штриховки"
             BEGIN
                 MENUITEM "По медному краю",             ID_FILE_GENERATEDXFFILE5
                 MENUITEM SEPARATOR
@@ -179,6 +179,17 @@ BEGIN
                 MENUITEM "С расширением в 4 миль (0.1мм)", ID_FILE_GENERATEDXFFILE7
                 MENUITEM SEPARATOR
                 MENUITEM "Все отверстия",               ID_FILE_GENERATEDXFFILE8
+            END
+            MENUITEM SEPARATOR
+            POPUP "G-CODE в формате контроллера GRBL"
+            BEGIN
+                MENUITEM "С зазором в 8 миль (0.2мм)",  ID_FILE_GENERATEGRBLFILE1
+                MENUITEM "С зазором в 12 миль (0.3мм)", ID_FILE_GENERATEGRBLFILE2
+                MENUITEM "С зазором в 16 миль (0.4мм)", ID_FILE_GENERATEGRBLFILE3
+                MENUITEM "С зазором в 20 миль (0.5мм)", ID_FILE_GENERATEGRBLFILE4
+                MENUITEM "С зазором в 24 миль (0.6мм)", ID_FILE_GENERATEGRBLFILE5
+                MENUITEM SEPARATOR                                      
+                MENUITEM "Все отверстия",               ID_FILE_GENERATEGRBLFILE6
             END
         END
         POPUP "Генерировать G-CODE для фрезерного станка"
@@ -897,7 +908,7 @@ BEGIN
     LTEXT           "Executables:",IDC_STATIC,18,119,42,8
     LTEXT           "FpcROUTE © 2007 Bruce Parham (for Freepcb-1)",IDC_STATIC,30,131,185,8
     LTEXT           "Additional Copyrights:",IDC_STATIC,12,60,68,8
-    LTEXT           "© Lev Nikonov 2014 - 2025 (Freepcb-2, Схематор&&Платформ)",IDC_STATIC,42,36,208,8
+    LTEXT           "© LevNikonov 2014 - 2025 (Freepcb-2, Схематор&&Платформ)",IDC_STATIC,42,36,208,8
 END
 
 IDD_ADD_PART DIALOGEX 0, 0, 470, 333

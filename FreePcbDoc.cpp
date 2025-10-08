@@ -141,6 +141,7 @@ BEGIN_MESSAGE_MAP(CFreePcbDoc, CDocument)
 	ON_COMMAND(ID_FILE_RELOAD_MENU, OnReloadMenu)
 	ON_COMMAND_EX_RANGE(ID_FILE_OPEN_FROM_START,ID_FILE_OPEN_FROM_END, OnSpeedFile)
 	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEDXFFILE1, ID_FILE_GENERATEDXFFILE8, OnFileGenerateDXFFile)
+	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEGRBLFILE1, ID_FILE_GENERATEGRBLFILE6, OnFileGenerateGRBLFile)
 	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEHPGLFILE1, ID_FILE_GENERATEHPGLFILE16, OnFileGenerateHPGLFile)
 END_MESSAGE_MAP()
 
@@ -5830,6 +5831,33 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 	m_crop_flags = mem_crop_flags;
 	return TRUE;
 }
+BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
+{
+	BOOL LASERMODE = 1;
+	CStdioFile f;
+	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
+	{
+		f.WriteString("%\n");
+		f.WriteString("; G-code from Schemator&Platform\n");
+		f.WriteString("; info: www.niconson.com/freepcb2\n");
+		if (CMD == ID_FILE_GENERATEGRBLFILE6)
+			Generate_GCODE(&f, 0, 0, TRUE, LASERMODE);
+		else
+		{
+			Generate_GCODE(&f, NM_PER_MIL * 2, 0, FALSE, LASERMODE);
+			Generate_GCODE(&f, NM_PER_MIL * 4, 0, FALSE, LASERMODE);
+			for (UINT swell = NM_PER_MIL * 6; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
+			{
+				Generate_GCODE(&f, swell, 0, FALSE, LASERMODE);
+				swell += (NM_PER_MIL * 4);
+			}
+		}
+		f.WriteString("M30\n");
+		f.Close();
+	}
+	ShellExecute(NULL, "open", "open.gcode", NULL, m_app_dir, SW_SHOWNORMAL);
+	return 0;
+}
 BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 {
 	int hatch = 1;
@@ -5853,6 +5881,18 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 	else if (CMD == ID_FILE_GENERATEHPGLFILE7)
 		swell = NM_PER_MIL * 40;
 	//
+	CStdioFile f;
+	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
+	{
+		Generate_GCODE(&f, swell, hatch, (BOOL)(CMD==ID_FILE_GENERATEHPGLFILE8), FALSE);
+		f.WriteString("M30\n");
+		f.Close();
+	}
+	ShellExecute(NULL, "open", "open.gcode", NULL, m_app_dir, SW_SHOWNORMAL);
+	return TRUE;
+}
+void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHOLES, BOOL bLASERMODE)
+{
 	int num_polylines = m_outline_poly.GetSize();
 	cnet* laser_net = m_nlist->AddNet("LASER__NET", 0, 0, 0);
 	RECT TR = rect(0, 0, 0, 0);
@@ -5869,7 +5909,7 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 			SwellRect(&TR, r);
 		}
 	if (TR.left == INT_MAX)
-		return 0;
+		return;
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.top, 0, 0);
@@ -5890,364 +5930,393 @@ BOOL CFreePcbDoc::OnFileGenerateHPGLFile(UINT CMD)
 	setbit(crop_flags, MC_DXF);
 	int mem_crop_flags = m_crop_flags;
 	m_crop_flags = crop_flags;
-	if (CMD != ID_FILE_GENERATEHPGLFILE8)
-		CreateClearancesForCopperArea(	this,
-										&crop_net_name,
-										laser_net,
-										iar,
-										_2540,
-										_2540,
-										_2540,
-										_2540,
-										_2540,
-										0,// board
-										_2540,
-										_2540,
-										swell,
-										FALSE);
+	if (bHOLES == 0)
+		CreateClearancesForCopperArea(this,
+			&crop_net_name,
+			laser_net,
+			iar,
+			_2540,
+			_2540,
+			_2540,
+			_2540,
+			_2540,
+			0,// board
+			_2540,
+			_2540,
+			swell,
+			FALSE);
 	int iLegalBoard = MarkLegalElementsForExport(this);
 	float convert = NM_PER_MM;
 	if (m_units == MIL)
 		convert = NM_PER_MM * 254 / 10;
-	CStdioFile f;
-	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
+
+	CString s;
+	CString ToolUp = "G00 Z3.0\n";
+	CString ToolZero = "G00 Z0.0\n";
+	if (m_units == MIL)
+		ToolUp = "G00 Z0.12\n";
+	if (bLASERMODE == 0)
 	{
-		CString s;
-		CString ToolUp = "G00 Z3.0\n";
-		CString ToolZero = "G00 Z0.0\n";
-		if (m_units == MIL)
-			ToolUp = "G00 Z0.12\n";
-		f.WriteString("%\n");
-		f.WriteString("; G-code from Schemator&Platform\n");
-		f.WriteString("; info: www.niconson.com/freepcb2\n");
-		if (CMD != ID_FILE_GENERATEHPGLFILE8)
+		f->WriteString("%\n");
+		f->WriteString("; G-code from Schemator&Platform\n");
+		f->WriteString("; info: www.niconson.com/freepcb2\n");
+		if (bHOLES == 0)
 		{
 			s.Format("; Tool d = %.1f nanometers,\n", swell);
-			f.WriteString(s);
+			f->WriteString(s);
 		}
 		else
-			f.WriteString("; Through drilling tool.\n");
-		f.WriteString(";-------------IMPORTANT INFO-------------\n");
-		f.WriteString("; The Z axis is set so that at Z=0 the tool\n");
-		f.WriteString("; touches the surface of the workpiece !\n");
-		f.WriteString(";----------------------------------------\n");
-		f.WriteString("G17\n");
+			f->WriteString("; Through drilling tool.\n");
+		f->WriteString(";-------------IMPORTANT INFO-------------\n");
+		f->WriteString("; The Z axis is set so that at Z=0 the tool\n");
+		f->WriteString("; touches the surface of the workpiece !\n");
+		f->WriteString(";----------------------------------------\n");
+	}
+	f->WriteString("G17\n");
+	if (m_units == MIL)
+		f->WriteString("G20\n");
+	else
+		f->WriteString("G21\n");
+	f->WriteString("G40\n");
+	f->WriteString("G49\n");
+	f->WriteString("G53\n");
+	f->WriteString("G80\n");
+	f->WriteString("G90\n");
+	f->WriteString("G94\n");
+	if (bLASERMODE == 0)
+	{
 		if (m_units == MIL)
-			f.WriteString("G20\n");
+			f->WriteString("F12\n");
 		else
-			f.WriteString("G21\n");
-		f.WriteString("G40\n");
-		f.WriteString("G49\n");
-		f.WriteString("G53\n");
-		f.WriteString("G80\n");
-		f.WriteString("G90\n");
-		f.WriteString("G94\n");
-		if (m_units == MIL)
-			f.WriteString("F12\n");
-		else
-			f.WriteString("F300\n");
-		f.WriteString("M3 S500\n");
-		f.WriteString("G4 P2000\n");
-		RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
-		f.WriteString(";----------------------\n; Left-Bottom Corner:\n");
-		f.WriteString(ToolUp);
-		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
-		f.WriteString(s);
-		///f.WriteString("G01 Z0.1\n");
-		if (m_units == MIL)
-			f.WriteString("G00 Z0.01\n");
-		else
-			f.WriteString("G00 Z0.1\n");
-		f.WriteString("G4 P2000\n");
-		f.WriteString(";----------------------\n; Right-Top Corner:\n");
-		f.WriteString(ToolUp);
-		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
-		f.WriteString(s);
-		///f.WriteString("G01 Z0.1\n");
-		if (m_units == MIL)
-			f.WriteString("G00 Z0.01\n");
-		else
-			f.WriteString("G00 Z0.1\n");
-		f.WriteString("G4 P2000\n");
-		f.WriteString(";----------------------\n; Right-Bottom Corner:\n");
-		f.WriteString(ToolUp);
-		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
-		f.WriteString(s);
-		///f.WriteString("G01 Z0.1\n");
-		if (m_units == MIL)
-			f.WriteString("G00 Z0.01\n");
-		else
-			f.WriteString("G00 Z0.1\n");
-		f.WriteString("G4 P2000\n");
-		f.WriteString(";----------------------\n; Left-Top Corner:\n");
-		f.WriteString(ToolUp);
-		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
-		f.WriteString(s);
-		///f.WriteString("G01 Z0.1\n");
-		if (m_units == MIL)
-			f.WriteString("G00 Z0.01\n");
-		else
-			f.WriteString("G00 Z0.1\n");
-		f.WriteString("G4 P2000\n");
-		f.WriteString(";----------------------\n");
-		if (CMD == ID_FILE_GENERATEHPGLFILE8)
+			f->WriteString("F300\n");
+		f->WriteString("M3 S500\n");
+		f->WriteString("G4 P2000\n");
+	}
+	RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
+	f->WriteString(";----------------------\n; Left-Bottom Corner:\n");
+	f->WriteString(ToolUp);
+	s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
+	f->WriteString(s);
+	///f->WriteString("G01 Z0.1\n");
+	if (m_units == MIL)
+		f->WriteString("G00 Z0.01\n");
+	else
+		f->WriteString("G00 Z0.1\n");
+	f->WriteString("G4 P2000\n");
+	f->WriteString(";----------------------\n; Right-Top Corner:\n");
+	f->WriteString(ToolUp);
+	s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
+	f->WriteString(s);
+	///f->WriteString("G01 Z0.1\n");
+	if (m_units == MIL)
+		f->WriteString("G00 Z0.01\n");
+	else
+		f->WriteString("G00 Z0.1\n");
+	f->WriteString("G4 P2000\n");
+	f->WriteString(";----------------------\n; Right-Bottom Corner:\n");
+	f->WriteString(ToolUp);
+	s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
+	f->WriteString(s);
+	///f->WriteString("G01 Z0.1\n");
+	if (m_units == MIL)
+		f->WriteString("G00 Z0.01\n");
+	else
+		f->WriteString("G00 Z0.1\n");
+	f->WriteString("G4 P2000\n");
+	f->WriteString(";----------------------\n; Left-Top Corner:\n");
+	f->WriteString(ToolUp);
+	s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
+	f->WriteString(s);
+	///f->WriteString("G01 Z0.1\n");
+	if (m_units == MIL)
+		f->WriteString("G00 Z0.01\n");
+	else
+		f->WriteString("G00 Z0.1\n");
+	f->WriteString("G4 P2000\n");
+	f->WriteString(";----------------------\n");
+	if (bHOLES)
+	{
+		// none
+	}
+	else for (int area = laser_net->nareas - 1; area >= 0; area--)
+	{
+		int gnc = laser_net->area[area].poly->GetNumCorners();
+		int x = laser_net->area[area].poly->GetX(gnc - 1);
+		int y = laser_net->area[area].poly->GetY(gnc - 1);
+		if (m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x, y))
 		{
-			// none
-		}
-		else for (int area = laser_net->nareas - 1; area >= 0; area--)
-		{
-			int gnc = laser_net->area[area].poly->GetNumCorners();
-			int x = laser_net->area[area].poly->GetX(gnc - 1);
-			int y = laser_net->area[area].poly->GetY(gnc - 1);
-			if (m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x, y))
+			for (int ia = 0; ia < laser_net->area[area].poly->GetNumCorners(); ia++)
 			{
-				for (int ia = 0; ia < laser_net->area[area].poly->GetNumCorners(); ia++)
+				float fx = laser_net->area[area].poly->GetX(ia);
+				float fy = laser_net->area[area].poly->GetY(ia);
+				int numc = laser_net->area[area].poly->GetNumContour(ia);
+				if (laser_net->area[area].poly->GetContourStart(numc) == ia)
 				{
-					float fx = laser_net->area[area].poly->GetX(ia);
-					float fy = laser_net->area[area].poly->GetY(ia);
-					int numc = laser_net->area[area].poly->GetNumContour(ia);
-					if (laser_net->area[area].poly->GetContourStart(numc) == ia)
-					{
-						f.WriteString(ToolUp);
-						s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
-						f.WriteString(s);
-						f.WriteString(ToolZero);
-						if (m_units == MIL)
-							f.WriteString("G01 Z-0.004\n");
-						else 
-							f.WriteString("G01 Z-0.1\n");
-					}
+					f->WriteString(ToolUp);
+					s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
+					f->WriteString(s);
+					f->WriteString(ToolZero);
+					if (bLASERMODE)
+						f->WriteString("M3\n");
+					if (m_units == MIL)
+						f->WriteString("G01 Z-0.004\n");
 					else
-					{
-						s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
-						f.WriteString(s);
-					}
-					if (laser_net->area[area].poly->GetContourEnd(numc) == ia)
-					{
-						int cst = laser_net->area[area].poly->GetContourStart(numc);
-						fx = laser_net->area[area].poly->GetX(cst);
-						fy = laser_net->area[area].poly->GetY(cst);
-						s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
-						f.WriteString(s);
-					}
+						f->WriteString("G01 Z-0.1\n");
 				}
-				CPolyLine* p = laser_net->area[area].poly;
-				if (p->GetHatch() == 1)
+				else
 				{
-					int nh = p->GetHatchSize();
-					for (int ic = 0; ic < nh; ic++)
+					s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+					f->WriteString(s);
+				}
+				if (laser_net->area[area].poly->GetContourEnd(numc) == ia)
+				{
+					int cst = laser_net->area[area].poly->GetContourStart(numc);
+					fx = laser_net->area[area].poly->GetX(cst);
+					fy = laser_net->area[area].poly->GetY(cst);
+					s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
+					f->WriteString(s);
+					if (bLASERMODE)
+						f->WriteString("M5\n");
+				}
+			}
+			CPolyLine* p = laser_net->area[area].poly;
+			if (p->GetHatch() == 1)
+			{
+				int nh = p->GetHatchSize();
+				for (int ic = 0; ic < nh; ic++)
+				{
+					dl_element* GetH = p->GetHatchLoc(ic);
+					CArray<CPoint>* pA = GetH->dlist->Get_Points(GetH, NULL, 0);
+					int np = pA->GetSize();
+					CPoint* P = new CPoint[np];//new012
+					GetH->dlist->Get_Points(GetH, P, &np);
+					for (int ip = 0; ip + 1 < np; ip += 2)
 					{
-						dl_element* GetH = p->GetHatchLoc(ic);
-						CArray<CPoint>* pA = GetH->dlist->Get_Points(GetH, NULL, 0);
-						int np = pA->GetSize();
-						CPoint* P = new CPoint[np];//new012
-						GetH->dlist->Get_Points(GetH, P, &np);
-						for (int ip = 0; ip + 1 < np; ip += 2)
+						if (m_units == MIL)
 						{
-							if (m_units == MIL)
-							{
-								if (ip == 0)
-									f.WriteString("G00 Z0.08\n");
-								else
-									f.WriteString("G00 Z0.04\n");
-							}
-							else if (ip == 0)
-								f.WriteString("G00 Z2.0\n");
+							if (ip == 0)
+								f->WriteString("G00 Z0.08\n");
 							else
-								f.WriteString("G00 Z1.0\n");
-							s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
-							f.WriteString(s);
-							f.WriteString(ToolZero);
-							if (m_units == MIL)
-								f.WriteString("G01 Z-0.004\n");
-							else
-								f.WriteString("G01 Z-0.1\n");
-							s.Format("G01 X%.4f Y%.4f\n", (float)P[ip+1].x / convert, (float)P[ip+1].y / convert);
-							f.WriteString(s);
+								f->WriteString("G00 Z0.04\n");
 						}
-						delete P;//new012
+						else if (ip == 0)
+							f->WriteString("G00 Z2.0\n");
+						else
+							f->WriteString("G00 Z1.0\n");
+						s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
+						f->WriteString(s);
+						f->WriteString(ToolZero);
+						if (bLASERMODE)
+							f->WriteString("M3\n");
+						if (m_units == MIL)
+							f->WriteString("G01 Z-0.004\n");
+						else
+							f->WriteString("G01 Z-0.1\n");
+						s.Format("G01 X%.4f Y%.4f\n", (float)P[ip + 1].x / convert, (float)P[ip + 1].y / convert);
+						f->WriteString(s);
+						if (bLASERMODE)
+							f->WriteString("M5\n");
+					}
+					delete P;//new012
+				}
+			}
+		}
+	}
+	int DIAM;
+	do
+	{
+		DIAM = 0;
+		for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+		{
+			if (p->shape && p->utility)
+			{
+				for (int ip = 0; ip < p->shape->GetNumPins(); ip++)
+				{
+					if (p->shape->m_padstack[ip].hole_size && p->pin[ip].utility == 0)
+					{
+						if (DIAM == 0)
+						{
+							DIAM = p->shape->m_padstack[ip].hole_size;
+							if (m_units == MIL)
+								f->WriteString("G00 Z2\n");
+							else
+								f->WriteString("G00 Z50\n");
+
+							if (bLASERMODE == 0)
+								f->WriteString("M5\n");
+
+							f->WriteString("M01\n");
+							f->WriteString(";----------------------\n");
+							s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
+							f->WriteString(s);
+							f->WriteString(";----------------------\n");
+							if (bLASERMODE == 0)
+							{
+								f->WriteString("M3 S500\n");
+								f->WriteString("G4 P2000\n");
+							}
+						}
+						if (p->shape->m_padstack[ip].hole_size != DIAM)
+							continue;
+						p->pin[ip].utility = 1;
+						int hs = p->shape->m_padstack[ip].hole_size;
+						CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
+						if (bHOLES && bLASERMODE == 0)
+						{
+							f->WriteString(ToolUp);
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+							f->WriteString(s);
+							f->WriteString(ToolZero);
+							if (m_units == MIL)
+								f->WriteString("G01 Z-0.12\n");
+							else
+								f->WriteString("G01 Z-3.0\n");
+						}
+						else if (hs <= swell)
+						{
+							f->WriteString(ToolUp);
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
+							f->WriteString(s);
+							f->WriteString(ToolZero);
+							if (m_units == MIL)
+								f->WriteString("G01 Z-0.004\n");
+							else
+								f->WriteString("G01 Z-0.1\n");
+						}
+						else
+						{
+							int shift = (hs - swell) / 2;
+							f->WriteString(ToolUp);
+							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+							f->WriteString(s);
+							f->WriteString(ToolZero);
+							if (bLASERMODE)
+								f->WriteString("M3\n");
+							if (m_units == MIL)
+								f->WriteString("G01 Z-0.004\n");
+							else
+								f->WriteString("G01 Z-0.1\n");
+							do
+							{
+								s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
+								f->WriteString(s);
+								s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
+									(float)pt.x / convert,
+									(float)(pt.y + shift) / convert,
+									(float)(-shift) / convert);
+								f->WriteString(s);
+								shift -= (swell * 6 / 7);
+								if (hatch == 0)
+									break;
+							} while (shift > 0);
+							if (bLASERMODE)
+								f->WriteString("M5\n");
+						}
 					}
 				}
 			}
 		}
-		int DIAM;
-		do
+		for (cnet* n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet())
 		{
-			DIAM = 0;
-			for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+			for (int ic = 0; ic < n->nconnects; ic++)
 			{
-				if (p->shape && p->utility)
+				for (int iv = 0; iv <= n->connect[ic].nsegs; iv++)
 				{
-					for (int ip = 0; ip < p->shape->GetNumPins(); ip++)
-					{
-						if (p->shape->m_padstack[ip].hole_size && p->pin[ip].utility == 0)
+					if (n->connect[ic].utility)
+						if (n->connect[ic].vtx[iv].via_hole_w && n->connect[ic].vtx[iv].utility == 0)
 						{
 							if (DIAM == 0)
 							{
-								DIAM = p->shape->m_padstack[ip].hole_size;
+								DIAM = n->connect[ic].vtx[iv].via_hole_w;
 								if (m_units == MIL)
-									f.WriteString("G00 Z2\n");
+									f->WriteString("G00 Z2\n");
 								else
-									f.WriteString("G00 Z50\n");
-								f.WriteString("M5\n");
-								f.WriteString("M01\n");
-								f.WriteString(";----------------------\n");
+									f->WriteString("G00 Z50\n");
+
+								if (bLASERMODE == 0)
+									f->WriteString("M5\n");
+
+								f->WriteString("M01\n");
+								f->WriteString(";----------------------\n");
 								s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
-								f.WriteString(s);
-								f.WriteString(";----------------------\n");
-								f.WriteString("M3 S500\n");
-								f.WriteString("G4 P2000\n");
+								f->WriteString(s);
+								f->WriteString(";----------------------\n");
+								if (bLASERMODE == 0)
+								{
+									f->WriteString("M3 S500\n");
+									f->WriteString("G4 P2000\n");
+								}
 							}
-							if (p->shape->m_padstack[ip].hole_size != DIAM)
+							if (n->connect[ic].vtx[iv].via_hole_w != DIAM)
 								continue;
-							p->pin[ip].utility = 1;
-							int hs = p->shape->m_padstack[ip].hole_size;
-							CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
-							if (CMD == ID_FILE_GENERATEHPGLFILE8)
+							n->connect[ic].vtx[iv].utility = 1;
+							int hs = n->connect[ic].vtx[iv].via_hole_w;
+							CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
+							if (bHOLES && bLASERMODE == 0)
 							{
-								f.WriteString(ToolUp);
+								f->WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-								f.WriteString(s);
-								f.WriteString(ToolZero);
+								f->WriteString(s);
+								f->WriteString(ToolZero);
 								if (m_units == MIL)
-									f.WriteString("G01 Z-0.12\n");
+									f->WriteString("G01 Z-0.12\n");
 								else
-									f.WriteString("G01 Z-3.0\n");
+									f->WriteString("G01 Z-3.0\n");
 							}
 							else if (hs <= swell)
 							{
-								f.WriteString(ToolUp);
+								f->WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-								f.WriteString(s);
-								f.WriteString(ToolZero);
+								f->WriteString(s);
+								f->WriteString(ToolZero);
 								if (m_units == MIL)
-									f.WriteString("G01 Z-0.004\n");
+									f->WriteString("G01 Z-0.004\n");
 								else
-									f.WriteString("G01 Z-0.1\n");
+									f->WriteString("G01 Z-0.1\n");
 							}
 							else
 							{
 								int shift = (hs - swell) / 2;
-								f.WriteString(ToolUp);
+								f->WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
-								f.WriteString(s);
-								f.WriteString(ToolZero);
+								f->WriteString(s);
+								f->WriteString(ToolZero);
+								if (bLASERMODE)
+									f->WriteString("M3\n");
 								if (m_units == MIL)
-									f.WriteString("G01 Z-0.004\n");
+									f->WriteString("G01 Z-0.004\n");
 								else
-									f.WriteString("G01 Z-0.1\n");
+									f->WriteString("G01 Z-0.1\n");
 								do
 								{
 									s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
-									f.WriteString(s);
+									f->WriteString(s);
 									s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
 										(float)pt.x / convert,
 										(float)(pt.y + shift) / convert,
 										(float)(-shift) / convert);
-									f.WriteString(s);
+									f->WriteString(s);
 									shift -= (swell * 6 / 7);
 									if (hatch == 0)
 										break;
 								} while (shift > 0);
+								if (bLASERMODE)
+									f->WriteString("M5\n");
 							}
 						}
-					}
 				}
 			}
-			for (cnet* n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet())
-			{
-				for (int ic = 0; ic < n->nconnects; ic++)
-				{
-					for (int iv = 0; iv <= n->connect[ic].nsegs; iv++)
-					{
-						if (n->connect[ic].utility)
-							if (n->connect[ic].vtx[iv].via_hole_w && n->connect[ic].vtx[iv].utility == 0)
-							{
-								if (DIAM == 0)
-								{
-									DIAM = n->connect[ic].vtx[iv].via_hole_w;
-									if (m_units == MIL)
-										f.WriteString("G00 Z2\n");
-									else
-										f.WriteString("G00 Z50\n");
-									f.WriteString("M5\n");
-									f.WriteString("M01\n");
-									f.WriteString(";----------------------\n");
-									s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
-									f.WriteString(s);
-									f.WriteString(";----------------------\n");
-									f.WriteString("M3 S500\n");
-									f.WriteString("G4 P2000\n");
-								}
-								if (n->connect[ic].vtx[iv].via_hole_w != DIAM)
-									continue;
-								n->connect[ic].vtx[iv].utility = 1;
-								int hs = n->connect[ic].vtx[iv].via_hole_w;
-								CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
-								if (CMD == ID_FILE_GENERATEHPGLFILE8)
-								{
-									f.WriteString(ToolUp);
-									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-									f.WriteString(s);
-									f.WriteString(ToolZero);
-									if (m_units == MIL)
-										f.WriteString("G01 Z-0.12\n");
-									else
-										f.WriteString("G01 Z-3.0\n");
-								}
-								else if (hs <= swell)
-								{
-									f.WriteString(ToolUp);
-									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
-									f.WriteString(s);
-									f.WriteString(ToolZero);
-									if (m_units == MIL)
-										f.WriteString("G01 Z-0.004\n");
-									else
-										f.WriteString("G01 Z-0.1\n");
-								}
-								else
-								{
-									int shift = (hs - swell) / 2;
-									f.WriteString(ToolUp);
-									s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
-									f.WriteString(s);
-									f.WriteString(ToolZero);
-									if (m_units == MIL)
-										f.WriteString("G01 Z-0.004\n");
-									else
-										f.WriteString("G01 Z-0.1\n");
-									do
-									{
-										s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
-										f.WriteString(s);
-										s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
-											(float)pt.x / convert,
-											(float)(pt.y + shift) / convert,
-											(float)(-shift) / convert);
-										f.WriteString(s);
-										shift -= (swell * 6 / 7);
-										if (hatch == 0)
-											break;
-									} while (shift > 0);
-								}
-							}
-					}
-				}
-			}
-		}while (DIAM);
-		f.WriteString(ToolUp);
-		f.WriteString("M5\n");
-		f.WriteString("M30\n");
-		f.Close();
-	}
+		}
+	} while (DIAM);
+	f->WriteString(ToolUp);
+	if (bLASERMODE == 0)
+		f->WriteString("M5\n");
+	
 	m_view->CancelSelection(0);
 	for (int i = laser_net->nareas - 1; i >= 0; i--)
 		m_nlist->RemoveArea(laser_net, i);
 	m_nlist->RemoveNet(laser_net);
 	m_crop_flags = mem_crop_flags;
-	ShellExecute(NULL, "open", "open.gcode", NULL, m_app_dir, SW_SHOWNORMAL);
-	return TRUE;
 }
 // call dialog to create Gerber and drill files
 void CFreePcbDoc::OnFileGenerateCadFiles()

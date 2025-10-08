@@ -359,7 +359,9 @@ public:
 	afx_msg void OnFileConvert();
 	afx_msg void OnEditUndo();
 	afx_msg BOOL OnFileGenerateDXFFile(UINT CMD);
+	afx_msg BOOL OnFileGenerateGRBLFile(UINT CMD);
 	afx_msg BOOL OnFileGenerateHPGLFile(UINT CMD);
+	void Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHOLES, BOOL bLASERMODE);
 	afx_msg void OnFileGenerateCadFiles();
 	afx_msg void OnToolsFootprintwizard();
 	afx_msg void OnProjectOptions();
