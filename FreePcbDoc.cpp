@@ -1332,11 +1332,11 @@ BOOL CFreePcbDoc::FileSave( CString * folder, CString * filename,
 			// Save Pcb View for Schemator
 			if (bBackup)
 			{
-				//AddBoardHoles(); // valid
+				AddBoardHoles(); // valid
 				MarkLegalElementsForExport(this);
 				SavePcbView(this);
-				//CancelBoardHoles();
-				//ProjectModified(FALSE);
+				CancelBoardHoles();
+				ProjectModified(FALSE);
 			}
 		}
 		catch( CString * err_str )
@@ -5844,12 +5844,12 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 			Generate_GCODE(&f, 0, 0, TRUE, LASERMODE);
 		else
 		{
-			Generate_GCODE(&f, NM_PER_MIL * 2, 0, FALSE, LASERMODE);
 			Generate_GCODE(&f, NM_PER_MIL * 4, 0, FALSE, LASERMODE);
-			for (UINT swell = NM_PER_MIL * 6; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
+			Generate_GCODE(&f, NM_PER_MIL * 8, 0, FALSE, LASERMODE);
+			for (UINT swell = NM_PER_MIL * 16; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
 			{
 				Generate_GCODE(&f, swell, 0, FALSE, LASERMODE);
-				swell += (NM_PER_MIL * 4);
+				swell += (NM_PER_MIL * 8);
 			}
 		}
 		f.WriteString("M30\n");
@@ -5992,6 +5992,8 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		f->WriteString("M3 S500\n");
 		f->WriteString("G4 P2000\n");
 	}
+	else
+		f->WriteString("M3 S0\n");
 	RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
 	f->WriteString(";----------------------\n; Left-Bottom Corner:\n");
 	f->WriteString(ToolUp);
@@ -6057,7 +6059,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 					f->WriteString(s);
 					f->WriteString(ToolZero);
 					if (bLASERMODE)
-						f->WriteString("M3\n");
+						f->WriteString("S1000\n");
 					if (m_units == MIL)
 						f->WriteString("G01 Z-0.004\n");
 					else
@@ -6076,7 +6078,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 					s.Format("G01 X%.4f Y%.4f\n", fx / convert, fy / convert);
 					f->WriteString(s);
 					if (bLASERMODE)
-						f->WriteString("M5\n");
+						f->WriteString("S0\n");
 				}
 			}
 			CPolyLine* p = laser_net->area[area].poly;
@@ -6107,7 +6109,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						f->WriteString(s);
 						f->WriteString(ToolZero);
 						if (bLASERMODE)
-							f->WriteString("M3\n");
+							f->WriteString("S1000\n");
 						if (m_units == MIL)
 							f->WriteString("G01 Z-0.004\n");
 						else
@@ -6115,7 +6117,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						s.Format("G01 X%.4f Y%.4f\n", (float)P[ip + 1].x / convert, (float)P[ip + 1].y / convert);
 						f->WriteString(s);
 						if (bLASERMODE)
-							f->WriteString("M5\n");
+							f->WriteString("S0\n");
 					}
 					delete P;//new012
 				}
@@ -6137,21 +6139,19 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						if (DIAM == 0)
 						{
 							DIAM = p->shape->m_padstack[ip].hole_size;
-							if (m_units == MIL)
-								f->WriteString("G00 Z2\n");
-							else
-								f->WriteString("G00 Z50\n");
-
-							if (bLASERMODE == 0)
-								f->WriteString("M5\n");
-
-							f->WriteString("M01\n");
-							f->WriteString(";----------------------\n");
-							s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
-							f->WriteString(s);
-							f->WriteString(";----------------------\n");
 							if (bLASERMODE == 0)
 							{
+								if (m_units == MIL)
+									f->WriteString("G00 Z2\n");
+								else
+									f->WriteString("G00 Z50\n");
+
+								f->WriteString("M5\n");
+								f->WriteString("M01\n");
+								f->WriteString(";----------------------\n");
+								s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
+								f->WriteString(s);
+								f->WriteString(";----------------------\n");
 								f->WriteString("M3 S500\n");
 								f->WriteString("G4 P2000\n");
 							}
@@ -6191,7 +6191,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							f->WriteString(s);
 							f->WriteString(ToolZero);
 							if (bLASERMODE)
-								f->WriteString("M3\n");
+								f->WriteString("S1000\n");
 							if (m_units == MIL)
 								f->WriteString("G01 Z-0.004\n");
 							else
@@ -6210,7 +6210,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 									break;
 							} while (shift > 0);
 							if (bLASERMODE)
-								f->WriteString("M5\n");
+								f->WriteString("S0\n");
 						}
 					}
 				}
@@ -6282,7 +6282,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 								f->WriteString(s);
 								f->WriteString(ToolZero);
 								if (bLASERMODE)
-									f->WriteString("M3\n");
+									f->WriteString("S1000\n");
 								if (m_units == MIL)
 									f->WriteString("G01 Z-0.004\n");
 								else
@@ -6301,7 +6301,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 										break;
 								} while (shift > 0);
 								if (bLASERMODE)
-									f->WriteString("M5\n");
+									f->WriteString("S0\n");
 							}
 						}
 				}
@@ -6309,8 +6309,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		}
 	} while (DIAM);
 	f->WriteString(ToolUp);
-	if (bLASERMODE == 0)
-		f->WriteString("M5\n");
+	f->WriteString("M5\n");
 	
 	m_view->CancelSelection(0);
 	for (int i = laser_net->nareas - 1; i >= 0; i--)
@@ -13846,6 +13845,10 @@ void CFreePcbDoc::AddSymmetricalBlank()
 	int ret = dlg.DoModal();
 	if (ret == IDOK)
 	{
+		if (dlg.m_dx == 0)
+			dlg.m_dx = m_pcbu_per_wu;
+		if (dlg.m_dy == 0)
+			dlg.m_dy = m_pcbu_per_wu;
 		int mem_nl_comp = m_netlist_completed;
 		int mem_pr_int = m_auto_interval; // autosave disable
 		m_netlist_completed = 0;

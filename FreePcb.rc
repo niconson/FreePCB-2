@@ -1594,7 +1594,7 @@ BEGIN
     LTEXT           "Кол-во",IDC_STATIC,562,145,28,8
     CONTROL         "midX",IDC_V_CUTOUT_X2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,502,246,29,10
     CONTROL         "midY",IDC_V_CUTOUT_Y2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,502,259,29,10
-    CONTROL         "Bottom text rotation (for X-symmetrization)",IDC_180_DEG_1,
+    CONTROL         "Bottom text rotation (for Y-symmetrization)",IDC_180_DEG_1,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,476,219,156,10
 END
 
