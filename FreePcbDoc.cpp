@@ -5846,7 +5846,7 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 		{
 			Generate_GCODE(&f, NM_PER_MIL * 4, 0, FALSE, LASERMODE);
 			Generate_GCODE(&f, NM_PER_MIL * 8, 0, FALSE, LASERMODE);
-			for (UINT swell = NM_PER_MIL * 16; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
+			for (UINT swell = NM_PER_MIL * 12; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
 			{
 				Generate_GCODE(&f, swell, 0, FALSE, LASERMODE);
 				swell += (NM_PER_MIL * 8);
@@ -13846,9 +13846,9 @@ void CFreePcbDoc::AddSymmetricalBlank()
 	if (ret == IDOK)
 	{
 		if (dlg.m_dx == 0)
-			dlg.m_dx = m_pcbu_per_wu;
+			dlg.m_dx = 100;
 		if (dlg.m_dy == 0)
-			dlg.m_dy = m_pcbu_per_wu;
+			dlg.m_dy = 100;
 		int mem_nl_comp = m_netlist_completed;
 		int mem_pr_int = m_auto_interval; // autosave disable
 		m_netlist_completed = 0;

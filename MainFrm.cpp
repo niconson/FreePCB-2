@@ -171,6 +171,9 @@ void CMainFrame::DisableMenuItems( CMenu* pMenu )
 		submenu->EnableMenuItem( ID_FILE_GENERATEDXFFILE1 + im, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
 	for(int im=0; im<15; im++)
 		submenu->EnableMenuItem(ID_FILE_GENERATEHPGLFILE1 + im, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
+	for (int im = 0; im < 6; im++)
+		submenu->EnableMenuItem(ID_FILE_GENERATEGRBLFILE1 + im, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+	
 	submenu->EnableMenuItem( ID_FILE_GENERATEREPORTFILE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
 	submenu->EnableMenuItem( ID_FILE_GENERATE_3D, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
 	submenu->EnableMenuItem( ID_DSN_FILE_EXPORT, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
@@ -218,6 +221,9 @@ void CMainFrame::EnableMenuItems( CMenu* pMenu )
 		submenu->EnableMenuItem( ID_FILE_GENERATEDXFFILE1 + im, MF_BYCOMMAND | MF_ENABLED );
 	for (int im = 0; im < 15; im++)
 		submenu->EnableMenuItem(ID_FILE_GENERATEHPGLFILE1 + im, MF_BYCOMMAND | MF_ENABLED );
+	for (int im = 0; im < 6; im++)
+		submenu->EnableMenuItem(ID_FILE_GENERATEGRBLFILE1 + im, MF_BYCOMMAND | MF_ENABLED);
+
 	submenu->EnableMenuItem( ID_FILE_GENERATEREPORTFILE, MF_BYCOMMAND | MF_ENABLED );	
 	submenu->EnableMenuItem( ID_FILE_GENERATE_3D, MF_BYCOMMAND | MF_ENABLED );	
 	submenu->EnableMenuItem( ID_DSN_FILE_EXPORT, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );	
