@@ -3024,6 +3024,14 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 			{
 				m_space_y = my_atoi( &p[0] );
 			}
+			else if (np && key_str == "symmetrization_x")
+			{
+				m_symmetric_x = my_atoi(&p[0]);
+			}
+			else if (np && key_str == "symmetrization_y")
+			{
+				m_symmetric_y = my_atoi(&p[0]);
+			}
 			else if( np && key_str == "report_options" )
 			{
 				m_report_flags = my_atoi( &p[0] );
@@ -3496,6 +3504,10 @@ void CFreePcbDoc::WriteOptions( CStdioFile * file, BOOL bConfig )
 		file->WriteString( line );
 		line.Format( "cam_space_y: %d\n", m_space_y );
 		file->WriteString( line );
+		line.Format("symmetrization_x: %d\n", m_symmetric_x);
+		file->WriteString(line);
+		line.Format("symmetrization_y: %d\n", m_symmetric_y);
+		file->WriteString(line);
 		file->WriteString( "\n" );
 		//
 		line.Format( "report_options: %d\n", m_report_flags );
@@ -3890,6 +3902,7 @@ void CFreePcbDoc::InitializeNewProject()
 	m_n_y = 1;
 	m_space_x = 0;
 	m_space_y = 0;
+	m_symmetric_x = m_symmetric_y = 0;
 
 	// default DRC limits
 	m_dr.bCheckUnrouted = FALSE;
@@ -13841,10 +13854,18 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		}
 	}
 	CDlgAddSymmetricalBlank dlg;
-	dlg.Initialize(2, m_space_x, m_space_y, m_units);
+	if (m_symmetric_x == 0 && m_symmetric_y == 0)
+	{
+		m_symmetric_x = m_space_x;
+		m_symmetric_y = m_space_y;
+	}
+	dlg.Initialize(2, m_symmetric_x, m_symmetric_y, m_units);
 	int ret = dlg.DoModal();
 	if (ret == IDOK)
 	{
+		m_symmetric_x = dlg.m_dx;
+		m_symmetric_y = dlg.m_dy;
+
 		if (dlg.m_dx == 0)
 			dlg.m_dx = 100;
 		if (dlg.m_dy == 0)

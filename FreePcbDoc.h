@@ -317,7 +317,7 @@ public:
 	int m_cam_drill_file;
 	int m_annular_ring_pins;
 	int m_annular_ring_vias;
-	int m_n_x, m_n_y, m_space_x, m_space_y;
+	int m_n_x, m_n_y, m_space_x, m_space_y, m_symmetric_x, m_symmetric_y;
 
 	// report file options
 	int m_report_flags;

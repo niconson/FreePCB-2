@@ -15322,6 +15322,8 @@ void CFreePcbView::TurnGroup ()
 						m_Doc->m_outline_poly[item].SetSideStyle(im, (style==1?2:(style==2?1:0)), FALSE);
 					}
 				}
+				if (cl)
+					m_Doc->m_outline_poly[item].RecalcRectC(0);
 				m_Doc->m_outline_poly[item].Undraw();
 				m_Doc->m_outline_poly[item].Draw();
 			}
@@ -17780,6 +17782,8 @@ void CFreePcbView::RotateGroup( int angle, BOOL unroute, int x, int y )
 			}
 			if( RedrawFlag )
 			{
+				if(m_Doc->m_outline_poly[item].GetClosed())
+					m_Doc->m_outline_poly[item].RecalcRectC(0);
 				m_Doc->m_outline_poly[item].Draw();
 				if( COUNT > m_sel_count )
 					break;
