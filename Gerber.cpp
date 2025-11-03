@@ -1204,7 +1204,13 @@ int LPD = 0;
 									BoardOrigin.x + panel.m_fields[0] + (f_step_x * NM_PER_MIL * n_x) - step_x, 
 									BoardOrigin.y + (f_step_y * NM_PER_MIL * istep) + (op_rect.top - op_rect.bottom), LIGHT_ON);
 							}
-							if (getbit(panel.m_scribing, 2))
+						}
+					}
+					if (getbit(panel.m_scribing, 2))
+					{
+						for (int istep = 0; istep < n_y; istep++)
+						{
+							//if (getbit(panel.m_scribing, 2))
 							{
 								int new_y = BoardOrigin.y + (f_step_y * NM_PER_MIL * istep) + (op_rect.top - op_rect.bottom) / 2;
 								::WriteMoveTo(f,
@@ -1238,7 +1244,13 @@ int LPD = 0;
 									BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left), 
 									BoardOrigin.y + panel.m_fields[1] + (f_step_y * NM_PER_MIL * n_y) - step_y, LIGHT_ON);
 							}
-							if (getbit(panel.m_scribing, 3))
+						}
+					}
+					if (getbit(panel.m_scribing, 3))
+					{
+						for (int istep = 0; istep < n_x; istep++)
+						{
+							//if (getbit(panel.m_scribing, 3))
 							{
 								int new_x = BoardOrigin.x + (f_step_x * NM_PER_MIL * istep) + (op_rect.right - op_rect.left) / 2;
 								::WriteMoveTo(f,

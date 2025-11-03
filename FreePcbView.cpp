@@ -22980,7 +22980,10 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	cpart* MobileP = m_Doc->m_plist->GetPart(ref);
 	if (MobileP)
 	{
-		int answ = AfxMessageBox(G_LANGUAGE ? "У вас уже есть фрезерный контур, хотите сгенерировать новый? \n(Подсказка: мостики переходов сохранятся. Перед генерацией нового контура удалите старый контур и старый вырез в футпринте MILLING_BOARD_OUTLINE)" : "Do you already have a milling contour and want to generate a new one and delete the old one?", MB_ICONQUESTION|MB_OKCANCEL);
+		int answ = AfxMessageBox(G_LANGUAGE ? "У вас уже есть фрезерный контур, хотите сгенерировать новый? \n"\
+			"(Подсказка: мостики переходов сохранятся.Перед генерацией нового контура удалите старый контур и "\
+			"старый вырез в футпринте MILLING_BOARD_OUTLINE)" : "Do you already have a milling contour and want "\
+			"to generate a new one and delete the old one ? ", MB_ICONQUESTION|MB_OKCANCEL);
 		if (answ == IDCANCEL)
 			return;
 	}
@@ -23100,13 +23103,14 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	}
 	if (MobileP == NULL)
 	{
-		const int NP = 8;
+		const int NP = 20;
 		CPoint P[NP];
 		int angle[NP] = { 0,0,0,0,0,0,0,0 };
 		int np = 0;
 		sz = footprint->m_outline_poly.GetSize();
 		for (int i = 0; i < sz; i++)
 		{
+			footprint->m_outline_poly[i].RecalcRectC(0);
 			footprint->m_outline_poly[i].SetUtility(0);
 			for (int ii = 0; ii < footprint->m_outline_poly[i].GetNumCorners(); ii++)
 				footprint->m_outline_poly[i].SetUtility(ii, 0);
@@ -23156,11 +23160,11 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 							bestA = 0;
 						}
 					}
-					if (n < i)
+					if (n < ii)
 						break;
 				}
 			}
-			if ((bestI >= 0) && (maxLen > NM_PER_MM*8 || np == 0))
+			if ((bestI >= 0) && (maxLen > Frez*2 || np == 0))
 			{
 				P[np] = CPoint(bestX, bestY);
 				angle[np] = bestA;
@@ -23170,33 +23174,29 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 					if (footprint->m_outline_poly[bestI].TestPointInside(bestX, bestY + NM_PER_MM))
 					{
 						angle[np] += 180;
+						int n_insides = 0;
 						for (int iv = 0; iv < sz; iv++)
 						{
 							if (iv == bestI)
 								continue;
-							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
-								continue;
 							if (footprint->m_outline_poly[iv].TestPointInside(bestX, bestY - Frez - NM_PER_MM))
-							{
-								FAILED = 1;
-								break;
-							}
+								n_insides++;
 						}
+						if (n_insides == 1)
+							FAILED = 1;
 					}
 					else
 					{
+						int n_insides = 0;
 						for (int iv = 0; iv < sz; iv++)
 						{
 							if (iv == bestI)
 								continue;
-							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
-								continue;
 							if (footprint->m_outline_poly[iv].TestPointInside(bestX, bestY + Frez + NM_PER_MM))
-							{
-								FAILED = 1;
-								break;
-							}
+								n_insides++;
 						}
+						if (n_insides == 1)
+							FAILED = 1;
 					}
 				}
 				if (bestA == 90)
@@ -23204,33 +23204,29 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 					if (footprint->m_outline_poly[bestI].TestPointInside(bestX + NM_PER_MM, bestY))
 					{
 						angle[np] += 180;
+						int n_insides = 0;
 						for (int iv = 0; iv < sz; iv++)
 						{
 							if(iv == bestI)
 								continue;
-							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
-								continue;
 							if (footprint->m_outline_poly[iv].TestPointInside(bestX - Frez - NM_PER_MM, bestY))
-							{
-								FAILED = 1;
-								break;
-							}
+								n_insides++;
 						}
+						if (n_insides == 1)
+							FAILED = 1;
 					}
 					else
 					{
+						int n_insides = 0;
 						for (int iv = 0; iv < sz; iv++)
 						{
 							if (iv == bestI)
 								continue;
-							if (footprint->m_outline_poly[iv].GetLayer() != LAY_FP_VISIBLE_GRID)
-								continue;
 							if (footprint->m_outline_poly[iv].TestPointInside(bestX + Frez + NM_PER_MM, bestY))
-							{
-								FAILED = 1;
-								break;
-							}
+								n_insides++;
 						}
+						if(n_insides == 1)
+							FAILED = 1;
 					}
 				}
 				footprint->m_outline_poly[bestI].SetUtility(bestII, 1);
