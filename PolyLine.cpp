@@ -1892,7 +1892,7 @@ void CPolyLine::Hatch()
 					AfxMessageBox( "Error in PolyLine.cpp, code 4683" );
 				if( nloops == 3 )
 					AfxMessageBox( "Error in PolyLine.cpp, code 8749" );
-				if ( npts > MAXPTS )	// overflow
+				if ( npts >= MAXPTS )	// overflow
 					AfxMessageBox( "Error in PolyLine.cpp, code 9456" );
 
 				// sort points in order of descending x (if more than 2)

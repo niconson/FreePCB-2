@@ -6685,6 +6685,45 @@ void CFreePcbDoc::OnViewLog()
 	m_dlg_log->BringWindowToTop();
 }
 
+BOOL CFreePcbDoc::RemovingZeroLengthOrColinearSides( CPolyLine * ap )
+{
+	BOOL reDr = 0;
+	int ccont = ap->GetNumContours();
+	for (int icont = ccont - 1; icont >= 0; icont--)
+	{
+		int gst = ap->GetContourStart(icont);
+		for (int i = ap->GetContourEnd(icont); i >= gst; i--)
+		{
+			if (ap->GetContourEnd(icont) - gst < 3)
+				break;
+			int ib = ap->GetIndexCornerBack(i);
+			int in = ap->GetIndexCornerNext(i);
+			int x = ap->GetX(i);
+			int y = ap->GetY(i);
+			int xb = ap->GetX(ib);
+			int yb = ap->GetY(ib);
+			int xn = ap->GetX(in);
+			int yn = ap->GetY(in);
+			int sstyle1 = ap->GetSideStyle(i);
+			int sstyle2 = ap->GetSideStyle(ib);
+			if ((Colinear(xb, yb, x, y, xn, yn) && sstyle1 == CPolyLine::STRAIGHT && sstyle2 == CPolyLine::STRAIGHT) ||
+				Distance(xb, yb, x, y) < _2540)
+			{
+				reDr = 1;
+				ap->DeleteCorner(i, 1, 1, 0);
+				CString xs, ys;
+				::MakeCStringFromDimension(&xs, x, m_units, TRUE, TRUE, FALSE, (m_units == MIL ? 0 : 3));
+				::MakeCStringFromDimension(&ys, y, m_units, TRUE, TRUE, FALSE, (m_units == MIL ? 0 : 3));
+				CString str;
+				str.Format("    removing zero length or colinear sides x=%s y=%s\r\n", xs, ys);
+				m_dlg_log->AddLine(str);
+				m_dlg_log->UpdateWindow();
+			}
+		}
+	}
+	return reDr;
+}
+
 void CFreePcbDoc::OnToolsCheckCopperAreas()
 {
 	CString str;
@@ -6714,44 +6753,14 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 			for( int ia=0; ia<net->nareas; ia++ )
 			{
 				CPolyLine * ap = net->area[ia].poly;
-				BOOL reDraw = 0;
-				int ccont = ap->GetNumContours();
-				for( int icont=ccont-1; icont>=0; icont-- )
+				Total_num++;
+				BOOL reDraw = RemovingZeroLengthOrColinearSides(ap);
+				if (reDraw)
 				{
-					int gst = ap->GetContourStart(icont);
-					for( int i=ap->GetContourEnd(icont); i>=gst; i-- )
-					{
-						if( ap->GetContourEnd(icont) - gst < 3 )
-							break;
-						Total_num++;
-						int ib = ap->GetIndexCornerBack(i);
-						int in = ap->GetIndexCornerNext(i);
-						int x = ap->GetX(i);
-						int y = ap->GetY(i);
-						int xb = ap->GetX(ib);
-						int yb = ap->GetY(ib);
-						int xn = ap->GetX(in);
-						int yn = ap->GetY(in);
-						int sstyle1 = ap->GetSideStyle(i);
-						int sstyle2 = ap->GetSideStyle(ib);
-						if( (Colinear( xb,yb,x,y,xn,yn ) && sstyle1 == CPolyLine::STRAIGHT && sstyle2 == CPolyLine::STRAIGHT) ||
-							Distance( xb,yb,x,y ) < _2540 )
-						{
-							new_event = TRUE; 
-							Deleted_num++;
-							reDraw = 1;
-							ap->DeleteCorner(i,1,1,0);
-							CString xs,ys;
-							::MakeCStringFromDimension( &xs, x, m_units, TRUE, TRUE, FALSE, (m_units==MIL?0:3) );
-							::MakeCStringFromDimension( &ys, y, m_units, TRUE, TRUE, FALSE, (m_units==MIL?0:3) );
-							str.Format( "    removing zero length or colinear sides x=%s y=%s\r\n", xs, ys );
-							m_dlg_log->AddLine( str );
-							m_dlg_log->UpdateWindow();
-						}
-					}
+					m_nlist->SetAreaHatch(net, ia); // ap->Draw();
+					new_event = TRUE;
+					Deleted_num++;
 				}
-				if( reDraw )
-					m_nlist->SetAreaHatch( net, ia ); // ap->Draw();
 			}
 			
 			// check intersecting (in contour)
@@ -11417,6 +11426,36 @@ void CFreePcbDoc::DRC()
 				}
 				if (a->poly->GetHatch() == CPolyLine::DIAGONAL_FULL)
 				{
+					int nerrs = nerrors;
+					for (int icont = 1; icont < a->poly->GetNumContours(); icont++)
+					{
+						int arx = a->poly->GetX(a->poly->GetContourStart(icont));
+						int ary = a->poly->GetY(a->poly->GetContourStart(icont));
+						for (int icont2 = 1; icont2 < a->poly->GetNumContours(); icont2++)
+						{
+							if (icont == icont2)
+								continue;
+							if (a->poly->TestPointInside(arx, ary, icont2))
+							{
+								::MakeCStringFromDimension(&x_str, arx, m_units, FALSE, TRUE, TRUE, (m_units == MIL ? 1 : 3));
+								::MakeCStringFromDimension(&y_str, ary, m_units, FALSE, TRUE, TRUE, (m_units == MIL ? 1 : 3));
+								str.Format("%ld: \"%s\" copper area error (cutout inside cutout), x=%s, y=%s\r\n",
+									nerrors + 1, net->name, x_str, y_str);
+								DRError* dre = m_drelist->Add(nerrors, DRError::COPPERAREA_TORN, &str,
+									&net->name, &net->name, id_a, id_a, arx, ary, arx, ary, 0, a_layer);
+								if (dre)
+								{
+									nerrors++;
+									if (m_dlg_log)
+										m_dlg_log->AddLine(str);
+								}
+							}
+							if (nerrs != nerrors)
+								break;
+						}
+						if (nerrs != nerrors)
+							break;
+					}
 					for (cpart * prt = m_plist->GetFirstPart(); prt; prt = m_plist->GetNextPart(prt) )
 					{
 						if (prt->shape)

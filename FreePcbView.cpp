@@ -23024,6 +23024,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 		id gid = m_Doc->m_outline_poly[ib].GetId();
 		if (gid.st != ID_BOARD)
 			continue;
+		BOOL reDraw = m_Doc->RemovingZeroLengthOrColinearSides(&m_Doc->m_outline_poly[ib]);
+		if (reDraw)
+			m_Doc->m_outline_poly[ib].Draw();
 		for (int i = 0; i < m_Doc->m_outline_poly[ib].GetNumCorners(); i++)
 		{
 			int x1 = m_Doc->m_outline_poly[ib].GetX(i);
