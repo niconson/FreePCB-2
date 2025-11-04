@@ -23051,9 +23051,8 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 					m_Doc->m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
 				}
 				m_Doc->m_outline_poly[sz].Close();
-				m_Doc->ProjectCombineBoard(LAY_PAD_THRU);
-				SimplifyPoly(&m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1], Frez / 7);
-				if (m_Doc->m_outline_poly.GetSize() > max_index + 1)
+				
+				/*if (m_Doc->m_outline_poly.GetSize() > max_index + 1)
 				{
 					int x0 = m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1].GetX(0);
 					int y0 = m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1].GetY(0);
@@ -23062,10 +23061,30 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 						m_Doc->m_outline_poly[sz].Undraw();
 						m_Doc->m_outline_poly.SetSize(sz);
 					}
-				}
+				}*/
 			}
 			if (n < i)
 				break;
+		}
+	}
+	m_Doc->ProjectCombineBoard(LAY_PAD_THRU);
+	for (int ib = max_index; ib < m_Doc->m_outline_poly.GetSize(); ib++)
+		SimplifyPoly(&m_Doc->m_outline_poly[ib], Frez / 7);
+	while (m_Doc->m_outline_poly.GetSize() > max_index + 1)
+	{
+		int x0 = m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1].GetX(0);
+		int y0 = m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 1].GetY(0);
+		if (m_Doc->m_outline_poly[m_Doc->m_outline_poly.GetSize() - 2].TestPointInside(x0, y0))
+		{
+			int sz = m_Doc->m_outline_poly.GetSize() - 1;
+			m_Doc->m_outline_poly[sz].Undraw();
+			m_Doc->m_outline_poly.SetSize(sz);
+		}
+		else
+		{
+			int sz = m_Doc->m_outline_poly.GetSize() - 1;
+			m_Doc->m_outline_poly[sz - 1].Undraw();
+			m_Doc->m_outline_poly.RemoveAt(sz - 1);
 		}
 	}
 	//

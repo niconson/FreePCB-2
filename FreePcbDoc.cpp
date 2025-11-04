@@ -3024,11 +3024,11 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 			{
 				m_space_y = my_atoi( &p[0] );
 			}
-			else if (np && key_str == "symmetrization_x")
+			else if (np && key_str == "symmetrization_x" && !rColors)
 			{
 				m_symmetric_x = my_atoi(&p[0]);
 			}
-			else if (np && key_str == "symmetrization_y")
+			else if (np && key_str == "symmetrization_y" && !rColors)
 			{
 				m_symmetric_y = my_atoi(&p[0]);
 			}
@@ -7898,41 +7898,412 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		MarkLegalElementsForExport(this);
 		for( int i=0; i<m_outline_poly.GetSize(); i++ )
 		{
-			CPolyLine * bp = &m_outline_poly.GetAt(i);
-			if (bp->GetUtility() == 0)
+			if (m_outline_poly.GetAt(i).GetUtility() == 0)
 				continue;
-			if( bp->GetLayer() == LAY_BOARD_OUTLINE )
+			if(m_outline_poly.GetAt(i).GetLayer() == LAY_BOARD_OUTLINE )
 			{
-				str.Format( "    color( \"green\" )\n" );
-				file.WriteString( str );
-				str.Format("     render( convexity=3 )\n");
+				str.Format("    render( convexity=3 )\n");
 				file.WriteString(str);
 				str.Format( "      translate([ 0.0, 0.0, -board_h/2.0 ])\n" );
 				file.WriteString( str );
 				str.Format( "        difference()\n        {\n" );
 				file.WriteString( str );
 				file.WriteString( "          $fn=20;\n" );
-				CString PolyPts = bp->GetOpenscadPolyPts( m_units, 20, 21, 0, 0, 0 );
-				BOOL Flag = 0;
-				do
+				str.Format( "          union()\n          {\n");
+				file.WriteString(str); 
+				// пишем трассы и полигоны
 				{
-					if( Flag )
-						str.Format( "          linear_extrude( board_h*2.0, center=true )\n" );
-					else
-						str.Format( "          linear_extrude( board_h, center=true )\n" ); 
-					Flag = TRUE;
+					file.WriteString("            // traces and copper areas\n");
+					str.Format("            if( enable_draw_copper != 0 )\n            {\n");
+					file.WriteString(str);
+					for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
+					{
+						int max_index = m_outline_poly.GetSize();
+						for (int ict = 0; ict < gn->nconnects; ict++)
+						{
+							// test
+							//if (m_outline_poly.GetAt(i).TestPointInside(gn->connect[ict].vtx[0].x, gn->connect[ict].vtx[0].y, 0) == 0)
+							if(gn->connect[ict].utility == 0)
+								continue;
+							int isg = 0;
+							for (int STEP = 0; STEP < 2;)
+							{
+								for (; isg < gn->connect[ict].nsegs; isg++)
+								{
+									if (gn->connect[ict].seg[isg].layer == LAY_TOP_COPPER + STEP)
+									{
+										const int nPts = 20;
+										// Draw Via 1
+										/*if (gn->connect[ict].vtx[isg].via_w && m_outline_poly.GetSize() == max_index)
+										{
+											CPoint BRD[nPts];
+											int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg].x,
+												gn->connect[ict].vtx[isg].y,
+												gn->connect[ict].vtx[isg].x + _2540 / mu,
+												gn->connect[ict].vtx[isg].y + _2540 / mu,
+												gn->connect[ict].vtx[isg].via_w, BRD, nPts);
+											int sz = m_outline_poly.GetSize();
+											m_outline_poly.SetSize(sz + 1);
+											id bid(ID_POLYLINE, ID_BOARD, sz);
+											m_outline_poly[sz].Start(LAY_PAD_THRU, NM_PER_MIL, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
+											for (int b = 1; b < num_brd_points; b++)
+											{
+												m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
+											}
+											m_outline_poly[sz].Close();
+										}*/
+
+										// Segments on layer
+										CPoint BRD[nPts];
+										int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg].x,
+																				gn->connect[ict].vtx[isg].y,
+																				gn->connect[ict].vtx[isg + 1].x,
+																				gn->connect[ict].vtx[isg + 1].y,
+																				gn->connect[ict].seg[isg].width, BRD, nPts);
+										int sz = m_outline_poly.GetSize();
+										m_outline_poly.SetSize(sz + 1);
+										id bid(ID_POLYLINE, ID_BOARD, sz);
+										m_outline_poly[sz].Start(LAY_PAD_THRU, NM_PER_MIL, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
+										for (int b = 1; b < num_brd_points; b++)
+										{
+											m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
+										}
+										m_outline_poly[sz].Close();
+
+										// Draw Via 2
+										if (gn->connect[ict].vtx[isg + 1].via_w)
+										{
+											int via_w = gn->connect[ict].vtx[isg + 1].via_w;
+											CPoint BRD[nPts];
+											int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg + 1].x,
+																					gn->connect[ict].vtx[isg + 1].y,
+																					gn->connect[ict].vtx[isg + 1].x + _2540 / mu,
+																					gn->connect[ict].vtx[isg + 1].y + _2540 / mu,
+																					via_w, BRD, nPts);
+											int sz = m_outline_poly.GetSize();
+											m_outline_poly.SetSize(sz + 1);
+											id bid(ID_POLYLINE, ID_BOARD, sz);
+											m_outline_poly[sz].Start(LAY_PAD_THRU, NM_PER_MIL, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
+											for (int b = 1; b < num_brd_points; b++)
+											{
+												m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
+											}
+											m_outline_poly[sz].Close();
+
+											// opposite side
+											{
+												double vx = gn->connect[ict].vtx[isg + 1].x / mu;
+												double vy = gn->connect[ict].vtx[isg + 1].y / mu;
+												if (STEP == 0)
+													str.Format("              translate([ %.3f, %.3f, -board_h/2.0 ])\n", vx, vy);
+												else //if (STEP == 1)
+													str.Format("              translate([ %.3f, %.3f, board_h/2.0 ])\n", vx, vy);
+												file.WriteString(str);
+												file.WriteString("                color([0.0,0.8,0.5])\n");
+												double ah = 50000.0 / mu;
+												str.Format("                  cylinder( d=%.3f, h=%.3f, center=true );\n", (double)gn->connect[ict].vtx[isg + 1].via_w / mu, ah);
+												file.WriteString(str);
+											}
+										}
+									}
+									else if (m_outline_poly.GetSize() == max_index)
+										continue;
+									else
+										break;
+								}
+								if (m_outline_poly.GetSize() == max_index)
+								{
+									STEP++;
+									isg = 0;
+									continue;
+								}
+								//ProjectCombineBoard(LAY_PAD_THRU);
+								//SimplifyPoly(&m_outline_poly[m_outline_poly.GetSize() - 1], NM_PER_MIL);
+								/*while (m_outline_poly.GetSize() > max_index + 1)
+								{
+									int x0 = m_outline_poly[m_outline_poly.GetSize() - 1].GetX(0);
+									int y0 = m_outline_poly[m_outline_poly.GetSize() - 1].GetY(0);
+									if (m_outline_poly[m_outline_poly.GetSize() - 2].TestPointInside(x0, y0))
+									{
+										int sz = m_outline_poly.GetSize() - 1;
+										m_outline_poly[sz].Undraw();
+										m_outline_poly.SetSize(sz);
+									}
+									else
+									{
+										m_outline_poly[m_outline_poly.GetSize() - 1].RecalcRectC(0);
+										m_outline_poly[m_outline_poly.GetSize() - 2].RecalcRectC(0);
+										RECT r1 = m_outline_poly[m_outline_poly.GetSize() - 1].GetCornerBounds(0);
+										RECT r2 = m_outline_poly[m_outline_poly.GetSize() - 2].GetCornerBounds(0);
+										long long S1 = (long long)(r1.right - r1.left) * (long long)(r1.top - r1.bottom);
+										long long S2 = (long long)(r2.right - r2.left) * (long long)(r2.top - r2.bottom);
+										if (S2 > S1)
+										{
+											int sz = m_outline_poly.GetSize() - 1;
+											m_outline_poly[sz].Undraw();
+											m_outline_poly.SetSize(sz);
+										}
+										else
+										{
+											int sz = m_outline_poly.GetSize() - 1;
+											m_outline_poly[sz - 1].Undraw();
+											m_outline_poly.RemoveAt(sz - 1);
+										}
+									}
+								}
+								if (m_outline_poly.GetSize() > max_index + 1)
+									ASSERT(0);*/
+								while (m_outline_poly.GetSize() > max_index)
+								{
+									file.WriteString("\n              // connect\n");
+									int sz = m_outline_poly.GetSize() - 1;
+									CPolyLine* ap = &m_outline_poly[sz];
+									if (STEP == 0)
+										str.Format("              translate([ 0.0, 0.0, board_h/2.0 ])\n");
+									else //if (STEP == 1)
+										str.Format("              translate([ 0.0, 0.0, -board_h/2.0 ])\n");
+									file.WriteString(str);
+									file.WriteString("               color([0.0,0.8,0.5])\n");
+									double ah = 50000.0 / mu;
+									CString AreaPts = ap->GetOpenscadPolyPts(m_units, 20, 27, 0, 0, 0);
+									str.Format("                linear_extrude( %.3f, center=true )\n", ah);
+									file.WriteString(str);
+									str.Format("                  polygon([");
+									file.WriteString(str);
+									file.WriteString(AreaPts);
+									file.WriteString("]);\n");
+									m_outline_poly[sz].Undraw();
+									m_outline_poly.SetSize(sz);
+								}
+							}
+						}
+						for (int iar = 0; iar < gn->nareas; iar++)
+						{
+							// test
+							//if (m_outline_poly.GetAt(i).TestPointInside(gn->area[iar].poly->GetX(0), gn->area[iar].poly->GetY(0), 0) == 0)
+							if(gn->area[iar].utility == 0)
+								continue;
+							if (gn->area[iar].poly->GetHatch() != CPolyLine::DIAGONAL_FULL)
+								continue;
+							CPolyLine* ap = gn->area[iar].poly;
+							if (ap->GetLayer() == LAY_TOP_COPPER)
+								str.Format("              translate([ 0.0, 0.0, board_h/2.0 ])\n");
+							else if (ap->GetLayer() == LAY_BOTTOM_COPPER)
+								str.Format("              translate([ 0.0, 0.0, -board_h/2.0 ])\n");
+							else
+								continue;
+							file.WriteString(str);
+							file.WriteString("              color([0.0,0.8,0.5])\n");
+							str.Format("              difference()\n              {\n");
+							file.WriteString(str);
+							double ah = 50000.0 / mu;
+							CString AreaPts = ap->GetOpenscadPolyPts(m_units, 20, 27, 0, 0, 0);
+							str.Format("                linear_extrude( %.3f, center=true )\n", ah);
+							file.WriteString(str);
+							str.Format("                  polygon([");
+							file.WriteString(str);
+							file.WriteString(AreaPts);
+							file.WriteString("]);\n");
+
+							// пишем вырезы area
+							file.WriteString("\n                // area cutouts\n");
+							AreaPts = ap->GetOpenscadPolyPts(m_units, 20, 25, 0, 0);
+							while (AreaPts.GetLength())
+							{
+								str.Format("                linear_extrude( board_h*4.0, center=true )\n");
+								file.WriteString(str);
+								str.Format("                  polygon([");
+								file.WriteString(str);
+								file.WriteString(AreaPts);
+								file.WriteString("]);\n");
+								AreaPts = ap->GetOpenscadPolyPts(m_units, 20, 27, 0, 0);
+							}
+							file.WriteString("              }\n");
+						}
+					}
+					file.WriteString("\n              // part coppers\n");
+					for (cpart* p = m_plist->GetFirstPart(); p; p = m_plist->GetNextPart(p))
+					{
+						if (p->shape && p->utility)
+						{
+							for (int ip = 0; ip < p->m_outline_stroke.GetSize(); ip++)
+							{
+								if (p->m_outline_stroke[ip]->gtype != DL_POLYGON && p->m_outline_stroke[ip]->gtype != DL_LINES_ARRAY)
+									continue;
+								if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_TOP_COPPER) == 0 && getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_BOTTOM_COPPER) == 0)
+									continue;
+								CArray<CPoint>* arr = m_dlist->Get_Points(p->m_outline_stroke[ip], NULL, NULL);
+								int npts = arr->GetSize();
+								CPoint* P = new CPoint[npts];
+								m_dlist->Get_Points(p->m_outline_stroke[ip], P, &npts);
+								if (p->m_outline_stroke[ip]->gtype == DL_POLYGON)
+								{
+									if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_TOP_COPPER))
+										str.Format("              translate([ 0.0, 0.0, board_h/2.0 ])\n");
+									else if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_BOTTOM_COPPER))
+										str.Format("              translate([ 0.0, 0.0, -board_h/2.0 ])\n");
+									else
+										continue;
+									file.WriteString(str);
+									file.WriteString("               color([0.0,0.8,0.5])\n");
+									double ah = 50000.0 / mu;
+									str.Format("                linear_extrude( %.3f, center=true )\n", ah);
+									file.WriteString(str);
+									str.Format("                  polygon([");
+									file.WriteString(str);
+									for (int it = 0; it < npts; it++)
+									{
+										double p1 = P[it].x / mu;
+										double p2 = P[it].y / mu;
+										str.Format("[%.3f, %.3f]", p1, p2);
+										if (it < npts - 1)
+											str += ",";
+										file.WriteString(str);
+									}
+									file.WriteString("]);\n");
+								}
+								else if (p->m_outline_stroke[ip]->gtype == DL_LINES_ARRAY)
+								{
+									for (int it = 0; it < npts; it+=2)
+									{
+										if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_TOP_COPPER))
+											str.Format("              translate([ 0.0, 0.0, board_h/2.0 ])\n");
+										else if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_BOTTOM_COPPER))
+											str.Format("              translate([ 0.0, 0.0, -board_h/2.0 ])\n");
+										else
+											continue;
+										file.WriteString(str);
+										CPoint RD[10];
+										int num_points = Gen_HollowLinePoly(P[it].x,
+																			P[it].y,
+																			P[it + 1].x,
+																			P[it + 1].y,
+																			m_dlist->Get_el_w(p->m_outline_stroke[ip]), RD, 10);
+										file.WriteString("               color([0.0,0.8,0.5])\n");
+										double ah = 50000.0 / mu;
+										str.Format("                linear_extrude( %.3f, center=true )\n", ah);
+										file.WriteString(str);
+										str.Format("                  polygon([");
+										file.WriteString(str);
+										for (int ipt = 0; ipt < num_points; ipt++)
+										{
+											double p1 = RD[ipt].x / mu;
+											double p2 = RD[ipt].y / mu;
+											str.Format("[%.3f, %.3f]", p1, p2);
+											if (ipt < num_points - 1)
+												str += ",";
+											file.WriteString(str);
+										}
+										file.WriteString("]);\n");
+									}
+								}
+								delete P;
+							}
+						}
+					}
+					file.WriteString("\n              // copper texts\n");
+					int i_txt = -1;
+					for (CText* t = m_tlist->GetFirstText(); t; t = m_tlist->GetNextText(&i_txt))
+					{
+						if (t->m_utility == 0)
+							continue;
+						if (t->dl_el->gtype != DL_POLYGON && t->dl_el->gtype != DL_LINES_ARRAY)
+							continue;
+						if (getbit(t->dl_el->layers_bitmap, LAY_TOP_COPPER) == 0 && getbit(t->dl_el->layers_bitmap, LAY_BOTTOM_COPPER) == 0)
+							continue;
+						CArray<CPoint>* arr = m_dlist->Get_Points(t->dl_el, NULL, NULL);
+						int npts = arr->GetSize();
+						CPoint* P = new CPoint[npts];
+						m_dlist->Get_Points(t->dl_el, P, &npts);
+						for (int it = 0; it < npts; it += 2)
+						{
+							if (getbit(t->dl_el->layers_bitmap, LAY_TOP_COPPER))
+								str.Format("              translate([ 0.0, 0.0, board_h/2.0 ])\n");
+							else if (getbit(t->dl_el->layers_bitmap, LAY_BOTTOM_COPPER))
+								str.Format("              translate([ 0.0, 0.0, -board_h/2.0 ])\n");
+							else
+								continue;
+							file.WriteString(str);
+							CPoint RD[10];
+							int num_points = Gen_HollowLinePoly(P[it].x,
+																P[it].y,
+																P[it + 1].x,
+																P[it + 1].y,
+																m_dlist->Get_el_w(t->dl_el), RD, 10);
+							file.WriteString("               color([0.0,0.8,0.5])\n");
+							double ah = 50000.0 / mu;
+							str.Format("                linear_extrude( %.3f, center=true )\n", ah);
+							file.WriteString(str);
+							str.Format("                  polygon([");
+							file.WriteString(str);
+							for (int ipt = 0; ipt < num_points; ipt++)
+							{
+								double p1 = RD[ipt].x / mu;
+								double p2 = RD[ipt].y / mu;
+								str.Format("[%.3f, %.3f]", p1, p2);
+								if (ipt < num_points - 1)
+									str += ",";
+								file.WriteString(str);
+							}
+							file.WriteString("]);\n");
+						}
+						delete P;
+					}
+					file.WriteString("            }\n");
+				}
+
+				// пишем контур PCB
+				CPolyLine* bp = &m_outline_poly.GetAt(i);
+				file.WriteString("\n            // board outline\n");
+				str.Format("            color( \"green\" )\n");
+				file.WriteString(str);
+				CString PolyPts = bp->GetOpenscadPolyPts(m_units, 20, 23, 0, 0, 0);
+				str.Format("            linear_extrude( board_h, center=true )\n");
+				file.WriteString(str);
+				str.Format("              polygon([");
+				file.WriteString(str);
+				file.WriteString(PolyPts);
+				file.WriteString("]);\n");
+				file.WriteString("          }\n");
+
+				// пишем вырезы контура PCB
+				PolyPts = bp->GetOpenscadPolyPts(m_units, 20, 21, 0, 0);
+				while (PolyPts.GetLength())
+				{
+					str.Format( "          linear_extrude( board_h*2.0, center=true )\n" );
 					file.WriteString( str );
 					str.Format( "            polygon([" );
 					file.WriteString( str );
 					file.WriteString( PolyPts );
 					file.WriteString( "]);\n" );
 					PolyPts = bp->GetOpenscadPolyPts( m_units, 20, 21, 0, 0 );
-				} while( PolyPts.GetLength() );
+				} 
 				//
 				// пишем отверстия
 				//
 				str.Format( "          if( enable_draw_holes != 0 )\n          {\n" );
 				file.WriteString( str );
+				for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
+				{
+					int max_index = m_outline_poly.GetSize();
+					for (int ict = 0; ict < gn->nconnects; ict++)
+					{
+						for (int ivx = 0; ivx <= gn->connect[ict].nsegs; ivx++)
+						{
+							if (gn->connect[ict].vtx[ivx].via_hole_w || gn->connect[ict].vtx[ivx].force_via_flag)
+							{
+								double HoleSize = (double)gn->connect[ict].vtx[ivx].via_hole_w / mu;
+								if (HoleSize < BY_ZERO)
+									HoleSize = (double)abs(gn->def_via_hole_w) / mu;
+								double nX = (double)gn->connect[ict].vtx[ivx].x / mu;
+								double nY = (double)gn->connect[ict].vtx[ivx].y / mu;
+								file.WriteString("            color([0.0,0.8,0.5])\n");
+								str.Format("             translate([ %.3f, %.3f, 0.0 ])\n              cylinder( d=%.3f, h=board_h*2.0, center=true );\n", nX, nY, HoleSize);
+								file.WriteString(str);
+							}
+						}
+					}
+				}
 				for( cpart * p=m_plist->GetFirstPart(); p; p=m_plist->GetNextPart(p) )
 				{
 					if( p->shape )
@@ -8053,6 +8424,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					spc += " ";
 				str.Format( "enable_draw_board_outline%s = E;\n", spc );
 				Scadfile.WriteString( str );
+				spc = "";
+				for (int isp = 6; isp < maxlen; isp++)
+					spc += " ";
+				str.Format("enable_draw_copper%s = E;\n", spc);
+				Scadfile.WriteString(str);
 				spc = "";
 				for( int isp=5; isp<maxlen; isp++ )
 					spc += " ";

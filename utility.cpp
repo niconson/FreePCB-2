@@ -3777,15 +3777,24 @@ int SimplifyPoly(CPolyLine* poly, int val)
 		int i_del = 0;
 		for (int ii = end; ii >= start; ii--)
 		{
-			int n = poly->GetIndexCornerNext(ii);
-			int segL = Distance(poly->GetX(ii), poly->GetY(ii), poly->GetX(n), poly->GetY(n));
 			int p = poly->GetIndexCornerBack(ii);
-			int preL = Distance(poly->GetX(p), poly->GetY(p), poly->GetX(ii), poly->GetY(ii));
+			int n = poly->GetIndexCornerNext(ii);
+			int px = poly->GetX(p);
+			int py = poly->GetY(p);
+			int x = poly->GetX(ii);
+			int y = poly->GetY(ii);
+			int nx = poly->GetX(n);
+			int ny = poly->GetY(n);
+			BOOL a901 = (abs(px - x) < _2540 || abs(py - y) < _2540);
+			BOOL a902 = (abs(nx - x) < _2540 || abs(ny - y) < _2540);
+			BOOL a90 = (a901 || a902);
+			int segL = Distance(x, y, nx, ny);
+			int preL = Distance(px, py, x, y);
 			CPoint pv(poly->GetX(p), poly->GetY(p));
 			CPoint v(poly->GetX(ii), poly->GetY(ii));
 			CPoint nv(poly->GetX(n), poly->GetY(n));
 			float angle = Angle(pv, v, nv);
-			if (segL < val && preL < val && abs(angle) < 60.0 && i_del < max_del)
+			if (segL < val && (preL < val || a90 == 0) && abs(angle) < 60.0 && i_del < max_del)
 			{
 				poly->DeleteCorner(ii, 1, 1, FALSE);
 				n_deleted++;

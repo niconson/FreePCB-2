@@ -4515,7 +4515,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		//
 		if( GetNumPins() )
 		{
-			str.Format( "// pads\n%sif( enable_draw_pads )\n%s%s( \"gray\" )\n%s{\n%s", sp, sp, dlg.CLR, sp, sp+ddSPACE );
+			str.Format( "// pads\n%sif( enable_draw_pads )\n%s%s( \"Lavender\" )\n%s{\n%s", sp, sp, dlg.CLR, sp, sp+ddSPACE );
 			file.WriteString( str );
 			sp += ddSPACE;
 			file.WriteString( "$fn=8;\n" );
@@ -4729,7 +4729,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		{
 			path.Truncate( path.GetLength()-3 );
 			path += "scad";
-			if( _stat( path, &buf ) ) // если файл не существует
+			DeleteFile(path);
+			//if( _stat( path, &buf ) ) // если файл не существует
 			{
 				ok = file.Open( path, CFile::modeCreate | CFile::modeWrite );
 				if( ok )

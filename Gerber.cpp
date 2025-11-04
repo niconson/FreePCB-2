@@ -3182,74 +3182,77 @@ int LPD = 0;
 					SET_LPD
 				current_ap.m_type = CAperture::AP_NONE;	// force selection of aperture
 			}
-			if( pl )
+			if (layer != LAY_BOARD_OUTLINE)
 			{
-				// iterate through all parts
-				cpart * part = pl->m_start.next;
-				while( part->next != 0 )
+				if (pl)
 				{
-					CShape * s = part->shape;
-					if( s )
+					// iterate through all parts
+					cpart* part = pl->m_start.next;
+					while (part->next != 0)
 					{
-						if( PASS1 )
+						CShape* s = part->shape;
+						if (s)
 						{
-							//ERROR IF '*' INCLUDED
-							//line.Format( "G04 draw pilot holes for part %s*\n", part->ref_des ); 
-							//f->WriteString( line );
-						}
-						for( int ip=0; ip<s->GetNumPins(); ip++ )
-						{
-							pad * p = 0;
-							padstack * ps = &s->m_padstack[ip];
-							if( ps->hole_size )
+							if (PASS1)
 							{
-								p = &ps->top;
-								// check current aperture and change if needed
-								CAperture pad_ap( CAperture::AP_CIRCLE, pilot_diameter, 0 );
-								ChangeAperture( &pad_ap, &current_ap, &ap_array, PASS0, f );
-								// now flash the pad
-								if( PASS1 )
+								//ERROR IF '*' INCLUDED
+								//line.Format( "G04 draw pilot holes for part %s*\n", part->ref_des ); 
+								//f->WriteString( line );
+							}
+							for (int ip = 0; ip < s->GetNumPins(); ip++)
+							{
+								pad* p = 0;
+								padstack* ps = &s->m_padstack[ip];
+								if (ps->hole_size)
 								{
-									::WriteMoveTo( f, part->pin[ip].x, part->pin[ip].y, LIGHT_FLASH );
+									p = &ps->top;
+									// check current aperture and change if needed
+									CAperture pad_ap(CAperture::AP_CIRCLE, pilot_diameter, 0);
+									ChangeAperture(&pad_ap, &current_ap, &ap_array, PASS0, f);
+									// now flash the pad
+									if (PASS1)
+									{
+										::WriteMoveTo(f, part->pin[ip].x, part->pin[ip].y, LIGHT_FLASH);
+									}
 								}
 							}
 						}
+						// go to next part
+						part = part->next;
 					}
-					// go to next part
-					part = part->next;
 				}
-			}
-			// draw pilot holes for vias
-			if( nl )
-			{
-				// iterate through all nets
-				if( PASS1 )
+				// draw pilot holes for vias
+				if (nl)
 				{
-					f->WriteString( "\nG04 Draw pilot holes for vias*\n" );
-				}
-				POSITION pos;
-				CString name;
-				void * ptr;
-				for( pos = nl->m_map.GetStartPosition(); pos != NULL; )
-				{
-					nl->m_map.GetNextAssoc( pos, name, ptr );
-					cnet * net = (cnet*)ptr;
-					for( int ic=0; ic<net->nconnects; ic++ )
+					// iterate through all nets
+					if (PASS1)
 					{
-						int nsegs = net->connect[ic].nsegs;
-						for( int is=0; is<nsegs; is++ )
+						f->WriteString("\nG04 Draw pilot holes for vias*\n");
+					}
+					POSITION pos;
+					CString name;
+					void* ptr;
+					for (pos = nl->m_map.GetStartPosition(); pos != NULL; )
+					{
+						nl->m_map.GetNextAssoc(pos, name, ptr);
+						cnet* net = (cnet*)ptr;
+						for (int ic = 0; ic < net->nconnects; ic++)
 						{
-							// get segment
-							cseg * s = &(net->connect[ic].seg[is]);
-							cvertex * post_vtx = &(net->connect[ic].vtx[is+1]);
-							if( post_vtx->via_w )
+							int nsegs = net->connect[ic].nsegs;
+							for (int is = 0; is < nsegs; is++)
 							{
-								// via exists
-								CAperture via_ap( CAperture::AP_CIRCLE, pilot_diameter, 0 );
-								ChangeAperture( &via_ap, &current_ap, &ap_array, PASS0, f );
-								// flash the via
-								if( PASS1 )
-									::WriteMoveTo( f, post_vtx->x, post_vtx->y, LIGHT_FLASH );
+								// get segment
+								cseg* s = &(net->connect[ic].seg[is]);
+								cvertex* post_vtx = &(net->connect[ic].vtx[is + 1]);
+								if (post_vtx->via_w)
+								{
+									// via exists
+									CAperture via_ap(CAperture::AP_CIRCLE, pilot_diameter, 0);
+									ChangeAperture(&via_ap, &current_ap, &ap_array, PASS0, f);
+									// flash the via
+									if (PASS1)
+										::WriteMoveTo(f, post_vtx->x, post_vtx->y, LIGHT_FLASH);
+								}
 							}
 						}
 					}
