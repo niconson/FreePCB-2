@@ -8128,7 +8128,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 						{
 							for (int ip = 0; ip < p->m_outline_stroke.GetSize(); ip++)
 							{
-								if (p->m_outline_stroke[ip]->gtype != DL_POLYGON && p->m_outline_stroke[ip]->gtype != DL_LINES_ARRAY)
+								if (p->m_outline_stroke[ip]->gtype != DL_POLYGON && 
+									p->m_outline_stroke[ip]->gtype != DL_POLYLINE &&
+									p->m_outline_stroke[ip]->gtype != DL_LINES_ARRAY)
 									continue;
 								if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_TOP_COPPER) == 0 && getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_BOTTOM_COPPER) == 0)
 									continue;
@@ -8197,6 +8199,41 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 										file.WriteString("]);\n");
 									}
 								}
+								else if (p->m_outline_stroke[ip]->gtype == DL_POLYLINE)
+								{
+									for (int it = 0; it < npts-1; it++)
+									{
+										if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_TOP_COPPER))
+											str.Format("              translate([ 0.0, 0.0, board_h/2.0 ])\n");
+										else if (getbit(p->m_outline_stroke[ip]->layers_bitmap, LAY_BOTTOM_COPPER))
+											str.Format("              translate([ 0.0, 0.0, -board_h/2.0 ])\n");
+										else
+											continue;
+										file.WriteString(str);
+										CPoint RD[10];
+										int num_points = Gen_HollowLinePoly(P[it].x,
+																			P[it].y,
+																			P[it + 1].x,
+																			P[it + 1].y,
+																			m_dlist->Get_el_w(p->m_outline_stroke[ip]), RD, 10);
+										file.WriteString("               color([0.0,0.8,0.5])\n");
+										double ah = 50000.0 / mu;
+										str.Format("                linear_extrude( %.3f, center=true )\n", ah);
+										file.WriteString(str);
+										str.Format("                  polygon([");
+										file.WriteString(str);
+										for (int ipt = 0; ipt < num_points; ipt++)
+										{
+											double p1 = RD[ipt].x / mu;
+											double p2 = RD[ipt].y / mu;
+											str.Format("[%.3f, %.3f]", p1, p2);
+											if (ipt < num_points - 1)
+												str += ",";
+											file.WriteString(str);
+										}
+										file.WriteString("]);\n");
+									}
+								}
 								delete P;
 							}
 						}
@@ -8207,7 +8244,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					{
 						if (t->m_utility == 0)
 							continue;
-						if (t->dl_el->gtype != DL_POLYGON && t->dl_el->gtype != DL_LINES_ARRAY)
+						if (t->dl_el->gtype != DL_LINES_ARRAY)
 							continue;
 						if (getbit(t->dl_el->layers_bitmap, LAY_TOP_COPPER) == 0 && getbit(t->dl_el->layers_bitmap, LAY_BOTTOM_COPPER) == 0)
 							continue;
