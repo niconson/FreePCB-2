@@ -7930,29 +7930,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							{
 								for (; isg < gn->connect[ict].nsegs; isg++)
 								{
+									const int nPts = 12;
+
+									// draw seg
 									if (gn->connect[ict].seg[isg].layer == LAY_TOP_COPPER + STEP)
 									{
-										const int nPts = 20;
-										// Draw Via 1
-										/*if (gn->connect[ict].vtx[isg].via_w && m_outline_poly.GetSize() == max_index)
-										{
-											CPoint BRD[nPts];
-											int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg].x,
-												gn->connect[ict].vtx[isg].y,
-												gn->connect[ict].vtx[isg].x + _2540 / mu,
-												gn->connect[ict].vtx[isg].y + _2540 / mu,
-												gn->connect[ict].vtx[isg].via_w, BRD, nPts);
-											int sz = m_outline_poly.GetSize();
-											m_outline_poly.SetSize(sz + 1);
-											id bid(ID_POLYLINE, ID_BOARD, sz);
-											m_outline_poly[sz].Start(LAY_PAD_THRU, NM_PER_MIL, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
-											for (int b = 1; b < num_brd_points; b++)
-											{
-												m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
-											}
-											m_outline_poly[sz].Close();
-										}*/
-
 										// Segments on layer
 										CPoint BRD[nPts];
 										int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg].x,
@@ -7969,47 +7951,30 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 											m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
 										}
 										m_outline_poly[sz].Close();
-
-										// Draw Via 2
-										if (gn->connect[ict].vtx[isg + 1].via_w)
-										{
-											int via_w = gn->connect[ict].vtx[isg + 1].via_w;
-											CPoint BRD[nPts];
-											int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg + 1].x,
-																					gn->connect[ict].vtx[isg + 1].y,
-																					gn->connect[ict].vtx[isg + 1].x + _2540 / mu,
-																					gn->connect[ict].vtx[isg + 1].y + _2540 / mu,
-																					via_w, BRD, nPts);
-											int sz = m_outline_poly.GetSize();
-											m_outline_poly.SetSize(sz + 1);
-											id bid(ID_POLYLINE, ID_BOARD, sz);
-											m_outline_poly[sz].Start(LAY_PAD_THRU, NM_PER_MIL, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
-											for (int b = 1; b < num_brd_points; b++)
-											{
-												m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
-											}
-											m_outline_poly[sz].Close();
-
-											// opposite side
-											{
-												double vx = gn->connect[ict].vtx[isg + 1].x / mu;
-												double vy = gn->connect[ict].vtx[isg + 1].y / mu;
-												if (STEP == 0)
-													str.Format("              translate([ %.3f, %.3f, -board_h/2.0 ])\n", vx, vy);
-												else //if (STEP == 1)
-													str.Format("              translate([ %.3f, %.3f, board_h/2.0 ])\n", vx, vy);
-												file.WriteString(str);
-												file.WriteString("                color([0.0,0.8,0.5])\n");
-												double ah = 50000.0 / mu;
-												str.Format("                  cylinder( d=%.3f, h=%.3f, center=true );\n", (double)gn->connect[ict].vtx[isg + 1].via_w / mu, ah);
-												file.WriteString(str);
-											}
-										}
 									}
-									else if (m_outline_poly.GetSize() == max_index)
-										continue;
-									else
+									else if (m_outline_poly.GetSize() > max_index)
 										break;
+
+									// Draw Via 2
+									if (gn->connect[ict].vtx[isg + 1].via_w)
+									{
+										int via_w = gn->connect[ict].vtx[isg + 1].via_w;
+										CPoint BRD[nPts*2];
+										int num_brd_points = Gen_HollowLinePoly(gn->connect[ict].vtx[isg + 1].x,
+											gn->connect[ict].vtx[isg + 1].y,
+											gn->connect[ict].vtx[isg + 1].x + _2540 / mu,
+											gn->connect[ict].vtx[isg + 1].y + _2540 / mu,
+											via_w, BRD, nPts*2);
+										int sz = m_outline_poly.GetSize();
+										m_outline_poly.SetSize(sz + 1);
+										id bid(ID_POLYLINE, ID_BOARD, sz);
+										m_outline_poly[sz].Start(LAY_PAD_THRU, NM_PER_MIL, NM_PER_MIL, BRD[0].x, BRD[0].y, 0, &bid, NULL);
+										for (int b = 1; b < num_brd_points; b++)
+										{
+											m_outline_poly[sz].AppendCorner(BRD[b].x, BRD[b].y, 0, 0);
+										}
+										m_outline_poly[sz].Close();
+									}
 								}
 								if (m_outline_poly.GetSize() == max_index)
 								{
