@@ -141,8 +141,8 @@ BEGIN_MESSAGE_MAP(CFreePcbDoc, CDocument)
 	ON_COMMAND(ID_FILE_RELOAD_MENU, OnReloadMenu)
 	ON_COMMAND_EX_RANGE(ID_FILE_OPEN_FROM_START,ID_FILE_OPEN_FROM_END, OnSpeedFile)
 	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEDXFFILE1, ID_FILE_GENERATEDXFFILE8, OnFileGenerateDXFFile)
-	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEGRBLFILE1, ID_FILE_GENERATEGRBLFILE6, OnFileGenerateGRBLFile)
-	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEHPGLFILE1, ID_FILE_GENERATEHPGLFILE16, OnFileGenerateHPGLFile)
+	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEGRBLFILE1, ID_FILE_GENERATEGRBLFILE13, OnFileGenerateGRBLFile)
+	ON_COMMAND_EX_RANGE(ID_FILE_GENERATEHPGLFILE1, ID_FILE_GENERATEHPGLFILE15, OnFileGenerateHPGLFile)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -5850,19 +5850,45 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 	CStdioFile f;
 	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
 	{
-		f.WriteString("%\n");
-		f.WriteString("; G-code from Schemator&Platform\n");
-		f.WriteString("; info: www.niconson.com/freepcb2\n");
-		if (CMD == ID_FILE_GENERATEGRBLFILE6)
+		f.WriteString(";----------------------------------------\n");
+		if (G_LANGUAGE)
+			f.WriteString("; G-code from Schemator&Platform\n");
+		else
+			f.WriteString("; G-code from FPC-Schemator\n");
+		f.WriteString("; www.niconson.com/freepcb2\n");
+		f.WriteString(";----------------------------------------\n");
+		f.WriteString("G17\n");
+		if (m_units == MIL)
+			f.WriteString("G20\n");
+		else
+			f.WriteString("G21\n");
+		f.WriteString("G40\n");
+		f.WriteString("G49\n");
+		f.WriteString("G53\n");
+		f.WriteString("G80\n");
+		f.WriteString("G90\n");
+		f.WriteString("G94\n");
+		f.WriteString(";-------------  TOOL SPEED  -------------\n");
+		if (m_units == MIL)
+			f.WriteString("F12\n");
+		else
+			f.WriteString("F300\n");
+		f.WriteString(";----------------------------------------\n");
+		if (CMD == ID_FILE_GENERATEGRBLFILE13)
 			Generate_GCODE(&f, 0, 0, TRUE, LASERMODE);
 		else
 		{
+			int total = CMD - ID_FILE_GENERATEGRBLFILE1;
+			int delta = (NM_PER_MIL * 4);
+			if (total)
+				delta /= total;
+			int counter = 1;
 			Generate_GCODE(&f, NM_PER_MIL * 4, 0, FALSE, LASERMODE);
-			Generate_GCODE(&f, NM_PER_MIL * 8, 0, FALSE, LASERMODE);
-			for (UINT swell = NM_PER_MIL * 12; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
+			for (UINT swell = NM_PER_MIL * 7; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
 			{
 				Generate_GCODE(&f, swell, 0, FALSE, LASERMODE);
-				swell += (NM_PER_MIL * 8);
+				swell += (NM_PER_MIL * 4) + (delta * counter);
+				counter++;
 			}
 		}
 		f.WriteString("M30\n");
@@ -5970,9 +5996,11 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		ToolUp = "G00 Z0.12\n";
 	if (bLASERMODE == 0)
 	{
-		f->WriteString("%\n");
-		f->WriteString("; G-code from Schemator&Platform\n");
-		f->WriteString("; info: www.niconson.com/freepcb2\n");
+		if (G_LANGUAGE)
+			f->WriteString("; G-code from Schemator&Platform\n");
+		else
+			f->WriteString("; G-code from FPC-Schemator\n");
+		f->WriteString("; www.niconson.com/freepcb2\n");
 		if (bHOLES == 0)
 		{
 			s.Format("; Tool d = %.1f nanometers,\n", swell);
@@ -5984,71 +6012,71 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		f->WriteString("; The Z axis is set so that at Z=0 the tool\n");
 		f->WriteString("; touches the surface of the workpiece !\n");
 		f->WriteString(";----------------------------------------\n");
-	}
-	f->WriteString("G17\n");
-	if (m_units == MIL)
-		f->WriteString("G20\n");
-	else
-		f->WriteString("G21\n");
-	f->WriteString("G40\n");
-	f->WriteString("G49\n");
-	f->WriteString("G53\n");
-	f->WriteString("G80\n");
-	f->WriteString("G90\n");
-	f->WriteString("G94\n");
-	if (bLASERMODE == 0)
-	{
+		f->WriteString("G17\n");
+		if (m_units == MIL)
+			f->WriteString("G20\n");
+		else
+			f->WriteString("G21\n");
+		f->WriteString("G40\n");
+		f->WriteString("G49\n");
+		f->WriteString("G53\n");
+		f->WriteString("G80\n");
+		f->WriteString("G90\n");
+		f->WriteString("G94\n");
+		f->WriteString(";-------------  TOOL SPEED  -------------\n");
 		if (m_units == MIL)
 			f->WriteString("F12\n");
 		else
 			f->WriteString("F300\n");
+		f->WriteString(";----------------------------------------\n");
+		///
+		RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
+		f->WriteString(";----------------------\n; Left-Bottom Corner:\n");
+		f->WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
+		f->WriteString(s);
+		///
+		if (m_units == MIL)
+			f->WriteString("G00 Z0.01\n");
+		else
+			f->WriteString("G00 Z0.1\n");
+		f->WriteString("G4 P2000\n");
+		f->WriteString(";----------------------\n; Right-Top Corner:\n");
+		f->WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
+		f->WriteString(s);
+		///
+		if (m_units == MIL)
+			f->WriteString("G00 Z0.01\n");
+		else
+			f->WriteString("G00 Z0.1\n");
+		f->WriteString("G4 P2000\n");
+		f->WriteString(";----------------------\n; Right-Bottom Corner:\n");
+		f->WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
+		f->WriteString(s);
+		///
+		if (m_units == MIL)
+			f->WriteString("G00 Z0.01\n");
+		else
+			f->WriteString("G00 Z0.1\n");
+		f->WriteString("G4 P2000\n");
+		f->WriteString(";----------------------\n; Left-Top Corner:\n");
+		f->WriteString(ToolUp);
+		s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
+		f->WriteString(s);
+		///
+		if (m_units == MIL)
+			f->WriteString("G00 Z0.01\n");
+		else
+			f->WriteString("G00 Z0.1\n");
+		f->WriteString("G4 P2000\n");
+		f->WriteString(";----------------------\n");
 		f->WriteString("M3 S500\n");
 		f->WriteString("G4 P2000\n");
 	}
 	else
 		f->WriteString("M3 S0\n");
-	RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
-	f->WriteString(";----------------------\n; Left-Bottom Corner:\n");
-	f->WriteString(ToolUp);
-	s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.bottom / convert);
-	f->WriteString(s);
-	///f->WriteString("G01 Z0.1\n");
-	if (m_units == MIL)
-		f->WriteString("G00 Z0.01\n");
-	else
-		f->WriteString("G00 Z0.1\n");
-	f->WriteString("G4 P2000\n");
-	f->WriteString(";----------------------\n; Right-Top Corner:\n");
-	f->WriteString(ToolUp);
-	s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.top / convert);
-	f->WriteString(s);
-	///f->WriteString("G01 Z0.1\n");
-	if (m_units == MIL)
-		f->WriteString("G00 Z0.01\n");
-	else
-		f->WriteString("G00 Z0.1\n");
-	f->WriteString("G4 P2000\n");
-	f->WriteString(";----------------------\n; Right-Bottom Corner:\n");
-	f->WriteString(ToolUp);
-	s.Format("G00 X%.4f Y%.4f\n", BR.right / convert, BR.bottom / convert);
-	f->WriteString(s);
-	///f->WriteString("G01 Z0.1\n");
-	if (m_units == MIL)
-		f->WriteString("G00 Z0.01\n");
-	else
-		f->WriteString("G00 Z0.1\n");
-	f->WriteString("G4 P2000\n");
-	f->WriteString(";----------------------\n; Left-Top Corner:\n");
-	f->WriteString(ToolUp);
-	s.Format("G00 X%.4f Y%.4f\n", BR.left / convert, BR.top / convert);
-	f->WriteString(s);
-	///f->WriteString("G01 Z0.1\n");
-	if (m_units == MIL)
-		f->WriteString("G00 Z0.01\n");
-	else
-		f->WriteString("G00 Z0.1\n");
-	f->WriteString("G4 P2000\n");
-	f->WriteString(";----------------------\n");
 	if (bHOLES)
 	{
 		// none

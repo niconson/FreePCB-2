@@ -1,4 +1,6 @@
 ﻿  StdAfx.cpp
+d:\freepcbdev\freepcb-2\stdafx.h(58): warning C4005: ASSERT: изменение макроопределения
+          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\include\afx.h(333): см. предыдущее определение "ASSERT"
   utility.cpp
   UndoList.cpp
   TextList.cpp

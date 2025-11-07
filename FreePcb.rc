@@ -183,13 +183,18 @@ BEGIN
             MENUITEM SEPARATOR
             POPUP "G-CODE в формате контроллера GRBL"
             BEGIN
-                MENUITEM "С зазором в 8 миль (0.2мм)",  ID_FILE_GENERATEGRBLFILE1
-                MENUITEM "С зазором в 12 миль (0.3мм)", ID_FILE_GENERATEGRBLFILE2
-                MENUITEM "С зазором в 16 миль (0.4мм)", ID_FILE_GENERATEGRBLFILE3
-                MENUITEM "С зазором в 20 миль (0.5мм)", ID_FILE_GENERATEGRBLFILE4
-                MENUITEM "С зазором в 24 миль (0.6мм)", ID_FILE_GENERATEGRBLFILE5
+                MENUITEM "С зазором в 9 миль (0.225мм)",    ID_FILE_GENERATEGRBLFILE3
+                MENUITEM "С зазором в 12 миль (0.3мм)",     ID_FILE_GENERATEGRBLFILE4
+                MENUITEM "С зазором в 15 миль (0.375мм)",   ID_FILE_GENERATEGRBLFILE5
+                MENUITEM "С зазором в 18 миль (0.45мм)",    ID_FILE_GENERATEGRBLFILE6
+                MENUITEM "С зазором в 21 миль (0.525мм)",   ID_FILE_GENERATEGRBLFILE7
+                MENUITEM "С зазором в 24 миль (0.6мм)",     ID_FILE_GENERATEGRBLFILE8
+                MENUITEM "С зазором в 27 миль (0.675мм)",   ID_FILE_GENERATEGRBLFILE9
+                MENUITEM "С зазором в 30 миль (0.75мм)",    ID_FILE_GENERATEGRBLFILE10
+                MENUITEM "С зазором в 33 миль (0.825мм)",   ID_FILE_GENERATEGRBLFILE11
+                MENUITEM "С зазором в 36 миль (0.9мм)",     ID_FILE_GENERATEGRBLFILE12
                 MENUITEM SEPARATOR                                      
-                MENUITEM "Все отверстия",               ID_FILE_GENERATEGRBLFILE6
+                MENUITEM "Все отверстия",               ID_FILE_GENERATEGRBLFILE13
             END
         END
         POPUP "Генерировать G-CODE для фрезерного станка"
