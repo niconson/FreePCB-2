@@ -5850,13 +5850,16 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 	CStdioFile f;
 	if (f.Open(m_app_dir + "\\open.gcode", CFile::modeCreate | CFile::modeWrite, NULL))
 	{
-		f.WriteString(";----------------------------------------\n");
 		if (G_LANGUAGE)
 			f.WriteString("; G-code from Schemator&Platform\n");
 		else
 			f.WriteString("; G-code from FPC-Schemator\n");
 		f.WriteString("; www.niconson.com/freepcb2\n");
+		f.WriteString("O1000\n");
+		f.WriteString(";-------------  TOOL POWER  -------------\n");
+		f.WriteString("S1000\n");
 		f.WriteString(";----------------------------------------\n");
+		f.WriteString("M99\n");
 		f.WriteString("G17\n");
 		if (m_units == MIL)
 			f.WriteString("G20\n");
@@ -5887,7 +5890,7 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 			for (UINT swell = NM_PER_MIL * 7; CMD >= ID_FILE_GENERATEGRBLFILE1; CMD--)
 			{
 				Generate_GCODE(&f, swell, 0, FALSE, LASERMODE);
-				swell += (NM_PER_MIL * 4) + (delta * counter);
+				swell += (NM_PER_MIL * 3) + (delta * counter);
 				counter++;
 			}
 		}
@@ -6095,13 +6098,15 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 				int numc = laser_net->area[area].poly->GetNumContour(ia);
 				if (laser_net->area[area].poly->GetContourStart(numc) == ia)
 				{
-					f->WriteString(ToolUp);
+					if (bLASERMODE == 0)
+						f->WriteString(ToolUp);
 					s.Format("G00 X%.4f Y%.4f\n", fx / convert, fy / convert);
 					f->WriteString(s);
-					f->WriteString(ToolZero);
+					if (bLASERMODE == 0)
+						f->WriteString(ToolZero);
 					if (bLASERMODE)
-						f->WriteString("S1000\n");
-					if (m_units == MIL)
+						f->WriteString("M98 P1000\n");
+					else if (m_units == MIL)
 						f->WriteString("G01 Z-0.004\n");
 					else
 						f->WriteString("G01 Z-0.1\n");
@@ -6148,10 +6153,11 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							f->WriteString("G00 Z1.0\n");
 						s.Format("G00 X%.4f Y%.4f\n", (float)P[ip].x / convert, (float)P[ip].y / convert);
 						f->WriteString(s);
-						f->WriteString(ToolZero);
+						if (bLASERMODE == 0)
+							f->WriteString(ToolZero);
 						if (bLASERMODE)
-							f->WriteString("S1000\n");
-						if (m_units == MIL)
+							f->WriteString("M98 P1000\n");
+						else if (m_units == MIL)
 							f->WriteString("G01 Z-0.004\n");
 						else
 							f->WriteString("G01 Z-0.1\n");
@@ -6204,10 +6210,12 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						CPoint pt = m_plist->GetPinPoint(p, ip, p->side, p->angle);
 						if (bHOLES && bLASERMODE == 0)
 						{
-							f->WriteString(ToolUp);
+							if (bLASERMODE == 0)
+								f->WriteString(ToolUp);
 							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 							f->WriteString(s);
-							f->WriteString(ToolZero);
+							if (bLASERMODE == 0)
+								f->WriteString(ToolZero);
 							if (m_units == MIL)
 								f->WriteString("G01 Z-0.12\n");
 							else
@@ -6215,10 +6223,12 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						}
 						else if (hs <= swell)
 						{
-							f->WriteString(ToolUp);
+							if (bLASERMODE == 0)
+								f->WriteString(ToolUp);
 							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 							f->WriteString(s);
-							f->WriteString(ToolZero);
+							if (bLASERMODE == 0)
+								f->WriteString(ToolZero);
 							if (m_units == MIL)
 								f->WriteString("G01 Z-0.004\n");
 							else
@@ -6227,13 +6237,15 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						else
 						{
 							int shift = (hs - swell) / 2;
-							f->WriteString(ToolUp);
+							if (bLASERMODE == 0)
+								f->WriteString(ToolUp);
 							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
 							f->WriteString(s);
-							f->WriteString(ToolZero);
+							if (bLASERMODE == 0)
+								f->WriteString(ToolZero);
 							if (bLASERMODE)
-								f->WriteString("S1000\n");
-							if (m_units == MIL)
+								f->WriteString("M98 P1000\n");
+							else if (m_units == MIL)
 								f->WriteString("G01 Z-0.004\n");
 							else
 								f->WriteString("G01 Z-0.1\n");
@@ -6242,7 +6254,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 								s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
 								f->WriteString(s);
 								s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
-									(float)pt.x / convert,
+									(float)(pt.x - (shift / 500)) / convert,
 									(float)(pt.y + shift) / convert,
 									(float)(-shift) / convert);
 								f->WriteString(s);
@@ -6295,10 +6307,12 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							CPoint pt(n->connect[ic].vtx[iv].x, n->connect[ic].vtx[iv].y);
 							if (bHOLES && bLASERMODE == 0)
 							{
-								f->WriteString(ToolUp);
+								if (bLASERMODE == 0)
+									f->WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 								f->WriteString(s);
-								f->WriteString(ToolZero);
+								if (bLASERMODE == 0)
+									f->WriteString(ToolZero);
 								if (m_units == MIL)
 									f->WriteString("G01 Z-0.12\n");
 								else
@@ -6306,10 +6320,12 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							}
 							else if (hs <= swell)
 							{
-								f->WriteString(ToolUp);
+								if (bLASERMODE == 0)
+									f->WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 								f->WriteString(s);
-								f->WriteString(ToolZero);
+								if (bLASERMODE == 0)
+									f->WriteString(ToolZero);
 								if (m_units == MIL)
 									f->WriteString("G01 Z-0.004\n");
 								else
@@ -6318,13 +6334,15 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							else
 							{
 								int shift = (hs - swell) / 2;
-								f->WriteString(ToolUp);
+								if (bLASERMODE == 0)
+									f->WriteString(ToolUp);
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
 								f->WriteString(s);
-								f->WriteString(ToolZero);
+								if (bLASERMODE == 0)
+									f->WriteString(ToolZero);
 								if (bLASERMODE)
-									f->WriteString("S1000\n");
-								if (m_units == MIL)
+									f->WriteString("M98 P1000\n");
+								else if (m_units == MIL)
 									f->WriteString("G01 Z-0.004\n");
 								else
 									f->WriteString("G01 Z-0.1\n");
@@ -6333,7 +6351,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 									s.Format("G01 X%.4f Y%.4f\n", (float)pt.x / convert, (float)(pt.y + shift) / convert);
 									f->WriteString(s);
 									s.Format("G02 X%.4f Y%.4f I0.0 J%.4f\n",
-										(float)pt.x / convert,
+										(float)(pt.x - (shift / 500)) / convert,
 										(float)(pt.y + shift) / convert,
 										(float)(-shift) / convert);
 									f->WriteString(s);
@@ -6349,7 +6367,8 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 			}
 		}
 	} while (DIAM);
-	f->WriteString(ToolUp);
+	if (bLASERMODE == 0)
+		f->WriteString(ToolUp);
 	f->WriteString("M5\n");
 	
 	m_view->CancelSelection(0);
@@ -8446,28 +8465,42 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				double bh = 1500000.0 / mu;
 				str.Format( "board_h = %.3f;\n", bh );
 				Scadfile.WriteString( str );
-				Scadfile.WriteString( "\n// Drawing control\n" );
+				str.Format( "\n\n//----------------\n"\
+							"// Drawing mode\n"\
+							"//----------------\n"\
+							"MODE = 1;  // 1: 3D view\n"\
+							"           // 2: projection of top copper\n"\
+							"           // 3: projection of bottom copper\n"\
+							"           // 4: projection of top packages\n"\
+							"           // 5: projection of bottom packages\n"\
+							"           // 6: lateral projection\n"\
+							"           // 7: frontal projection\n"\
+							"dir = 0;// (view direction for mode 6 and 7)\n\n\n"\
+							"//----------------\n"\
+							"// Drawing control\n"\
+							"//----------------\n");
+				Scadfile.WriteString(str);
 				str.Format( "E = 1;\n" );
 				Scadfile.WriteString( str );
 				CString spc = "";
 				for( int isp=13; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "enable_draw_board_outline%s = E;\n", spc );
+				str.Format( "enable_draw_board_outline%s = (MODE<4||MODE>5)?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for (int isp = 6; isp < maxlen; isp++)
 					spc += " ";
-				str.Format("enable_draw_copper%s = E;\n", spc);
+				str.Format("enable_draw_copper%s = MODE<4?1:0;\n", spc);
 				Scadfile.WriteString(str);
 				spc = "";
 				for( int isp=5; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "enable_draw_holes%s = E;\n", spc );
+				str.Format( "enable_draw_holes%s = MODE<4?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for( int isp=4; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "enable_draw_pads%s = E;\n", spc );
+				str.Format( "enable_draw_pads%s = MODE<4?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				for(int i=0; i<foots.GetSize(); i++)
 				{
@@ -8477,8 +8510,55 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					str.Format( "enable_draw_%s%s = E;\n", foots.GetAt(i), spc );
 					Scadfile.WriteString( str );
 				}
-				str.Format( "Pcb_%s ();", moduleName );
-				Scadfile.WriteString( str );
+				str.Format(	"\n\n//----------------\n"\
+							"// Drawing\n"\
+							"//----------------\n");
+				Scadfile.WriteString(str);
+				RECT pcbr = GetBoardRect();
+				float cube = max(pcbr.right - pcbr.left, pcbr.top - pcbr.bottom) + (2 * NM_PER_MM);
+				str.Format("max_height = %.3f;\n", cube / mu);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("if (MODE == 1)\n");
+				str.Format("Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("else if (MODE == 2)\n");
+				Scadfile.WriteString(" projection(true)\n");
+				Scadfile.WriteString("  translate([0, 0, -0.01])\n");
+				str.Format("   Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("else if (MODE == 3)\n");
+				Scadfile.WriteString(" mirror([1, 0, 0])\n");
+				Scadfile.WriteString("  projection(true)\n");
+				Scadfile.WriteString("   translate([0, 0, board_h + 0.01])\n");
+				str.Format("    Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("else if (MODE == 4)\n");
+				Scadfile.WriteString(" projection()difference(){\n");
+				str.Format("  Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
+				str.Format("  translate([%.3f, %.3f, -max_height])\n", (float)(pcbr.left - NM_PER_MM) / mu, (float)(pcbr.bottom - NM_PER_MM) / mu);
+				Scadfile.WriteString(str);
+				str.Format("   cube(max_height);}\n");
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("else if (MODE == 5)\n");
+				Scadfile.WriteString(" mirror([1, 0, 0])\n");
+				Scadfile.WriteString("  projection()difference(){\n");
+				str.Format("   Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
+				str.Format("   translate([%.3f, %.3f, 0.0])\n", (float)(pcbr.left - NM_PER_MM) / mu, (float)(pcbr.bottom - NM_PER_MM) / mu);
+				Scadfile.WriteString(str);
+				str.Format("    cube(max_height);}\n");
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("else if (MODE == 6)\n");
+				Scadfile.WriteString(" projection()\n");
+				Scadfile.WriteString("  rotate([0, dir?-90:90, 0])\n");
+				str.Format("   Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("else if (MODE == 7)\n");
+				Scadfile.WriteString(" projection()\n");
+				Scadfile.WriteString("  rotate([dir?90:-90, 0, 0])\n");
+				str.Format("   Pcb_%s ();\n", moduleName);
+				Scadfile.WriteString(str);
 				Scadfile.Close();
 				bShellEx = TRUE;
 			}
