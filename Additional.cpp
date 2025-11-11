@@ -1110,8 +1110,8 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 	if (area_net->nareas <= mem_n_areas)
 	{
 		AfxMessageBox(G_LANGUAGE == 0 ?
-			"There is no copper fill that meets all the criteria" :
-			"Не существует медной заливки, которая бы соответствовала всем критериям");
+			"There are no contours that would fully meet all the given criteria" :
+			"Не существует контуров, которые бы полностью соответствовали всем заданным критериям", MB_ICONWARNING);
 		doc->m_view->CancelSelection();
 		doc->CancelBoardHoles();
 		doc->OnEditUndo(); // undo fill copper

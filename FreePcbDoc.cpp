@@ -5855,11 +5855,11 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 		else
 			f.WriteString("; G-code from FPC-Schemator\n");
 		f.WriteString("; www.niconson.com/freepcb2\n");
-		f.WriteString("O1000\n");
-		f.WriteString(";-------------  TOOL POWER  -------------\n");
-		f.WriteString("S1000\n");
-		f.WriteString(";----------------------------------------\n");
-		f.WriteString("M99\n");
+		//f.WriteString("O1000\n");
+		//f.WriteString(";-------------  TOOL POWER  -------------\n");
+		//f.WriteString("S1000\n");
+		//f.WriteString(";----------------------------------------\n");
+		//f.WriteString("M99\n");
 		f.WriteString("G17\n");
 		if (m_units == MIL)
 			f.WriteString("G20\n");
@@ -5877,6 +5877,7 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 		else
 			f.WriteString("F300\n");
 		f.WriteString(";----------------------------------------\n");
+		f.WriteString("M3 S0\n");
 		if (CMD == ID_FILE_GENERATEGRBLFILE13)
 			Generate_GCODE(&f, 0, 0, TRUE, LASERMODE);
 		else
@@ -5894,6 +5895,7 @@ BOOL CFreePcbDoc::OnFileGenerateGRBLFile(UINT CMD)
 				counter++;
 			}
 		}
+		f.WriteString("M5\n");
 		f.WriteString("M30\n");
 		f.Close();
 	}
@@ -6015,6 +6017,31 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		f->WriteString("; The Z axis is set so that at Z=0 the tool\n");
 		f->WriteString("; touches the surface of the workpiece !\n");
 		f->WriteString(";----------------------------------------\n");
+		f->WriteString("O1000\n");
+		f->WriteString(";--------  TOOL RPM (M98 P1000)  --------\n");
+		f->WriteString("M3 S500\n");
+		f->WriteString(";----------------------------------------\n");
+		f->WriteString("G4 P2000\n");
+		f->WriteString("M99\n");
+		if (bHOLES)
+		{
+			f->WriteString("O1001\n");
+			f->WriteString(";--------  TOOL DOWN (M98 P1001)  -------\n");
+			if (m_units == MIL)
+				f->WriteString("G01 Z-0.12\n");
+			else
+				f->WriteString("G01 Z-3.0\n");
+			f->WriteString(";----------------------------------------\n");
+			f->WriteString("M99\n");
+		}
+		f->WriteString("O1002\n");
+		f->WriteString(";---------  TOOL UP (M98 P1002)  --------\n");
+		if (m_units == MIL)
+			f->WriteString("G00 Z2\n");
+		else
+			f->WriteString("G00 Z50\n");
+		f->WriteString(";----------------------------------------\n");
+		f->WriteString("M99\n");
 		f->WriteString("G17\n");
 		if (m_units == MIL)
 			f->WriteString("G20\n");
@@ -6032,6 +6059,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		else
 			f->WriteString("F300\n");
 		f->WriteString(";----------------------------------------\n");
+		f->WriteString("; Corner positioning\n");
 		///
 		RECT BR = m_outline_poly.GetAt(iLegalBoard).GetCornerBounds(0);
 		f->WriteString(";----------------------\n; Left-Bottom Corner:\n");
@@ -6075,11 +6103,9 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 			f->WriteString("G00 Z0.1\n");
 		f->WriteString("G4 P2000\n");
 		f->WriteString(";----------------------\n");
-		f->WriteString("M3 S500\n");
-		f->WriteString("G4 P2000\n");
+		if (bHOLES == 0)
+			f->WriteString("M98 P1000\n"); //motor start
 	}
-	else
-		f->WriteString("M3 S0\n");
 	if (bHOLES)
 	{
 		// none
@@ -6105,7 +6131,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 					if (bLASERMODE == 0)
 						f->WriteString(ToolZero);
 					if (bLASERMODE)
-						f->WriteString("M98 P1000\n");
+						f->WriteString("S1000\n"); //laser 
 					else if (m_units == MIL)
 						f->WriteString("G01 Z-0.004\n");
 					else
@@ -6156,7 +6182,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 						if (bLASERMODE == 0)
 							f->WriteString(ToolZero);
 						if (bLASERMODE)
-							f->WriteString("M98 P1000\n");
+							f->WriteString("S1000\n"); //laser 
 						else if (m_units == MIL)
 							f->WriteString("G01 Z-0.004\n");
 						else
@@ -6171,6 +6197,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 			}
 		}
 	}
+	BOOL FIRST = 0;
 	int DIAM;
 	do
 	{
@@ -6188,19 +6215,18 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							DIAM = p->shape->m_padstack[ip].hole_size;
 							if (bLASERMODE == 0)
 							{
-								if (m_units == MIL)
-									f->WriteString("G00 Z2\n");
-								else
-									f->WriteString("G00 Z50\n");
-
-								f->WriteString("M5\n");
-								f->WriteString("M01\n");
+								if (bHOLES && FIRST)
+								{
+									f->WriteString("M98 P1002\n"); // tool home
+									f->WriteString("M5\n");
+									f->WriteString("M01\n");
+								}
+								FIRST = TRUE;
 								f->WriteString(";----------------------\n");
 								s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
 								f->WriteString(s);
 								f->WriteString(";----------------------\n");
-								f->WriteString("M3 S500\n");
-								f->WriteString("G4 P2000\n");
+								f->WriteString("M98 P1000\n"); //motor start
 							}
 						}
 						if (p->shape->m_padstack[ip].hole_size != DIAM)
@@ -6215,11 +6241,10 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 							f->WriteString(s);
 							if (bLASERMODE == 0)
+							{
 								f->WriteString(ToolZero);
-							if (m_units == MIL)
-								f->WriteString("G01 Z-0.12\n");
-							else
-								f->WriteString("G01 Z-3.0\n");
+								f->WriteString("M98 P1001\n"); // tool down
+							}
 						}
 						else if (hs <= swell)
 						{
@@ -6228,11 +6253,13 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 							f->WriteString(s);
 							if (bLASERMODE == 0)
+							{
 								f->WriteString(ToolZero);
-							if (m_units == MIL)
-								f->WriteString("G01 Z-0.004\n");
-							else
-								f->WriteString("G01 Z-0.1\n");
+								if (m_units == MIL)
+									f->WriteString("G01 Z-0.004\n");
+								else
+									f->WriteString("G01 Z-0.1\n");
+							}
 						}
 						else
 						{
@@ -6244,7 +6271,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							if (bLASERMODE == 0)
 								f->WriteString(ToolZero);
 							if (bLASERMODE)
-								f->WriteString("M98 P1000\n");
+								f->WriteString("S1000\n"); //laser 
 							else if (m_units == MIL)
 								f->WriteString("G01 Z-0.004\n");
 							else
@@ -6281,23 +6308,20 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 							if (DIAM == 0)
 							{
 								DIAM = n->connect[ic].vtx[iv].via_hole_w;
-								if (m_units == MIL)
-									f->WriteString("G00 Z2\n");
-								else
-									f->WriteString("G00 Z50\n");
-
-								if (bLASERMODE == 0)
-									f->WriteString("M5\n");
-
-								f->WriteString("M01\n");
-								f->WriteString(";----------------------\n");
-								s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
-								f->WriteString(s);
-								f->WriteString(";----------------------\n");
 								if (bLASERMODE == 0)
 								{
-									f->WriteString("M3 S500\n");
-									f->WriteString("G4 P2000\n");
+									if (bHOLES && FIRST)
+									{
+										f->WriteString("M98 P1002\n"); // tool home
+										f->WriteString("M5\n");
+										f->WriteString("M01\n");
+									}
+									FIRST = TRUE;
+									f->WriteString(";----------------------\n");
+									s.Format("; New diameter = %.4f\n", (float)DIAM / convert);
+									f->WriteString(s);
+									f->WriteString(";----------------------\n");
+									f->WriteString("M98 P1000\n"); //motor start
 								}
 							}
 							if (n->connect[ic].vtx[iv].via_hole_w != DIAM)
@@ -6312,11 +6336,10 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 								f->WriteString(s);
 								if (bLASERMODE == 0)
+								{
 									f->WriteString(ToolZero);
-								if (m_units == MIL)
-									f->WriteString("G01 Z-0.12\n");
-								else
-									f->WriteString("G01 Z-3.0\n");
+									f->WriteString("M98 P1001\n"); // tool down
+								}
 							}
 							else if (hs <= swell)
 							{
@@ -6325,11 +6348,13 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 								s.Format("G00 X%.4f Y%.4f\n", (float)pt.x / convert, (float)pt.y / convert);
 								f->WriteString(s);
 								if (bLASERMODE == 0)
+								{
 									f->WriteString(ToolZero);
-								if (m_units == MIL)
-									f->WriteString("G01 Z-0.004\n");
-								else
-									f->WriteString("G01 Z-0.1\n");
+									if (m_units == MIL)
+										f->WriteString("G01 Z-0.004\n");
+									else
+										f->WriteString("G01 Z-0.1\n");
+								}
 							}
 							else
 							{
@@ -6341,7 +6366,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 								if (bLASERMODE == 0)
 									f->WriteString(ToolZero);
 								if (bLASERMODE)
-									f->WriteString("M98 P1000\n");
+									f->WriteString("S1000\n"); //laser 
 								else if (m_units == MIL)
 									f->WriteString("G01 Z-0.004\n");
 								else
@@ -6368,9 +6393,10 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		}
 	} while (DIAM);
 	if (bLASERMODE == 0)
+	{
 		f->WriteString(ToolUp);
-	f->WriteString("M5\n");
-	
+		f->WriteString("M5\n");
+	}
 	m_view->CancelSelection(0);
 	for (int i = laser_net->nareas - 1; i >= 0; i--)
 		m_nlist->RemoveArea(laser_net, i);
