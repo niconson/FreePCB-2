@@ -8935,6 +8935,10 @@ int CNetList::ClipAreaPolygon( cnet * net, int iarea, int corner,
 		test = TestAreaPolygon( net, iarea, -1, -1 );	// this sets utility2 flag
 	if( test == -1 && bRetainArcs )
 		test = 1;
+	CMainFrame* pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	if (pMain)
+		RedrawWindow(pMain->GetSafeHwnd(), NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+
 	if( test == -1 )
 	{
 		// arc intersections, don't clip unless bRetainArcs == FALSE

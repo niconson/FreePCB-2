@@ -285,7 +285,7 @@ int CPolyLine::MakeGpcPoly( int icontour, CArray<CArc> * arc_array )
 	for( int icont=first_contour; icont<=last_contour; icont++ )
 	{
 		CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
-		if( pMain && last_contour > 2 )
+		if( pMain && last_contour > 2 && icont%10 == 0 )
 		{
 			CString s;
 			s.Format("polygon cropping %d out of %d contours", icont, last_contour );
