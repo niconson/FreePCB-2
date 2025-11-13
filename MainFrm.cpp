@@ -141,7 +141,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_timer = SetTimer( AUTOSAVE_TIMER, TIMER_PERIOD*1000, 0 );
 		SetTimer( DRAWING_TIMER, INT_MAX, 0 );
 		SetTimer( JUMPING_TIMER, INT_MAX, 0 );
-		SetTimer( DRC_TIMER, 1000, 0 );
+		SetTimer( DRC_TIMER, 500, 0 );
 	// separator
 	// DecimalSeparator;
 	// cursor
@@ -482,25 +482,14 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				doc->SwitchTo_ECDS( TRUE );
 			else if (nIDEvent == DRC_TIMER)
 			{
-				static int state = 0;
+				static bool state = 0;
 				if (doc->m_drelist->list.GetSize())
 				{
-					if (state == 0 || state == 2)
-					{
+					if (state)
 						doc->m_drelist->MakeSolidCircles();
-						SetTimer(DRC_TIMER, 50, 0);
-					}
 					else
-					{
 						doc->m_drelist->MakeHollowCircles();
-						if (state == 3 )
-							SetTimer(DRC_TIMER, 1500, 0);
-						else
-							SetTimer(DRC_TIMER, 100, 0);
-					}
-					state++;
-					if (state > 3)
-						state = 0;
+					state = !state;
 					doc->m_view->SetDrawLayer(ENABLE_CHANGE_DRAW_LAYER);
 					doc->m_view->Invalidate(FALSE);
 				}
