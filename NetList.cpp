@@ -8935,9 +8935,6 @@ int CNetList::ClipAreaPolygon( cnet * net, int iarea, int corner,
 		test = TestAreaPolygon( net, iarea, -1, -1 );	// this sets utility2 flag
 	if( test == -1 && bRetainArcs )
 		test = 1;
-	CMainFrame* pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-	if (pMain)
-		RedrawWindow(pMain->GetSafeHwnd(), NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
 
 	if( test == -1 )
 	{
@@ -9121,6 +9118,20 @@ if( test == 1 )
 		SetAreaHatch( net, iarea ); // net->area[iarea].poly->Draw();
 		net->area[iarea].utility = 1;
 	}
+	//CMainFrame* pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	//if (pMain)
+	//	RedrawWindow(pMain->GetSafeHwnd(), NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+	//m_dlist->ProcessMessages();
+	MSG msg;
+	//do
+	//{
+		PeekMessage(&msg, NULL, WM_MOUSEWHEEL, WM_MOUSEWHEEL, PM_REMOVE);
+		if (msg.message == WM_MOUSEWHEEL)
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	//}while (msg.message == WM_MOUSEWHEEL);
 	return test;
 }
 

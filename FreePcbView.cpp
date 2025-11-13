@@ -22890,10 +22890,6 @@ void CFreePcbView::OnCopyCutout()
 
 BOOL CFreePcbView::SetDrawLayer( int L )
 {
-	if( L == DISABLE_CHANGE_DRAW_LAYER )
-	{
-		int t = 0;
-	}
 	if( m_draw_layer != DISABLE_CHANGE_DRAW_LAYER )
 		m_draw_layer = L;
 	else

@@ -16,6 +16,7 @@
 #define AUTOSAVE_TIMER	1
 #define DRAWING_TIMER	2
 #define JUMPING_TIMER	3
+#define DRC_TIMER		4
 
 class CMainFrame : public CFrameWnd
 {

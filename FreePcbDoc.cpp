@@ -9345,6 +9345,7 @@ void CFreePcbDoc::RemoveOrphanMerges()
 void CFreePcbDoc::DRC()
 {
 	const int MAXERRORS = 499;
+	int mem_proj_mod = m_project_modified;
 	AddBoardHoles(); // valid
 	CString PrevValueStr = "__";
 	CString d_str, x_str, y_str;
@@ -13037,8 +13038,12 @@ cancel_verification:
 	{
 		if( m_dlg_log )
 			m_dlg_log->AddLine( "\r\n***** DONE *****\r\n" );
-		if ( nerrors == 0 )
+		if (nerrors == 0)
+		{
+			if(mem_proj_mod == 0)
+				ProjectModified(FALSE);
 			m_project_validated = 2;
+		}
 	}
 }
 
