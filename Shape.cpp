@@ -2141,7 +2141,7 @@ int CShape::WriteFootprint( CStdioFile * file )
 					"Ошибка: попытка записать неправильную форму контактной площадки в отпечаток");
 			}
 			//** end
-			if( p->hole_size || p->top.shape != PAD_NONE )
+			///if( p->hole_size || p->top.shape != PAD_NONE ) // No strings attached! because the default diameter was 1 mm
 			{
 				if( p->top.connect_flag )
 					line.Format( "      top_pad: %d %s %s %s %s %d\n",

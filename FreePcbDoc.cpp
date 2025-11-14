@@ -8470,7 +8470,31 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		}
 		// lib file close..
 		file.Close(); 
-
+		{ // write CUBE for projection of packages
+			CString cube = m_path_to_folder + "\\related_files\\openscad";
+			cube += "\\" + moduleName + "_CUBE.lib";
+			ok = file.Open(cube, CFile::modeCreate | CFile::modeWrite);
+			if (ok)
+			{
+				file.WriteString("//  This cube is designed to create projections of printed \n"\
+					"//  circuit board(PCB) parts independently from each other \n"\
+					"//  on both the bottom and top sides.This is done by subtracting \n"\
+					"//  the parts on the opposite side from the original 3D model \n"\
+					"//  using the different() function.To obtain a projection of the \n"\
+					"//  top - side parts, subtract the bottom - side parts, and vice versa.\n\n");
+				RECT pcbr = GetBoardRect();
+				float cub = max(pcbr.right - pcbr.left, pcbr.top - pcbr.bottom) + (20 * NM_PER_MM);
+				str.Format("max_height = %.3f;\n", cub / mu);
+				file.WriteString(str);
+				str.Format("module Draw_%s_CUBE(side)\n{\n", moduleName);
+				file.WriteString(str);
+				str.Format("    translate([%.3f, %.3f, side?0:-max_height])\n", (float)(pcbr.left - (10*NM_PER_MM)) / mu, (float)(pcbr.bottom - (10*NM_PER_MM)) / mu);
+				file.WriteString(str);
+				str.Format("    cube(max_height);\n}\n");
+				file.WriteString(str);
+				file.Close();
+			}
+		}
 		BOOL bShellEx = FALSE;
 		int maxlen = 13;
 		for(int i=0; i<foots.GetSize(); i++)
@@ -8483,8 +8507,15 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			ok = Scadfile.Open( newpath, CFile::modeCreate | CFile::modeWrite );
 			if( ok )
 			{
+				Scadfile.WriteString(	"  /*-----------------------------------------------\\\n"\
+										"  |  OpenSCAD code generator by Schemator&Platform |\n"\
+										"  |  repositories https://github.com/niconson      |\n"\
+										"  |  Niconson(R), All rights reserved              |\n"\
+										"  \\-----------------------------------------------*/\n");
 				str.Format( "include <%s>\n", (moduleName+".lib") );
 				Scadfile.WriteString( str );
+				str.Format("include <%s>\n", (moduleName + "_CUBE.lib"));
+				Scadfile.WriteString(str);
 				str.Format( "Convexity = 2;\n" );
 				Scadfile.WriteString( str );
 				double bh = 1500000.0 / mu;
@@ -8539,12 +8570,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"// Drawing\n"\
 							"//----------------\n");
 				Scadfile.WriteString(str);
-				RECT pcbr = GetBoardRect();
-				float cube = max(pcbr.right - pcbr.left, pcbr.top - pcbr.bottom) + (2 * NM_PER_MM);
-				str.Format("max_height = %.3f;\n", cube / mu);
-				Scadfile.WriteString(str);
 				Scadfile.WriteString("if (MODE == 1)\n");
-				str.Format("Pcb_%s ();\n", moduleName);
+				str.Format(" Pcb_%s ();\n", moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("else if (MODE == 2)\n");
 				Scadfile.WriteString(" projection(true)\n");
@@ -8561,18 +8588,14 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(" projection()difference(){\n");
 				str.Format("  Pcb_%s ();\n", moduleName);
 				Scadfile.WriteString(str);
-				str.Format("  translate([%.3f, %.3f, -max_height])\n", (float)(pcbr.left - NM_PER_MM) / mu, (float)(pcbr.bottom - NM_PER_MM) / mu);
-				Scadfile.WriteString(str);
-				str.Format("   cube(max_height);}\n");
+				str.Format("  Draw_%s_CUBE(0);}\n", moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("else if (MODE == 5)\n");
 				Scadfile.WriteString(" mirror([1, 0, 0])\n");
 				Scadfile.WriteString("  projection()difference(){\n");
 				str.Format("   Pcb_%s ();\n", moduleName);
 				Scadfile.WriteString(str);
-				str.Format("   translate([%.3f, %.3f, 0.0])\n", (float)(pcbr.left - NM_PER_MM) / mu, (float)(pcbr.bottom - NM_PER_MM) / mu);
-				Scadfile.WriteString(str);
-				str.Format("    cube(max_height);}\n");
+				str.Format("   Draw_%s_CUBE(1);}\n", moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("else if (MODE == 6)\n");
 				Scadfile.WriteString(" projection()\n");
