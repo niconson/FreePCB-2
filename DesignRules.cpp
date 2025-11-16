@@ -283,7 +283,7 @@ void DRErrorList::HighLight( DRError * dre )
 
 // Make symbol for the error a solid circle with diameter = 250 mils
 //
-void DRErrorList::MakeSolidCircles()
+void DRErrorList::MakeSolidCircles(BOOL bCIRC)
 {
 	POSITION pos;
 	void * ptr;
@@ -298,11 +298,24 @@ void DRErrorList::MakeSolidCircles()
 			{
 				if( dre->dl_el->gtype == DL_HOLLOW_CIRC )
 				{
-					dre->dl_el->gtype = DL_CIRC;
+					if(bCIRC)
+						dre->dl_el->gtype = DL_CIRC;
+					else
+						dre->dl_el->gtype = DL_X;
 					RECT Get;
 					RECT * r = m_dlist->Get_Rect( dre->dl_el, &Get );
-					dre->dl_el->el_w = r->right - r->left;
-					SwellRect( r, 400 );
+					dre->dl_el->el_w = (r->right - r->left) / 10;
+					if (bCIRC)
+						SwellRect(r, 5000);
+					else
+					{
+						int x = (r->right + r->left) / 2;
+						int y = (r->top + r->bottom) / 2;
+						r->left = x - 2000;
+						r->right = x + 2000;
+						r->bottom = y - 2000;
+						r->top = y + 2000;
+					}
 				}
 				else
 					return;
@@ -326,17 +339,18 @@ void DRErrorList::MakeHollowCircles()
 			DRError * dre = (DRError*)ptr;
 			if( dre->dl_el )
 			{
-				if( dre->dl_el->gtype == DL_CIRC )
+				if( dre->dl_el->gtype != DL_HOLLOW_CIRC)
 				{
 					dre->dl_el->gtype = DL_HOLLOW_CIRC;
 					RECT Get;
 					RECT * r = m_dlist->Get_Rect( dre->dl_el, &Get );
 					int x = (r->right + r->left)/2;
 					int y = (r->top + r->bottom)/2;
-					r->left =	x - dre->dl_el->el_w/2;
-					r->right =  x + dre->dl_el->el_w/2;
-					r->bottom =	y - dre->dl_el->el_w/2;
-					r->top =		y + dre->dl_el->el_w/2;
+					r->left =	x - dre->dl_el->el_w*5;
+					r->right =  x + dre->dl_el->el_w*5;
+					r->bottom =	y - dre->dl_el->el_w*5;
+					r->top =	y + dre->dl_el->el_w*5;
+					dre->dl_el->el_w = 1;
 				}
 			}
 		}

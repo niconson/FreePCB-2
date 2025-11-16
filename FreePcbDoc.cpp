@@ -12511,9 +12511,17 @@ void CFreePcbDoc::DRC()
 						str.Format( "%ld: Silkscreen intersects with text", nerrors+1 );
 					else
 						str.Format( "%ld: Silkscreen intersects with mask", nerrors+1 );
+					int ptx = (r1.left + r1.right) / 2;
+					int pty = (r1.top + r1.bottom) / 2;
+					if ((r1.right - r1.left) + (r1.top - r1.bottom) > (r2.right - r2.left) + (r2.top - r2.bottom))
+					{
+						ptx = (r2.left + r2.right) / 2;
+						pty = (r2.top + r2.bottom) / 2;
+					}
+					//int size = ((r1.right - r1.left + r1.top - r1.bottom) / 2 + (r2.right - r2.left + r2.top - r2.bottom) / 2) / 4;
 					DRError * dre = m_drelist->Add( nerrors, DRError::SEG_SEG, &str,
-						&str1, &str2, el1->id, el2->id, (r1.left+r1.right)/2, (r1.top+r1.bottom)/2,
-						(r2.left+r2.right)/2, (r2.top+r2.bottom)/2, 0, layer );
+						&str1, &str2, el1->id, el2->id, ptx, pty,
+						ptx, pty, 0, layer );
 					if( dre )
 					{
 						nerrors++;

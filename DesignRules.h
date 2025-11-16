@@ -82,7 +82,7 @@ public:
 		int x1, int y1, int x2, int y2, int w, int layer );
 	void Remove( DRError * dre );
 	void HighLight( DRError * dre );
-	void MakeSolidCircles();
+	void MakeSolidCircles(BOOL bCIRC);
 	void MakeHollowCircles();
 
 public:

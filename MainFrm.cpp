@@ -486,7 +486,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				if (doc->m_drelist->list.GetSize())
 				{
 					if (state && doc->m_view->m_cursor_mode == CUR_NONE_SELECTED)
-						doc->m_drelist->MakeSolidCircles();
+						doc->m_drelist->MakeSolidCircles(FALSE);
 					else
 						doc->m_drelist->MakeHollowCircles();
 					state = !state;
