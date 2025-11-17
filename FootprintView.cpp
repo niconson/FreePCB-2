@@ -260,7 +260,6 @@ void CFootprintView::InitializeView()
 	CancelSelection();
 	m_debug_flag = 0;
 	m_dragging_new_item = 0;
-	m_scad_created = "";
 
 	// default screen coords
 	m_pcbu_per_pixel = 5.0*PCBU_PER_MIL;	// 5 mils per pixel
@@ -3171,7 +3170,7 @@ void CFootprintView::OnPolylineOpenScad()
 			m_fp.m_outline_poly[m_sel_id.i].SetVisible(FALSE);
 		FootprintModified( TRUE );
 		CString name = theApp.m_Doc->m_name + "_" + m_fp.m_name;
-		m_fp.GenerateOpenscadFileA( &name, 1 );
+		m_fp.m_scad_created = m_fp.GenerateOpenscadFileA( &name, 1 );
 		m_fp.m_outline_poly.GetAt( m_sel_id.i ).Draw( m_dlist );
 		Invalidate( FALSE );
 	}
@@ -3807,9 +3806,9 @@ void CFootprintView::OnFootprintFileClose()
 	m_fp.m_units = m_units;
 
 	// delete scad file
-	if( m_scad_created.GetLength() )
+	if(m_fp.m_scad_created.GetLength() )
 	{
-		DeleteFile( m_scad_created );
+		DeleteFile(m_fp.m_scad_created );
 	}
 
 	// reset selection rectangle
@@ -4699,7 +4698,7 @@ void CFootprintView::GenerateOpenscadFile()
 	}
 	else
 		ShellExecute(	NULL, "open", path, NULL, NULL, SW_SHOWNORMAL);
-	m_scad_created = path;
+	m_fp.m_scad_created = path;
 }
 
 

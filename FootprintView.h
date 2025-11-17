@@ -389,7 +389,6 @@ public:
 
 	// footprint
 	CShape m_fp;	// footprint being edited
-	CString m_scad_created;
 
 	// units (mil or mm)
 	int m_units;

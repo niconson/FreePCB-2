@@ -74,7 +74,7 @@ void CDlgAddHole::Outgoing()
 			m_code_text->Add(s);
 	}
 	CString name = theApp.m_Doc->m_name + "_" + m_fp->m_name;
-	m_fp->GenerateOpenscadFileA(&name, 1);
+	m_fp->m_scad_created = m_fp->GenerateOpenscadFileA(&name, 1);
 }
 BEGIN_MESSAGE_MAP(CDlgAddHole, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &CDlgAddHole::OnBnClickedCancel)

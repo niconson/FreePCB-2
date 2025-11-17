@@ -132,6 +132,7 @@ public:
 	CArray<CString> m_openscad_code;
 	CArray<CString> m_openscad_hole;
 	CArray<CString> m_openscad_module;
+	CString m_scad_created;
 
 	BOOL bDrawn;
 	int origin_moved_X, origin_moved_Y;

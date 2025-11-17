@@ -110,6 +110,7 @@ CShape::CShape()
 	Clear();
 	selection.left = selection.bottom = -NM_PER_MM;
 	selection.right = selection.top = NM_PER_MM;
+	CString m_scad_created = "";
 } 
 
 // destructor
@@ -4515,7 +4516,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		//
 		if( GetNumPins() )
 		{
-			str.Format( "// pads\n%sif( enable_draw_pads )\n%s%s( \"Lavender\" )\n%s{\n%s", sp, sp, dlg.CLR, sp, sp+ddSPACE );
+			str.Format( "// pads\n%sif( is_undef(enable_draw_pads) ){} else if( enable_draw_pads )\n%s%s( \"Lavender\" )\n%s{\n%s", sp, sp, dlg.CLR, sp, sp+ddSPACE );
 			file.WriteString( str );
 			sp += ddSPACE;
 			file.WriteString( "$fn=8;\n" );
