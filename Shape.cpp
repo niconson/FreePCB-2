@@ -4516,7 +4516,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		//
 		if( GetNumPins() )
 		{
-			str.Format( "// pads\n%sif( is_undef(enable_draw_pads) ){} else if( enable_draw_pads )\n%s%s( \"Lavender\" )\n%s{\n%s", sp, sp, dlg.CLR, sp, sp+ddSPACE );
+			str.Format( "// pads\n%sif( is_undef(drw_pads) ){} else if( drw_pads )\n%s%s( \"Lavender\" )\n%s{\n%s", sp, sp, dlg.CLR, sp, sp+ddSPACE );
 			file.WriteString( str );
 			sp += ddSPACE;
 			file.WriteString( "$fn=8;\n" );
@@ -4740,8 +4740,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					file.WriteString( str );
 					str.Format( "Convexity = 2;\n" );
 					file.WriteString( str );
-					file.WriteString( "enable_draw_pads = 1;\n" );
-					file.WriteString( "enable_draw_holes = 1;\n" );
+					file.WriteString( "drw_pads = 1;\n" );
+					file.WriteString( "drw_holes = 1;\n" );
 					file.WriteString( board_h );
 					str.Format("F%s();\n\n", *fileName );
 					file.WriteString( str );

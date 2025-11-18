@@ -7945,19 +7945,19 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		//
 		str.Format( "module Pcb_%s (frozen)\n{\n", moduleName );
 		file.WriteString( str );
-		str.Format("  translate([frozen?-originX:0, frozen?-originY:0, 0])\n  {\n");
+		str.Format("  translate([frozen?-originX_%s:0, frozen?-originY_%s:0, 0])\n  {\n", moduleName, moduleName);
 		file.WriteString(str);
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "    if( is_undef(enable_draw_%s) )\n      Draw_%s();\n", fname, fname);
+			str.Format( "    if( is_undef(drw_%s) )\n      Draw_%s();\n", fname, fname);
 			file.WriteString(str);
-			str.Format( "    else if( enable_draw_%s != 0 )\n      Draw_%s();\n", fname, fname);
+			str.Format( "    else if( drw_%s != 0 )\n      Draw_%s();\n", fname, fname);
 			file.WriteString(str);
 		}
-		str.Format("    if( is_undef(enable_draw_board_outline) )\n      Draw_BO_%s(1);\n", moduleName);
+		str.Format("    if( is_undef(drw_board_outline) )\n      Draw_BO_%s(1);\n", moduleName);
 		file.WriteString(str);
-		str.Format( "    else if( enable_draw_board_outline != 0 )\n      Draw_BO_%s(0);\n", moduleName );
+		str.Format( "    else if( drw_board_outline != 0 )\n      Draw_BO_%s(0);\n", moduleName );
 		file.WriteString( str );
 		file.WriteString("  }\n");
 		//
@@ -7971,7 +7971,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 
 		
 		AddBoardHoles(); // valid
-		MarkLegalElementsForExport(this);
+		int index_of_board = MarkLegalElementsForExport(this);
+		RECT pcbrct = m_outline_poly[index_of_board].GetCornerBounds(0);
 		for( int i=0; i<m_outline_poly.GetSize(); i++ )
 		{
 			if (m_outline_poly.GetAt(i).GetUtility() == 0)
@@ -7990,9 +7991,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				// пишем трассы и полигоны
 				{
 					file.WriteString("            // traces and copper areas\n");
-					str.Format("            if( is_undef(enable_draw_copper) )\n            {\n            }\n");
+					str.Format("            if( is_undef(drw_copper) )\n            {\n            }\n");
 					file.WriteString(str);
-					str.Format("            else if( enable_draw_copper != 0 )\n            {\n");
+					str.Format("            else if( drw_copper != 0 )\n            {\n");
 					file.WriteString(str);
 					for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
 					{
@@ -8361,9 +8362,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				//
 				// пишем отверстия
 				//
-				str.Format("          if( is_undef(enable_draw_holes) )\n          {\n          }\n");
+				str.Format("          if( is_undef(drw_holes) )\n          {\n          }\n");
 				file.WriteString(str);
-				str.Format( "          else if( enable_draw_holes != 0 )\n          {\n" );
+				str.Format( "          else if( drw_holes != 0 )\n          {\n" );
 				file.WriteString( str );
 				for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
 				{
@@ -8428,7 +8429,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 									file.WriteString(str);
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize);
 									file.WriteString(str);
-									str.Format( "           else if( enable_draw_%s != 0 )\n", fname );
+									str.Format( "           else if( drw_%s != 0 )\n", fname );
 									file.WriteString( str );
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize );
 									file.WriteString( str );
@@ -8490,19 +8491,18 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					"//  the parts on the opposite side from the original 3D model \n"\
 					"//  using the different() function.To obtain a projection of the \n"\
 					"//  top - side parts, subtract the bottom - side parts, and vice versa.\n\n");
-				RECT pcbr = GetBoardRect();
-				float cub = max(pcbr.right - pcbr.left, pcbr.top - pcbr.bottom) + (20 * NM_PER_MM);
+				float cub = max(pcbrct.right - pcbrct.left, pcbrct.top - pcbrct.bottom) + (20 * NM_PER_MM);
 				//origin
-				str.Format("originX = %.3f;\n", (float)(pcbr.left - (10 * NM_PER_MM)) / mu);
+				str.Format("originX_%s = %.3f;\n", moduleName, (float)(pcbrct.left - (10 * NM_PER_MM)) / mu);
 				file.WriteString(str);
-				str.Format("originY = %.3f;\n", (float)(pcbr.bottom - (10 * NM_PER_MM)) / mu);
+				str.Format("originY_%s = %.3f;\n", moduleName, (float)(pcbrct.bottom - (10 * NM_PER_MM)) / mu);
 				file.WriteString(str);
 				//
 				str.Format("max_height = %.3f;\n", cub / mu);
 				file.WriteString(str);
 				str.Format("module Draw_%s_CUBE(side, var)\n{\n", moduleName);
 				file.WriteString(str);
-				str.Format("    translate([var?0:originX, var?0:originY, side?0:-max_height])\n");
+				str.Format("    translate([var?0:originX_%s, var?0:originY_%s, side?0:-max_height])\n", moduleName, moduleName);
 				file.WriteString(str);
 				str.Format("    cube(max_height);\n}\n");
 				file.WriteString(str);
@@ -8533,9 +8533,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				double bh = 1500000.0 / mu;
 				str.Format( "board_h = %.3f;\n", bh );
 				Scadfile.WriteString( str );
-				str.Format( "\n\n//----------------\n"\
-							"// Drawing mode\n"\
-							"//----------------\n"\
+				str.Format( "\n\n\n//// Drawing mode\n"\
 							"MODE = 1;  // 1: 3D view\n"\
 							"           // 2: projection of top copper\n"\
 							"           // 3: projection of bottom copper\n"\
@@ -8543,46 +8541,42 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 5: projection of bottom packages\n"\
 							"           // 6: lateral projection\n"\
 							"           // 7: frontal projection\n"\
-							"dir = 0;// (view direction for mode 6 and 7)\n\n\n"\
-							"//----------------\n"\
-							"// Drawing control\n"\
-							"//----------------\n");
+							"dir = 0;// (view direction for mode 6 and 7)\n\n\n\n"\
+							"//// Drawing control\n");
 				Scadfile.WriteString(str);
 				str.Format( "E = true;\n" );
 				Scadfile.WriteString( str );
 				CString spc = "";
 				for( int isp=13; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "enable_draw_board_outline%s = (MODE<4||MODE>5)?1:0;\n", spc );
+				str.Format( "drw_board_outline%s = (MODE<4||MODE>5)?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for (int isp = 6; isp < maxlen; isp++)
 					spc += " ";
-				str.Format("enable_draw_copper%s = MODE<4?1:0;\n", spc);
+				str.Format("drw_copper%s = MODE<4?1:0;\n", spc);
 				Scadfile.WriteString(str);
 				spc = "";
 				for( int isp=5; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "enable_draw_holes%s = MODE<4?1:0;\n", spc );
+				str.Format( "drw_holes%s = MODE<4?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for( int isp=4; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "enable_draw_pads%s = MODE<4?1:0;\n", spc );
+				str.Format( "drw_pads%s = MODE<4?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				for(int i=0; i<foots.GetSize(); i++)
 				{
 					spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "enable_draw_%s%s = E;\n", foots.GetAt(i), spc );
+					str.Format( "drw_%s%s = E;\n", foots.GetAt(i), spc );
 					Scadfile.WriteString( str );
 				}
 
 				// write module
-				str.Format("\n\n//----------------\n"\
-					"// Drawing module\n"\
-					"//----------------\n");
+				str.Format("\n\n\n//// Drawing module\n");
 				Scadfile.WriteString(str);
 				str.Format(	"frozenCoordinates = false; /* Wherever you move\n"\
 							"the PCB in the PCB editor, the position of the 3D\n"\
@@ -8593,15 +8587,22 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				str.Format("  Pcb_%s (frozen);\n", moduleName);
 				Scadfile.WriteString(str);
-				Scadfile.WriteString("  translate([frozen?0:originX, frozen?0:originY, 0])\n  {\n");
-				Scadfile.WriteString("    // -----------  User field  -----------\n");
-				Scadfile.WriteString("    // Add external objects here (optional)\n");
+				str.Format("  translate([frozen?0:originX_%s, frozen?0:originY_%s, 0])\n  {\n", moduleName, moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString(	"    // user field\n");
+				Scadfile.WriteString(	"    // add external objects here (optional)\n");
+				Scadfile.WriteString(	"    // for example, uncomment the following:\n"\
+										"    /*\n"\
+										"    color(\"aqua\", 0.5)\n"\
+										"    translate([0,0,0])\n"\
+										"    rotate([0,0,0])\n"\
+										"    cube(10);\n"\
+										"    */\n");
+				Scadfile.WriteString(	"    // end of user field\n");
 				Scadfile.WriteString("  }\n");
 				Scadfile.WriteString("}\n");
 
-				str.Format(	"\n\n//----------------\n"\
-							"// Drawing\n"\
-							"//----------------\n");
+				str.Format(	"\n\n\n//// Drawing\n");
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("if (MODE == 1)\n");
 				str.Format(" Main (frozenCoordinates);\n");
@@ -8660,7 +8661,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			{
 				while( Scadfile.ReadString( str ) )
 				{
-					if( str.Find( "enable_draw_" ) >= 0 )
+					if( str.Find( "drw_" ) >= 0 )
 						edata += str;
 				}
 				Scadfile.Close();
@@ -8683,10 +8684,10 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					CString spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "enable_draw_%s ", foots.GetAt(i) );
+					str.Format( "drw_%s ", foots.GetAt(i) );
 					if( edata.Find( str ) < 0 )
 					{
-						str.Format( "\nenable_draw_%s%s = E; // was added to the PCB", foots.GetAt(i), spc );
+						str.Format( "\ndrw_%s%s = E; // was added to the PCB", foots.GetAt(i), spc );
 						Scadfile.WriteString( str );
 					}
 				}
