@@ -5725,17 +5725,8 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 	RECT TR = rect(0,0,0,0);
 	TR.left = TR.bottom = INT_MAX;
 	TR.right = TR.top = INT_MIN;
-	MarkLegalElementsForExport(this);
-	int LEGAL_BOARD = -1;
-	for (int i = 0; i < m_outline_poly.GetSize(); i++)
-		if (m_outline_poly.GetAt(i).GetUtility())
-		{
-			if (m_outline_poly.GetAt(i).GetLayer() == LAY_BOARD_OUTLINE)
-				LEGAL_BOARD = i;
-			RECT r = m_outline_poly.GetAt(i).GetCornerBounds(0);
-			SwellRect(&TR, r);
-		}
-	if (TR.left == INT_MAX)
+	int LEGAL_BOARD = MarkLegalElementsForExport(this);
+	if (LEGAL_BOARD == -1)
 		return 0;
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
@@ -5942,17 +5933,8 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 	RECT TR = rect(0, 0, 0, 0);
 	TR.left = TR.bottom = INT_MAX;
 	TR.right = TR.top = INT_MIN;
-	MarkLegalElementsForExport(this);
-	int LEGAL_BOARD = -1;
-	for (int i = 0; i < m_outline_poly.GetSize(); i++)
-		if (m_outline_poly.GetAt(i).GetUtility())
-		{
-			if (m_outline_poly.GetAt(i).GetLayer() == LAY_BOARD_OUTLINE)
-				LEGAL_BOARD = i;
-			RECT r = m_outline_poly.GetAt(i).GetCornerBounds(0);
-			SwellRect(&TR, r);
-		}
-	if (TR.left == INT_MAX)
+	int iLegalBoard = MarkLegalElementsForExport(this);
+	if (iLegalBoard == -1)
 		return;
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
@@ -5989,7 +5971,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 			_2540,
 			swell,
 			FALSE);
-	int iLegalBoard = MarkLegalElementsForExport(this);
+	MarkLegalElementsForExport(this);
 	float convert = NM_PER_MM;
 	if (m_units == MIL)
 		convert = NM_PER_MM * 254 / 10;
@@ -6126,7 +6108,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 		int gnc = laser_net->area[area].poly->GetNumCorners();
 		int x = laser_net->area[area].poly->GetX(gnc - 1);
 		int y = laser_net->area[area].poly->GetY(gnc - 1);
-		if (m_outline_poly.GetAt(LEGAL_BOARD).TestPointInside(x, y))
+		if (m_outline_poly.GetAt(iLegalBoard).TestPointInside(x, y))
 		{
 			for (int ia = 0; ia < laser_net->area[area].poly->GetNumCorners(); ia++)
 			{
@@ -7972,7 +7954,10 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		
 		AddBoardHoles(); // valid
 		int index_of_board = MarkLegalElementsForExport(this);
-		RECT pcbrct = m_outline_poly[index_of_board].GetCornerBounds(0);
+		m_dlist->HighlightAll();
+		RECT pcbrct = m_dlist->GetHighlightedBounds(NULL); 
+		if(index_of_board >= 0)
+			pcbrct = m_outline_poly[index_of_board].GetCornerBounds(0);
 		for( int i=0; i<m_outline_poly.GetSize(); i++ )
 		{
 			if (m_outline_poly.GetAt(i).GetUtility() == 0)
@@ -8591,13 +8576,21 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // user field\n");
 				Scadfile.WriteString(	"    // add external objects here (optional)\n");
-				Scadfile.WriteString(	"    // for example, uncomment the following:\n"\
-										"    /*\n"\
-										"    color(\"aqua\", 0.5)\n"\
-										"    translate([0,0,0])\n"\
-										"    rotate([0,0,0])\n"\
-										"    cube(10);\n"\
-										"    */\n");
+				str.Format( "    // for example, uncomment the following:\n"\
+							"    /*\n"\
+							"    color(\"aqua\", 0.5)\n"\
+							"    translate([0,0,0])\n"\
+							"    rotate([0,0,0])\n"\
+							"    cube(10);\n"\
+							"    */\n"\
+							"    /*\n"\
+							"    // any pcb in the project folder\n"\
+							"    // requires inclusion of header: <%s.lib>\n"\
+							"    render()\n"\
+							"    translate([0,0,%.3f])\n"\
+							"    Pcb_%s (1);\n"\
+							"    */\n", moduleName, 50000000 / mu, moduleName);
+				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of user field\n");
 				Scadfile.WriteString("  }\n");
 				Scadfile.WriteString("}\n");
@@ -8690,6 +8683,26 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 						str.Format( "\ndrw_%s%s = E; // was added to the PCB", foots.GetAt(i), spc );
 						Scadfile.WriteString( str );
 					}
+				}
+				if (edata.Find("drw_board_outline") < 0)
+				{
+					str.Format("\ndrw_board_outline = E;");
+					Scadfile.WriteString(str);
+				}
+				if (edata.Find("drw_copper") < 0)
+				{
+					str.Format("\ndrw_copper = E;");
+					Scadfile.WriteString(str);
+				}
+				if (edata.Find("drw_holes") < 0)
+				{
+					str.Format("\ndrw_holes = E;");
+					Scadfile.WriteString(str);
+				}
+				if (edata.Find("drw_pads") < 0)
+				{
+					str.Format("\ndrw_pads = E;");
+					Scadfile.WriteString(str);
 				}
 				Scadfile.WriteString( " " ); // openscad not work without this
 				Scadfile.Close();

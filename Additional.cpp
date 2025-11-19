@@ -529,7 +529,7 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 	doc->m_tlist->MarkAllTexts(0);
 	
 	// find legal board outline
-	int nonLegalBoard = 0;
+	int nonLegalBoard = 0, n_bo = 0, i_bo = -1;
 	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
 	{
 		if (i >= 32)
@@ -539,24 +539,29 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 			setbit(nonLegalBoard, i);
 		else if( po->GetClosed() == 0)
 			setbit(nonLegalBoard, i);
-		else for (cpart* p = doc->m_plist->GetFirstPart(); p;)
+		else 
 		{
-			if (p->shape)
+			n_bo++;
+			i_bo = i;
+			for (cpart* p = doc->m_plist->GetFirstPart(); p;)
 			{
-				if(p->ref_des.Left(3) != "VIA")
-					if (p->shape->m_name != "MILLING_BOARD_OUTLINE")
-					{
-						if (po->TestPointInside(p->x, p->y))
+				if (p->shape)
+				{
+					if (p->ref_des.Left(3) != "VIA")
+						if (p->shape->m_name != "MILLING_BOARD_OUTLINE")
 						{
-							if (p->ref_des.Find("|") >= 0)
-								setbit(nonLegalBoard, i);
-							break;
+							if (po->TestPointInside(p->x, p->y))
+							{
+								if (p->ref_des.Find("|") >= 0)
+									setbit(nonLegalBoard, i);
+								break;
+							}
 						}
-					}	
-			}	
-			p = doc->m_plist->GetNextPart(p);
-			if( p == NULL )
-				setbit(nonLegalBoard, i);
+				}
+				p = doc->m_plist->GetNextPart(p);
+				if (p == NULL)
+					setbit(nonLegalBoard, i);
+			}
 		}
 	}
 	int iLegal = -1;
@@ -569,11 +574,16 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 	}
 	if (iLegal == -1)
 	{
-		doc->m_view->MarkAllOutlinePoly(1, -1);
-		doc->m_plist->MarkAllParts(1);
-		doc->m_nlist->MarkAllNets(1);
-		doc->m_tlist->MarkAllTexts(1);
-		return iLegal;
+		if (n_bo == 1)
+			iLegal = i_bo;
+		else
+		{
+			doc->m_view->MarkAllOutlinePoly(1, -1);
+			doc->m_plist->MarkAllParts(1);
+			doc->m_nlist->MarkAllNets(1);
+			doc->m_tlist->MarkAllTexts(1);
+			return iLegal;
+		}
 	}
 		
 	CPolyLine* LegalBoard = &doc->m_outline_poly.GetAt(iLegal);
