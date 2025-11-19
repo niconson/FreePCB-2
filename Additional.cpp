@@ -823,6 +823,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 	}
 	// delete new areas
 	// if it's outside board outline 
+	MarkLegalElementsForExport(doc);
 	if (getbit(doc->m_crop_flags, MC_BOARD) || getbit(doc->m_crop_flags, MC_POLYLINES))
 	{
 		for (int i_a = area_net->nareas - 1; i_a >= mem_n_areas; i_a--)
@@ -832,6 +833,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 			BOOL remove = 1;
 			for (int sc_p = 0; sc_p < doc->m_outline_poly.GetSize(); sc_p++)
 			{
+				if (doc->m_outline_poly[sc_p].GetUtility() || area_net->name.Compare("LASER__NET"))
 				if (doc->m_outline_poly[sc_p].GetLayer() == LAY_BOARD_OUTLINE && getbit(doc->m_crop_flags, MC_BOARD))
 				{
 					if (doc->m_outline_poly[sc_p].TestPointInside(cur_x, cur_y))

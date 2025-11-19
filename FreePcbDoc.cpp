@@ -5722,17 +5722,17 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 		swell = 100000.0;
 	int num_polylines = m_outline_poly.GetSize();
 	cnet* laser_net = m_nlist->AddNet("LASER__NET", 0, 0, 0);
-	RECT TR = rect(0,0,0,0);
-	TR.left = TR.bottom = INT_MAX;
-	TR.right = TR.top = INT_MIN;
+
 	int LEGAL_BOARD = MarkLegalElementsForExport(this);
 	if (LEGAL_BOARD == -1)
 		return 0;
+	RECT TR = m_outline_poly.GetAt(LEGAL_BOARD).GetBounds();
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.top, 0, 0);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.bottom, 0, 0);
 	m_nlist->CompleteArea(laser_net, iar, 0);
+
 	CString crop_net_name = "";
 	int crop_flags = 0;
 	setbit(crop_flags, MC_PADS);
@@ -5763,7 +5763,7 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 										swell,
 										50000,
 										FALSE);
-	MarkLegalElementsForExport(this);
+	LEGAL_BOARD = MarkLegalElementsForExport(this);
 	for (int ia=laser_net->nareas-1; ia>0; ia--)
 	{
 		int gnc = laser_net->area[ia].poly->GetNumCorners();
@@ -5930,12 +5930,11 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 {
 	int num_polylines = m_outline_poly.GetSize();
 	cnet* laser_net = m_nlist->AddNet("LASER__NET", 0, 0, 0);
-	RECT TR = rect(0, 0, 0, 0);
-	TR.left = TR.bottom = INT_MAX;
-	TR.right = TR.top = INT_MIN;
+
 	int iLegalBoard = MarkLegalElementsForExport(this);
 	if (iLegalBoard == -1)
 		return;
+	RECT TR = m_outline_poly.GetAt(iLegalBoard).GetBounds();
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.right, TR.top, 0, 0);
@@ -5971,7 +5970,7 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 			_2540,
 			swell,
 			FALSE);
-	MarkLegalElementsForExport(this);
+	iLegalBoard = MarkLegalElementsForExport(this);
 	float convert = NM_PER_MM;
 	if (m_units == MIL)
 		convert = NM_PER_MM * 254 / 10;
@@ -8585,11 +8584,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    */\n"\
 							"    /*\n"\
 							"    // any pcb in the project folder\n"\
-							"    // requires inclusion of header: <%s.lib>\n"\
+							"    // requires inclusion of <.lib> header\n"\
 							"    render()\n"\
 							"    translate([0,0,%.3f])\n"\
 							"    Pcb_%s (1);\n"\
-							"    */\n", moduleName, 50000000 / mu, moduleName);
+							"    */\n", 50000000 / mu, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of user field\n");
 				Scadfile.WriteString("  }\n");
