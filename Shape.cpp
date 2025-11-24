@@ -4686,6 +4686,36 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 			str.Replace("`","\"");
 			file.WriteString( str );
 		}
+		{
+			// копируем 3Д-модели в папку проекта
+			if(doc->m_3d_dir.GetLength())
+			for (int ic = 0; ic < m_openscad_code.GetSize(); ic++)
+			{
+				CString full_code = m_openscad_code.GetAt(ic);
+				int iimp = full_code.Find("import");
+				if (iimp >= 0)
+				{
+					if (iimp > 0)
+						full_code = full_code.Right(full_code.GetLength()-iimp);
+					iimp = full_code.Find("`");
+					if (iimp > 0)
+					{
+						full_code = full_code.Right(full_code.GetLength() - iimp - 1);
+						iimp = full_code.Find("`");
+						if (iimp > 0)
+						{
+							full_code = full_code.Left(iimp);
+							if (full_code.GetLength())
+							{
+								CString scpy = doc->m_3d_dir + "\\" + full_code;
+								CString scpy2 = doc->m_path_to_folder + "\\related_files\\openscad\\" + full_code;;
+								CopyFile(scpy, scpy2, false);
+							}
+						}
+					}
+				}
+			}
+		}
 		//
 		// закрываем UNION
 		//

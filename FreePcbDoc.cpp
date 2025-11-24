@@ -302,6 +302,7 @@ BOOL CFreePcbDoc::OnNewDocument()
 	m_window_title = (G_LANGUAGE==0?"no project open":"редактор печатных плат");
 	m_parent_folder = "..\\projects\\";
 	m_lib_dir = "..\\lib\\" ;
+	m_3d_dir = "..\\3D\\";
 	return TRUE;
 }
 
@@ -354,7 +355,7 @@ void CFreePcbDoc::OnFileNew()
 	// now set default project options
 	InitializeNewProject();
 	CDlgProjectOptions dlg;
-	dlg.Init( TRUE, &m_name, &m_parent_folder, &m_full_lib_dir, &m_app_dir,
+	dlg.Init( TRUE, &m_name, &m_parent_folder, &m_full_lib_dir, &m_3d_dir, &m_app_dir,
 		m_num_copper_layers, m_bSMT_copper_connect, m_view->m_merge_show, m_default_glue_w,
 		m_trace_w, m_via_w, m_via_hole_w,
 		60, m_auto_ratline_disable, m_auto_ratline_min_pins,
@@ -408,11 +409,12 @@ void CFreePcbDoc::OnFileNew()
 		}
 
 		// make path to library folder and index libraries
+		m_3d_dir = dlg.Get3dFolder();
 		m_lib_dir = dlg.GetLibFolder();
-		fullpath = _fullpath( full, (LPCSTR)m_lib_dir, MAX_PATH );
-		if( fullpath[fullpath.GetLength()-1] == '\\' )	
-			fullpath = fullpath.Left(fullpath.GetLength()-1);
-		m_full_lib_dir = fullpath;
+		//fullpath = _fullpath( full, (LPCSTR)m_lib_dir, MAX_PATH );
+		//if( fullpath[fullpath.GetLength()-1] == '\\' )	
+		//	fullpath = fullpath.Left(fullpath.GetLength()-1);
+		m_full_lib_dir = m_lib_dir;// fullpath;
 		MakeLibraryMaps( &m_full_lib_dir );
 
 		// set options from dialog
@@ -2583,6 +2585,10 @@ int CFreePcbDoc::ReadOptions( CStdioFile * pcb_file, BOOL rColors, BOOL rCropDat
 			{
 				m_lib_dir = p[0];
 			}
+			else if (np && key_str == "3d_folder")
+			{
+				m_3d_dir = p[0];
+			}
 			else if( np && key_str == "full_library_folder" )
 			{
 				m_full_lib_dir = p[0];
@@ -3284,14 +3290,12 @@ void CFreePcbDoc::WriteOptions( CStdioFile * file, BOOL bConfig )
 		{
 			line.Format( "parent_folder: \"%s\"\n", m_parent_folder );
 			file->WriteString( line );
-		}
-		// lib folder
-		{
-			str = m_full_lib_dir;
-			line.Format( "full_library_folder: \"%s\"\n", str );
+			line.Format("3d_folder: \"%s\"\n", m_3d_dir);
+			file->WriteString( line );
+			line.Format( "full_library_folder: \"%s\"\n", m_full_lib_dir);
 			file->WriteString( line );
 		}
-		
+
 		line.Format( "CAM_folder: \"%s\"\n", m_cam_full_path );
 		file->WriteString( line );
 		line.Format( "ses_file_path: \"%s\"\n", m_ses_full_path );
@@ -3618,7 +3622,8 @@ void CFreePcbDoc::InitializeNewProject()
 	m_name = "";
 	m_get_app_folder = "";
 	m_path_to_folder = "..\\projects\\";
-	m_lib_dir = "..\\lib\\" ;
+	m_lib_dir = "..\\lib\\";
+	m_3d_dir = "..\\3D\\";
 	m_pcb_filename = "";
 	m_pcb_full_path = "";
 	m_cds_filename = "";
@@ -6515,7 +6520,7 @@ void CFreePcbDoc::OnProjectOptions()
 		name = m_name.Left( m_name.GetLength()-4 );
 	else
 		name = m_name;
-	dlg.Init( FALSE, &name, &m_path_to_folder, &m_full_lib_dir, &m_app_dir,
+	dlg.Init( FALSE, &name, &m_path_to_folder, &m_full_lib_dir, &m_3d_dir, &m_app_dir,
 		m_num_copper_layers, m_bSMT_copper_connect, m_view->m_merge_show, m_default_glue_w,
 		m_trace_w, m_via_w, m_via_hole_w,
 		m_auto_interval, m_auto_ratline_disable, m_auto_ratline_min_pins,
@@ -6602,6 +6607,7 @@ void CFreePcbDoc::OnProjectOptions()
 			m_footlibfoldermap.SetDefaultFolder( &m_full_lib_dir );		
 			m_footlibfoldermap.SetLastFolder( &m_full_lib_dir );		
 		}
+		m_3d_dir = dlg.Get3dFolder();
 		m_trace_w = dlg.GetTraceWidth();
 		m_via_w = dlg.GetViaWidth();
 		m_via_hole_w = dlg.GetViaHoleWidth();
@@ -6622,6 +6628,7 @@ void CFreePcbDoc::OnProjectOptions()
 		ResetUndoState();
 		for( cpart * p=m_plist->GetFirstPart(); p; p=m_plist->GetNextPart(p) )
 			m_plist->DrawPart(p);
+		SaveOptions();
 	}
 }
 
@@ -8678,7 +8685,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("    Main();\n");
 				Scadfile.WriteString("else if (MODE == 10)\n");
 				Scadfile.WriteString("{\n");
-				str.Format("  translate([frozen?-pdist:originX_%s+originY_%s-pdist, 0, 0])\n", moduleName, moduleName);
+				str.Format("  translate([frozen?-pdist:(originX_%s+originY_%s-pdist), 0, 0])\n", moduleName, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  rotate(90)\n");
 				Scadfile.WriteString("  {\n");
@@ -8698,7 +8705,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("     Custom(); \n");
 				Scadfile.WriteString("  projection()\n");
 				Scadfile.WriteString("   rotate([dir?90:-90, 0, 0])\n");
-				Scadfile.WriteString("    Main(0); \n");
+				Scadfile.WriteString("    Main(0); \n\n");
+				Scadfile.WriteString("  projection(true)\n");
+				str.Format("   translate([0, frozen?%.3f-pdist:(%.3f-pdist-originY_%s), board_h/2])\n", 10000000 / mu, 10000000 / mu, moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("    Main();\n");
 				Scadfile.WriteString("}\n");
 				Scadfile.Close();
 				bShellEx = TRUE;

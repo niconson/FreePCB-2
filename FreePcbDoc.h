@@ -190,7 +190,8 @@ public:
 	CString m_fp_window_title;	// window title for footprint editor
 	CString m_name;				// project name
 	CString m_app_dir;			// application directory (full path) 
-	CString m_lib_dir;			// path to default library folder (may be relative)   
+	CString m_lib_dir;			// path to default library folder (may be relative)  
+	CString m_3d_dir;
 	CString m_full_lib_dir;		// full path to default library folder
 	CString m_parent_folder;	// path to parent of project folders (may be relative)
 	CString m_path_to_folder;	// path to project folder

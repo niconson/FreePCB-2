@@ -18,6 +18,7 @@ public:
 		CString * name,
 		CString * path_to_folder,
 		CString * lib_folder,
+		CString * m3d_folder,
 		CString * app_dir,
 		int num_layers,
 		BOOL bSMT_connect_copper,
@@ -35,6 +36,7 @@ public:
 	CString GetName(){ return m_name; };
 	CString GetPathToFolder(){ return m_path_to_folder; };
 	CString GetLibFolder(){ return m_lib_folder; };
+	CString Get3dFolder() { return m_3d_folder; };
 	int GetNumCopperLayers(){ return m_layers; };
 	int GetTraceWidth(){ return m_trace_w; };
 	int GetViaWidth(){ return m_via_w; };
@@ -56,6 +58,7 @@ private:
 	CString m_name;
 	CString m_path_to_folder;
 	CString m_lib_folder;
+	CString m_3d_folder;
 	int m_glue_w;
 	int m_trace_w;
 	int m_via_w;
@@ -79,6 +82,7 @@ private:
 	afx_msg void OnEnSetfocusEditFolder();
 	afx_msg void OnEnKillfocusEditFolder();
 	CEdit m_edit_lib_folder;
+	CEdit m_edit_3d_folder;
 	CEdit m_edit_layers;
 public:
 	BOOL m_bSMT_connect_copper;
@@ -93,4 +97,5 @@ public:
 	CButton m_check_disable_auto_rats;
 	CEdit m_edit_min_pins;
 	afx_msg void OnBnClickedCheckAutoRatDisable();
+	afx_msg void OnBnClickedButton3dLib();
 };

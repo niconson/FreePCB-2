@@ -74,6 +74,8 @@ void CDlgProjectOptions::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_FOLDER, m_path_to_folder );
 	DDX_Control(pDX, IDC_EDIT_LIBRARY_FOLDER, m_edit_lib_folder);
 	DDX_Text(pDX, IDC_EDIT_LIBRARY_FOLDER, m_lib_folder );
+	DDX_Control(pDX, IDC_EDIT_3D_LIB_FOLDER, m_edit_3d_folder);
+	DDX_Text(pDX, IDC_EDIT_3D_LIB_FOLDER, m_3d_folder);
 	DDX_Control(pDX, IDC_EDIT_NUM_LAYERS, m_edit_layers );
 	DDX_Text(pDX, IDC_EDIT_NUM_LAYERS, m_layers );
 	DDV_MinMaxInt(pDX, m_layers, 1, 16 );
@@ -205,6 +207,7 @@ BEGIN_MESSAGE_MAP(CDlgProjectOptions, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_LIB, OnBnClickedButtonLib)
 	ON_BN_CLICKED(IDC_BUTTON_PRF, OnBnClickedButtonProjectFolder)
 	ON_BN_CLICKED(IDC_CHECK_AUTORAT_DISABLE, OnBnClickedCheckAutoRatDisable)
+	ON_BN_CLICKED(IDC_BUTTON_3D_LIB, &CDlgProjectOptions::OnBnClickedButton3dLib)
 END_MESSAGE_MAP()
 
 // initialize data
@@ -213,6 +216,7 @@ void CDlgProjectOptions::Init( BOOL new_project,
 							  CString * name,
 							  CString * path_to_folder,
 							  CString * lib_folder,
+							  CString * m3d_folder,	
 							  CString * app_dir,
 							  int num_layers,
 							  BOOL bSMT_connect_copper,
@@ -246,7 +250,6 @@ void CDlgProjectOptions::Init( BOOL new_project,
 	if( err )
 	{
 		m_path_to_folder = app;
-		//*path_to_folder = m_path_to_folder;
 	}
 	//
 	m_lib_folder = *lib_folder;
@@ -254,7 +257,13 @@ void CDlgProjectOptions::Init( BOOL new_project,
 	if( err )
 	{
 		m_lib_folder = app + "fp_lib\\lib";
-		//*lib_folder = m_lib_folder;
+	}
+	//
+	m_3d_folder = *m3d_folder;
+	err = _stat(m_3d_folder, &buf);
+	if (err)
+	{
+		m_3d_folder = app + "3D";
 	}
 	//
 	m_layers = num_layers;
@@ -277,8 +286,6 @@ BOOL CDlgProjectOptions::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	// initialize strings
-	m_edit_folder.SetWindowText( m_path_to_folder );
 	// set up list control
 	DWORD old_style = m_list_menu.GetExtendedStyle();
 	m_list_menu.SetExtendedStyle( LVS_EX_FULLROWSELECT | LVS_EX_FLATSB | old_style );
@@ -319,6 +326,7 @@ BOOL CDlgProjectOptions::OnInitDialog()
 		// disable some fields for existing project
 		m_edit_folder.EnableWindow( FALSE );
 		m_edit_lib_folder.EnableWindow( FALSE );
+		m_edit_3d_folder.EnableWindow(FALSE);
 	//}
 	m_check_autosave.SetCheck(1);
 	m_check_autosave.EnableWindow(0);
@@ -514,20 +522,36 @@ void CDlgProjectOptions::OnBnClickedButtonLib()
 
 void CDlgProjectOptions::OnBnClickedButtonProjectFolder()
 {
-	if( m_new_project )
+	if (m_new_project)
 	{
-		CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки", 
-						G_LANGUAGE == 0 ? "Select project folder" : "Выберите папку", m_path_to_folder );
+		CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки",
+			G_LANGUAGE == 0 ? "Select project folder" : "Выберите папку", m_path_to_folder);
 		int ret = dlg.DoModal();
-		if( ret == IDOK )
+		if (ret == IDOK)
 		{
-			m_path_to_folder = dlg.GetPathName()+"\\";
-			m_edit_folder.SetWindowText( m_path_to_folder );
+			m_path_to_folder = dlg.GetPathName() + "\\";
+			m_edit_folder.SetWindowText(m_path_to_folder);
 		}
 	}
+	else
+		AfxMessageBox(G_LANGUAGE == 0 ? "This folder is editable only at the stage of creating a new project" : "Эту папку можно редактировать только на этапе создания нового проекта");
 }
 
 void CDlgProjectOptions::OnBnClickedCheckAutoRatDisable()
 {
 	m_edit_min_pins.EnableWindow( m_check_disable_auto_rats.GetCheck() );
+}
+
+
+void CDlgProjectOptions::OnBnClickedButton3dLib()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	CPathDialog dlg(G_LANGUAGE == 0 ? "Select Folder" : "Выбор папки",
+		G_LANGUAGE == 0 ? "Select default library folder" : "Выберите папку", m_3d_folder);
+	int ret = dlg.DoModal();
+	if (ret == IDOK)
+	{
+		m_3d_folder = dlg.GetPathName().MakeLower();
+		m_edit_3d_folder.SetWindowText(m_3d_folder);
+	}
 }
