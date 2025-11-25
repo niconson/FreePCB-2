@@ -8546,14 +8546,16 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 3: projection of bottom copper\n"\
 							"           // 4: projection of top packages\n"\
 							"           // 5: projection of bottom packages\n"\
-							"           // 6: lateral projection\n"\
-							"           // 7: frontal projection\n"\
+							"           // 6: lateral pcb projection\n"\
+							"           // 7: frontal pcb projection.\n"\
 							"           // Set the origin in the pcb editor to the\n"\
 							"           // location where you want the cut to be:\n"\
 							"           // 8: custom lateral projection\n"\
 							"           // 9: custom frontal projection\n"\
-							"           // 10: custom combo projection.\n\n"\
-							"dir = 0;   // view direction for 6...10 modes\n"\
+							"           // 10: custom combo projection\n"\
+							"           // 11: frontal 3D section\n"\
+							"           // 12: lateral 3D section.\n\n"\
+							"dir = 0;   // view direction for 6...12 modes\n"\
 							"pdist = 0; // distance between projections for mode 10\n\n\n\n"\
 							"//// Drawing control\n");
 				Scadfile.WriteString(str);
@@ -8567,17 +8569,17 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				spc = "";
 				for (int isp = 6; isp < maxlen; isp++)
 					spc += " ";
-				str.Format("drw_copper%s = MODE<4?1:0;\n", spc);
+				str.Format("drw_copper%s = (MODE<4||MODE>10)?1:0;\n", spc);
 				Scadfile.WriteString(str);
 				spc = "";
 				for( int isp=5; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_holes%s = MODE<4?1:0;\n", spc );
+				str.Format( "drw_holes%s = (MODE<4||MODE>10)?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for( int isp=4; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_pads%s = MODE<4?1:0;\n", spc );
+				str.Format( "drw_pads%s = (MODE<4||MODE>10)?1:0;\n", spc );
 				Scadfile.WriteString( str );
 				for(int i=0; i<foots.GetSize(); i++)
 				{
@@ -8617,9 +8619,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    // add  any  PCB  from  the  project  folder,\n"\
 							"    // any pcb in the project folder will require\n"\
 							"    // the <.lib> header (See top) to be included:\n"\
-							"    render()\n"\
+							"    render(Convexity)\n"\
 							"    translate([0,0,%.3f])\n"\
-							"    Pcb_%s (1);\n"\
+							"    Pcb_%s (true);\n"\
 							"    */\n", 50000000 / mu, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of user field\n");
@@ -8628,18 +8630,20 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 
 				str.Format(	"\n\n\n//// Drawing\n");
 				Scadfile.WriteString(str);
-				Scadfile.WriteString("cube_scaleX = 1.0;// option for mode 4...5\n");
-				Scadfile.WriteString("cube_scaleY = 1.0;// option for mode 4...5\n");
-				Scadfile.WriteString("cube_scaleZ = 1.0;// option for mode 4...5\n");
+				Scadfile.WriteString("cube_scaleX = 1.0;// option for 4,5,11,12 modes\n");
+				Scadfile.WriteString("cube_scaleY = 1.0;// option for 4,5,11,12 modes\n");
+				Scadfile.WriteString("cube_scaleZ = 1.0;// option for 4,5,11,12 modes\n");
 				Scadfile.WriteString("if (MODE == 1)\n");
 				str.Format(" Main();\n");
 				Scadfile.WriteString(str);
+				// 2
 				Scadfile.WriteString("else if (MODE == 2)\n");
 				Scadfile.WriteString(" projection(true)\n");
 				str.Format("  translate([0, 0, -%.3f])\n", 10000.0 / mu);
 				Scadfile.WriteString(str);
 				str.Format("   Main(0);\n");
 				Scadfile.WriteString(str);
+				// 3
 				Scadfile.WriteString("else if (MODE == 3)\n");
 				Scadfile.WriteString(" //mirror([1, 0, 0])\n");
 				Scadfile.WriteString("  projection(true)\n");
@@ -8647,12 +8651,14 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				str.Format("    Main(0);\n");
 				Scadfile.WriteString(str);
+				// 4
 				Scadfile.WriteString("else if (MODE == 4)\n");
 				Scadfile.WriteString(" projection()difference(){\n");
 				str.Format("  Main(0);\n");
 				Scadfile.WriteString(str);
 				str.Format("  Draw_%s_CUBE(0, frozen);}\n", moduleName);
 				Scadfile.WriteString(str);
+				// 5
 				Scadfile.WriteString("else if (MODE == 5)\n");
 				Scadfile.WriteString(" //mirror([1, 0, 0])\n");
 				Scadfile.WriteString("  projection()difference(){\n");
@@ -8660,29 +8666,33 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				str.Format("   Draw_%s_CUBE(1, frozen);}\n", moduleName);
 				Scadfile.WriteString(str);
+				// 6
 				Scadfile.WriteString("else if (MODE == 6)\n");
 				Scadfile.WriteString(" projection()\n");
 				Scadfile.WriteString("  rotate([0, dir?-90:90, 0])\n");
 				str.Format("   Main(0);\n");
 				Scadfile.WriteString(str);
+				// 7
 				Scadfile.WriteString("else if (MODE == 7)\n");
 				Scadfile.WriteString(" projection()\n");
 				Scadfile.WriteString("  rotate([dir?90:-90, 0, 0])\n");
 				str.Format("   Main(0);\n");
 				Scadfile.WriteString(str);
-				//
+				// 8
 				Scadfile.WriteString("else if (MODE == 8)\n");
 				Scadfile.WriteString(" projection(true)\n");
 				str.Format("  translate([0, 0, frozen?(dir?originX_%s:-originX_%s):0])\n", moduleName, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("   rotate([0, dir?-90:90, 0])\n");
 				Scadfile.WriteString("    Main();\n");
+				// 9
 				Scadfile.WriteString("else if (MODE == 9)\n");
 				Scadfile.WriteString(" projection(true)\n");
 				str.Format("  translate([0, 0, frozen?(dir?originY_%s:-originY_%s):0])\n", moduleName, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("   rotate([dir?90:-90, 0, 0])\n");
 				Scadfile.WriteString("    Main();\n");
+				// 10
 				Scadfile.WriteString("else if (MODE == 10)\n");
 				Scadfile.WriteString("{\n");
 				str.Format("  translate([frozen?-pdist:(originX_%s+originY_%s-pdist), 0, 0])\n", moduleName, moduleName);
@@ -8711,6 +8721,24 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("    Main();\n");
 				Scadfile.WriteString("}\n");
+				// 11
+				Scadfile.WriteString("else if (MODE == 11)\n");
+				Scadfile.WriteString(" difference(){\n");
+				Scadfile.WriteString("  Main();\n  color(\"white\")\n");
+				str.Format("  translate([0, frozen?-originY_%s:0, frozen?(dir?-max_height_%s/2:max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("  rotate([dir?90:-90, 0, 0])\n");
+				str.Format("  Draw_%s_CUBE(0, frozen);}\n", moduleName);
+				Scadfile.WriteString(str);
+				// 12
+				Scadfile.WriteString("else if (MODE == 12)\n");
+				Scadfile.WriteString(" difference(){\n");
+				Scadfile.WriteString("  Main();\n  color(\"white\")\n");
+				str.Format("  translate([frozen?-originX_%s:0, 0, frozen?(dir?max_height_%s/2:-max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("  rotate([0, dir?90:-90, 0])\n");
+				str.Format("  Draw_%s_CUBE(0, frozen);}\n", moduleName);
+				Scadfile.WriteString(str);
 				Scadfile.Close();
 				bShellEx = TRUE;
 			}
