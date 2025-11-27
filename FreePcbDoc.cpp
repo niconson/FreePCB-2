@@ -6630,6 +6630,18 @@ void CFreePcbDoc::OnProjectOptions()
 			m_plist->DrawPart(p);
 		SaveOptions();
 	}
+	else
+	{
+		struct _stat buf;
+		if(_stat(m_3d_dir, &buf))
+			m_3d_dir = dlg.Get3dFolder();
+		if(_stat(m_full_lib_dir, &buf))
+		{
+			m_full_lib_dir = dlg.GetLibFolder();
+			m_footlibfoldermap.SetDefaultFolder(&m_full_lib_dir);
+			m_footlibfoldermap.SetLastFolder(&m_full_lib_dir);
+		}
+	}
 }
 
 // come here from MainFrm on timer event
@@ -7943,9 +7955,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			str.Format( "    else if( drw_%s != 0 )\n      Draw_%s();\n", fname, fname);
 			file.WriteString(str);
 		}
-		str.Format("    if( is_undef(drw_board_outline) )\n      Draw_BO_%s(1);\n", moduleName);
+		str.Format("    if( is_undef(drw_board_outline) )\n      Draw_BO_%s();\n", moduleName);
 		file.WriteString(str);
-		str.Format( "    else if( drw_board_outline != 0 )\n      Draw_BO_%s(0);\n", moduleName );
+		str.Format( "    else if( drw_board_outline != 0 )\n      Draw_BO_%s();\n", moduleName );
 		file.WriteString( str );
 		file.WriteString("  }\n");
 		//
@@ -7954,7 +7966,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		file.WriteString( "}\n" );
 		file.WriteString( "\n" );
 		file.WriteString( "\n" );
-		str.Format( "/* ___________________\n  |                   |\n  |   BOARD OUTLINE   |\n  |___________________|\n*/\nmodule Draw_BO_%s (bAll=0)\n{\n", moduleName );
+		str.Format( "/* ___________________\n  |                   |\n  |   BOARD OUTLINE   |\n  |___________________|\n*/\nmodule Draw_BO_%s ()\n{\n", moduleName );
 		file.WriteString( str );
 
 		
@@ -8416,7 +8428,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 								{
 									double HoleSize = ((double)p->shape->m_padstack[ipin].hole_size*cos(22.5*M_PI/180.0)-100000) / mu;
 									CString fname = foots.GetAt(ok1);
-									str.Format( "           if( bAll != 0 )\n");
+									str.Format( "           if( is_undef(drw_%s) )\n", fname );
 									file.WriteString(str);
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize);
 									file.WriteString(str);
@@ -8553,8 +8565,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 8: custom lateral projection\n"\
 							"           // 9: custom frontal projection\n"\
 							"           // 10: custom combo projection\n"\
-							"           // 11: frontal 3D section\n"\
-							"           // 12: lateral 3D section\n"\
+							"           // 11: frontal 3D section for Custom\n"\
+							"           // 12: lateral 3D section for Custom\n"\
 							"           // 13: boolean difference.\n\n"\
 							"dir = 0;   // view direction for 6...12 modes\n"\
 							"pdist = 0; // distance between projections for mode 10\n\n\n\n"\

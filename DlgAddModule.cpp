@@ -62,7 +62,10 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 					}
 				if (bFail)
 					continue;
-				CString include = "include <" + scad + "lib>";
+				CString funcName = scad;
+				funcName.Truncate(scad.GetLength() - 1);
+				funcName = " // hint: call Pcb_" + funcName + "(1);";
+				CString include = "include <" + scad + "lib>" + funcName;
 				BOOL bIncludeFound = 0;
 				for (int i = 0; i < m_code_text->GetSize(); i++)
 				{
