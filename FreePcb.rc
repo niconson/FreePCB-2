@@ -2809,7 +2809,7 @@ BEGIN
     PUSHBUTTON      "Отмена",IDCANCEL,74,217,50,14
     LTEXT           "Величина",IDC_STATIC_EX,22,23,50,8
     LTEXT           "Ед.изм",IDC_STATIC,22,135,30,8
-    CONTROL         "Учитывать ширину полилинии",IDC_CORNER_ROUNDING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,190,116,10
+    CONTROL         "Расширение Минковского",IDC_CORNER_ROUNDING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,190,116,10
     GROUPBOX        "1. Экструзия",IDC_STATIC,7,7,124,64
     EDITTEXT        IDC_EXTRUSION_ROT,78,52,35,12,ES_AUTOHSCROLL
     LTEXT           "Угловая...",IDC_STATIC_EX_R,22,54,50,8

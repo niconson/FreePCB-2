@@ -364,7 +364,7 @@ CString * CDlg_OpenScad::GenerateOpenscadData( CString * Separator )
 		new_string += ddSPACE;
 		m_openscad_data += s;
 		m_openscad_data += new_string;
-		s.Format( "$fn = %d;%s%s", m_resolution, sep, new_string );
+		s.Format( "$fn = %d;%s%s", m_resolution/2, sep, new_string );
 		m_openscad_data += s;
 	}
 	//---------------------
