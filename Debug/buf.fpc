@@ -3,42 +3,41 @@
 app_folder: "D:\FreePCBDev\FreePCB-2\.\Debug"
 version: 2.427
 file_version: 2.427
-project_name: "Driver-01"
-library_folder: "d:\works\fp_lib"
-full_library_folder: "d:\works\fp_lib\lib"
-CAM_folder: "D:\Works\Projects\duxahtech\Led\version-01\CAM(Driver-01)(11-9-2025)"
+project_name: "Led-03"
+library_folder: "d:\works\projects\micronics\lib"
+CAM_folder: "D:\works\projects\Micronics\Grainger\version-03\CAM(Led-03)(11-30-2025)"
 ses_file_path: ""
-netlist_completed: "1"
+netlist_completed: "0"
 part_search: ""
 png_settings: "800 0.05"
-netlist_file_path: "D:\Works\Projects\duxahtech\Led\version-01\related_files\CDS_netlist\Driver-01.fpc.net"
+netlist_file_path: "D:\works\projects\Micronics\Grainger\version-03\related_files\CDS_netlist\Led-03.fpc.net"
 SMT_connect_copper: "1"
 default_glue_width: "635000"
 dsn_flags: "3"
 dsn_bounds_poly: "0"
 dsn_signals_poly: "0"
-autosave_interval: 60
-auto_ratline_disable: "1"
+autosave_interval: 0
+auto_ratline_disable: "0"
 auto_ratline_disable_min_pins: "100"
 netlist_import_flags: 19399
-m_client_rect_left: 110
-m_client_rect_right: 1532
-m_client_rect_bottom: 727
+m_client_rect_left: 0
+m_client_rect_right: 1487
+m_client_rect_bottom: 593
 m_client_rect_top: 0
-m_org_x: -15076
-m_org_y: -7626
-m_scale_factor: 23802
+m_org_x: -119905
+m_org_y: -84556
+m_scale_factor: 204299
 part_line_visible: 1
 merge_shown: 1
 pdf_pin1: -0.700000
-pdf_use_font: -635000 635000 -635000
-units: MIL
+pdf_use_font: -508000 -508000 -508000
+units: MM
 
 m_sel_mask: 2147483645
-m_visible_layers: -84737
+m_visible_layers: -84233
 m_top_layer: 13
-m_grid_style: 0
-visible_grid_spacing: 20000000.000000
+m_grid_style: 1
+visible_grid_spacing: 1000000.000000
   visible_grid_item: 100mil
   visible_grid_item: 125mil
   visible_grid_item: 200mil
@@ -58,7 +57,7 @@ visible_grid_spacing: 20000000.000000
   visible_grid_item: 50mm
   visible_grid_item: 100mm
 
-placement_grid_spacing: 250000.000000
+placement_grid_spacing: 100000.000000
   placement_grid_item: 10mil
   placement_grid_item: 20mil
   placement_grid_item: 25mil
@@ -137,7 +136,7 @@ fp_visible_grid_spacing: 1000000.000000
   fp_visible_grid_item: 50mm
   fp_visible_grid_item: 100mm
 
-fp_placement_grid_spacing: 250000.000000
+fp_placement_grid_spacing: 50000.000000
   fp_placement_grid_item: 10mil
   fp_placement_grid_item: 20mil
   fp_placement_grid_item: 25mil
@@ -164,70 +163,68 @@ fp_placement_grid_spacing: 250000.000000
 fp_snap_angle: 45
 
 m_seg_clearance: 204080
-fill_clearance: 300000
-panel_fields: 8000000 8000000
-panel_holes: 3000000 4
-panel_ref_count: 0
+fill_clearance: 254000
+panel_fields: 9000000 9000000
+panel_holes: 1500000 4
+panel_ref_count: 2
 panel_reference: "RectType1"
-panel_scribing: 3
-panel_text: "OnTopSilk" "OnBotSilk" "OnTopCopper" "OnBotCopper"
+panel_scribing: 0
+panel_text: "" "" "Led-03 TOP" "Led-03 BOTTOM"
 panel_frame_for_paste: 0 0 0 0
-mask_clearance: 0
+mask_clearance: 50000
 thermal_width: 400000
 thermal_clearance: 200000
-min_silkscreen_width: 150000
+min_silkscreen_width: 100000
 highlight_width: 127000
 hole_clearance: 400000
 pilot_diameter: 200000
 annular_ring_for_pins: 200000
 annular_ring_for_vias: 200000
-shrink_paste_mask: 0
+shrink_paste_mask: 50000
 cam_flags: 96
-crop_flags: 11871
-cam_layers: 9437247
+crop_flags: 28287
+cam_layers: 1048639
 cam_drill_file: 1
 cam_units: 1
-cam_n_x: 3
-cam_n_y: 7
-cam_space_x: 0
-cam_space_y: 0
+cam_n_x: 1
+cam_n_y: 2
+cam_space_x: 2000000
+cam_space_y: 2000000
 symmetrization_x: 0
-symmetrization_y: 0
+symmetrization_y: 2000000
 
-report_options: 4123
-drc_check_unrouted: 0
-drc_trace_width: 170000
+report_options: 4126
+drc_check_unrouted: 1
+drc_trace_width: 250000
 drc_pad_pad: 199000
 drc_pad_trace: 199000
 drc_trace_trace: 199000
-drc_hole_copper: 200000
+drc_hole_copper: 400000
 drc_annular_ring_pins: 199000
 drc_annular_ring_vias: 199000
-drc_board_edge_copper: 200000
-drc_board_edge_hole: 0
+drc_board_edge_copper: 300000
+drc_board_edge_hole: 400000
 drc_hole_hole: 600000
 drc_copper_copper: 200000
 
 default_trace_width:0.4mm
 default_via_pad_width:1mm
 default_via_hole_width:0.5mm
-n_width_menu: 4
-  width_menu_item: 1 0.4mm 0mil 0mil
-  width_menu_item: 2 0.5mm 0mil 0mil
-  width_menu_item: 3 0.7mm 0mil 0mil
-  width_menu_item: 4 1mm 1.5mm 1mm
+n_width_menu: 2
+  width_menu_item: 1 0.25mm 0mil 0mil
+  width_menu_item: 2 0.5mm 1.2mm 0.8mm
 
 n_copper_layers: 2
   layer_info: "движение" 0 255 255 0 1 127 127 127 0
   layer_info: "фон доски" 1 239 239 239 1 255 255 255 0
   layer_info: "подсветка" 2 255 255 0 1 0 0 0 0
-  layer_info: "линии сетки" 3 255 255 255 1 255 255 0 1
+  layer_info: "линии сетки" 3 255 255 255 0 255 255 0 1
   layer_info: "тестирование" 4 255 255 0 1 128 64 0 0
   layer_info: "контур платы" 5 0 115 60 1 0 185 120 1
   layer_info: "скрайбинг (V)" 6 255 0 128 1 127 127 127 0
   layer_info: "заметки верх" 7 128 64 0 1 255 0 0 0
   layer_info: "заметки низ" 8 128 64 0 0 128 128 128 0
-  layer_info: "эл. связи" 9 0 0 128 0 0 0 160 1
+  layer_info: "эл. связи" 9 0 0 128 1 0 0 160 1
   layer_info: "шёлк верх" 10 178 178 178 1 255 255 255 1
   layer_info: "шёлк низ" 11 255 170 170 0 255 255 255 0
   layer_info: "отверстия" 12 235 235 235 1 255 255 255 1
@@ -238,143 +235,725 @@ n_copper_layers: 2
 
 [footprints]
 
-name: "Package"
-author: "Ivex"
-package: "Package"
+name: "NLV32T"
+package: "NLV32T"
   units: NM
-  sel_rect: 2147458250 2147458250 -2147458250 -2147458250
-  ref_text: 1270000 1950000 -4000000 0 177800
-  value_text: 1270000 1950000 -6540000 0 177800
+  sel_rect: -1663500 -2663500 1663500 2663500
+  ref_text: 1000000 0 -1600000 0 100000
+  value_text: 1000000 0 0 0 100000
   centroid: 0 0 0 0
-  outline_polyline: 177800 -14000000 -6500000 0 0 4
-    next_corner: -13000000 -7500000 2
-    next_corner: 13000000 -7500000 0
-    next_corner: 14000000 -6500000 2
-    next_corner: 14000000 6500000 0
-    next_corner: 13000000 7500000 2
-    next_corner: -13000000 7500000 0
-    next_corner: -14000010 6500000 2
+  outline_polyline: 127000 -1600000 2600000 1 0 4
+    next_corner: -1600000 -2600000 0
+    next_corner: 1600000 -2600000 0
+    next_corner: 1600000 2600000 0
     close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 10.000, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -14000000 -6500000 0 0 4
-    next_corner: -13000000 -7500000 2
-    next_corner: 13000000 -7500000 0
-    next_corner: 14000000 -6500000 2
-    next_corner: 14000000 6500000 0
-    next_corner: 13000000 7500000 2
-    next_corner: -13000000 7500000 0
-    next_corner: -14000010 6500000 2
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// Like a cap //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  9.900 ])|    {|        *corner1*, 0.0 ])|        {|            // linear_extrude( 1.000, scale= 1.000 )|            hull()|            for(ang=[0:10:90.5])|            linear_extrude( 1.000*(ang>0.5?sin(ang):sin(10)/3.0), convexity=Convexity )|            offset(r=1.000*(cos(ang)-1))|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -11500000 -5000000 0 0 4
-    next_corner: -18500000 -5000000 0
-    next_corner: -23500000 0 1
-    next_corner: -18500000 5000000 1
-    next_corner: -11500000 5000000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// Like a cap //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        // linear_extrude( 2.000, scale= 1.000 )|        hull()|        for(ang=[0:10:90.5])|        linear_extrude( 2.000*(ang>0.5?sin(ang):sin(10)/3.0), convexity=Convexity )|        offset(r=2.000*(cos(ang)-1))|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -18500000 2000000 0 0 4
-    next_corner: -20500000 0 2
-    next_corner: -18500000 -2000000 2
-    next_corner: -16500000 0 2
-    close_polyline: 2
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 4.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 18500000 -2000000 0 0 4
-    next_corner: 20500000 0 2
-    next_corner: 18500000 2000000 2
-    next_corner: 16500000 0 2
-    close_polyline: 2
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 4.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 11500000 5000000 0 0 4
-    next_corner: 18500000 5000000 0
-    next_corner: 23500000 0 1
-    next_corner: 18500000 -5000000 1
-    next_corner: 11500000 -5000000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// Like a cap //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        // linear_extrude( 2.000, scale= 1.000 )|        hull()|        for(ang=[0:10:90.5])|        linear_extrude( 2.000*(ang>0.5?sin(ang):sin(10)/3.0), convexity=Convexity )|        offset(r=2.000*(cos(ang)-1))|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -12500000 6000000 0 0 4
-    next_corner: -12500000 -6000000 0
-    next_corner: 12500000 -6000000 0
-    next_corner: 12500000 6000000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 10.400, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -15500000 -5000000 0 1 4
-    next_corner: -14000000 -3500000 2
-    next_corner: -13500000 -3500000 0
-    next_corner: -13500000 -5500000 0
-    next_corner: -15500000 -5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  8.000,  2.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 90.000,  0.000,  0.000 ])|            {|                linear_extrude( 6.000, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 177800 -13500000 3000000 0 1 4
-    next_corner: -17100000 3000000 0
-    next_corner: -17100000 3480000 0
-    next_corner: -17000000 3500000 0
-    next_corner: -15500000 5000000 2
-    next_corner: -15480000 5500000 0
-    next_corner: -13500000 5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 2 1 27.000 -6.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        rotate([ 0.000,  -90.000,  0.000 ])|        {|            $fn = 40;|            rotate_extrude( angle= 360.000, convexity=Convexity ) |            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -13500000 3000000 0 0 4
-    next_corner: -17100000 3000000 0
-    next_corner: -17100000 3480000 0
-    next_corner: -17000000 3500000 0
-    next_corner: -15500000 5000000 2
-    next_corner: -15480000 5500000 0
-    next_corner: -13500000 5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 2 1 27.000 -6.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 27.000,  0.000,  0.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 0.000,  -90.000,  180.000 ])|            {|                $fn = 40;|                rotate_extrude( angle= 360.000, convexity=Convexity ) |                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 177800 15500000 -5000000 0 1 4
-    next_corner: 14000000 -3500000 1
-    next_corner: 13500000 -3500000 0
-    next_corner: 13500000 -5500000 0
-    next_corner: 15500000 -5500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  8.000,  2.000 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 90.000,  0.000,  0.000 ])|            {|                linear_extrude( 6.000, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  outline_polyline: 177800 -18000000 8500000 0 0 4
-    next_corner: -18000000 -8500000 0
-    next_corner: 18000000 -8500000 0
-    next_corner: 18000000 8500000 0
-    close_polyline: 0
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  -10.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 10.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  outline_polyline: 177800 -6000000 -5000000 0 0 4
-    next_corner: -7000000 -6000000 2
-    next_corner: -6000000 -7000000 2
-    next_corner: -5000000 -6000000 2
-    close_polyline: 2
-    openscad_data: "// Global lift -8.000mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 4 1 1 4.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  2.500 ])|    {|        *corner1*, 0.0 ])|        {|            rotate([ 90.000,  0.000,  0.000 ])|            {|                linear_extrude( 5.000, scale= 1.000, convexity=Convexity )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
-  n_pins: 0
+  n_pins: 2
+    pin: "1" 0 0 -1600000 270 ""
+      top_pad: 3 2000000 600000 600000 0
+    pin: "2" 0 0 1600000 90 ""
+      top_pad: 3 2000000 600000 600000 0
 
-name: "Shield"
+name: "PLS-3R2"
 author: "Ivex"
-package: "Shield"
+package: "PLS-3R2"
   units: NM
-  sel_rect: 2147458250 2147458250 -2147458250 -2147458250
-  ref_text: 1270000 2000000 -5000000 0 177800
-  value_text: 1270000 1950000 -6540000 0 177800
+  sel_rect: -4088900 -3088900 4088900 3088900
+  ref_text: 1270000 1066800 4064000 0 177800
+  value_text: 1270000 1066800 1524000 0 177800
   centroid: 0 0 0 0
-  outline_polyline: 177800 -9000000 2500000 0 0 4
-    next_corner: -10000000 1500000 2
-    next_corner: -10000000 -1500000 0
-    next_corner: -9000000 -2500000 2
-    next_corner: 9000000 -2500000 0
-    next_corner: 10000000 -1500000 2
-    next_corner: 10000000 1500000 0
-    next_corner: 9000000 2500000 2
+  outline_polyline: 127000 -4000000 3000000 1 0 4
+    next_corner: -4000000 -3000000 0
+    next_corner: 4000000 -3000000 0
+    next_corner: 4000000 3000000 0
     close_polyline: 0
-    openscad_data: "// hull()/*fill the space*/ //|// Global lift 0.000mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
-  outline_polyline: 177800 -9000000 3500000 0 0 4
-    next_corner: -11000000 1500000 2
-    next_corner: -11000000 -1500000 0
-    next_corner: -9000000 -3500000 2
-    next_corner: 9000000 -3500000 0
-    next_corner: 11000000 -1500000 2
-    next_corner: 11000000 1500000 0
-    next_corner: 9000000 3500000 2
+  n_pins: 3
+    pin: "1" 0 -2540000 0 0 ""
+      top_pad: 5 5000000 1000000 1000000 1000000
+    pin: "2" 0 0 0 0 ""
+      top_pad: 5 5000000 1000000 1000000 1000000
+    pin: "3" 0 2540000 0 0 ""
+      top_pad: 5 5000000 1000000 1000000 1000000
+
+name: "C0603"
+author: "Ivex"
+package: "C0603"
+  units: NM
+  sel_rect: -1460000 -710000 1460000 710000
+  ref_text: 1270000 1600000 1100000 0 177800
+  value_text: 1270000 1500000 -500000 0 177800
+  centroid: 0 0 100 0
+  openscad_code: "translate([0,0,0]) // (automatic adjustment when moving the footprint origin)"
+  openscad_code: "scale([1,1,1])     // (automatic adjustment when changing the project units)"
+  openscad_code: "{"
+  openscad_code: "    //-------------------"
+  openscad_code: "    // add your code here, for example:"
+  openscad_code: "    color(`Aqua`)"
+  openscad_code: "    translate([0,0,0])"
+  openscad_code: "    rotate([0,0,0])"
+  openscad_code: "    import(`C_0603_1608Metric.stl`);"
+  openscad_code: "    //-------------------"
+  openscad_code: "}"
+  outline_polyline: 120000 -1050000 650000 1 0 4
+    next_corner: -1400000 300000 2
+    next_corner: -1400000 -250000 0
+    next_corner: -1000000 -650000 2
+    next_corner: 1000000 -650000 0
+    next_corner: 1400000 -250000 2
+    next_corner: 1400000 300000 0
+    next_corner: 1050000 650000 2
     close_polyline: 0
-    openscad_data: "// Global rotation 0.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.5,0.5,0.5]` )|{|    translate([ 0.000,  0.000,  1.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
-  n_pins: 0
+    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|"
+  n_pins: 2
+    pin: "1" 0 -825000 200 0 ""
+      top_pad: 4 1000000 400000 400000 200000
+    pin: "2" 0 825000 0 0 ""
+      top_pad: 4 1000000 400000 400000 200000
+
+name: "5mm"
+author: "Ivex"
+package: "5mm"
+  units: NM
+  sel_rect: -3914300 -1314300 3914300 1314300
+  ref_text: 1270000 0 2032000 0 177800
+  value_text: 1270000 0 -508000 0 177800
+  centroid: 0 0 0 0
+  outline_polyline: 177800 -3800000 0 1 0 4
+    next_corner: -2600000 1200000 1
+    next_corner: 2600000 1200000 0
+    next_corner: 3800000 0 1
+    next_corner: 2600000 -1200000 1
+    next_corner: -2600000 -1200000 0
+    close_polyline: 1
+  n_pins: 2
+    pin: "1" 1000000 -2540000 0 0 ""
+      top_pad: 1 2000000 1000000 1000000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 2000000 1000000 1000000 0
+    pin: "2" 1000000 2540000 0 0 ""
+      top_pad: 1 2000000 1000000 1000000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 2000000 1000000 1000000 0
+
+name: "REF"
+author: "Duxah"
+package: "REF"
+description: "Pads"
+  units: NM
+  sel_rect: -1000000 -1000000 1000000 1000000
+  ref_text: 900000 1300000 700000 0 150000
+  value_text: 700000 1200000 -300000 0 100000
+  centroid: 0 0 0 0
+  n_pins: 1
+    pin: "1" 0 0 0 0 ""
+      top_pad: 2 1000000 500000 500000 0
+      top_mask: 4 2000000 1000000 1000000 500000
+      top_paste: 0 0 0 0 0
+
+name: "R0603"
+author: "Ivex"
+package: "R0603"
+  units: NM
+  sel_rect: -1460000 -710000 1460000 710000
+  ref_text: 1270000 850000 1900000 0 177800
+  value_text: 1270000 850000 -640000 0 177800
+  centroid: 0 0 100 0
+  openscad_code: "translate([0,0,0]) // (automatic adjustment when moving the footprint origin)"
+  openscad_code: "scale([1,1,1])     // (automatic adjustment when changing the project units)"
+  openscad_code: "{"
+  openscad_code: "    //-------------------"
+  openscad_code: "    // add your code here, for example:"
+  openscad_code: "    color(`Aqua`)"
+  openscad_code: "    translate([0,0,0])"
+  openscad_code: "    rotate([0,0,0])"
+  openscad_code: "    import(`R_0603_1608Metric.stl`);"
+  openscad_code: "    //-------------------"
+  openscad_code: "}"
+  outline_polyline: 120000 300000 500000 1 0 4
+    next_corner: -300000 500000 0
+    next_corner: -450000 650000 0
+    next_corner: -1050000 650000 0
+    next_corner: -1400000 300000 2
+    next_corner: -1400000 -250000 0
+    next_corner: -1000000 -650000 2
+    next_corner: -450000 -650000 0
+    next_corner: -300000 -500000 0
+    next_corner: 300000 -500000 0
+    next_corner: 450000 -650000 0
+    next_corner: 1000000 -650000 0
+    next_corner: 1400000 -250000 2
+    next_corner: 1400000 300000 0
+    next_corner: 1050000 650000 2
+    next_corner: 450000 650000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0 mm //|// Global rotation 0.0 //|"
+  n_pins: 2
+    pin: "1" 0 -825000 200 0 ""
+      top_pad: 4 1000000 400000 400000 200000
+    pin: "2" 0 825000 0 0 ""
+      top_pad: 4 1000000 400000 400000 200000
+
+name: "KEM-3361AR"
+package: "KEM-3361AR"
+  units: NM
+  sel_rect: -12152400 -7152400 12152400 7152400
+  ref_text: 300000 0 500000 0 50000
+  value_text: 300000 0 0 0 50000
+  centroid: 0 0 0 0
+  openscad_code: "translate([0,0,0]) // (automatic adjustment when moving the footprint origin)"
+  openscad_code: "scale([1,1,1])     // (automatic adjustment when changing the project units)"
+  openscad_code: "{"
+  openscad_code: "    //-------------------"
+  openscad_code: "    // add your code here, for example:"
+  openscad_code: "    //color(`Aqua`)"
+  openscad_code: "    translate([-65.7,-20,7.5])"
+  openscad_code: "    rotate([0,0,0])"
+  openscad_code: "    Pcb_Grainger_03(1);"
+  openscad_code: "    //-------------------"
+  openscad_code: "}"
+  openscad_module: " include <Grainger_03.lib>"
+  outline_polyline: 254000 -12000000 7000000 1 0 4
+    next_corner: -12000000 -7000000 0
+    next_corner: 12000000 -7000000 0
+    next_corner: 12000000 7000000 0
+    close_polyline: 0
+    openscad_data: "// Global lift -2.500mm //|// Global rotation 0.000 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Chocolate` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 7.200, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
+  outline_polyline: 100000 -6560000 5280000 0 0 4
+    next_corner: -6560000 4860000 0
+    next_corner: -6140000 4860000 0
+    next_corner: -6140000 5280000 0
+    close_polyline: 0
+    openscad_data: "// Global lift -2.500mm //|// Global rotation 0.000 //|// matrix: 6 2 1 2.540 -10.160 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    translate([ 0.000,  0.000,  -2.500 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 3.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 127000 -8000000 3800000 0 0 4
+    next_corner: -8000000 800000 0
+    next_corner: -7600000 200000 0
+    next_corner: -8000000 -400000 0
+    next_corner: -8000000 -3600000 0
+    next_corner: -7400000 -4200000 0
+    next_corner: -4000000 -4200000 0
+    next_corner: -3400000 -3600000 0
+    next_corner: -3400000 -400000 0
+    next_corner: -3800000 200000 0
+    next_corner: -3400000 800000 0
+    next_corner: -3400000 3800000 0
+    next_corner: -4000000 4400000 0
+    next_corner: -7400000 4400000 0
+    close_polyline: 0
+    openscad_data: "// Global lift -2.500mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 3 1 1 6.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Navy` )|{|    translate([ 0.000,  0.000,  7.100 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 127000 -4600000 3800000 0 0 4
+    next_corner: -7000000 3800000 0
+    next_corner: -7600000 4000000 0
+    next_corner: -7200000 3400000 0
+    next_corner: -7200000 800000 0
+    next_corner: -7600000 200000 0
+    next_corner: -7200000 -400000 0
+    next_corner: -7200000 -3200000 0
+    next_corner: -7600000 -3800000 0
+    next_corner: -7000000 -3600000 0
+    next_corner: -4400000 -3600000 0
+    next_corner: -3800000 -3800000 0
+    next_corner: -4200000 -3200000 0
+    next_corner: -4200000 -400000 0
+    next_corner: -3800000 200000 0
+    next_corner: -4200000 800000 0
+    next_corner: -4200000 3400000 0
+    next_corner: -3800000 4000000 0
+    close_polyline: 0
+    openscad_data: "// Global lift -2.500mm //|// Global rotation 0.000 //|// it's a hole //|// matrix: 3 1 1 6.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Chocolate` )|{|    translate([ 0.000,  0.000,  7.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 127000 -3000000 -3600000 0 0 4
+    next_corner: -3000000 -4400000 0
+    next_corner: -2200000 -4400000 0
+    next_corner: -2200000 -3600000 0
+    close_polyline: 0
+    openscad_data: "// it's a hole //|// Global rotation 0.000 //|// Global lift -2.500mm //|// matrix: 2 1 1 6.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Navy` )|{|    translate([ 0.000,  0.000,  7.100 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  n_pins: 12
+    pin: "1" 800000 -6350000 -5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "2" 800000 -3810000 -5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "3" 800000 -1270000 -5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "4" 800000 1270000 -5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "5" 800000 3810000 -5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "6" 800000 6350000 -5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "7" 800000 6350000 5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "8" 800000 3810000 5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "9" 800000 1270000 5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "10" 800000 -1270000 5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "11" 800000 -3810000 5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+    pin: "12" 800000 -6350000 5080000 0 ""
+      top_pad: 1 1300000 650000 650000 0
+      inner_pad: 1 1300000 650000 650000 0 0
+      bottom_pad: 1 1300000 650000 650000 0
+
+name: "Pad2x2"
+author: "Duxah"
+package: "Pad2x2"
+description: "Pads"
+  units: NM
+  sel_rect: -774700 -774700 774700 774700
+  ref_text: 900000 1300000 700000 0 150000
+  value_text: 700000 1200000 -300000 0 100000
+  centroid: 0 0 0 0
+  n_pins: 1
+    pin: "1" 1500000 0 0 0 ""
+      top_pad: 0 2000000 1500000 1500000 1000000
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 0 2000000 1500000 1500000 1000000
+
+name: "SMA"
+author: "Ivex"
+package: "SMA"
+  units: NM
+  sel_rect: -3500400 -2100400 3500400 2100400
+  ref_text: 1270000 0 2600000 0 177800
+  value_text: 1270000 0 60000 0 177800
+  centroid: 0 0 0 0
+  outline_polyline: 150000 -3400000 1600000 1 0 4
+    next_corner: -2500000 1600000 0
+    next_corner: -2500000 2000000 0
+    next_corner: 2500000 2000000 0
+    next_corner: 2500000 1600000 0
+    next_corner: 3400000 1600000 0
+    next_corner: 3400000 -1600000 0
+    next_corner: 2500000 -1600000 0
+    next_corner: 2500000 -2000000 0
+    next_corner: -2500000 -2000000 0
+    next_corner: -2500000 -1600000 0
+    next_corner: -3400000 -1600000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
+  outline_polyline: 600000 -2300000 1700000 0 0 7
+    next_corner: -2300000 -1700000 0
+    next_corner: 2300000 -1700000 0
+    next_corner: 2300000 1700000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|// Consider line width //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 8 //|color( `[0.2,0.2,0.2]` )|{|    minkowski()|    {|        $fn = 8;|        translate([ 0.000,  0.000,  1.200 ])|        {|            *corner1*, 0.0 ])|            {|                *center1*, 0.0 ])|                {|                    linear_extrude( 1.000, scale= 0.900, convexity=Convexity )|                    {|                        polygon([ *content* ]);|                    }|                }|            }|        }|        sphere( *width* );|    }|}|"
+  outline_polyline: 177800 1600000 1700000 0 1 7
+    next_corner: 1600000 -1700000 0
+    next_corner: 2200000 -1700000 0
+    next_corner: 2200000 1700000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|// it's a hole //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `White` )|{|    translate([ 0.000,  0.000,  2.400 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 1.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 177800 -2700000 1000000 0 0 7
+    next_corner: -2700000 -1000000 0
+    next_corner: 2700000 -1000000 0
+    next_corner: 2700000 1000000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 1.500, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
+  outline_polyline: 600000 -2300000 0 0 0 7
+    next_corner: -2300000 -1700000 0
+    next_corner: 2300000 -1700000 0
+    next_corner: 2300000 1700000 0
+    next_corner: -2300000 1700000 0
+    close_polyline: 0
+    openscad_data: "// Consider line width //|// Global rotation 0.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 8 //|color( `[0.2,0.2,0.2]` )|{|    minkowski()|    {|        $fn = 8;|        translate([ 0.000,  0.000,  1.200 ])|        {|            *corner1*, 0.0 ])|            {|                rotate([ 180.000,  0.000,  0.000 ])|                {|                    *center1*, 0.0 ])|                    {|                        linear_extrude( 1.200, scale= 0.900, convexity=Convexity )|                        {|                            polygon([ *content* ]);|                        }|                    }|                }|            }|        }|        sphere( *width* );|    }|}|"
+  outline_polyline: 150000 -1000000 0 1 1 4
+    next_corner: 1000000 0 0
+  outline_polyline: 150000 -600000 0 1 1 4
+    next_corner: -600000 600000 0
+    next_corner: 600000 0 0
+    next_corner: -600000 -600000 0
+    close_polyline: 0
+  outline_polyline: 150000 600000 600000 1 1 4
+    next_corner: 600000 -600000 0
+  n_pins: 2
+    pin: "1" 0 -2200000 0 0 ""
+      top_pad: 3 2600000 900000 900000 0
+    pin: "2" 0 2200000 0 0 ""
+      top_pad: 3 2600000 900000 900000 0
+
+name: "SFM_1440_1241"
+author: "i"
+package: "SFM_1440_1241"
+description: "Crystals"
+  units: NM
+  sel_rect: -7563500 -9500000 7563500 9500000
+  ref_text: 2540000 500000 4500000 0 254000
+  value_text: 2540000 500000 1500000 0 254000
+  centroid: 0 0 0 0
+  outline_polyline: 127000 3000000 7500000 1 0 4
+    next_corner: 0 4500000 1
+    next_corner: -3000000 7500000 1
+    next_corner: -7500000 7500000 0
+    next_corner: -7500000 -7500000 0
+    next_corner: -3000000 -7500000 0
+    next_corner: 0 -4500000 1
+    next_corner: 3000000 -7500000 1
+    next_corner: 7500000 -7500000 0
+    next_corner: 7500000 7500000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
+  outline_polyline: 1000000 0 2500000 1 1 15
+    next_corner: 0 7500000 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
+  outline_polyline: 1000000 0 -2500000 1 1 15
+    next_corner: 0 -7500000 0
+    openscad_data: "// Global lift 0.0mm //|// Global rotation 0.0 //|"
+  outline_polyline: 127000 -7000000 7000000 0 0 7
+    next_corner: -7000000 -7000000 0
+    next_corner: 7000000 -7000000 0
+    next_corner: 7000000 7000000 0
+    close_polyline: 0
+    openscad_data: "// Global rotation 0.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `DimGray` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 3.000, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
+  n_pins: 4
+    pin: "1" 0 0 7500000 0 ""
+      top_pad: 4 4000000 1500000 1500000 500000
+    pin: "2" 0 0 -7500000 0 ""
+      top_pad: 4 4000000 1500000 1500000 500000
+    pin: "1" 1000000 0 2500000 0 ""
+      top_pad: 1 2000000 1000000 1000000 0
+      top_mask: 0 0 0 0 0
+      top_paste: 0 0 0 0 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 2000000 1000000 1000000 0
+    pin: "2" 1000000 0 -2500000 0 ""
+      top_pad: 1 2000000 1000000 1000000 0
+      top_mask: 0 0 0 0 0
+      top_paste: 0 0 0 0 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 2000000 1000000 1000000 0
+
+name: "6SIP79"
+author: "Ivex"
+package: "6SIP79"
+  units: NM
+  sel_rect: -1358900 -1358900 11341100 1358900
+  ref_text: 1270000 800000 1800000 0 177800
+  value_text: 1270000 5200000 1800000 0 177800
+  centroid: 0 5000000 0 0
+  outline_polyline: 177800 -1270000 1270000 1 0 4
+    next_corner: 11252200 1270000 0
+    next_corner: 11252200 -1270000 0
+    next_corner: -1270000 -1270000 0
+    close_polyline: 0
+    openscad_data: "// Global lift -2mm //|// Global rotation 0.0 //|"
+  outline_polyline: 127000 -200000 200000 0 0 7
+    next_corner: -200000 -200000 0
+    next_corner: 200000 -200000 0
+    next_corner: 200000 200000 0
+    close_polyline: 0
+    openscad_data: "// Global lift -2mm //|// Global rotation 0.0 //|// matrix: 6 1 1 2.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    translate([ 0.000,  0.000,  -2.000 ])|    {|        *corner1*, 0.0 ])|        {|            linear_extrude( 8.800, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 127000 1000000 500000 0 0 7
+    next_corner: 500000 1000000 0
+    next_corner: -500000 1000000 0
+    next_corner: -1000000 500000 0
+    next_corner: -1000000 -500000 0
+    next_corner: -500000 -1000000 0
+    next_corner: 500000 -1000000 0
+    next_corner: 1000000 -500000 0
+    close_polyline: 0
+    openscad_data: "// Global rotation 0.000 //|// Global lift -2.000mm //|// matrix: 6 1 1 2.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Black` )|{|    *corner1*, 0.0 ])|    {|        linear_extrude( 2.000, scale= 1.000, convexity=Convexity )|        {|            polygon([ *content* ]);|        }|    }|}|"
+  n_pins: 6
+    pin: "1" 1000000 0 0 0 ""
+      top_pad: 2 1500000 750000 750000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 2 1500000 750000 750000 0
+    pin: "2" 1000000 2000000 0 0 ""
+      top_pad: 1 1500000 750000 750000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 1500000 750000 750000 0
+    pin: "3" 1000000 4000000 0 0 ""
+      top_pad: 1 1500000 750000 750000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 1500000 750000 750000 0
+    pin: "4" 1000000 6000000 0 0 ""
+      top_pad: 1 1500000 750000 750000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 1500000 750000 750000 0
+    pin: "5" 1000000 8000000 0 0 ""
+      top_pad: 1 1500000 750000 750000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 1500000 750000 750000 0
+    pin: "6" 1000000 10000000 0 0 ""
+      top_pad: 1 1500000 750000 750000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 1500000 750000 750000 0
+
+name: "QSOP-20"
+author: "unknown"
+package: "QSOP-20"
+description: "none"
+  units: NM
+  sel_rect: -3800400 -4500400 3800400 4500400
+  ref_text: 300000 0 500000 0 50000
+  value_text: 300000 0 0 0 50000
+  centroid: 0 0 0 0
+  outline_polyline: 350000 -3570880 -4300000 1 0 4
+    next_corner: 3600000 -4300000 0
+    next_corner: 3600000 -1900000 0
+    next_corner: 2900000 -1200000 0
+    next_corner: 2900000 1200000 0
+    next_corner: 3600000 1900000 0
+    next_corner: 3600000 4300000 0
+    next_corner: -3600000 4300000 0
+    next_corner: -3600000 1900000 0
+    next_corner: -2883310 1183310 0
+    next_corner: -2883310 -1183310 0
+    next_corner: -3600000 -1900000 0
+    next_corner: -3600000 -4270120 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||"
+  outline_polyline: 100000 -11200000 -600000 0 1 7
+    next_corner: -7100000 -600000 0
+    next_corner: -6900000 0 0
+    next_corner: -7100000 600000 0
+    next_corner: -10800000 600000 0
+    next_corner: -10900000 500000 0
+    next_corner: -11000000 600000 0
+    next_corner: -11200000 600000 0
+    next_corner: -11400000 0 0
+    close_polyline: 0
+    openscad_data: "// Global rotation 90.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `Brown` )|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            linear_extrude( 6.600, scale= 1.000, convexity=2 )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 150000 -11600000 -700000 0 1 4
+    next_corner: -12200000 -700000 0
+    next_corner: -12200000 -500000 0
+    next_corner: -11800000 -500000 0
+    next_corner: -11800000 200000 0
+    next_corner: -6500000 200000 0
+    next_corner: -6500000 -500000 0
+    next_corner: -6100000 -500000 0
+    next_corner: -6100000 -700000 0
+    next_corner: -6700000 -700000 0
+    next_corner: -6700000 0 0
+    next_corner: -11600000 0 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// |// |// matrix: 1 10 1 0.000 0.650 0.000 //|// resolution $fn = 20 //|color( `Aqua` )|{|    translate([ 0.000,  -5.950,  0.000 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            linear_extrude( 0.400, scale= 1.000 )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  n_pins: 20
+    pin: "1" 0 -2925000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "2" 0 -2275000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "3" 0 -1625000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "4" 0 -975000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "17" 0 -975000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "18" 0 -1625000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "19" 0 -2275000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "20" 0 -2925000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "6" 0 325000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "7" 0 975000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "8" 0 1625000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "9" 0 2275000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "10" 0 2925000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "15" 0 325000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "14" 0 975000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "13" 0 1625000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "12" 0 2275000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "11" 0 2925000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "5" 0 -325000 -2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+    pin: "16" 0 -325000 2860000 180 ""
+      top_pad: 5 2000000 200000 200000 200000
+
+name: "Pad8H4"
+author: "Duxah"
+package: "Pad8H4"
+description: "Pads"
+  units: NM
+  sel_rect: -3025140 -3025140 3025140 3025140
+  ref_text: 900000 1300000 700000 0 150000
+  value_text: 700000 1200000 -300000 0 100000
+  centroid: 0 0 0 0
+  n_pins: 1
+    pin: "1" 4000000 0 0 0 ""
+      top_pad: 1 6000000 3000000 3000000 0
+      inner_pad: 0 0 0 0 0 0
+      bottom_pad: 1 6000000 3000000 3000000 0
+
+name: "SOT-232"
+author: "Duxah"
+package: "SOT-23"
+description: "Chips"
+  units: NM
+  sel_rect: -1980400 -1778000 1980400 1778000
+  ref_text: 900000 -1397000 2286000 0 100000
+  value_text: 600000 -1651000 1397000 0 100000
+  centroid: 0 0 0 0
+  outline_polyline: 100000 -635000 889000 1 0 4
+    next_corner: -1651000 889000 0
+    next_corner: -1905000 635000 0
+    next_corner: -1905000 -508000 0
+    next_corner: -1651000 -762000 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|"
+  outline_polyline: 100000 635000 889000 1 0 4
+    next_corner: 1651000 889000 0
+    next_corner: 1905000 635000 0
+    next_corner: 1905000 -508000 0
+    next_corner: 1651000 -762000 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||"
+  outline_polyline: 100000 -381000 -762000 1 0 4
+    next_corner: 381000 -762000 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||"
+  outline_polyline: 25400 -4318000 1143000 0 0 7
+    next_corner: -4218000 1643000 0
+    next_corner: -3018000 1643000 0
+    next_corner: -2918000 1143000 0
+    next_corner: -3018000 643000 0
+    next_corner: -4218000 643000 0
+    close_polyline: 0
+    openscad_data: "// Global rotation 90.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.1,0.1,0.1]` )|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            linear_extrude( 3.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 25400 -4118000 1143000 0 0 7
+    next_corner: -4118000 1343000 0
+    next_corner: -4518000 1343000 0
+    next_corner: -4618000 743000 0
+    next_corner: -4818000 743000 0
+    next_corner: -4818000 543000 0
+    next_corner: -4518000 543000 0
+    next_corner: -4418000 1143000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||// Rotation around vertex1 //|// matrix: 1 2 1 0.000 2.000 0.000 //|// resolution $fn = 20 //|translate([ 0.000,  -2.200,  0.000 ])|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            color( `Aqua` )|            {|                linear_extrude( 0.600 )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
+  outline_polyline: 25400 -3118000 1143000 0 0 7
+    next_corner: -3118000 1343000 0
+    next_corner: -2718000 1343000 0
+    next_corner: -2618000 743000 0
+    next_corner: -2418000 743000 0
+    next_corner: -2418000 543000 0
+    next_corner: -2718000 543000 0
+    next_corner: -2818000 1143000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||// Rotation around vertex1 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|translate([ 0.000,  -1.200,  0.000 ])|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            color( `Aqua` )|            {|                linear_extrude( 0.600 )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
+  n_pins: 3
+    pin: "3" 0 0 1143000 0 ""
+      top_pad: 3 1219200 508000 508000 0
+    pin: "1" 0 -1016000 -1143000 0 ""
+      top_pad: 3 1219200 508000 508000 0
+    pin: "2" 0 1016000 -1143000 0 ""
+      top_pad: 3 1219200 508000 508000 0
+
+name: "SOT-23"
+author: "Duxah"
+package: "SOT-23"
+description: "Chips"
+  units: NM
+  sel_rect: -1980400 -2924810 1980400 1778000
+  ref_text: 900000 -1397000 2286000 0 100000
+  value_text: 600000 -1651000 1397000 0 100000
+  centroid: 0 0 0 0
+  outline_polyline: 100000 -635000 889000 1 0 4
+    next_corner: -1651000 889000 0
+    next_corner: -1905000 635000 0
+    next_corner: -1905000 -508000 0
+    next_corner: -1651000 -762000 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|"
+  outline_polyline: 100000 635000 889000 1 0 4
+    next_corner: 1651000 889000 0
+    next_corner: 1905000 635000 0
+    next_corner: 1905000 -508000 0
+    next_corner: 1651000 -762000 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||"
+  outline_polyline: 100000 -381000 -762000 1 0 4
+    next_corner: 381000 -762000 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||"
+  outline_polyline: 25400 -4318000 1143000 0 0 7
+    next_corner: -4218000 1643000 0
+    next_corner: -3018000 1643000 0
+    next_corner: -2918000 1143000 0
+    next_corner: -3018000 643000 0
+    next_corner: -4218000 643000 0
+    close_polyline: 0
+    openscad_data: "// Global rotation 90.000 //|// Global lift 0.000mm //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|color( `[0.1,0.1,0.1]` )|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            linear_extrude( 3.000, scale= 1.000, convexity=Convexity )|            {|                polygon([ *content* ]);|            }|        }|    }|}|"
+  outline_polyline: 25400 -4118000 1143000 0 0 7
+    next_corner: -4118000 1343000 0
+    next_corner: -4518000 1343000 0
+    next_corner: -4618000 743000 0
+    next_corner: -4818000 743000 0
+    next_corner: -4818000 543000 0
+    next_corner: -4518000 543000 0
+    next_corner: -4418000 1143000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||// Rotation around vertex1 //|// matrix: 1 2 1 0.000 2.000 0.000 //|// resolution $fn = 20 //|translate([ 0.000,  -2.200,  0.000 ])|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            color( `Aqua` )|            {|                linear_extrude( 0.600 )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
+  outline_polyline: 25400 -3118000 1143000 0 0 7
+    next_corner: -3118000 1343000 0
+    next_corner: -2718000 1343000 0
+    next_corner: -2618000 743000 0
+    next_corner: -2418000 743000 0
+    next_corner: -2418000 543000 0
+    next_corner: -2718000 543000 0
+    next_corner: -2818000 1143000 0
+    close_polyline: 0
+    openscad_data: "// Global lift 0.0 //|// Global rotation 90.0 //|// // // // // // // |||||||// // // // // // // |||||||// Rotation around vertex1 //|// matrix: 1 1 1 0.000 0.000 0.000 //|// resolution $fn = 20 //|translate([ 0.000,  -1.200,  0.000 ])|{|    *corner1*, 0.0 ])|    {|        rotate([ 90.000,  0.000,  0.000 ])|        {|            color( `Aqua` )|            {|                linear_extrude( 0.600 )|                {|                    polygon([ *content* ]);|                }|            }|        }|    }|}|"
+  outline_polyline: 1000000 1000000 -2400000 1 1 15
+    next_corner: 1000000 -1200000 0
+  n_pins: 4
+    pin: "3" 0 0 1143000 0 ""
+      top_pad: 3 1219200 508000 508000 0 1
+    pin: "1" 0 -1016000 -1143000 0 ""
+      top_pad: 3 1219200 508000 508000 0 1
+    pin: "2" 0 1016000 -1143000 0 ""
+      top_pad: 3 1219200 508000 508000 0 1
+    pin: "2" 500000 1000000 -2400000 0 ""
+      top_pad: 1 1000000 500000 500000 0 1
+      top_mask: 0 0 0 0 0
+      top_paste: 0 0 0 0 0
+      inner_pad: 0 0 0 0 0 1
+      bottom_pad: 1 1000000 500000 500000 0
+      bottom_mask: 0 0 0 0 0
+      bottom_paste: 0 0 0 0 0
 
 [board]
+
+outline: 17 0 254000 1 4 -1
+  corner: 1 -17068140 -102000046 0 0
+  corner: 2 -17596880 -98457106 0 0
+  corner: 3 -18964668 -89443166 0 0
+  corner: 4 -20479368 -78541082 0 0
+  corner: 5 -21597512 -68373974 0 0
+  corner: 6 -22234740 -59646130 0 0
+  corner: 7 -22400004 -56300051 0 0
+  corner: 8 -22400008 -45700050 0 0
+  corner: 9 -22023852 -36744938 0 0
+  corner: 10 -21282684 -29130445 0 0
+  corner: 11 -20188064 -20180946 0 0
+  corner: 12 -18955344 -11566082 0 0
+  corner: 13 -17801676 -4015782 0 0
+  corner: 14 -17185848 -54 0 0
+  corner: 15 -1000020 -50 0 0
+  corner: 16 -1000012 -51000050 0 0
+  corner: 17 -1000000 -102000050 0 0
 
 
 [solder_mask_cutouts]
@@ -385,21 +964,2786 @@ package: "Shield"
 
 [parts]
 
-part: VIA1
-  ref_text: 0 0 0 0 0 0
-  shape: "Package"
-  pos: 0 0 0 180 0
+part: HG2
+  ref_text: 1200000 120000 0 -1120775 7431050 1
+  shape: "KEM-3361AR"
+  merge: 4 -1
+  value: "KEM-3361AR" 300000 50000 0 0 0 0
+  pos: -12646012 -51000049 0 90 0
 
-part: VIA2
-  ref_text: 0 0 0 0 0 0
-  shape: "Shield"
-  pos: 0 0 0 180 0
+part: X1
+  ref_text: 1200000 120000 270 5638124 1662761 1
+  shape: "6SIP79"
+  merge: 4 -1
+  value: "DS1025-01-1X6P8BV1-B" 1270000 177800 0 6350000 0 0
+  pos: -7500016 -68926046 0 180 0
+
+part: X2
+  ref_text: 1200000 120000 90 11644970 765818 1
+  shape: "6SIP79"
+  merge: 4 -1
+  value: "DS1025-01-1X6P8BV1-B" 0 254000 0 2540000 0 0
+  pos: -17500016 -32926049 0 0 0
+
+part: X3
+  ref_text: 1000000 120000 270 549101 -2746069 1
+  shape: "5mm"
+  merge: 4 -1
+  value: "1218GE-N20" 1270000 177800 0 0 -508000 0
+  pos: -14421008 -89126050 1 0 0
+
+part: X4
+  ref_text: 1000000 120000 0 2530485 -2570051 1
+  shape: "5mm"
+  merge: 4 -1
+  value: "Power" 1270000 177800 0 0 -508000 0
+  pos: -12561004 -78200054 1 90 0
+
+part: X5
+  ref_text: 1000000 120000 90 -549995 2768929 1
+  shape: "5mm"
+  merge: 4 -1
+  value: "PURO-XD-12" 1270000 177800 0 0 -508000 0
+  pos: -5960020 -89126050 1 180 0
+
+part: D1
+  ref_text: 1000000 120000 90 -549622 5695680 1
+  shape: "QSOP-20"
+  merge: 4 -1
+  value: "CH32V003F4P6" 300000 50000 0 0 0 0
+  pos: -12525012 -41400052 1 180 0
+
+part: DA1
+  ref_text: 1000000 120000 90 2259040 -690369 1
+  shape: "SOT-232"
+  merge: 4 -1
+  value: "RS3007-3.3AYF3" 600000 100000 0 -1651000 1397000 0
+  pos: -7046008 -73800050 1 180 0
+
+part: C1
+  ref_text: 1000000 120000 0 -2636540 -548925 1
+  shape: "C0603"
+  merge: 4 -1
+  value: "1uF" 1270000 177800 0 1500000 -500000 0
+  pos: -9846020 -79915046 1 90 0
+
+part: C2
+  ref_text: 1000000 120000 90 -550030 2105550 1
+  shape: "C0603"
+  merge: 4 -1
+  value: "0.1" 1270000 177800 0 1500000 -500000 0
+  pos: -3446012 -38539852 1 180 0
+
+part: VT1
+  ref_text: 1000000 120000 0 -910674 2107244 1
+  shape: "SOT-23"
+  merge: 4 -1
+  value: "IRLML2502" 600000 100000 0 -1651000 1397000 0
+  pos: -3420016 -78926046 1 180 0
+
+part: C11
+  ref_text: 1000000 120000 0 -3116050 -548925 1
+  shape: "C0603"
+  merge: 4 -1
+  value: "1uF" 1270000 177800 0 1500000 -500000 0
+  pos: -9846012 -74118050 1 90 0
+
+part: X7
+  ref_text: 1000000 120000 0 -659634 3367620 1
+  shape: "PLS-3R2"
+  merge: 4 -1
+  value: "PROG" 1270000 177800 0 1066800 1524000 0
+  pos: -8340016 -26211049 1 90 0
+
+part: VT4
+  ref_text: 1000000 120000 0 -1029795 2107244 1
+  shape: "SOT-23"
+  merge: 4 -1
+  value: "IRLML2502" 600000 100000 0 -1651000 1397000 0
+  pos: -16961004 -78926046 1 180 0
+
+part: C13
+  ref_text: 1000000 120000 270 2744590 -822920 1
+  shape: "C0603"
+  merge: 4 -1
+  value: "1uF" 1270000 177800 0 1500000 -500000 0
+  pos: -8325012 -71000050 1 0 0
+
+part: HA1
+  ref_text: 1000000 120000 180 909602 10831360 1
+  shape: "SFM_1440_1241"
+  merge: 4 -1
+  value: "SMD piezoemitter" 1270000 177800 0 2540000 6992000 0
+  pos: -9846016 -11400050 1 0 0
+
+part: R2
+  ref_text: 1000000 120000 270 548601 1015869 1
+  shape: "R0603"
+  merge: 4 -1
+  value: "100k" 1270000 177800 0 850000 -640000 0
+  pos: -17152000 -74600054 1 0 0
+
+part: R1
+  ref_text: 1000000 120000 270 -1165000 1100000 1
+  shape: "R0603"
+  merge: 4 -1
+  value: "100k" 1270000 177800 0 850000 -640000 0
+  pos: -3611016 -74600050 1 0 0
+
+part: L1
+  ref_text: 1000000 120000 270 -2100000 2540000 1
+  shape: "NLV32T"
+  merge: 4 -1
+  value: "NLV32T-471J-EF" 1270000 177800 0 4560000 -380800 0
+  pos: -7046008 -79140050 1 0 0
+
+part: VD3
+  ref_text: 1000000 120000 90 3778979 996409 1
+  shape: "SMA"
+  merge: 4 -1
+  value: "ES1D" 1270000 177800 0 0 60000 0
+  pos: -14761008 -84526050 1 180 0
+
+part: VD2
+  ref_text: 1000000 120000 180 1018901 -2199718 1
+  shape: "SMA"
+  merge: 4 -1
+  value: "ES1D" 1270000 177800 0 0 60000 0
+  pos: -5620016 -84526050 1 0 0
+
+part: R3
+  ref_text: 1000000 120000 0 -605525 1014590 1
+  shape: "R0603"
+  merge: 4 -1
+  value: "100R" 1270000 177800 0 1500000 -500000 0
+  pos: -5846012 -48245050 1 90 0
+
+part: R5
+  ref_text: 1000000 120000 0 -615830 1013940 1
+  shape: "R0603"
+  merge: 4 -1
+  value: "100R" 1270000 177800 0 1500000 -500000 0
+  pos: -6056212 -43825050 1 90 0
+
+part: R4
+  ref_text: 1000000 120000 0 -637040 1014640 1
+  shape: "R0603"
+  merge: 4 -1
+  value: "100R" 1270000 177800 0 1500000 -500000 0
+  pos: -5446012 -53985050 1 90 0
+
+part: VIA101
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -2898268 -93870258 1 90 0
+
+part: VIA102
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -5398252 -93870258 1 90 0
+
+part: VIA103
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -5398268 -96870258 1 90 0
+
+part: VIA104
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -7898264 -93870258 1 90 0
+
+part: VIA105
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -2898268 -96870258 1 90 0
+
+part: VIA106
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -7898256 -96870258 1 90 0
+
+part: VIA107
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -10398268 -93870258 1 90 0
+
+part: VIA108
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -12898280 -93870258 1 90 0
+
+part: VIA109
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -12898260 -96870258 1 90 0
+
+part: VIA110
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -15398260 -93870258 1 90 0
+
+part: VIA111
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -10398260 -96870258 1 90 0
+
+part: VIA112
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad2x2"
+  merge: 4 -1
+  pos: -15398264 -96870258 1 90 0
+
+part: VIA135
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "REF"
+  merge: 4 -1
+  pos: -2898264 -1970258 1 90 0
+
+part: VIA113
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "REF"
+  merge: 4 -1
+  pos: -17086008 -92070050 1 90 0
+
+part: VIA3
+  ref_text: 0 0 0 1300000 700000 1
+  shape: "Pad8H4"
+  merge: 4 -1
+  pos: -17046012 -23000050 0 90 0
 
 [nets]
 
+net: "NET00010" 3 2 0 0 0 0 1
+  pin: 1 X3.2
+  pin: 2 VT4.3
+  pin: 3 VD3.1
+  connect: 1 2 1 1 0 4
+    vtx: 1 -16961008 -84526050 16 0 0 0 0
+    seg: 1 16 1016330 0 0
+    vtx: 2 -16961004 -80069046 16 0 0 0 0
+  connect: 2 2 0 1 0 4
+    vtx: 1 -16961008 -84526050 16 0 0 0 0
+    seg: 1 16 1799920 0 0
+    vtx: 2 -16961008 -89126050 12 0 0 0 0
+
+net: "ЦИКЛ" 2 1 0 0 0 0 1
+  pin: 1 X2.4
+  pin: 2 D1.2
+  connect: 1 1 0 5 0 4
+    vtx: 1 -14800011 -38540052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -14799924 -35080262 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -14316392 -34596728 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -12131660 -34596729 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -11500472 -33964267 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -11500016 -32926049 12 0 0 0 0
+
+net: "NET00008" 3 2 0 0 0 0 1
+  pin: 1 DA1.3
+  pin: 2 C11.1
+  pin: 3 L1.2
+  connect: 1 2 1 3 0 4
+    vtx: 1 -7046008 -77540050 16 0 0 0 0
+    seg: 1 16 800430 0 0
+    vtx: 2 -8633016 -77540050 0 0 0 0 0
+    seg: 2 16 800430 0 0
+    vtx: 3 -9845816 -76327234 0 0 0 0 0
+    seg: 3 16 800430 0 0
+    vtx: 4 -9845812 -74943050 16 0 0 0 0
+  connect: 2 1 0 1 0 4
+    vtx: 1 -9845812 -74943050 16 0 0 0 0
+    seg: 1 16 800430 0 0
+    vtx: 2 -7046008 -74943050 16 0 0 0 0
+
+net: "C|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.4
+  pin: 2 D1.12
+  connect: 1 1 0 3 0 4
+    vtx: 1 -10250012 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -10250012 -48270050 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -14250012 -52270046 0 0 1000000 500000 0
+    seg: 3 15 400000 0 0
+    vtx: 4 -17726011 -52270050 12 0 0 0 0
+
+net: "NET00009" 3 2 0 0 0 0 1
+  pin: 1 X5.2
+  pin: 2 VT1.3
+  pin: 3 VD2.1
+  connect: 1 2 0 1 0 4
+    vtx: 1 -3420016 -84526050 16 0 0 0 0
+    seg: 1 16 1799920 0 0
+    vtx: 2 -3420020 -89126050 12 0 0 0 0
+  connect: 2 2 1 1 0 4
+    vtx: 1 -3420016 -84526050 16 0 0 0 0
+    seg: 1 16 1015060 0 0
+    vtx: 2 -3420016 -80069046 16 0 0 0 0
+
+net: "ВОДА" 2 1 0 0 0 0 1
+  pin: 1 X1.4
+  pin: 2 D1.4
+  connect: 1 1 0 8 0 4
+    vtx: 1 -13500011 -38540052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -13499456 -36428071 0 0 1000000 500000 0
+    seg: 2 15 400000 0 0
+    vtx: 3 -19261448 -36428071 0 0 1000000 500000 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -20767660 -37935562 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -20767660 -62912654 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -19083644 -64597938 0 0 1000000 500000 0
+    seg: 6 15 400000 0 0
+    vtx: 7 -14699448 -64597942 0 0 1000000 500000 0
+    seg: 7 16 400000 0 0
+    vtx: 8 -13500012 -65797382 0 0 0 0 0
+    seg: 8 16 400000 0 0
+    vtx: 9 -13500016 -68926046 12 0 0 0 0
+
+net: "GND" 16 2 5 0 0 0 1
+  pin: 1 X1.6
+  pin: 2 X2.6
+  pin: 3 X4.2
+  pin: 4 D1.7
+  pin: 5 DA1.1
+  pin: 6 C1.2
+  pin: 7 C2.2
+  pin: 8 VT1.2
+  pin: 9 C11.2
+  pin: 10 X7.2
+  pin: 11 VT4.2
+  pin: 12 C13.2
+  pin: 13 HA1.2
+  pin: 14 R2.1
+  pin: 15 R1.1
+  pin: 16 VIA3.1
+  connect: 1 14 -1 1 0 4
+    vtx: 1 -2786016 -74599850 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -2786008 -72922710 0 1 1000000 500000 0
+  connect: 2 8 -1 1 0 4
+    vtx: 1 -9846012 -73293050 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -11671076 -73293050 0 1 1000000 500000 0
+  area: 1 35 15 0 0 4 -1 0
+    corner: 1 -6139364 -102000050 0 0
+    corner: 2 -6978292 -101161126 0 0
+    corner: 3 -10177292 -101161126 0 0
+    corner: 4 -11016216 -102000046 0 0
+    corner: 5 -17068140 -102000046 0 0
+    corner: 6 -17596880 -98457106 0 0
+    corner: 7 -18964668 -89443166 0 0
+    corner: 8 -20479368 -78541082 0 0
+    corner: 9 -21597512 -68373974 0 0
+    corner: 10 -22234740 -59646130 0 0
+    corner: 11 -22262940 -53552272 0 0
+    corner: 12 -21658048 -52947379 0 0
+    corner: 13 -21658048 -49247343 0 0
+    corner: 14 -22283360 -48622030 0 0
+    corner: 15 -22297916 -45321452 0 0
+    corner: 16 -22023852 -36744938 0 0
+    corner: 17 -21282684 -29130445 0 0
+    corner: 18 -20188064 -20180946 0 0
+    corner: 19 -18955344 -11566082 0 0
+    corner: 20 -17801676 -4015782 0 0
+    corner: 21 -17185848 -54 0 0
+    corner: 22 -11459124 -54 0 0
+    corner: 23 -10691880 -767294 0 0
+    corner: 24 -7122272 -767294 0 0
+    corner: 25 -6355020 -50 0 0
+    corner: 26 -1000020 -50 0 0
+    corner: 27 -1000012 -47720411 0 0
+    corner: 28 -1987112 -48707510 0 0
+    corner: 29 -1987112 -53466501 0 0
+    corner: 30 -1000012 -54453602 0 0
+    corner: 31 -1000000 -102000050 0 1
+    corner: 32 -1821060 -74458946 0 0
+    corner: 33 -16636640 -74458954 0 0
+    corner: 34 -16636656 -77248998 0 0
+    corner: 35 -1821060 -77249002 0 1
+  area: 2 32 16 0 0 4 -1 0
+    corner: 1 -6767964 -102000050 0 0
+    corner: 2 -7649316 -101118690 0 0
+    corner: 3 -10808752 -101118690 0 0
+    corner: 4 -11690108 -102000046 0 0
+    corner: 5 -17068140 -102000046 0 0
+    corner: 6 -17596880 -98457106 0 0
+    corner: 7 -18964668 -89443166 0 0
+    corner: 8 -20479368 -78541082 0 0
+    corner: 9 -21597512 -68373974 0 0
+    corner: 10 -22234740 -59646130 0 0
+    corner: 11 -22431156 -53605283 0 0
+    corner: 12 -21555900 -52730026 0 0
+    corner: 13 -21555900 -49008997 0 0
+    corner: 14 -22445752 -48119142 0 0
+    corner: 15 -22406060 -44218091 0 0
+    corner: 16 -22023852 -36744938 0 0
+    corner: 17 -21282684 -29130445 0 0
+    corner: 18 -20188064 -20180946 0 0
+    corner: 19 -18955344 -11566082 0 0
+    corner: 20 -17801676 -4015782 0 0
+    corner: 21 -17185848 -54 0 0
+    corner: 22 -11630736 -54 0 0
+    corner: 23 -10702964 -927826 0 0
+    corner: 24 -7957764 -927826 0 0
+    corner: 25 -7042628 -12690 0 0
+    corner: 26 -7115256 -50 0 0
+    corner: 27 -1000020 -50 0 0
+    corner: 28 -1000012 -47451955 0 0
+    corner: 29 -1788544 -48240486 0 0
+    corner: 30 -1788544 -53069808 0 0
+    corner: 31 -1000012 -53858339 0 0
+    corner: 32 -1000000 -102000050 0 1
+  area: 3 4 15 1 200000 4 -1 0
+    corner: 1 -1938280 -77083706 0 0
+    corner: 2 -1938288 -74608266 0 0
+    corner: 3 -16480336 -74608258 0 0
+    corner: 4 -16480328 -77083710 0 1
+  area: 4 596 15 1 200000 4 -1 0
+    corner: 1 -6600272 -101539146 0 0
+    corner: 2 -6978292 -101161126 0 0
+    corner: 3 -10177292 -101161126 0 0
+    corner: 4 -10555308 -101539146 0 0
+    corner: 5 -16670404 -101539146 0 0
+    corner: 6 -17141368 -98388098 0 0
+    corner: 7 -17141564 -98387602 0 0
+    corner: 8 -17141532 -98387078 0 0
+    corner: 9 -18508872 -89376794 0 0
+    corner: 10 -20021432 -78483150 0 0
+    corner: 11 -21138660 -68331702 0 0
+    corner: 12 -21775192 -59616810 0 0
+    corner: 13 -21939460 -56288396 0 0
+    corner: 14 -21939460 -53228797 0 0
+    corner: 15 -21658048 -52947379 0 0
+    corner: 16 -21658048 -49247343 0 0
+    corner: 17 -21939460 -48965932 0 0
+    corner: 18 -21939460 -45709997 0 0
+    corner: 19 -21564480 -36777573 0 0
+    corner: 20 -20824572 -29180897 0 0
+    corner: 21 -20250544 -24488053 0 0
+    corner: 22 -18438540 -26300049 0 0
+    corner: 23 -17146012 -26300049 0 0
+    corner: 24 -17146008 -23100050 0 0
+    corner: 25 -17146008 -22900050 0 0
+    corner: 26 -17146016 -19700050 0 0
+    corner: 27 -18438548 -19700050 0 0
+    corner: 28 -19835776 -21097282 0 0
+    corner: 29 -19731092 -20241506 0 0
+    corner: 30 -18498908 -11633970 0 0
+    corner: 31 -17346116 -4086186 0 0
+    corner: 32 -17346116 -4086186 0 0
+    corner: 33 -16790060 -460954 0 0
+    corner: 34 -10998228 -460954 0 0
+    corner: 35 -10691880 -767294 0 0
+    corner: 36 -7122272 -767294 0 0
+    corner: 37 -6815924 -460954 0 0
+    corner: 38 -1460552 -460954 0 0
+    corner: 39 -1460552 -48180949 0 0
+    corner: 40 -1987112 -48707510 0 0
+    corner: 41 -1987112 -53466501 0 0
+    corner: 42 -1460552 -53993062 0 0
+    corner: 43 -1460552 -101539146 0 1
+    corner: 44 -11775272 -49528022 0 0
+    corner: 45 -11775272 -48852086 0 0
+    corner: 46 -12175472 -48451888 0 0
+    corner: 47 -11775272 -48051689 0 0
+    corner: 48 -11775272 -47375753 0 0
+    corner: 49 -12253304 -46897721 0 0
+    corner: 50 -12686016 -46897721 0 0
+    corner: 51 -13458380 -46125351 0 0
+    corner: 52 -13458380 -46125350 0 0
+    corner: 53 -13540544 -46070450 0 0
+    corner: 54 -13623832 -46014796 0 0
+    corner: 55 -13623836 -46014795 0 0
+    corner: 56 -13741360 -45991419 0 0
+    corner: 57 -13819000 -45975974 0 0
+    corner: 58 -13819004 -45975975 0 0
+    corner: 59 -13819004 -45975974 0 0
+    corner: 60 -15678804 -45975969 0 0
+    corner: 61 -16769204 -44885594 0 0
+    corner: 62 -16769208 -44208392 0 0
+    corner: 63 -17284356 -43693241 0 0
+    corner: 64 -18167668 -43693242 0 0
+    corner: 65 -18682820 -44208391 0 0
+    corner: 66 -18682820 -45091705 0 0
+    corner: 67 -18167668 -45606856 0 0
+    corner: 68 -17490440 -45606856 0 0
+    corner: 69 -16417220 -46680053 0 0
+    corner: 70 -16837548 -46680052 0 0
+    corner: 71 -17284356 -46233242 0 0
+    corner: 72 -18167668 -46233242 0 0
+    corner: 73 -18682820 -46748392 0 0
+    corner: 74 -18682820 -47631706 0 0
+    corner: 75 -18167672 -48146857 0 0
+    corner: 76 -17284356 -48146856 0 0
+    corner: 77 -16837552 -47700051 0 0
+    corner: 78 -14802520 -47700054 0 0
+    corner: 79 -13407272 -49095303 0 0
+    corner: 80 -13407272 -49528022 0 0
+    corner: 81 -12929240 -50006054 0 0
+    corner: 82 -12253304 -50006054 0 1
+    corner: 83 -1638880 -94457554 0 0
+    corner: 84 -1638876 -93282962 0 0
+    corner: 85 -2310972 -92610866 0 0
+    corner: 86 -3485568 -92610866 0 0
+    corner: 87 -4148260 -93273562 0 0
+    corner: 88 -4810956 -92610866 0 0
+    corner: 89 -5985552 -92610866 0 0
+    corner: 90 -6648256 -93273570 0 0
+    corner: 91 -7310964 -92610866 0 0
+    corner: 92 -8485556 -92610866 0 0
+    corner: 93 -9148268 -93273570 0 0
+    corner: 94 -9810972 -92610866 0 0
+    corner: 95 -10985564 -92610866 0 0
+    corner: 96 -11648268 -93273570 0 0
+    corner: 97 -12310972 -92610866 0 0
+    corner: 98 -13485576 -92610866 0 0
+    corner: 99 -14148256 -93273558 0 0
+    corner: 100 -14810948 -92610866 0 0
+    corner: 101 -15985548 -92610866 0 0
+    corner: 102 -16657636 -93282962 0 0
+    corner: 103 -16657656 -94457554 0 0
+    corner: 104 -15985548 -95129650 0 0
+    corner: 105 -14810964 -95129650 0 0
+    corner: 106 -14148256 -94466958 0 0
+    corner: 107 -13485572 -95129650 0 0
+    corner: 108 -12310980 -95129650 0 0
+    corner: 109 -11648268 -94466946 0 0
+    corner: 110 -10985568 -95129650 0 0
+    corner: 111 -9810972 -95129650 0 0
+    corner: 112 -9148268 -94466946 0 0
+    corner: 113 -8485560 -95129650 0 0
+    corner: 114 -7310964 -95129650 0 0
+    corner: 115 -6648260 -94466946 0 0
+    corner: 116 -5985548 -95129650 0 0
+    corner: 117 -4810956 -95129650 0 0
+    corner: 118 -4148260 -94466954 0 0
+    corner: 119 -3485564 -95129650 0 0
+    corner: 120 -2310972 -95129650 0 1
+    corner: 121 -1638872 -97457554 0 0
+    corner: 122 -1638868 -96282962 0 0
+    corner: 123 -2310968 -95610866 0 0
+    corner: 124 -3485560 -95610866 0 0
+    corner: 125 -4148268 -96273570 0 0
+    corner: 126 -4810968 -95610866 0 0
+    corner: 127 -5985568 -95610866 0 0
+    corner: 128 -6648264 -96273562 0 0
+    corner: 129 -7310960 -95610866 0 0
+    corner: 130 -8485552 -95610866 0 0
+    corner: 131 -9148260 -96273570 0 0
+    corner: 132 -9810964 -95610866 0 0
+    corner: 133 -10985560 -95610866 0 0
+    corner: 134 -11648256 -96273562 0 0
+    corner: 135 -12310952 -95610866 0 0
+    corner: 136 -13485540 -95610866 0 0
+    corner: 137 -14148252 -96273578 0 0
+    corner: 138 -14810972 -95610866 0 0
+    corner: 139 -15985580 -95610866 0 0
+    corner: 140 -16657656 -96282962 0 0
+    corner: 141 -16657676 -97457554 0 0
+    corner: 142 -15985568 -98129650 0 0
+    corner: 143 -14810980 -98129650 0 0
+    corner: 144 -14148252 -97466938 0 0
+    corner: 145 -13485560 -98129650 0 0
+    corner: 146 -12310964 -98129650 0 0
+    corner: 147 -11648256 -97466954 0 0
+    corner: 148 -10985560 -98129650 0 0
+    corner: 149 -9810964 -98129650 0 0
+    corner: 150 -9148256 -97466946 0 0
+    corner: 151 -8485556 -98129650 0 0
+    corner: 152 -7310964 -98129650 0 0
+    corner: 153 -6648260 -97466954 0 0
+    corner: 154 -5985568 -98129650 0 0
+    corner: 155 -4810972 -98129650 0 0
+    corner: 156 -4148268 -97466946 0 0
+    corner: 157 -3485564 -98129650 0 0
+    corner: 158 -2310972 -98129650 0 1
+    corner: 159 -1530284 -77083706 0 0
+    corner: 160 -1530284 -74608266 0 0
+    corner: 161 -1561344 -74452130 0 0
+    corner: 162 -1649788 -74319766 0 0
+    corner: 163 -1782152 -74231322 0 0
+    corner: 164 -1907228 -74206442 0 0
+    corner: 165 -1938288 -74200266 0 0
+    corner: 166 -16480344 -74200258 0 0
+    corner: 167 -16480344 -74200258 0 0
+    corner: 168 -16636476 -74231318 0 0
+    corner: 169 -16742508 -74302166 0 0
+    corner: 170 -16768836 -74319758 0 0
+    corner: 171 -16768836 -74319762 0 0
+    corner: 172 -16812760 -74385494 0 0
+    corner: 173 -16857280 -74452122 0 0
+    corner: 174 -16857284 -74452126 0 0
+    corner: 175 -16875988 -74546146 0 0
+    corner: 176 -16888340 -74608258 0 0
+    corner: 177 -16888340 -74608258 0 0
+    corner: 178 -16888340 -74608262 0 0
+    corner: 179 -16888336 -77083710 0 0
+    corner: 180 -16857280 -77239842 0 0
+    corner: 181 -16786428 -77345878 0 0
+    corner: 182 -16768828 -77372206 0 0
+    corner: 183 -16768828 -77372206 0 0
+    corner: 184 -16768828 -77372206 0 0
+    corner: 185 -16636460 -77460650 0 0
+    corner: 186 -16511388 -77485530 0 0
+    corner: 187 -16480336 -77491706 0 0
+    corner: 188 -16480336 -77491706 0 0
+    corner: 189 -16480336 -77491706 0 0
+    corner: 190 -16480336 -77491706 0 0
+    corner: 191 -1938280 -77491706 0 0
+    corner: 192 -1782148 -77460646 0 0
+    corner: 193 -1649780 -77372206 0 0
+    corner: 194 -1561340 -77239838 0 1
+    corner: 195 -12524064 -53565557 0 0
+    corner: 196 -12524064 -51570441 0 0
+    corner: 197 -12562888 -51375273 0 0
+    corner: 198 -12673440 -51209817 0 0
+    corner: 199 -13474784 -50408472 0 0
+    corner: 200 -13474784 -49975753 0 0
+    corner: 201 -13952816 -49497721 0 0
+    corner: 202 -14628752 -49497721 0 0
+    corner: 203 -15106784 -49975753 0 0
+    corner: 204 -15106784 -50651688 0 0
+    corner: 205 -14628752 -51129721 0 0
+    corner: 206 -14196036 -51129721 0 0
+    corner: 207 -13544064 -51781689 0 0
+    corner: 208 -13544064 -51822026 0 0
+    corner: 209 -13912044 -51454047 0 0
+    corner: 210 -14587980 -51454047 0 0
+    corner: 211 -14893980 -51760046 0 0
+    corner: 212 -16837548 -51760048 0 0
+    corner: 213 -17284356 -51313244 0 0
+    corner: 214 -18167668 -51313241 0 0
+    corner: 215 -18682820 -51828392 0 0
+    corner: 216 -18682820 -52711704 0 0
+    corner: 217 -18167668 -53226856 0 0
+    corner: 218 -17284356 -53226856 0 0
+    corner: 219 -16837548 -52780046 0 0
+    corner: 220 -14893980 -52780045 0 0
+    corner: 221 -14587980 -53086047 0 0
+    corner: 222 -13912044 -53086046 0 0
+    corner: 223 -13544064 -52718066 0 0
+    corner: 224 -13544064 -53354309 0 0
+    corner: 225 -14489804 -54300048 0 0
+    corner: 226 -16837548 -54300048 0 0
+    corner: 227 -17284356 -53853243 0 0
+    corner: 228 -18167672 -53853241 0 0
+    corner: 229 -18682820 -54368394 0 0
+    corner: 230 -18682820 -55251708 0 0
+    corner: 231 -18167668 -55766858 0 0
+    corner: 232 -17284356 -55766856 0 0
+    corner: 233 -16837548 -55320048 0 0
+    corner: 234 -14278556 -55320050 0 0
+    corner: 235 -14083388 -55281228 0 0
+    corner: 236 -13917932 -55170674 0 0
+    corner: 237 -12673440 -53926182 0 0
+    corner: 238 -12562888 -53760726 0 1
+    corner: 239 -13161484 -37244071 0 0
+    corner: 240 -13837420 -37244071 0 0
+    corner: 241 -14143424 -36938071 0 0
+    corner: 242 -18617476 -36938071 0 0
+    corner: 243 -18923476 -37244069 0 0
+    corner: 244 -19599412 -37244071 0 0
+    corner: 245 -20077444 -36766038 0 0
+    corner: 246 -20077444 -36090101 0 0
+    corner: 247 -19599416 -35612071 0 0
+    corner: 248 -18923480 -35612071 0 0
+    corner: 249 -18617476 -35918070 0 0
+    corner: 250 -14143420 -35918071 0 0
+    corner: 251 -13837424 -35612071 0 0
+    corner: 252 -13161484 -35612071 0 0
+    corner: 253 -12683452 -36090103 0 0
+    corner: 254 -12683452 -36766039 0 1
+    corner: 255 -13471364 -63870890 0 0
+    corner: 256 -14147304 -63870890 0 0
+    corner: 257 -14453304 -63564890 0 0
+    corner: 258 -17740108 -63564888 0 0
+    corner: 259 -18046108 -63870890 0 0
+    corner: 260 -18656724 -63870890 0 0
+    corner: 261 -18439680 -64087938 0 0
+    corner: 262 -15343416 -64087942 0 0
+    corner: 263 -15037420 -63781942 0 0
+    corner: 264 -14361484 -63781942 0 0
+    corner: 265 -13883452 -64259974 0 0
+    corner: 266 -13883452 -64935910 0 0
+    corner: 267 -14361480 -65413942 0 0
+    corner: 268 -15037416 -65413942 0 0
+    corner: 269 -15343420 -65107942 0 0
+    corner: 270 -18439676 -65107938 0 0
+    corner: 271 -18745676 -65413938 0 0
+    corner: 272 -19421616 -65413938 0 0
+    corner: 273 -19899644 -64935908 0 0
+    corner: 274 -19899648 -64259970 0 0
+    corner: 275 -19421612 -63781940 0 0
+    corner: 276 -18811000 -63781936 0 0
+    corner: 277 -19200076 -63392858 0 0
+    corner: 278 -19200076 -62716922 0 0
+    corner: 279 -18722044 -62238890 0 0
+    corner: 280 -18046112 -62238890 0 0
+    corner: 281 -17740104 -62544892 0 0
+    corner: 282 -14453300 -62544890 0 0
+    corner: 283 -14147300 -62238890 0 0
+    corner: 284 -13471364 -62238890 0 0
+    corner: 285 -12993332 -62716922 0 0
+    corner: 286 -12993336 -63392858 0 1
+    corner: 287 -5919364 -46053396 0 0
+    corner: 288 -5919364 -46053400 0 0
+    corner: 289 -5958188 -46248570 0 0
+    corner: 290 -6068740 -46414026 0 0
+    corner: 291 -6609208 -46954490 0 0
+    corner: 292 -6609204 -47631706 0 0
+    corner: 293 -7124356 -48146856 0 0
+    corner: 294 -8007668 -48146856 0 0
+    corner: 295 -8522820 -47631706 0 0
+    corner: 296 -8522820 -46748392 0 0
+    corner: 297 -8007668 -46233242 0 0
+    corner: 298 -7330456 -46233241 0 0
+    corner: 299 -6939364 -45842152 0 0
+    corner: 300 -6939364 -45421865 0 0
+    corner: 301 -7124356 -45606856 0 0
+    corner: 302 -8007672 -45606856 0 0
+    corner: 303 -8522820 -45091706 0 0
+    corner: 304 -8522820 -44208392 0 0
+    corner: 305 -8007672 -43693242 0 0
+    corner: 306 -7124356 -43693242 0 0
+    corner: 307 -6939364 -43878235 0 0
+    corner: 308 -6939364 -39882982 0 0
+    corner: 309 -9631812 -37025889 0 0
+    corner: 310 -10037980 -37025889 0 0
+    corner: 311 -10516012 -36547857 0 0
+    corner: 312 -10516012 -35871921 0 0
+    corner: 313 -10037980 -35393889 0 0
+    corner: 314 -9362044 -35393889 0 0
+    corner: 315 -8884012 -35871921 0 0
+    corner: 316 -8884012 -36332160 0 0
+    corner: 317 -6058200 -39330769 0 0
+    corner: 318 -6009336 -39408815 0 0
+    corner: 319 -5958184 -39485371 0 0
+    corner: 320 -5956680 -39492914 0 0
+    corner: 321 -5952604 -39499429 0 0
+    corner: 322 -5937324 -39590234 0 0
+    corner: 323 -5919360 -39680540 0 1
+    corner: 324 -3994540 -69740814 0 0
+    corner: 325 -4670476 -69740814 0 0
+    corner: 326 -4772736 -69638554 0 0
+    corner: 327 -6447020 -69639206 0 0
+    corner: 328 -6447016 -69827546 0 0
+    corner: 329 -6598516 -69979046 0 0
+    corner: 330 -8401516 -69979046 0 0
+    corner: 331 -8553016 -69827546 0 0
+    corner: 332 -8553016 -69522738 0 0
+    corner: 333 -9013720 -69983438 0 0
+    corner: 334 -9986316 -69983438 0 0
+    corner: 335 -10500016 -69469738 0 0
+    corner: 336 -11013720 -69983438 0 0
+    corner: 337 -11986308 -69983438 0 0
+    corner: 338 -12500020 -69469738 0 0
+    corner: 339 -13013720 -69983438 0 0
+    corner: 340 -13986308 -69983438 0 0
+    corner: 341 -14500016 -69469738 0 0
+    corner: 342 -15013724 -69983438 0 0
+    corner: 343 -15986312 -69983438 0 0
+    corner: 344 -16516544 -69453206 0 0
+    corner: 345 -17039380 -69976046 0 0
+    corner: 346 -17400016 -69976046 0 0
+    corner: 347 -17400012 -69026050 0 0
+    corner: 348 -17400020 -68826046 0 0
+    corner: 349 -17400020 -67876050 0 0
+    corner: 350 -17039380 -67876050 0 0
+    corner: 351 -16516548 -68398886 0 0
+    corner: 352 -15986312 -67868654 0 0
+    corner: 353 -15013720 -67868654 0 0
+    corner: 354 -14500016 -68382358 0 0
+    corner: 355 -13986316 -67868654 0 0
+    corner: 356 -13013720 -67868654 0 0
+    corner: 357 -12500012 -68382358 0 0
+    corner: 358 -11986312 -67868654 0 0
+    corner: 359 -11013720 -67868654 0 0
+    corner: 360 -10500016 -68382358 0 0
+    corner: 361 -9986312 -67868654 0 0
+    corner: 362 -9013720 -67868654 0 0
+    corner: 363 -8553016 -68329358 0 0
+    corner: 364 -8553016 -68024550 0 0
+    corner: 365 -8401516 -67873046 0 0
+    corner: 366 -6598516 -67873050 0 0
+    corner: 367 -6447016 -68024546 0 0
+    corner: 368 -6447020 -68212066 0 0
+    corner: 369 -4773076 -68211414 0 0
+    corner: 370 -4670476 -68108814 0 0
+    corner: 371 -3994540 -68108814 0 0
+    corner: 372 -3516508 -68586846 0 0
+    corner: 373 -3516508 -69262782 0 1
+    corner: 374 -3933664 -31684009 0 0
+    corner: 375 -4609604 -31684009 0 0
+    corner: 376 -4712108 -31581499 0 0
+    corner: 377 -7899532 -31581499 0 0
+    corner: 378 -8002044 -31684009 0 0
+    corner: 379 -8677980 -31684009 0 0
+    corner: 380 -9156012 -31205977 0 0
+    corner: 381 -9156012 -30530041 0 0
+    corner: 382 -8677980 -30052009 0 0
+    corner: 383 -8002044 -30052009 0 0
+    corner: 384 -7899532 -30154519 0 0
+    corner: 385 -4712112 -30154519 0 0
+    corner: 386 -4609596 -30052009 0 0
+    corner: 387 -3933668 -30052009 0 0
+    corner: 388 -3455632 -30530041 0 0
+    corner: 389 -3455632 -31205977 0 1
+    corner: 390 -13811728 -41437609 0 0
+    corner: 391 -14487660 -41437609 0 0
+    corner: 392 -14793660 -41131610 0 0
+    corner: 393 -17988472 -41131611 0 0
+    corner: 394 -18494972 -41638109 0 0
+    corner: 395 -18494976 -42070827 0 0
+    corner: 396 -18973004 -42548858 0 0
+    corner: 397 -19648940 -42548859 0 0
+    corner: 398 -20126972 -42070826 0 0
+    corner: 399 -20126972 -41394889 0 0
+    corner: 400 -19648940 -40916858 0 0
+    corner: 401 -19216220 -40916859 0 0
+    corner: 402 -18560348 -40260988 0 0
+    corner: 403 -18560348 -40260988 0 0
+    corner: 404 -18394892 -40150434 0 0
+    corner: 405 -18199724 -40111612 0 0
+    corner: 406 -14793660 -40111611 0 0
+    corner: 407 -14487660 -39805609 0 0
+    corner: 408 -13811724 -39805609 0 0
+    corner: 409 -13333692 -40283641 0 0
+    corner: 410 -13333692 -40959577 0 1
+    corner: 411 -17284356 -50686854 0 0
+    corner: 412 -16769204 -50171706 0 0
+    corner: 413 -16769204 -49288392 0 0
+    corner: 414 -17284356 -48773242 0 0
+    corner: 415 -18167668 -48773242 0 0
+    corner: 416 -18682820 -49288394 0 0
+    corner: 417 -18682820 -50171706 0 0
+    corner: 418 -18167668 -50686857 0 1
+    corner: 419 -17284356 -58306856 0 0
+    corner: 420 -16769204 -57791706 0 0
+    corner: 421 -16769208 -56908391 0 0
+    corner: 422 -17284356 -56393241 0 0
+    corner: 423 -18167668 -56393242 0 0
+    corner: 424 -18682820 -56908392 0 0
+    corner: 425 -18682820 -57791704 0 0
+    corner: 426 -18167672 -58306854 0 1
+    corner: 427 -7124356 -58306856 0 0
+    corner: 428 -6609204 -57791706 0 0
+    corner: 429 -6609204 -56908392 0 0
+    corner: 430 -7124356 -56393242 0 0
+    corner: 431 -8007668 -56393242 0 0
+    corner: 432 -8522820 -56908392 0 0
+    corner: 433 -8522820 -57791706 0 0
+    corner: 434 -8007672 -58306856 0 1
+    corner: 435 -7124356 -55766856 0 0
+    corner: 436 -6609204 -55251706 0 0
+    corner: 437 -6609204 -54368392 0 0
+    corner: 438 -7124356 -53853242 0 0
+    corner: 439 -8007668 -53853242 0 0
+    corner: 440 -8522820 -54368392 0 0
+    corner: 441 -8522820 -55251706 0 0
+    corner: 442 -8007668 -55766856 0 1
+    corner: 443 -7124356 -53226856 0 0
+    corner: 444 -6609204 -52711706 0 0
+    corner: 445 -6609204 -51828392 0 0
+    corner: 446 -7124356 -51313242 0 0
+    corner: 447 -8007668 -51313242 0 0
+    corner: 448 -8522820 -51828392 0 0
+    corner: 449 -8522820 -52711706 0 0
+    corner: 450 -8007668 -53226856 0 1
+    corner: 451 -7124356 -50686856 0 0
+    corner: 452 -6609204 -50171706 0 0
+    corner: 453 -6609204 -49288392 0 0
+    corner: 454 -7124356 -48773242 0 0
+    corner: 455 -8007672 -48773242 0 0
+    corner: 456 -8522820 -49288392 0 0
+    corner: 457 -8522820 -50171706 0 0
+    corner: 458 -8007668 -50686856 0 1
+    corner: 459 -18550020 -69026042 0 0
+    corner: 460 -18550020 -69386678 0 0
+    corner: 461 -17960652 -69976046 0 0
+    corner: 462 -17600012 -69976050 0 0
+    corner: 463 -17600020 -69026046 0 1
+    corner: 464 -17600016 -67876050 0 0
+    corner: 465 -17960652 -67876050 0 0
+    corner: 466 -18550020 -68465410 0 0
+    corner: 467 -18550020 -68826046 0 0
+    corner: 468 -17600020 -68826046 0 1
+    corner: 469 -7960644 -33976049 0 0
+    corner: 470 -8483488 -33453209 0 0
+    corner: 471 -9013716 -33983441 0 0
+    corner: 472 -9986308 -33983441 0 0
+    corner: 473 -10500012 -33469737 0 0
+    corner: 474 -11013716 -33983441 0 0
+    corner: 475 -11986308 -33983441 0 0
+    corner: 476 -12500012 -33469737 0 0
+    corner: 477 -13013716 -33983441 0 0
+    corner: 478 -13986308 -33983441 0 0
+    corner: 479 -14500012 -33469737 0 0
+    corner: 480 -15013716 -33983441 0 0
+    corner: 481 -15986308 -33983441 0 0
+    corner: 482 -16447012 -33522737 0 0
+    corner: 483 -16447016 -33827549 0 0
+    corner: 484 -16598512 -33979049 0 0
+    corner: 485 -18401512 -33979049 0 0
+    corner: 486 -18553012 -33827549 0 0
+    corner: 487 -18553012 -32024549 0 0
+    corner: 488 -18401512 -31873049 0 0
+    corner: 489 -16598512 -31873049 0 0
+    corner: 490 -16447012 -32024549 0 0
+    corner: 491 -16447016 -32329361 0 0
+    corner: 492 -15986308 -31868657 0 0
+    corner: 493 -15013716 -31868657 0 0
+    corner: 494 -14500012 -32382361 0 0
+    corner: 495 -13986312 -31868657 0 0
+    corner: 496 -13013716 -31868657 0 0
+    corner: 497 -12500012 -32382361 0 0
+    corner: 498 -11986308 -31868657 0 0
+    corner: 499 -11013716 -31868657 0 0
+    corner: 500 -10500012 -32382361 0 0
+    corner: 501 -9986308 -31868657 0 0
+    corner: 502 -9013716 -31868657 0 0
+    corner: 503 -8483484 -32398889 0 0
+    corner: 504 -7960648 -31876049 0 0
+    corner: 505 -7600012 -31876049 0 0
+    corner: 506 -7600012 -32826049 0 0
+    corner: 507 -7600016 -33026049 0 0
+    corner: 508 -7600012 -33976049 0 1
+    corner: 509 -6450016 -32826049 0 0
+    corner: 510 -6450012 -32465417 0 0
+    corner: 511 -7039380 -31876049 0 0
+    corner: 512 -7400012 -31876049 0 0
+    corner: 513 -7400012 -32826049 0 1
+    corner: 514 -7400012 -33976049 0 0
+    corner: 515 -7039380 -33976049 0 0
+    corner: 516 -6450012 -33386681 0 0
+    corner: 517 -6450012 -33026049 0 0
+    corner: 518 -7400016 -33026049 0 1
+    corner: 519 -10572148 -88528154 0 0
+    corner: 520 -11283112 -87817194 0 0
+    corner: 521 -12478908 -87817194 0 0
+    corner: 522 -13189872 -88528154 0 0
+    corner: 523 -13189872 -89723946 0 0
+    corner: 524 -12478892 -90434906 0 0
+    corner: 525 -11283112 -90434906 0 0
+    corner: 526 -10572144 -89723946 0 1
+    corner: 527 -15652144 -88528154 0 0
+    corner: 528 -16363112 -87817194 0 0
+    corner: 529 -17558904 -87817194 0 0
+    corner: 530 -18269856 -88528154 0 0
+    corner: 531 -18269864 -89723946 0 0
+    corner: 532 -17558896 -90434906 0 0
+    corner: 533 -16363104 -90434906 0 0
+    corner: 534 -15652152 -89723946 0 1
+    corner: 535 -11963108 -82048910 0 0
+    corner: 536 -11252144 -81337950 0 0
+    corner: 537 -11252140 -80142158 0 0
+    corner: 538 -11963100 -79431194 0 0
+    corner: 539 -13158896 -79431194 0 0
+    corner: 540 -13869860 -80142158 0 0
+    corner: 541 -13869852 -81337950 0 0
+    corner: 542 -13158900 -82048910 0 1
+    corner: 543 -9808880 -89723946 0 0
+    corner: 544 -9097916 -90434906 0 0
+    corner: 545 -7902124 -90434906 0 0
+    corner: 546 -7191164 -89723946 0 0
+    corner: 547 -7191164 -88528154 0 0
+    corner: 548 -7902124 -87817194 0 0
+    corner: 549 -9097920 -87817194 0 0
+    corner: 550 -9808876 -88528154 0 1
+    corner: 551 -4728880 -89723946 0 0
+    corner: 552 -4017920 -90434906 0 0
+    corner: 553 -2822124 -90434906 0 0
+    corner: 554 -2111164 -89723946 0 0
+    corner: 555 -2111160 -88528154 0 0
+    corner: 556 -2822124 -87817194 0 0
+    corner: 557 -4017916 -87817194 0 0
+    corner: 558 -4728876 -88528154 0 1
+    corner: 559 -8537160 -8302154 0 0
+    corner: 560 -9248120 -7591194 0 0
+    corner: 561 -10443916 -7591194 0 0
+    corner: 562 -11154876 -8302154 0 0
+    corner: 563 -11154876 -9497946 0 0
+    corner: 564 -10443920 -10208906 0 0
+    corner: 565 -9248120 -10208906 0 0
+    corner: 566 -8537160 -9497946 0 1
+    corner: 567 -8546020 -13800050 0 0
+    corner: 568 -8546024 -13335874 0 0
+    corner: 569 -9281844 -12600050 0 0
+    corner: 570 -9746020 -12600050 0 0
+    corner: 571 -9746016 -13800050 0 1
+    corner: 572 -9946016 -12600050 0 0
+    corner: 573 -10410196 -12600050 0 0
+    corner: 574 -11146012 -13335874 0 0
+    corner: 575 -11146016 -13800050 0 0
+    corner: 576 -9946020 -13800050 0 1
+    corner: 577 -11146012 -14000050 0 0
+    corner: 578 -11146020 -14464226 0 0
+    corner: 579 -10410192 -15200050 0 0
+    corner: 580 -9946012 -15200050 0 0
+    corner: 581 -9946012 -14000050 0 1
+    corner: 582 -9746020 -15200050 0 0
+    corner: 583 -9281840 -15200050 0 0
+    corner: 584 -8546012 -14464226 0 0
+    corner: 585 -8546016 -14000050 0 0
+    corner: 586 -9746020 -14000050 0 1
+    corner: 587 -16946008 -26300049 0 0
+    corner: 588 -15653484 -26300049 0 0
+    corner: 589 -13746016 -24392581 0 0
+    corner: 590 -13746012 -23100050 0 0
+    corner: 591 -16946012 -23100050 0 1
+    corner: 592 -13746012 -22900050 0 0
+    corner: 593 -13746016 -21607518 0 0
+    corner: 594 -15653484 -19700050 0 0
+    corner: 595 -16946012 -19700050 0 0
+    corner: 596 -16946012 -22900050 0 1
+  area: 5 1267 16 1 200000 4 -1 0
+    corner: 1 -7228868 -101539146 0 0
+    corner: 2 -7649316 -101118690 0 0
+    corner: 3 -10808752 -101118690 0 0
+    corner: 4 -11229204 -101539146 0 0
+    corner: 5 -16670404 -101539146 0 0
+    corner: 6 -17141368 -98388098 0 0
+    corner: 7 -17141564 -98387602 0 0
+    corner: 8 -17141532 -98387078 0 0
+    corner: 9 -18508872 -89376794 0 0
+    corner: 10 -20021432 -78483150 0 0
+    corner: 11 -21138660 -68331702 0 0
+    corner: 12 -21775192 -59616810 0 0
+    corner: 13 -21939460 -56288396 0 0
+    corner: 14 -21939460 -53113591 0 0
+    corner: 15 -21555900 -52730026 0 0
+    corner: 16 -21555900 -49008997 0 0
+    corner: 17 -21939464 -48625436 0 0
+    corner: 18 -21939460 -45709997 0 0
+    corner: 19 -21564480 -36777573 0 0
+    corner: 20 -20824572 -29180897 0 0
+    corner: 21 -20250544 -24488053 0 0
+    corner: 22 -18438540 -26300049 0 0
+    corner: 23 -17146012 -26300049 0 0
+    corner: 24 -17146008 -23100050 0 0
+    corner: 25 -17146008 -22900050 0 0
+    corner: 26 -17146016 -19700050 0 0
+    corner: 27 -18438548 -19700050 0 0
+    corner: 28 -19835776 -21097282 0 0
+    corner: 29 -19731092 -20241506 0 0
+    corner: 30 -18498908 -11633970 0 0
+    corner: 31 -17346116 -4086186 0 0
+    corner: 32 -17346116 -4086186 0 0
+    corner: 33 -16790060 -460954 0 0
+    corner: 34 -11169836 -460954 0 0
+    corner: 35 -10702964 -927826 0 0
+    corner: 36 -7957764 -927826 0 0
+    corner: 37 -7490888 -460954 0 0
+    corner: 38 -1460552 -460954 0 0
+    corner: 39 -1460552 -47912494 0 0
+    corner: 40 -1788544 -48240486 0 0
+    corner: 41 -1788544 -53069808 0 0
+    corner: 42 -1460552 -53397800 0 0
+    corner: 43 -1460552 -101539146 0 1
+    corner: 44 -2926868 -68231410 0 0
+    corner: 45 -2926868 -41418074 0 0
+    corner: 46 -2954412 -41279612 0 0
+    corner: 47 -2981124 -41145162 0 0
+    corner: 48 -2981172 -41145091 0 0
+    corner: 49 -2981188 -41145003 0 0
+    corner: 50 -3059152 -41028320 0 0
+    corner: 51 -3135748 -40913625 0 0
+    corner: 52 -3558404 -40490766 0 0
+    corner: 53 -3557444 -38540404 0 0
+    corner: 54 -3557484 -38540199 0 0
+    corner: 55 -3557444 -38539994 0 0
+    corner: 56 -3558028 -31308371 0 0
+    corner: 57 -3455632 -31205977 0 0
+    corner: 58 -3455632 -30530041 0 0
+    corner: 59 -3933668 -30052009 0 0
+    corner: 60 -4609596 -30052009 0 0
+    corner: 61 -5087632 -30530041 0 0
+    corner: 62 -5087632 -31205977 0 0
+    corner: 63 -4985172 -31308441 0 0
+    corner: 64 -4984628 -38030066 0 0
+    corner: 65 -5709284 -38030081 0 0
+    corner: 66 -5786932 -38045525 0 0
+    corner: 67 -5904444 -38068902 0 0
+    corner: 68 -5904452 -38068906 0 0
+    corner: 69 -5904456 -38068905 0 0
+    corner: 70 -5971180 -38113490 0 0
+    corner: 71 -6069904 -38179456 0 0
+    corner: 72 -6069908 -38179462 0 0
+    corner: 73 -6069908 -38179463 0 0
+    corner: 74 -7518736 -39628293 0 0
+    corner: 75 -9143788 -39628777 0 0
+    corner: 76 -9095844 -39580830 0 0
+    corner: 77 -9095844 -38569197 0 0
+    corner: 78 -9090016 -38539830 0 0
+    corner: 79 -9090376 -37709092 0 0
+    corner: 80 -5357536 -33976269 0 0
+    corner: 81 -5357536 -33976269 0 0
+    corner: 82 -5320856 -33921369 0 0
+    corner: 83 -5246980 -33810813 0 0
+    corner: 84 -5237340 -33762353 0 0
+    corner: 85 -5208160 -33615643 0 0
+    corner: 86 -5208160 -30552281 0 0
+    corner: 87 -3480556 -28825509 0 0
+    corner: 88 -3480524 -28825457 0 0
+    corner: 89 -3480468 -28825421 0 0
+    corner: 90 -3425548 -28743229 0 0
+    corner: 91 -3369964 -28660079 0 0
+    corner: 92 -3369948 -28660017 0 0
+    corner: 93 -3369916 -28659965 0 0
+    corner: 94 -3350660 -28563181 0 0
+    corner: 95 -3331092 -28464921 0 0
+    corner: 96 -3331108 -28464859 0 0
+    corner: 97 -3331092 -28464797 0 0
+    corner: 98 -3331100 -14906650 0 0
+    corner: 99 -3350808 -14807578 0 0
+    corner: 100 -3369900 -14711546 0 0
+    corner: 101 -3369912 -14711518 0 0
+    corner: 102 -3369924 -14711482 0 0
+    corner: 103 -3425444 -14628382 0 0
+    corner: 104 -3480428 -14546078 0 0
+    corner: 105 -8537160 -9487926 0 0
+    corner: 106 -8537160 -8302154 0 0
+    corner: 107 -9031336 -7807974 0 0
+    corner: 108 -9031344 -6205550 0 0
+    corner: 109 -8430772 -6205550 0 0
+    corner: 110 -8040516 -5815298 0 0
+    corner: 111 -8040524 -1984802 0 0
+    corner: 112 -8430764 -1594550 0 0
+    corner: 113 -11261272 -1594550 0 0
+    corner: 114 -11651512 -1984802 0 0
+    corner: 115 -11651516 -5815298 0 0
+    corner: 116 -11261272 -6205550 0 0
+    corner: 117 -10662812 -6205550 0 0
+    corner: 118 -10662816 -7810098 0 0
+    corner: 119 -11154876 -8302154 0 0
+    corner: 120 -11154876 -9497946 0 0
+    corner: 121 -10443920 -10208906 0 0
+    corner: 122 -9258676 -10208906 0 0
+    corner: 123 -4351100 -15117858 0 0
+    corner: 124 -4351096 -28253477 0 0
+    corner: 125 -6078696 -29980249 0 0
+    corner: 126 -6078732 -29980301 0 0
+    corner: 127 -6078784 -29980335 0 0
+    corner: 128 -6133704 -30062529 0 0
+    corner: 129 -6189292 -30145677 0 0
+    corner: 130 -6189304 -30145741 0 0
+    corner: 131 -6189340 -30145791 0 0
+    corner: 132 -6208592 -30242579 0 0
+    corner: 133 -6228160 -30340837 0 0
+    corner: 134 -6228148 -30340899 0 0
+    corner: 135 -6228160 -30340961 0 0
+    corner: 136 -6228160 -33404393 0 0
+    corner: 137 -8884016 -36060234 0 0
+    corner: 138 -8884012 -35871921 0 0
+    corner: 139 -9362044 -35393889 0 0
+    corner: 140 -10037980 -35393889 0 0
+    corner: 141 -10356628 -35712538 0 0
+    corner: 142 -10395908 -35720420 0 0
+    corner: 143 -10492952 -35739722 0 0
+    corner: 144 -10493316 -35739967 0 0
+    corner: 145 -10493748 -35740053 0 0
+    corner: 146 -10576068 -35795259 0 0
+    corner: 147 -10658404 -35850276 0 0
+    corner: 148 -11261652 -36453525 0 0
+    corner: 149 -11261740 -36453652 0 0
+    corner: 150 -11261864 -36453737 0 0
+    corner: 151 -11317200 -36536652 0 0
+    corner: 152 -11372208 -36618981 0 0
+    corner: 153 -11372240 -36619131 0 0
+    corner: 154 -11372324 -36619258 0 0
+    corner: 155 -11391744 -36717204 0 0
+    corner: 156 -11411028 -36814150 0 0
+    corner: 157 -11411000 -36814300 0 0
+    corner: 158 -11411028 -36814449 0 0
+    corner: 159 -11410780 -37240053 0 0
+    corner: 160 -11450012 -37240053 0 0
+    corner: 161 -11450012 -38440052 0 0
+    corner: 162 -11450016 -38640052 0 0
+    corner: 163 -11650016 -38640052 0 0
+    corner: 164 -11650012 -38440052 0 0
+    corner: 165 -11650012 -37240053 0 0
+    corner: 166 -11782848 -37240052 0 0
+    corner: 167 -11868956 -37326160 0 0
+    corner: 168 -11959236 -37235882 0 0
+    corner: 169 -12440792 -37235882 0 0
+    corner: 170 -12525016 -37320102 0 0
+    corner: 171 -12609232 -37235882 0 0
+    corner: 172 -12989664 -37235882 0 0
+    corner: 173 -12989624 -37072210 0 0
+    corner: 174 -12683452 -36766039 0 0
+    corner: 175 -12683452 -36090103 0 0
+    corner: 176 -13161484 -35612071 0 0
+    corner: 177 -13837424 -35612071 0 0
+    corner: 178 -14289948 -36064600 0 0
+    corner: 179 -14289932 -35291517 0 0
+    corner: 180 -14105140 -35106729 0 0
+    corner: 181 -12131664 -35106729 0 0
+    corner: 182 -12131404 -35106678 0 0
+    corner: 183 -12131144 -35106729 0 0
+    corner: 184 -12033616 -35087228 0 0
+    corner: 185 -11936492 -35067908 0 0
+    corner: 186 -11936276 -35067763 0 0
+    corner: 187 -11936016 -35067711 0 0
+    corner: 188 -11853712 -35012595 0 0
+    corner: 189 -11771036 -34957354 0 0
+    corner: 190 -11770892 -34957136 0 0
+    corner: 191 -11770672 -34956990 0 0
+    corner: 192 -11139488 -34324528 0 0
+    corner: 193 -11084604 -34242207 0 0
+    corner: 194 -11029380 -34159645 0 0
+    corner: 195 -11029308 -34159275 0 0
+    corner: 196 -11029100 -34158961 0 0
+    corner: 197 -11009860 -34061721 0 0
+    corner: 198 -10990472 -33964493 0 0
+    corner: 199 -10990472 -33960197 0 0
+    corner: 200 -10500012 -33469737 0 0
+    corner: 201 -9986308 -33983441 0 0
+    corner: 202 -9013716 -33983441 0 0
+    corner: 203 -8483488 -33453209 0 0
+    corner: 204 -7960644 -33976049 0 0
+    corner: 205 -7600012 -33976049 0 0
+    corner: 206 -7600016 -33026049 0 0
+    corner: 207 -7600012 -32826049 0 0
+    corner: 208 -7600012 -31876049 0 0
+    corner: 209 -7960648 -31876049 0 0
+    corner: 210 -8483484 -32398889 0 0
+    corner: 211 -9013716 -31868657 0 0
+    corner: 212 -9986308 -31868657 0 0
+    corner: 213 -10500012 -32382361 0 0
+    corner: 214 -11013716 -31868657 0 0
+    corner: 215 -11986308 -31868657 0 0
+    corner: 216 -12500012 -32382361 0 0
+    corner: 217 -13013716 -31868657 0 0
+    corner: 218 -13986312 -31868657 0 0
+    corner: 219 -14500012 -32382361 0 0
+    corner: 220 -15013716 -31868657 0 0
+    corner: 221 -15986308 -31868657 0 0
+    corner: 222 -16429556 -32311905 0 0
+    corner: 223 -16429560 -31751949 0 0
+    corner: 224 -14499116 -29821503 0 0
+    corner: 225 -10676312 -29821503 0 0
+    corner: 226 -10437912 -30059907 0 0
+    corner: 227 -9053500 -30059907 0 0
+    corner: 228 -9053504 -30427531 0 0
+    corner: 229 -9156012 -30530041 0 0
+    corner: 230 -9156012 -31205977 0 0
+    corner: 231 -8677980 -31684009 0 0
+    corner: 232 -8002044 -31684009 0 0
+    corner: 233 -7524012 -31205977 0 0
+    corner: 234 -7524012 -30530041 0 0
+    corner: 235 -7626520 -30427531 0 0
+    corner: 236 -7626520 -30059907 0 0
+    corner: 237 -6242116 -30059907 0 0
+    corner: 238 -5531156 -29348945 0 0
+    corner: 239 -5531156 -28153153 0 0
+    corner: 240 -6224544 -27459761 0 0
+    corner: 241 -5540012 -26775225 0 0
+    corner: 242 -5540016 -26311049 0 0
+    corner: 243 -8240016 -26311049 0 0
+    corner: 244 -8440012 -26311049 0 0
+    corner: 245 -11140012 -26311049 0 0
+    corner: 246 -11140016 -26775225 0 0
+    corner: 247 -10455476 -27459761 0 0
+    corner: 248 -10676316 -27680595 0 0
+    corner: 249 -14942512 -27680595 0 0
+    corner: 250 -14960024 -27684077 0 0
+    corner: 251 -11458060 -24182115 0 0
+    corner: 252 -11148872 -24182009 0 0
+    corner: 253 -11148876 -24268945 0 0
+    corner: 254 -10455480 -24962337 0 0
+    corner: 255 -11140012 -25646873 0 0
+    corner: 256 -11140012 -26111049 0 0
+    corner: 257 -8440012 -26111049 0 0
+    corner: 258 -8240012 -26111049 0 0
+    corner: 259 -5540016 -26111049 0 0
+    corner: 260 -5540016 -25646873 0 0
+    corner: 261 -6224544 -24962337 0 0
+    corner: 262 -5531152 -24268945 0 0
+    corner: 263 -5531156 -23073154 0 0
+    corner: 264 -6242116 -22362190 0 0
+    corner: 265 -10437912 -22362190 0 0
+    corner: 266 -11148868 -23073154 0 0
+    corner: 267 -11148868 -23162010 0 0
+    corner: 268 -11669380 -23162190 0 0
+    corner: 269 -11669380 -23162186 0 0
+    corner: 270 -11669388 -23162190 0 0
+    corner: 271 -11669556 -23162190 0 0
+    corner: 272 -11765192 -23181246 0 0
+    corner: 273 -11864548 -23201010 0 0
+    corner: 274 -11864620 -23201058 0 0
+    corner: 275 -11864708 -23201078 0 0
+    corner: 276 -11947176 -23256222 0 0
+    corner: 277 -12030004 -23311562 0 0
+    corner: 278 -12030128 -23311686 0 0
+    corner: 279 -12030128 -23311686 0 0
+    corner: 280 -12030128 -23311686 0 0
+    corner: 281 -19351556 -30633117 0 0
+    corner: 282 -19351612 -30633201 0 0
+    corner: 283 -19351696 -30633255 0 0
+    corner: 284 -19406852 -30715869 0 0
+    corner: 285 -19462112 -30798573 0 0
+    corner: 286 -19462128 -30798673 0 0
+    corner: 287 -19462188 -30798757 0 0
+    corner: 288 -19481320 -30895145 0 0
+    corner: 289 -19500936 -30993741 0 0
+    corner: 290 -19500912 -30993845 0 0
+    corner: 291 -19500932 -30993941 0 0
+    corner: 292 -19499660 -34256567 0 0
+    corner: 293 -19480168 -34354370 0 0
+    corner: 294 -19460836 -34451536 0 0
+    corner: 295 -19460780 -34451621 0 0
+    corner: 296 -19460764 -34451720 0 0
+    corner: 297 -19405364 -34534568 0 0
+    corner: 298 -19350284 -34616994 0 0
+    corner: 299 -17047292 -36919990 0 0
+    corner: 300 -17047292 -40508579 0 0
+    corner: 301 -17047284 -40508628 0 0
+    corner: 302 -17047292 -40508671 0 0
+    corner: 303 -17028404 -40603535 0 0
+    corner: 304 -17008472 -40703748 0 0
+    corner: 305 -17008444 -40703787 0 0
+    corner: 306 -17008436 -40703831 0 0
+    corner: 307 -16954556 -40784434 0 0
+    corner: 308 -16897916 -40869204 0 0
+    corner: 309 -16897876 -40869231 0 0
+    corner: 310 -16897852 -40869267 0 0
+    corner: 311 -15529364 -42237267 0 0
+    corner: 312 -15987472 -42236871 0 0
+    corner: 313 -15987588 -42236895 0 0
+    corner: 314 -15987712 -42236871 0 0
+    corner: 315 -16085392 -42256261 0 0
+    corner: 316 -16182672 -42275524 0 0
+    corner: 317 -16182772 -42275592 0 0
+    corner: 318 -16182896 -42275615 0 0
+    corner: 319 -16265720 -42330910 0 0
+    corner: 320 -16348224 -42385935 0 0
+    corner: 321 -16348292 -42386037 0 0
+    corner: 322 -16348396 -42386104 0 0
+    corner: 323 -16510336 -42547916 0 0
+    corner: 324 -16510392 -42548007 0 0
+    corner: 325 -16510488 -42548070 0 0
+    corner: 326 -16566080 -42631274 0 0
+    corner: 327 -16620952 -42713327 0 0
+    corner: 328 -16620976 -42713437 0 0
+    corner: 329 -16621036 -42713529 0 0
+    corner: 330 -16640328 -42810532 0 0
+    corner: 331 -16659852 -42908480 0 0
+    corner: 332 -16659832 -42908591 0 0
+    corner: 333 -16659852 -42908698 0 0
+    corner: 334 -16659176 -63871578 0 0
+    corner: 335 -19710964 -66923368 0 0
+    corner: 336 -19821520 -67088822 0 0
+    corner: 337 -19860344 -67283992 0 0
+    corner: 338 -19860340 -73226322 0 0
+    corner: 339 -19840272 -73327198 0 0
+    corner: 340 -19821552 -73421418 0 0
+    corner: 341 -19821524 -73421454 0 0
+    corner: 342 -19821524 -73421486 0 0
+    corner: 343 -19767076 -73502974 0 0
+    corner: 344 -19711020 -73586890 0 0
+    corner: 345 -18690572 -74607626 0 0
+    corner: 346 -18690572 -76924518 0 0
+    corner: 347 -18788008 -77021946 0 0
+    corner: 348 -18788004 -78544146 0 0
+    corner: 349 -18636500 -78695646 0 0
+    corner: 350 -17317508 -78695646 0 0
+    corner: 351 -17166012 -78544142 0 0
+    corner: 352 -17166012 -77021942 0 0
+    corner: 353 -17263432 -76924518 0 0
+    corner: 354 -17263436 -74600050 0 0
+    corner: 355 -17273004 -74551930 0 0
+    corner: 356 -17273008 -74043054 0 0
+    corner: 357 -17520000 -73796054 0 0
+    corner: 358 -18059624 -73796050 0 0
+    corner: 359 -18840344 -73015114 0 0
+    corner: 360 -18840336 -67495242 0 0
+    corner: 361 -15788548 -64443446 0 0
+    corner: 362 -15788540 -64443438 0 0
+    corner: 363 -15788540 -64443434 0 0
+    corner: 364 -15733544 -64361126 0 0
+    corner: 365 -15677992 -64277990 0 0
+    corner: 366 -15677992 -64277982 0 0
+    corner: 367 -15677988 -64277974 0 0
+    corner: 368 -15659096 -64183006 0 0
+    corner: 369 -15639172 -64082822 0 0
+    corner: 370 -15639172 -64082814 0 0
+    corner: 371 -15639176 -64082804 0 0
+    corner: 372 -15639440 -55759856 0 0
+    corner: 373 -6412312 -64986990 0 0
+    corner: 374 -6412304 -69766842 0 0
+    corner: 375 -6389140 -69883302 0 0
+    corner: 376 -6373484 -69962010 0 0
+    corner: 377 -6373484 -69962014 0 0
+    corner: 378 -6306912 -70061646 0 0
+    corner: 379 -6262932 -70127466 0 0
+    corner: 380 -4946696 -71443714 0 0
+    corner: 381 -4946180 -73849210 0 0
+    corner: 382 -5140016 -74043050 0 0
+    corner: 383 -5140020 -74551926 0 0
+    corner: 384 -5149588 -74600050 0 0
+    corner: 385 -5149588 -76924518 0 0
+    corner: 386 -5247016 -77021946 0 0
+    corner: 387 -5247016 -78544146 0 0
+    corner: 388 -5095516 -78695646 0 0
+    corner: 389 -3776516 -78695646 0 0
+    corner: 390 -3625020 -78544146 0 0
+    corner: 391 -3625020 -77021946 0 0
+    corner: 392 -3722448 -76924518 0 0
+    corner: 393 -3722448 -74600050 0 0
+    corner: 394 -3732016 -74551930 0 0
+    corner: 395 -3732016 -74043050 0 0
+    corner: 396 -3926180 -73848886 0 0
+    corner: 397 -3926740 -71232310 0 0
+    corner: 398 -3946072 -71135242 0 0
+    corner: 399 -3965564 -71037254 0 0
+    corner: 400 -3965596 -71037206 0 0
+    corner: 401 -3965604 -71037150 0 0
+    corner: 402 -4019788 -70956098 0 0
+    corner: 403 -4076116 -70871794 0 0
+    corner: 404 -5392308 -69555594 0 0
+    corner: 405 -5392312 -64775738 0 0
+    corner: 406 -5431136 -64580570 0 0
+    corner: 407 -5505004 -64470014 0 0
+    corner: 408 -5541692 -64415114 0 0
+    corner: 409 -14938924 -55017871 0 0
+    corner: 410 -14939156 -52734870 0 0
+    corner: 411 -14587980 -53086047 0 0
+    corner: 412 -13912044 -53086046 0 0
+    corner: 413 -13434012 -52608014 0 0
+    corner: 414 -13434012 -52175295 0 0
+    corner: 415 -10110012 -48851300 0 0
+    corner: 416 -10110012 -55316049 0 0
+    corner: 417 -10071192 -55511217 0 0
+    corner: 418 -9960640 -55676673 0 0
+    corner: 419 -8522820 -57114490 0 0
+    corner: 420 -8522820 -57791706 0 0
+    corner: 421 -8007672 -58306856 0 0
+    corner: 422 -7124356 -58306856 0 0
+    corner: 423 -6609204 -57791706 0 0
+    corner: 424 -6609204 -56908392 0 0
+    corner: 425 -7124356 -56393242 0 0
+    corner: 426 -7801572 -56393242 0 0
+    corner: 427 -9090016 -55104798 0 0
+    corner: 428 -9090016 -48927303 0 0
+    corner: 429 -8522820 -49494495 0 0
+    corner: 430 -8522820 -50171706 0 0
+    corner: 431 -8007668 -50686856 0 0
+    corner: 432 -7124356 -50686856 0 0
+    corner: 433 -6609204 -50171706 0 0
+    corner: 434 -6609204 -49567658 0 0
+    corner: 435 -6402812 -49774051 0 0
+    corner: 436 -6355812 -49774051 0 0
+    corner: 437 -6355812 -50338600 0 0
+    corner: 438 -7330456 -51313242 0 0
+    corner: 439 -8007668 -51313242 0 0
+    corner: 440 -8522820 -51828392 0 0
+    corner: 441 -8522820 -52711706 0 0
+    corner: 442 -8007668 -53226856 0 0
+    corner: 443 -7124356 -53226856 0 0
+    corner: 444 -6609204 -52711706 0 0
+    corner: 445 -6609204 -52034490 0 0
+    corner: 446 -5485188 -50910474 0 0
+    corner: 447 -5374636 -50745018 0 0
+    corner: 448 -5335812 -50549849 0 0
+    corner: 449 -5335812 -49774051 0 0
+    corner: 450 -5288812 -49774051 0 0
+    corner: 451 -5041812 -49527051 0 0
+    corner: 452 -5041812 -48613051 0 0
+    corner: 453 -5288812 -48366051 0 0
+    corner: 454 -6402812 -48366051 0 0
+    corner: 455 -6649812 -48613051 0 0
+    corner: 456 -6649812 -49247785 0 0
+    corner: 457 -7124356 -48773242 0 0
+    corner: 458 -7801576 -48773242 0 0
+    corner: 459 -8315860 -48258962 0 0
+    corner: 460 -8315856 -47838669 0 0
+    corner: 461 -8007668 -48146856 0 0
+    corner: 462 -7124356 -48146856 0 0
+    corner: 463 -6650012 -47672513 0 0
+    corner: 464 -6650012 -47877050 0 0
+    corner: 465 -6403012 -48124051 0 0
+    corner: 466 -5289012 -48124051 0 0
+    corner: 467 -5042012 -47877051 0 0
+    corner: 468 -5042012 -47336661 0 0
+    corner: 469 -4954100 -47248621 0 0
+    corner: 470 -4954100 -50434209 0 0
+    corner: 471 -5806564 -51286320 0 0
+    corner: 472 -5806596 -51286364 0 0
+    corner: 473 -5806636 -51286394 0 0
+    corner: 474 -5861568 -51368603 0 0
+    corner: 475 -5917152 -51451753 0 0
+    corner: 476 -5917164 -51451805 0 0
+    corner: 477 -5917192 -51451850 0 0
+    corner: 478 -5936500 -51548911 0 0
+    corner: 479 -5956012 -51646914 0 0
+    corner: 480 -5956004 -51646966 0 0
+    corner: 481 -5956012 -51647019 0 0
+    corner: 482 -5956012 -52456050 0 0
+    corner: 483 -6003012 -52456050 0 0
+    corner: 484 -6250012 -52703050 0 0
+    corner: 485 -6250012 -53617049 0 0
+    corner: 486 -6003012 -53864050 0 0
+    corner: 487 -4889012 -53864050 0 0
+    corner: 488 -4642012 -53617050 0 0
+    corner: 489 -4642012 -52703050 0 0
+    corner: 490 -4889012 -52456050 0 0
+    corner: 491 -4936012 -52456050 0 0
+    corner: 492 -4936012 -51858328 0 0
+    corner: 493 -4354012 -51276567 0 0
+    corner: 494 -4354012 -67936242 0 0
+    corner: 495 -4526252 -68108814 0 0
+    corner: 496 -4670476 -68108814 0 0
+    corner: 497 -5148508 -68586846 0 0
+    corner: 498 -5148508 -69262782 0 0
+    corner: 499 -4670476 -69740814 0 0
+    corner: 500 -3994540 -69740814 0 0
+    corner: 501 -3516508 -69262782 0 0
+    corner: 502 -3516508 -69117354 0 0
+    corner: 503 -3135868 -68735982 0 0
+    corner: 504 -3135868 -68735982 0 0
+    corner: 505 -3135868 -68735978 0 0
+    corner: 506 -3135384 -68735494 0 0
+    corner: 507 -3058320 -68619918 0 0
+    corner: 508 -2981188 -68504482 0 0
+    corner: 509 -2981116 -68504138 0 0
+    corner: 510 -2980924 -68503846 0 0
+    corner: 511 -2953896 -68367262 0 1
+    corner: 512 -5743008 -81491550 0 0
+    corner: 513 -5743008 -79988550 0 0
+    corner: 514 -5894508 -79837050 0 0
+    corner: 515 -8197508 -79837050 0 0
+    corner: 516 -8349008 -79988550 0 0
+    corner: 517 -8349008 -80025830 0 0
+    corner: 518 -9845820 -80025830 0 0
+    corner: 519 -9845820 -80025830 0 0
+    corner: 520 -9845820 -80025830 0 0
+    corner: 521 -11368468 -80025830 0 0
+    corner: 522 -11963100 -79431194 0 0
+    corner: 523 -13158896 -79431194 0 0
+    corner: 524 -13869860 -80142158 0 0
+    corner: 525 -13869852 -81337950 0 0
+    corner: 526 -13784320 -81423494 0 0
+    corner: 527 -13784328 -84526046 0 0
+    corner: 528 -13784328 -84526050 0 0
+    corner: 529 -13784328 -84526050 0 0
+    corner: 530 -13784332 -84526054 0 0
+    corner: 531 -13784332 -84526058 0 0
+    corner: 532 -13764020 -84628170 0 0
+    corner: 533 -13764016 -85977554 0 0
+    corner: 534 -13612508 -86129050 0 0
+    corner: 535 -13104316 -86129050 0 0
+    corner: 536 -13104324 -88442610 0 0
+    corner: 537 -13189872 -88528154 0 0
+    corner: 538 -13189856 -89041642 0 0
+    corner: 539 -13206656 -89126050 0 0
+    corner: 540 -13189864 -89210458 0 0
+    corner: 541 -13189872 -89723946 0 0
+    corner: 542 -12478892 -90434906 0 0
+    corner: 543 -11965416 -90434906 0 0
+    corner: 544 -11881000 -90451698 0 0
+    corner: 545 -8500020 -90451698 0 0
+    corner: 546 -8415608 -90434906 0 0
+    corner: 547 -7902124 -90434906 0 0
+    corner: 548 -7191164 -89723946 0 0
+    corner: 549 -7191160 -89210458 0 0
+    corner: 550 -7174372 -89126050 0 0
+    corner: 551 -7191164 -89041642 0 0
+    corner: 552 -7191164 -88528154 0 0
+    corner: 553 -7275416 -88443906 0 0
+    corner: 554 -7275412 -86129050 0 0
+    corner: 555 -6768520 -86129050 0 0
+    corner: 556 -6617016 -85977550 0 0
+    corner: 557 -6617020 -84634674 0 0
+    corner: 558 -6595412 -84526050 0 0
+    corner: 559 -6617016 -84417422 0 0
+    corner: 560 -6617020 -83074550 0 0
+    corner: 561 -6768516 -82923050 0 0
+    corner: 562 -8871516 -82923050 0 0
+    corner: 563 -9023016 -83074550 0 0
+    corner: 564 -9023016 -83302738 0 0
+    corner: 565 -11337700 -83302738 0 0
+    corner: 566 -11337696 -81454270 0 0
+    corner: 567 -9845820 -81454266 0 0
+    corner: 568 -8349008 -81454266 0 0
+    corner: 569 -8349012 -81491550 0 0
+    corner: 570 -8197508 -81643050 0 0
+    corner: 571 -5894508 -81643050 0 1
+    corner: 572 -15652152 -89723946 0 0
+    corner: 573 -15652144 -88528154 0 0
+    corner: 574 -15737052 -88443254 0 0
+    corner: 575 -15737048 -84526050 0 0
+    corner: 576 -15758020 -84420674 0 0
+    corner: 577 -15758016 -83074550 0 0
+    corner: 578 -15909516 -82923054 0 0
+    corner: 579 -16136680 -82923054 0 0
+    corner: 580 -16136684 -80069042 0 0
+    corner: 581 -16150012 -80002034 0 0
+    corner: 582 -16150008 -79307946 0 0
+    corner: 583 -16301508 -79156446 0 0
+    corner: 584 -17620512 -79156442 0 0
+    corner: 585 -17771996 -79307946 0 0
+    corner: 586 -17771996 -80002042 0 0
+    corner: 587 -17785324 -80069046 0 0
+    corner: 588 -17785340 -82923054 0 0
+    corner: 589 -18012520 -82923050 0 0
+    corner: 590 -18164008 -83074550 0 0
+    corner: 591 -18164008 -84420682 0 0
+    corner: 592 -18184964 -84526054 0 0
+    corner: 593 -18184968 -88443254 0 0
+    corner: 594 -18269856 -88528154 0 0
+    corner: 595 -18269864 -89723946 0 0
+    corner: 596 -17558896 -90434906 0 0
+    corner: 597 -16363104 -90434906 0 1
+    corner: 598 -1638880 -94457554 0 0
+    corner: 599 -1638876 -93282962 0 0
+    corner: 600 -2310972 -92610866 0 0
+    corner: 601 -3485568 -92610866 0 0
+    corner: 602 -4148260 -93273562 0 0
+    corner: 603 -4810956 -92610866 0 0
+    corner: 604 -5985552 -92610866 0 0
+    corner: 605 -6648256 -93273570 0 0
+    corner: 606 -7310964 -92610866 0 0
+    corner: 607 -8485556 -92610866 0 0
+    corner: 608 -9148268 -93273570 0 0
+    corner: 609 -9810972 -92610866 0 0
+    corner: 610 -10985564 -92610866 0 0
+    corner: 611 -11648268 -93273570 0 0
+    corner: 612 -12310972 -92610866 0 0
+    corner: 613 -13485576 -92610866 0 0
+    corner: 614 -14148256 -93273558 0 0
+    corner: 615 -14810948 -92610866 0 0
+    corner: 616 -15985548 -92610866 0 0
+    corner: 617 -16657636 -93282962 0 0
+    corner: 618 -16657656 -94457554 0 0
+    corner: 619 -15985548 -95129650 0 0
+    corner: 620 -14810964 -95129650 0 0
+    corner: 621 -14148256 -94466958 0 0
+    corner: 622 -13485572 -95129650 0 0
+    corner: 623 -12310980 -95129650 0 0
+    corner: 624 -11648268 -94466946 0 0
+    corner: 625 -10985568 -95129650 0 0
+    corner: 626 -9810972 -95129650 0 0
+    corner: 627 -9148268 -94466946 0 0
+    corner: 628 -8485560 -95129650 0 0
+    corner: 629 -7310964 -95129650 0 0
+    corner: 630 -6648260 -94466946 0 0
+    corner: 631 -5985548 -95129650 0 0
+    corner: 632 -4810956 -95129650 0 0
+    corner: 633 -4148260 -94466954 0 0
+    corner: 634 -3485564 -95129650 0 0
+    corner: 635 -2310972 -95129650 0 1
+    corner: 636 -1638872 -97457554 0 0
+    corner: 637 -1638868 -96282962 0 0
+    corner: 638 -2310968 -95610866 0 0
+    corner: 639 -3485560 -95610866 0 0
+    corner: 640 -4148268 -96273570 0 0
+    corner: 641 -4810968 -95610866 0 0
+    corner: 642 -5985568 -95610866 0 0
+    corner: 643 -6648264 -96273562 0 0
+    corner: 644 -7310960 -95610866 0 0
+    corner: 645 -8485552 -95610866 0 0
+    corner: 646 -9148260 -96273570 0 0
+    corner: 647 -9810964 -95610866 0 0
+    corner: 648 -10985560 -95610866 0 0
+    corner: 649 -11648256 -96273562 0 0
+    corner: 650 -12310952 -95610866 0 0
+    corner: 651 -13485540 -95610866 0 0
+    corner: 652 -14148252 -96273578 0 0
+    corner: 653 -14810972 -95610866 0 0
+    corner: 654 -15985580 -95610866 0 0
+    corner: 655 -16657656 -96282962 0 0
+    corner: 656 -16657676 -97457554 0 0
+    corner: 657 -15985568 -98129650 0 0
+    corner: 658 -14810980 -98129650 0 0
+    corner: 659 -14148252 -97466938 0 0
+    corner: 660 -13485560 -98129650 0 0
+    corner: 661 -12310964 -98129650 0 0
+    corner: 662 -11648256 -97466954 0 0
+    corner: 663 -10985560 -98129650 0 0
+    corner: 664 -9810964 -98129650 0 0
+    corner: 665 -9148256 -97466946 0 0
+    corner: 666 -8485556 -98129650 0 0
+    corner: 667 -7310964 -98129650 0 0
+    corner: 668 -6648260 -97466954 0 0
+    corner: 669 -5985568 -98129650 0 0
+    corner: 670 -4810972 -98129650 0 0
+    corner: 671 -4148268 -97466946 0 0
+    corner: 672 -3485564 -98129650 0 0
+    corner: 673 -2310972 -98129650 0 1
+    corner: 674 -5894508 -78443050 0 0
+    corner: 675 -8197508 -78443050 0 0
+    corner: 676 -8349008 -78291550 0 0
+    corner: 677 -8349008 -78254270 0 0
+    corner: 678 -8633012 -78254270 0 0
+    corner: 679 -8633020 -78254270 0 0
+    corner: 680 -8633020 -78254270 0 0
+    corner: 681 -8677128 -78245494 0 0
+    corner: 682 -8906332 -78199902 0 0
+    corner: 683 -8906336 -78199902 0 0
+    corner: 684 -8906336 -78199902 0 0
+    corner: 685 -8999464 -78137678 0 0
+    corner: 686 -9138040 -78045082 0 0
+    corner: 687 -9138044 -78045078 0 0
+    corner: 688 -9138044 -78045078 0 0
+    corner: 689 -10350840 -76832266 0 0
+    corner: 690 -10350844 -76832262 0 0
+    corner: 691 -10350844 -76832258 0 0
+    corner: 692 -10350844 -76832258 0 0
+    corner: 693 -10381220 -76786798 0 0
+    corner: 694 -10505668 -76600554 0 0
+    corner: 695 -10505668 -76600550 0 0
+    corner: 696 -10505668 -76600546 0 0
+    corner: 697 -10530524 -76475570 0 0
+    corner: 698 -10560032 -76327234 0 0
+    corner: 699 -10560032 -75489830 0 0
+    corner: 700 -10649816 -75400050 0 0
+    corner: 701 -10649812 -74486050 0 0
+    corner: 702 -10402812 -74239050 0 0
+    corner: 703 -9897192 -74239050 0 0
+    corner: 704 -9845816 -74228830 0 0
+    corner: 705 -9845816 -74228830 0 0
+    corner: 706 -9845816 -74228830 0 0
+    corner: 707 -7857008 -74228830 0 0
+    corner: 708 -7857008 -74181954 0 0
+    corner: 709 -7705508 -74030454 0 0
+    corner: 710 -6386512 -74030454 0 0
+    corner: 711 -6235012 -74181950 0 0
+    corner: 712 -6235008 -75704150 0 0
+    corner: 713 -6386508 -75855650 0 0
+    corner: 714 -7705508 -75855650 0 0
+    corner: 715 -7857008 -75704150 0 0
+    corner: 716 -7857008 -75657270 0 0
+    corner: 717 -9131592 -75657266 0 0
+    corner: 718 -9131592 -76031398 0 0
+    corner: 719 -8349008 -76813994 0 0
+    corner: 720 -8349008 -76788550 0 0
+    corner: 721 -8197508 -76637054 0 0
+    corner: 722 -5894508 -76637054 0 0
+    corner: 723 -5743012 -76788550 0 0
+    corner: 724 -5743012 -78291550 0 1
+    corner: 725 -2822124 -90434906 0 0
+    corner: 726 -4017920 -90434906 0 0
+    corner: 727 -4728880 -89723946 0 0
+    corner: 728 -4728876 -88528154 0 0
+    corner: 729 -4643980 -88443254 0 0
+    corner: 730 -4643976 -84526046 0 0
+    corner: 731 -4623016 -84420674 0 0
+    corner: 732 -4623020 -83074550 0 0
+    corner: 733 -4471520 -82923050 0 0
+    corner: 734 -4243696 -82923050 0 0
+    corner: 735 -4243696 -80069046 0 0
+    corner: 736 -4231016 -80005290 0 0
+    corner: 737 -4231020 -79307946 0 0
+    corner: 738 -4079516 -79156446 0 0
+    corner: 739 -2760516 -79156446 0 0
+    corner: 740 -2609016 -79307946 0 0
+    corner: 741 -2609016 -80005294 0 0
+    corner: 742 -2596340 -80069046 0 0
+    corner: 743 -2596336 -82923050 0 0
+    corner: 744 -2368516 -82923050 0 0
+    corner: 745 -2217020 -83074550 0 0
+    corner: 746 -2217016 -84420682 0 0
+    corner: 747 -2196060 -84526050 0 0
+    corner: 748 -2196060 -88443254 0 0
+    corner: 749 -2111160 -88528154 0 0
+    corner: 750 -2111164 -89723946 0 1
+    corner: 751 -18046108 -63870890 0 0
+    corner: 752 -18656724 -63870890 0 0
+    corner: 753 -18267644 -64259970 0 0
+    corner: 754 -18267644 -64935906 0 0
+    corner: 755 -18745676 -65413938 0 0
+    corner: 756 -19421616 -65413938 0 0
+    corner: 757 -19899644 -64935908 0 0
+    corner: 758 -19899648 -64502842 0 0
+    corner: 759 -21128424 -63273142 0 0
+    corner: 760 -21183580 -63190524 0 0
+    corner: 761 -21238840 -63107822 0 0
+    corner: 762 -21238856 -63107726 0 0
+    corner: 763 -21238908 -63107648 0 0
+    corner: 764 -21257980 -63011582 0 0
+    corner: 765 -21277660 -62912654 0 0
+    corner: 766 -21277660 -37935564 0 0
+    corner: 767 -21258212 -37837793 0 0
+    corner: 768 -21238924 -37740593 0 0
+    corner: 769 -21238860 -37740501 0 0
+    corner: 770 -21238840 -37740394 0 0
+    corner: 771 -21184120 -37658502 0 0
+    corner: 772 -21128440 -37575092 0 0
+    corner: 773 -20077444 -36523208 0 0
+    corner: 774 -20077444 -36090101 0 0
+    corner: 775 -19599416 -35612071 0 0
+    corner: 776 -18923480 -35612071 0 0
+    corner: 777 -18445448 -36090103 0 0
+    corner: 778 -18445444 -36766037 0 0
+    corner: 779 -18923476 -37244069 0 0
+    corner: 780 -19355812 -37244070 0 0
+    corner: 781 -20257660 -38146685 0 0
+    corner: 782 -20257664 -62701516 0 0
+    corner: 783 -19178048 -63781940 0 0
+    corner: 784 -18811000 -63781936 0 0
+    corner: 785 -19200076 -63392858 0 0
+    corner: 786 -19200076 -62959410 0 0
+    corner: 787 -19671884 -62486850 0 0
+    corner: 788 -19727192 -62403930 0 0
+    corner: 789 -19782152 -62321682 0 0
+    corner: 790 -19782188 -62321478 0 0
+    corner: 791 -19782304 -62321306 0 0
+    corner: 792 -19801548 -62224154 0 0
+    corner: 793 -19820976 -62126510 0 0
+    corner: 794 -19820972 -42376825 0 0
+    corner: 795 -20126972 -42070826 0 0
+    corner: 796 -20126972 -41394889 0 0
+    corner: 797 -19648940 -40916858 0 0
+    corner: 798 -18973004 -40916858 0 0
+    corner: 799 -18494972 -41394890 0 0
+    corner: 800 -18494976 -42070827 0 0
+    corner: 801 -18800972 -42376825 0 0
+    corner: 802 -18800976 -61915498 0 0
+    corner: 803 -18478100 -62238890 0 0
+    corner: 804 -18046112 -62238890 0 0
+    corner: 805 -17568076 -62716922 0 0
+    corner: 806 -17568076 -63392858 0 1
+    corner: 807 -5370508 -73569650 0 0
+    corner: 808 -6689508 -73569654 0 0
+    corner: 809 -6841008 -73418154 0 0
+    corner: 810 -6841008 -71895954 0 0
+    corner: 811 -6754432 -71809374 0 0
+    corner: 812 -6849740 -71714066 0 0
+    corner: 813 -6953232 -71714066 0 0
+    corner: 814 -7043012 -71803850 0 0
+    corner: 815 -7347612 -71803850 0 0
+    corner: 816 -7254012 -71897454 0 0
+    corner: 817 -7254012 -72557054 0 0
+    corner: 818 -7962012 -72557054 0 0
+    corner: 819 -7962012 -71798854 0 0
+    corner: 820 -8204012 -71556850 0 0
+    corner: 821 -8204012 -71051226 0 0
+    corner: 822 -8214232 -70999854 0 0
+    corner: 823 -8214232 -70999850 0 0
+    corner: 824 -8214232 -70999850 0 0
+    corner: 825 -8214236 -69979046 0 0
+    corner: 826 -8401516 -69979046 0 0
+    corner: 827 -8553016 -69827546 0 0
+    corner: 828 -8553016 -69522738 0 0
+    corner: 829 -9013720 -69983438 0 0
+    corner: 830 -9986316 -69983438 0 0
+    corner: 831 -10500016 -69469738 0 0
+    corner: 832 -11013720 -69983438 0 0
+    corner: 833 -11986308 -69983438 0 0
+    corner: 834 -12500020 -69469738 0 0
+    corner: 835 -13013720 -69983438 0 0
+    corner: 836 -13986308 -69983438 0 0
+    corner: 837 -14500016 -69469738 0 0
+    corner: 838 -15013724 -69983438 0 0
+    corner: 839 -15986312 -69983438 0 0
+    corner: 840 -16516544 -69453206 0 0
+    corner: 841 -17039380 -69976046 0 0
+    corner: 842 -17400016 -69976046 0 0
+    corner: 843 -17400012 -69026050 0 0
+    corner: 844 -17400020 -68826046 0 0
+    corner: 845 -17400020 -67876050 0 0
+    corner: 846 -17039380 -67876050 0 0
+    corner: 847 -16516548 -68398886 0 0
+    corner: 848 -15986312 -67868654 0 0
+    corner: 849 -15013720 -67868654 0 0
+    corner: 850 -14500016 -68382358 0 0
+    corner: 851 -14010016 -67892354 0 0
+    corner: 852 -14010008 -66008630 0 0
+    corner: 853 -14604696 -65413942 0 0
+    corner: 854 -15037416 -65413942 0 0
+    corner: 855 -15515452 -64935910 0 0
+    corner: 856 -15515448 -64259976 0 0
+    corner: 857 -15037420 -63781942 0 0
+    corner: 858 -14361484 -63781942 0 0
+    corner: 859 -13883452 -64259974 0 0
+    corner: 860 -13883452 -64692694 0 0
+    corner: 861 -13139388 -65436756 0 0
+    corner: 862 -13028836 -65602212 0 0
+    corner: 863 -12990016 -65797382 0 0
+    corner: 864 -12990016 -67892358 0 0
+    corner: 865 -12500012 -68382358 0 0
+    corner: 866 -12010148 -67892490 0 0
+    corner: 867 -12010444 -65576216 0 0
+    corner: 868 -13714832 -63870890 0 0
+    corner: 869 -14147304 -63870890 0 0
+    corner: 870 -14625332 -63392858 0 0
+    corner: 871 -14625336 -62716922 0 0
+    corner: 872 -14147300 -62238890 0 0
+    corner: 873 -13471364 -62238890 0 0
+    corner: 874 -12993332 -62716922 0 0
+    corner: 875 -12993332 -63149890 0 0
+    corner: 876 -11139748 -65004498 0 0
+    corner: 877 -11084048 -65087906 0 0
+    corner: 878 -11029316 -65169794 0 0
+    corner: 879 -11029296 -65169894 0 0
+    corner: 880 -11029236 -65169982 0 0
+    corner: 881 -11009668 -65268496 0 0
+    corner: 882 -10990472 -65364958 0 0
+    corner: 883 -10990152 -67892226 0 0
+    corner: 884 -10500016 -68382358 0 0
+    corner: 885 -9986312 -67868654 0 0
+    corner: 886 -9013720 -67868654 0 0
+    corner: 887 -8553016 -68329358 0 0
+    corner: 888 -8553016 -68024550 0 0
+    corner: 889 -8401516 -67873046 0 0
+    corner: 890 -6598516 -67873050 0 0
+    corner: 891 -6447016 -68024546 0 0
+    corner: 892 -6447016 -69827546 0 0
+    corner: 893 -6598516 -69979046 0 0
+    corner: 894 -6785796 -69979046 0 0
+    corner: 895 -6785796 -70285630 0 0
+    corner: 896 -6553912 -70285630 0 0
+    corner: 897 -6553912 -70285630 0 0
+    corner: 898 -6553912 -70285630 0 0
+    corner: 899 -6553908 -70285630 0 0
+    corner: 900 -6390816 -70318066 0 0
+    corner: 901 -6280592 -70339994 0 0
+    corner: 902 -6280592 -70339994 0 0
+    corner: 903 -6280588 -70339994 0 0
+    corner: 904 -6141060 -70433222 0 0
+    corner: 905 -6048880 -70494814 0 0
+    corner: 906 -5524984 -71018702 0 0
+    corner: 907 -5524984 -71018702 0 0
+    corner: 908 -5524980 -71018706 0 0
+    corner: 909 -5432384 -71157286 0 0
+    corner: 910 -5370160 -71250410 0 0
+    corner: 911 -5370160 -71250414 0 0
+    corner: 912 -5370160 -71250414 0 0
+    corner: 913 -5315788 -71523734 0 0
+    corner: 914 -5315788 -71799174 0 0
+    corner: 915 -5219008 -71895954 0 0
+    corner: 916 -5219008 -73418154 0 1
+    corner: 917 -4888812 -55514050 0 0
+    corner: 918 -6002812 -55514050 0 0
+    corner: 919 -6196812 -55320048 0 0
+    corner: 920 -6677548 -55320048 0 0
+    corner: 921 -7124356 -55766856 0 0
+    corner: 922 -8007668 -55766856 0 0
+    corner: 923 -8522820 -55251706 0 0
+    corner: 924 -8522820 -54368392 0 0
+    corner: 925 -8007668 -53853242 0 0
+    corner: 926 -7124356 -53853242 0 0
+    corner: 927 -6677548 -54300049 0 0
+    corner: 928 -6196812 -54300049 0 0
+    corner: 929 -6002812 -54106050 0 0
+    corner: 930 -4888812 -54106050 0 0
+    corner: 931 -4641812 -54353050 0 0
+    corner: 932 -4641812 -55267050 0 1
+    corner: 933 -17284356 -45606855 0 0
+    corner: 934 -16769204 -45091706 0 0
+    corner: 935 -16769208 -44208392 0 0
+    corner: 936 -17284356 -43693241 0 0
+    corner: 937 -18167668 -43693242 0 0
+    corner: 938 -18682820 -44208391 0 0
+    corner: 939 -18682820 -45091705 0 0
+    corner: 940 -18167668 -45606856 0 1
+    corner: 941 -17284356 -48146856 0 0
+    corner: 942 -16769204 -47631705 0 0
+    corner: 943 -16769204 -46748392 0 0
+    corner: 944 -17284356 -46233242 0 0
+    corner: 945 -18167668 -46233242 0 0
+    corner: 946 -18682820 -46748392 0 0
+    corner: 947 -18682820 -47631706 0 0
+    corner: 948 -18167672 -48146857 0 1
+    corner: 949 -17284356 -50686854 0 0
+    corner: 950 -16769204 -50171706 0 0
+    corner: 951 -16769204 -49288392 0 0
+    corner: 952 -17284356 -48773242 0 0
+    corner: 953 -18167668 -48773242 0 0
+    corner: 954 -18682820 -49288394 0 0
+    corner: 955 -18682820 -50171706 0 0
+    corner: 956 -18167668 -50686857 0 1
+    corner: 957 -17284356 -53226856 0 0
+    corner: 958 -16769208 -52711705 0 0
+    corner: 959 -16769204 -51828392 0 0
+    corner: 960 -17284356 -51313244 0 0
+    corner: 961 -18167668 -51313241 0 0
+    corner: 962 -18682820 -51828392 0 0
+    corner: 963 -18682820 -52711704 0 0
+    corner: 964 -18167668 -53226856 0 1
+    corner: 965 -17284356 -55766856 0 0
+    corner: 966 -16769204 -55251706 0 0
+    corner: 967 -16769204 -54368393 0 0
+    corner: 968 -17284356 -53853243 0 0
+    corner: 969 -18167672 -53853241 0 0
+    corner: 970 -18682820 -54368394 0 0
+    corner: 971 -18682820 -55251708 0 0
+    corner: 972 -18167668 -55766858 0 1
+    corner: 973 -17284356 -58306856 0 0
+    corner: 974 -16769204 -57791706 0 0
+    corner: 975 -16769208 -56908391 0 0
+    corner: 976 -17284356 -56393241 0 0
+    corner: 977 -18167668 -56393242 0 0
+    corner: 978 -18682820 -56908392 0 0
+    corner: 979 -18682820 -57791704 0 0
+    corner: 980 -18167672 -58306854 0 1
+    corner: 981 -18550020 -69026042 0 0
+    corner: 982 -18550020 -69386678 0 0
+    corner: 983 -17960652 -69976046 0 0
+    corner: 984 -17600012 -69976050 0 0
+    corner: 985 -17600020 -69026046 0 1
+    corner: 986 -17600016 -67876050 0 0
+    corner: 987 -17960652 -67876050 0 0
+    corner: 988 -18550020 -68465410 0 0
+    corner: 989 -18550020 -68826046 0 0
+    corner: 990 -17600020 -68826046 0 1
+    corner: 991 -6450016 -32826049 0 0
+    corner: 992 -6450012 -32465417 0 0
+    corner: 993 -7039380 -31876049 0 0
+    corner: 994 -7400012 -31876049 0 0
+    corner: 995 -7400012 -32826049 0 1
+    corner: 996 -7400012 -33976049 0 0
+    corner: 997 -7039380 -33976049 0 0
+    corner: 998 -6450012 -33386681 0 0
+    corner: 999 -6450012 -33026049 0 0
+    corner: 1000 -7400016 -33026049 0 1
+    corner: 1001 -12461000 -76960054 0 0
+    corner: 1002 -11996828 -76960054 0 0
+    corner: 1003 -11261004 -76224230 0 0
+    corner: 1004 -11261004 -75760054 0 0
+    corner: 1005 -12461000 -75760054 0 1
+    corner: 1006 -11261000 -75560054 0 0
+    corner: 1007 -11261000 -75095878 0 0
+    corner: 1008 -11996820 -74360054 0 0
+    corner: 1009 -12461000 -74360054 0 0
+    corner: 1010 -12460996 -75560054 0 1
+    corner: 1011 -12661004 -74360054 0 0
+    corner: 1012 -13125172 -74360054 0 0
+    corner: 1013 -13861008 -75095878 0 0
+    corner: 1014 -13861000 -75560054 0 0
+    corner: 1015 -12660996 -75560054 0 1
+    corner: 1016 -13861004 -75760054 0 0
+    corner: 1017 -13861004 -76224230 0 0
+    corner: 1018 -13125176 -76960054 0 0
+    corner: 1019 -12661000 -76960054 0 0
+    corner: 1020 -12661004 -75760054 0 1
+    corner: 1021 -8870008 -72757050 0 0
+    corner: 1022 -8870008 -73416650 0 0
+    corner: 1023 -8720008 -73566650 0 0
+    corner: 1024 -8162008 -73566654 0 0
+    corner: 1025 -8162012 -72757054 0 1
+    corner: 1026 -7962008 -73566654 0 0
+    corner: 1027 -7404008 -73566650 0 0
+    corner: 1028 -7254008 -73416650 0 0
+    corner: 1029 -7254008 -72757054 0 0
+    corner: 1030 -7962012 -72757054 0 1
+    corner: 1031 -8162008 -72557054 0 0
+    corner: 1032 -8870008 -72557054 0 0
+    corner: 1033 -8870008 -71897454 0 0
+    corner: 1034 -8772604 -71800050 0 0
+    corner: 1035 -9050016 -71800050 0 0
+    corner: 1036 -9050012 -71100050 0 0
+    corner: 1037 -8450012 -71100050 0 0
+    corner: 1038 -8450016 -71550050 0 0
+    corner: 1039 -8647420 -71747454 0 0
+    corner: 1040 -8162008 -71747454 0 1
+    corner: 1041 -9746016 -79790046 0 0
+    corner: 1042 -9296020 -79790046 0 0
+    corner: 1043 -9046016 -79540046 0 0
+    corner: 1044 -9046016 -79190046 0 0
+    corner: 1045 -9746020 -79190046 0 1
+    corner: 1046 -9046020 -78990046 0 0
+    corner: 1047 -9046016 -78640046 0 0
+    corner: 1048 -9296020 -78390046 0 0
+    corner: 1049 -9746016 -78390046 0 0
+    corner: 1050 -9746016 -78990046 0 1
+    corner: 1051 -9946016 -78390046 0 0
+    corner: 1052 -10396016 -78390046 0 0
+    corner: 1053 -10646016 -78640046 0 0
+    corner: 1054 -10646016 -78990046 0 0
+    corner: 1055 -9946020 -78990046 0 1
+    corner: 1056 -10646016 -79190046 0 0
+    corner: 1057 -10646016 -79540046 0 0
+    corner: 1058 -10396020 -79790046 0 0
+    corner: 1059 -9946016 -79790046 0 0
+    corner: 1060 -9946020 -79190046 0 1
+    corner: 1061 -3321012 -38639851 0 0
+    corner: 1062 -3321012 -39089851 0 0
+    corner: 1063 -3071012 -39339852 0 0
+    corner: 1064 -2721012 -39339852 0 0
+    corner: 1065 -2721012 -38639852 0 1
+    corner: 1066 -2521016 -39339851 0 0
+    corner: 1067 -2171016 -39339850 0 0
+    corner: 1068 -1921012 -39089851 0 0
+    corner: 1069 -1921012 -38639850 0 0
+    corner: 1070 -2521012 -38639852 0 1
+    corner: 1071 -1921012 -38439853 0 0
+    corner: 1072 -1921012 -37989854 0 0
+    corner: 1073 -2171012 -37739853 0 0
+    corner: 1074 -2521016 -37739851 0 0
+    corner: 1075 -2521012 -38439851 0 1
+    corner: 1076 -2721012 -37739851 0 0
+    corner: 1077 -3071012 -37739854 0 0
+    corner: 1078 -3321012 -37989854 0 0
+    corner: 1079 -3321012 -38439853 0 0
+    corner: 1080 -2721012 -38439851 0 1
+    corner: 1081 -1744516 -78695646 0 0
+    corner: 1082 -3063516 -78695646 0 0
+    corner: 1083 -3215016 -78544146 0 0
+    corner: 1084 -3215016 -77830702 0 0
+    corner: 1085 -3235856 -77725930 0 0
+    corner: 1086 -3235856 -76525778 0 0
+    corner: 1087 -3225948 -76475950 0 0
+    corner: 1088 -3225944 -76151350 0 0
+    corner: 1089 -2794716 -75720118 0 0
+    corner: 1090 -2470788 -75720118 0 0
+    corner: 1091 -2420116 -75710038 0 0
+    corner: 1092 -2369448 -75720118 0 0
+    corner: 1093 -2045320 -75720118 0 0
+    corner: 1094 -1614092 -76151350 0 0
+    corner: 1095 -1614088 -76476958 0 0
+    corner: 1096 -1604380 -76525778 0 0
+    corner: 1097 -1604380 -77010586 0 0
+    corner: 1098 -1593020 -77021946 0 0
+    corner: 1099 -1593016 -78544146 0 1
+    corner: 1100 -9746016 -73993050 0 0
+    corner: 1101 -9296012 -73993050 0 0
+    corner: 1102 -9046012 -73743050 0 0
+    corner: 1103 -9046012 -73393050 0 0
+    corner: 1104 -9746012 -73393050 0 1
+    corner: 1105 -9046012 -73193050 0 0
+    corner: 1106 -9046012 -72843050 0 0
+    corner: 1107 -9296012 -72593050 0 0
+    corner: 1108 -9746012 -72593050 0 0
+    corner: 1109 -9746012 -73193050 0 1
+    corner: 1110 -9946012 -72593050 0 0
+    corner: 1111 -10396012 -72593050 0 0
+    corner: 1112 -10646012 -72843050 0 0
+    corner: 1113 -10646012 -73193050 0 0
+    corner: 1114 -9946012 -73193050 0 1
+    corner: 1115 -10646012 -73393050 0 0
+    corner: 1116 -10646012 -73743050 0 0
+    corner: 1117 -10396012 -73993050 0 0
+    corner: 1118 -9946012 -73993050 0 0
+    corner: 1119 -9946012 -73393050 0 1
+    corner: 1120 -15285512 -78695646 0 0
+    corner: 1121 -16604500 -78695646 0 0
+    corner: 1122 -16756008 -78544146 0 0
+    corner: 1123 -16756008 -77829450 0 0
+    corner: 1124 -16776592 -77725930 0 0
+    corner: 1125 -16776588 -76525782 0 0
+    corner: 1126 -16766928 -76477202 0 0
+    corner: 1127 -16766932 -76151350 0 0
+    corner: 1128 -16335704 -75720118 0 0
+    corner: 1129 -16011524 -75720118 0 0
+    corner: 1130 -15960860 -75710038 0 0
+    corner: 1131 -15910180 -75720118 0 0
+    corner: 1132 -15586312 -75720118 0 0
+    corner: 1133 -15155084 -76151350 0 0
+    corner: 1134 -15155072 -76475706 0 0
+    corner: 1135 -15145124 -76525778 0 0
+    corner: 1136 -15145120 -77010834 0 0
+    corner: 1137 -15134004 -77021946 0 0
+    corner: 1138 -15134012 -78544146 0 1
+    corner: 1139 -8450012 -70900050 0 0
+    corner: 1140 -8450012 -70450050 0 0
+    corner: 1141 -8700012 -70200050 0 0
+    corner: 1142 -9050012 -70200050 0 0
+    corner: 1143 -9050012 -70900050 0 1
+    corner: 1144 -9250012 -70200050 0 0
+    corner: 1145 -9600012 -70200050 0 0
+    corner: 1146 -9850012 -70450050 0 0
+    corner: 1147 -9850012 -70900050 0 0
+    corner: 1148 -9250012 -70900050 0 1
+    corner: 1149 -9850012 -71100050 0 0
+    corner: 1150 -9850012 -71550050 0 0
+    corner: 1151 -9600012 -71800050 0 0
+    corner: 1152 -9250012 -71800050 0 0
+    corner: 1153 -9250012 -71100050 0 1
+    corner: 1154 -8446016 -21200050 0 0
+    corner: 1155 -9746016 -21200050 0 0
+    corner: 1156 -9746016 -19696438 0 0
+    corner: 1157 -9847072 -19716538 0 0
+    corner: 1158 -9946020 -19696858 0 0
+    corner: 1159 -9946012 -21200050 0 0
+    corner: 1160 -11246020 -21200050 0 0
+    corner: 1161 -11646020 -20800050 0 0
+    corner: 1162 -11646016 -19000050 0 0
+    corner: 1163 -10643072 -19000050 0 0
+    corner: 1164 -10662812 -18900798 0 0
+    corner: 1165 -10662816 -18800050 0 0
+    corner: 1166 -11646016 -18800050 0 0
+    corner: 1167 -11646020 -17000050 0 0
+    corner: 1168 -11246020 -16600050 0 0
+    corner: 1169 -10662820 -16600050 0 0
+    corner: 1170 -10662816 -14947426 0 0
+    corner: 1171 -11146020 -14464226 0 0
+    corner: 1172 -11146012 -14000050 0 0
+    corner: 1173 -10662820 -14000050 0 0
+    corner: 1174 -10662816 -13900810 0 0
+    corner: 1175 -10642772 -13800050 0 0
+    corner: 1176 -11146016 -13800050 0 0
+    corner: 1177 -11146012 -13335874 0 0
+    corner: 1178 -10410196 -12600050 0 0
+    corner: 1179 -9946016 -12600050 0 0
+    corner: 1180 -9946016 -13104754 0 0
+    corner: 1181 -9847076 -13085070 0 0
+    corner: 1182 -9746016 -13105174 0 0
+    corner: 1183 -9746020 -12600050 0 0
+    corner: 1184 -9281844 -12600050 0 0
+    corner: 1185 -8546024 -13335874 0 0
+    corner: 1186 -8546020 -13800050 0 0
+    corner: 1187 -9051384 -13800050 0 0
+    corner: 1188 -9031336 -13900810 0 0
+    corner: 1189 -9031336 -14000050 0 0
+    corner: 1190 -8546016 -14000050 0 0
+    corner: 1191 -8546012 -14464226 0 0
+    corner: 1192 -9031340 -14949546 0 0
+    corner: 1193 -9031336 -16600050 0 0
+    corner: 1194 -8446016 -16600050 0 0
+    corner: 1195 -8046016 -17000050 0 0
+    corner: 1196 -8046020 -18800050 0 0
+    corner: 1197 -9031340 -18800050 0 0
+    corner: 1198 -9031340 -18900798 0 0
+    corner: 1199 -9051076 -19000050 0 0
+    corner: 1200 -8046020 -19000050 0 0
+    corner: 1201 -8046012 -20800050 0 1
+    corner: 1202 -15627004 -74499854 0 0
+    corner: 1203 -15627004 -74049854 0 0
+    corner: 1204 -15877000 -73799854 0 0
+    corner: 1205 -16227004 -73799854 0 0
+    corner: 1206 -16227004 -74499854 0 1
+    corner: 1207 -16427004 -73799854 0 0
+    corner: 1208 -16777000 -73799854 0 0
+    corner: 1209 -17027004 -74049854 0 0
+    corner: 1210 -17027000 -74499854 0 0
+    corner: 1211 -16427004 -74499854 0 1
+    corner: 1212 -17027000 -74699854 0 0
+    corner: 1213 -17027008 -75149850 0 0
+    corner: 1214 -16777004 -75399850 0 0
+    corner: 1215 -16427008 -75399854 0 0
+    corner: 1216 -16427008 -74699854 0 1
+    corner: 1217 -16227008 -75399854 0 0
+    corner: 1218 -15877004 -75399850 0 0
+    corner: 1219 -15627008 -75149850 0 0
+    corner: 1220 -15627004 -74699850 0 0
+    corner: 1221 -16227004 -74699854 0 1
+    corner: 1222 -2086020 -74499850 0 0
+    corner: 1223 -2086016 -74049850 0 0
+    corner: 1224 -2336020 -73799850 0 0
+    corner: 1225 -2686020 -73799850 0 0
+    corner: 1226 -2686016 -74499850 0 1
+    corner: 1227 -2886016 -73799850 0 0
+    corner: 1228 -3236020 -73799850 0 0
+    corner: 1229 -3486016 -74049850 0 0
+    corner: 1230 -3486020 -74499850 0 0
+    corner: 1231 -2886020 -74499850 0 1
+    corner: 1232 -3486020 -74699850 0 0
+    corner: 1233 -3486016 -75149850 0 0
+    corner: 1234 -3236020 -75399850 0 0
+    corner: 1235 -2886016 -75399850 0 0
+    corner: 1236 -2886020 -74699850 0 1
+    corner: 1237 -2686016 -75399850 0 0
+    corner: 1238 -2336016 -75399850 0 0
+    corner: 1239 -2086020 -75149850 0 0
+    corner: 1240 -2086016 -74699850 0 0
+    corner: 1241 -2686016 -74699850 0 1
+    corner: 1242 -2246772 -2773258 0 0
+    corner: 1243 -2095268 -2621758 0 0
+    corner: 1244 -2095260 -1318758 0 0
+    corner: 1245 -2246768 -1167258 0 0
+    corner: 1246 -3549768 -1167258 0 0
+    corner: 1247 -3701260 -1318758 0 0
+    corner: 1248 -3701264 -2621758 0 0
+    corner: 1249 -3549760 -2773258 0 1
+    corner: 1250 -16434496 -92873050 0 0
+    corner: 1251 -16283016 -92721550 0 0
+    corner: 1252 -16283000 -91418550 0 0
+    corner: 1253 -16434516 -91267050 0 0
+    corner: 1254 -17737508 -91267050 0 0
+    corner: 1255 -17889012 -91418550 0 0
+    corner: 1256 -17889012 -92721550 0 0
+    corner: 1257 -17737504 -92873050 0 1
+    corner: 1258 -16946008 -26300049 0 0
+    corner: 1259 -15653484 -26300049 0 0
+    corner: 1260 -13746016 -24392581 0 0
+    corner: 1261 -13746012 -23100050 0 0
+    corner: 1262 -16946012 -23100050 0 1
+    corner: 1263 -13746012 -22900050 0 0
+    corner: 1264 -13746016 -21607518 0 0
+    corner: 1265 -15653484 -19700050 0 0
+    corner: 1266 -16946012 -19700050 0 0
+    corner: 1267 -16946012 -22900050 0 1
+
+net: "A|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.11
+  pin: 2 D1.8
+  connect: 1 1 0 6 0 4
+    vtx: 1 -10900013 -38540052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -10901028 -36814149 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -10297780 -36210900 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -9700012 -36209889 0 0 1000000 500000 0
+    seg: 4 15 400000 0 0
+    vtx: 5 -6429364 -39680538 0 0 0 0 0
+    seg: 5 15 400000 0 0
+    vtx: 6 -6429364 -46053401 0 0 0 0 0
+    seg: 6 15 400000 0 0
+    vtx: 7 -7566012 -47190050 12 0 0 0 0
+
+net: "ПУСК" 2 1 0 0 0 0 1
+  pin: 1 X2.3
+  pin: 2 D1.1
+  connect: 1 1 0 2 0 4
+    vtx: 1 -15450011 -38540052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -15450008 -34876047 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -13500016 -32926049 12 0 0 0 0
+
+net: "K3|BUS" 2 1 0 0 0 0 1
+  pin: 1 D1.6
+  pin: 2 R4.2
+  connect: 1 0 1 7 0 4
+    vtx: 1 -12200013 -38540052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -12200240 -39737689 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -11195620 -40742309 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -5452148 -40742310 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -4444104 -41750848 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -4444100 -50645519 0 0 0 0 0
+    seg: 6 16 400000 0 0
+    vtx: 7 -5446012 -51647019 0 0 0 0 0
+    seg: 7 16 400000 0 0
+    vtx: 8 -5446012 -53160050 16 0 0 0 0
+
+net: "G|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.5
+  pin: 2 D1.16
+  connect: 1 1 0 7 0 4
+    vtx: 1 -12850011 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -12850012 -46272948 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -14290784 -47713718 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -14290784 -50313721 0 0 1000000 500000 0
+    seg: 4 15 400000 0 0
+    vtx: 5 -13034064 -51570442 0 0 0 0 0
+    seg: 5 15 400000 0 0
+    vtx: 6 -13034064 -53565558 0 0 0 0 0
+    seg: 6 15 400000 0 0
+    vtx: 7 -14278556 -54810050 0 0 0 0 0
+    seg: 7 15 400000 0 0
+    vtx: 8 -17726011 -54810049 12 0 0 0 0
+
+net: "E|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.1
+  pin: 2 D1.14
+  connect: 1 1 0 5 0 4
+    vtx: 1 -11550013 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -11550016 -46672464 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -12591272 -47713721 0 0 1000000 500000 0
+    seg: 3 15 400000 0 0
+    vtx: 4 -13819004 -46485973 0 0 0 0 0
+    seg: 4 15 400000 0 0
+    vtx: 5 -15890052 -46485968 0 0 0 0 0
+    seg: 5 15 400000 0 0
+    vtx: 6 -17726011 -44650049 12 0 0 0 0
+
+net: "NET00002" 3 2 0 0 0 0 1
+  pin: 1 D1.19
+  pin: 2 VT4.1
+  pin: 3 R2.2
+  connect: 1 2 0 8 0 4
+    vtx: 1 -17977000 -74600054 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -19350340 -73226322 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -19350340 -67283994 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -16149172 -64082822 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -16149852 -42908682 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -15987912 -42746870 0 0 0 0 0
+    seg: 6 16 400000 0 0
+    vtx: 7 -15151724 -42747592 0 0 0 0 0
+    seg: 7 16 400000 0 0
+    vtx: 8 -14799932 -43099383 0 0 0 0 0
+    seg: 8 16 400000 0 0
+    vtx: 9 -14800012 -44260052 16 0 0 0 0
+  connect: 2 2 1 1 0 4
+    vtx: 1 -17977000 -74600054 16 0 0 0 0
+    seg: 1 16 799160 0 0
+    vtx: 2 -17977004 -77783047 16 0 0 0 0
+
+net: "+12" 7 7 0 0 0 0 1
+  pin: 1 X3.1
+  pin: 2 X4.1
+  pin: 3 X5.1
+  pin: 4 C1.1
+  pin: 5 L1.1
+  pin: 6 VD3.2
+  pin: 7 VD2.2
+  connect: 1 2 0 1 0 4
+    vtx: 1 -8500020 -89126050 12 0 0 0 0
+    seg: 1 16 1999310 0 0
+    vtx: 2 -11881008 -89126050 12 0 0 0 0
+  connect: 2 6 5 1 0 4
+    vtx: 1 -7820016 -84526050 16 0 0 0 0
+    seg: 1 16 1798650 0 0
+    vtx: 2 -12561008 -84526050 16 0 0 0 0
+  connect: 3 6 2 2 0 4
+    vtx: 1 -7820016 -84526050 16 0 0 0 0
+    seg: 1 16 1801190 0 0
+    vtx: 2 -8500016 -84526050 0 0 0 0 0
+    seg: 2 16 1801190 0 0
+    vtx: 3 -8500020 -89126050 12 0 0 0 0
+  connect: 4 5 0 2 0 4
+    vtx: 1 -12561008 -84526050 16 0 0 0 0
+    seg: 1 16 1798650 0 0
+    vtx: 2 -11881020 -84526046 0 0 0 0 0
+    seg: 2 16 1798650 0 0
+    vtx: 3 -11881008 -89126050 12 0 0 0 0
+  connect: 5 5 1 1 0 4
+    vtx: 1 -12561008 -84526050 16 0 0 0 0
+    seg: 1 16 1798650 0 0
+    vtx: 2 -12561004 -80740054 12 0 0 0 0
+  connect: 6 3 1 1 0 4
+    vtx: 1 -9845820 -80740046 16 0 0 0 0
+    seg: 1 16 800430 0 0
+    vtx: 2 -12561004 -80740054 12 0 0 0 0
+  connect: 7 4 3 1 0 4
+    vtx: 1 -7046008 -80740050 16 0 0 0 0
+    seg: 1 16 800430 0 0
+    vtx: 2 -9845820 -80740046 16 0 0 0 0
+
+net: "NET00003" 2 1 0 0 0 0 1
+  pin: 1 D1.18
+  pin: 2 X7.3
+  connect: 1 1 0 7 0 4
+    vtx: 1 -8340016 -23671049 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -11669384 -23672187 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -18990932 -30993741 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -18989660 -34256368 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -16537296 -36708741 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -16537292 -40508579 0 0 0 0 0
+    seg: 6 16 400000 0 0
+    vtx: 7 -14149844 -42895173 0 0 0 0 0
+    seg: 7 16 400000 0 0
+    vtx: 8 -14150011 -44260052 16 0 0 0 0
+
+net: "K1|BUS" 2 1 0 0 0 0 1
+  pin: 1 D1.17
+  pin: 2 R5.2
+  connect: 1 0 1 5 0 4
+    vtx: 1 -13500011 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -13499452 -43076521 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -12373400 -41950468 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -8256112 -41950472 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -7206532 -43000051 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -6056212 -43000050 16 0 0 0 0
+
+net: "NET00001" 3 2 0 0 0 0 1
+  pin: 1 D1.20
+  pin: 2 VT1.1
+  pin: 3 R1.2
+  connect: 1 2 0 5 0 4
+    vtx: 1 -4436016 -74600050 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -4436740 -71232418 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -5902304 -69766842 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -5902312 -64775740 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -15448904 -55229142 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -15450011 -44260052 16 0 0 0 0
+  connect: 2 2 1 1 0 4
+    vtx: 1 -4436016 -74600050 16 0 0 0 0
+    seg: 1 16 799160 0 0
+    vtx: 2 -4436016 -77783047 16 0 0 0 0
+
+net: "ТЯГА" 2 1 0 0 0 0 1
+  pin: 1 X1.3
+  pin: 2 D1.3
+  connect: 1 1 0 8 0 4
+    vtx: 1 -14150012 -38540053 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -14149692 -40621609 0 0 1000000 500000 0
+    seg: 2 15 400000 0 0
+    vtx: 3 -18199724 -40621612 0 0 0 0 0
+    seg: 3 15 400000 0 0
+    vtx: 4 -19310972 -41732858 0 0 1000000 500000 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -19310972 -62126514 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -18384076 -63054890 0 0 1000000 500000 0
+    seg: 6 15 400000 0 0
+    vtx: 7 -13809332 -63054890 0 0 1000000 500000 0
+    seg: 7 16 400000 0 0
+    vtx: 8 -11500468 -65365022 0 0 0 0 0
+    seg: 8 16 400000 0 0
+    vtx: 9 -11500016 -68926046 12 0 0 0 0
+
+net: "+3V3" 7 6 0 0 0 0 1
+  pin: 1 X1.1
+  pin: 2 X2.1
+  pin: 3 D1.9
+  pin: 4 DA1.2
+  pin: 5 C2.1
+  pin: 6 X7.1
+  pin: 7 C13.1
+  connect: 1 4 2 5 0 4
+    vtx: 1 -4271012 -38540051 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -5709276 -38540080 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -7307420 -40138229 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -9933296 -40139010 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -10250792 -39821511 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -10250012 -38540052 16 0 0 0 0
+  connect: 2 4 0 5 0 4
+    vtx: 1 -4271012 -38540051 16 0 0 0 0
+    seg: 1 16 799160 0 0
+    vtx: 2 -4272124 -40786088 0 0 0 0 0
+    seg: 2 16 799160 0 0
+    vtx: 3 -3640440 -41418074 0 0 0 0 0
+    seg: 3 16 799160 0 0
+    vtx: 4 -3640440 -68231410 0 0 0 0 0
+    seg: 4 16 799160 0 0
+    vtx: 5 -4332508 -68924814 0 0 1000000 500000 0
+    seg: 5 15 799160 0 0
+    vtx: 6 -7500016 -68926046 12 0 0 0 0
+  connect: 3 5 4 3 0 4
+    vtx: 1 -8340016 -28751049 16 0 0 0 0
+    seg: 1 16 799000 0 0
+    vtx: 2 -8340016 -30868009 0 0 1000000 500000 0
+    seg: 2 15 799000 0 0
+    vtx: 3 -4271632 -30868009 0 0 1000000 500000 0
+    seg: 3 16 799160 0 0
+    vtx: 4 -4271012 -38540051 16 0 0 0 0
+  connect: 4 5 1 3 0 4
+    vtx: 1 -8340016 -28751049 16 0 0 0 0
+    seg: 1 16 1498930 0 0
+    vtx: 2 -14942512 -28751049 0 0 0 0 0
+    seg: 2 16 1498930 0 0
+    vtx: 3 -17500012 -31308551 0 0 0 0 0
+    seg: 3 16 1498930 0 0
+    vtx: 4 -17500016 -32926049 12 0 0 0 0
+  connect: 5 6 3 3 0 4
+    vtx: 1 -7500012 -70999850 16 0 0 0 0
+    seg: 1 16 800430 0 0
+    vtx: 2 -6553908 -70999846 0 0 0 0 0
+    seg: 2 16 800430 0 0
+    vtx: 3 -6030008 -71523734 0 0 0 0 0
+    seg: 3 16 800430 0 0
+    vtx: 4 -6030008 -72657051 16 0 0 0 0
+  connect: 6 6 0 1 0 4
+    vtx: 1 -7500012 -70999850 16 0 0 0 0
+    seg: 1 16 800430 0 0
+    vtx: 2 -7500016 -68926046 12 0 0 0 0
+
+net: "B|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.7
+  pin: 2 D1.11
+  connect: 1 1 0 2 0 4
+    vtx: 1 -9600013 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -9600012 -55316049 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -7566012 -57350049 12 0 0 0 0
+
+net: "F|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.10
+  pin: 2 D1.15
+  connect: 1 1 0 6 0 4
+    vtx: 1 -12200013 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -12201512 -42887291 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -11867500 -42554549 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -9115412 -42554549 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -8825852 -42842842 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -8825856 -48470211 0 0 0 0 0
+    seg: 6 16 400000 0 0
+    vtx: 7 -7566012 -49730049 12 0 0 0 0
+
+net: "NET00006" 2 1 0 0 0 0 1
+  pin: 1 HG2.9
+  pin: 2 R3.1
+  connect: 1 1 0 2 0 4
+    vtx: 1 -5845812 -49070050 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -5845812 -50549849 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -7566012 -52270049 12 0 0 0 0
+
+net: "NET00007" 2 1 0 0 0 0 1
+  pin: 1 HG2.8
+  pin: 2 R4.1
+  connect: 1 1 0 1 0 4
+    vtx: 1 -5445812 -54810050 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -7566012 -54810048 12 0 0 0 0
+
+net: "NET00004" 2 1 0 0 0 0 1
+  pin: 1 D1.10
+  pin: 2 HA1.1
+  connect: 1 1 0 6 0 4
+    vtx: 1 -9846016 -8900050 12 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -3841104 -14906650 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -3841092 -28464797 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -5718160 -30340959 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -5718160 -33615643 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -9600472 -37497933 0 0 0 0 0
+    seg: 6 16 400000 0 0
+    vtx: 7 -9600013 -38540052 16 0 0 0 0
+
+net: "NET00005" 2 1 0 0 0 0 1
+  pin: 1 HG2.12
+  pin: 2 R5.1
+  connect: 1 1 0 1 0 4
+    vtx: 1 -6056012 -44650050 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -7566013 -44650049 12 0 0 0 0
+
+net: "K2|BUS" 2 1 0 0 0 0 1
+  pin: 1 D1.5
+  pin: 2 R3.2
+  connect: 1 0 1 6 0 4
+    vtx: 1 -12850011 -38540052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -12850012 -39942216 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -11445836 -41346388 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -5702448 -41346390 0 0 0 0 0
+    seg: 4 16 400000 0 0
+    vtx: 5 -5048180 -42000977 0 0 0 0 0
+    seg: 5 16 400000 0 0
+    vtx: 6 -5048180 -46621067 0 0 0 0 0
+    seg: 6 16 400000 0 0
+    vtx: 7 -5846012 -47420050 16 0 0 0 0
+
+net: "D|BUS" 2 1 0 0 0 0 1
+  pin: 1 HG2.2
+  pin: 2 D1.13
+  connect: 1 1 0 5 0 4
+    vtx: 1 -10900013 -44260052 16 0 0 0 0
+    seg: 1 16 400000 0 0
+    vtx: 2 -10901032 -47624389 0 0 0 0 0
+    seg: 2 16 400000 0 0
+    vtx: 3 -12465672 -49190296 0 0 0 0 0
+    seg: 3 16 400000 0 0
+    vtx: 4 -12591272 -49190054 0 0 1000000 500000 0
+    seg: 4 15 400000 0 0
+    vtx: 5 -14591272 -47190054 0 0 0 0 0
+    seg: 5 15 400000 0 0
+    vtx: 6 -17726011 -47190049 12 0 0 0 0
+
 [texts]
+
+text: "Led-03" -14046020 -4500050 10 360 0 2540000 254000 0 4 38640
+
+text: "+3V3" -18200012 -34526050 10 90 0 1200000 200000 0 4 -9796786
+
+text: "+3V3" -7800008 -63726054 10 90 0 1200000 200000 0 4 0
+
+text: "GND" -7400012 -34926049 10 90 0 1200000 200000 0 4 0
+
+text: "GND" -18200008 -64526058 10 90 0 1200000 200000 0 4 0
+
+text: "М+" -14280032 -89696046 11 90 1 1000000 150000 0 4 0
+
+text: "М-" -15530020 -89696046 11 90 1 1000000 150000 0 4 0
+
+text: "К+" -7046020 -89600050 11 90 1 1000000 150000 0 4 0
+
+text: "К-" -5846008 -89600050 11 90 1 1000000 150000 0 4 0
+
+text: "+3V3" -12746012 -31000051 11 90 1 1000000 150000 0 4 0
+
+text: "GND" -12746012 -27400049 11 90 1 1000000 150000 0 4 0
+
+text: "CLK" -12746012 -24500051 11 90 1 1000000 150000 0 4 69796
+
+text: "Led-03" -12346008 -61800050 11 90 1 2540000 254000 0 4 64404
+
+text: "GND" -10898264 -98720258 10 90 0 1200000 200000 0 4 45142
+
+text: "ТЯГА" -13398272 -98170262 10 90 0 1200000 200000 0 4 46457
+
+text: "ВОДА" -5998268 -98170258 10 90 0 1200000 200000 0 4 -1589827841
+
+text: "GND" -10898272 -101020258 11 90 1 1200000 200000 0 4 -1578948943
+
+text: "ТЯГА" -13598272 -101570254 11 90 1 1200000 200000 0 4 46222
+
+text: "ВОДА" -5998288 -101570258 11 90 1 1200000 200000 0 4 -1592514810
+
+text: "ТЯГА" -16098264 -101570254 11 90 1 1200000 200000 0 4 33780
+
+text: "ВОДА" -3498256 -101570258 11 90 1 1200000 200000 0 4 -1588648147
+
+text: "ТЯГА" -15898272 -98170258 10 90 0 1200000 200000 0 4 35871
+
+text: "ВОДА" -3498264 -98170258 10 90 0 1200000 200000 0 4 46280
+
+text: "ПИТАНИЕ" -10646008 -75000050 10 90 0 1200000 200000 0 4 37043
+
+text: "+12" -15346004 -78500054 10 90 0 1200000 200000 0 4 45256
+
+text: "+12V" -8398252 -101670258 11 90 1 1200000 200000 0 4 35794
+
+text: "+12V" -8398256 -98270258 10 90 0 1200000 200000 0 4 38810
+
+text: "0V" -15246012 -75800050 10 90 0 1200000 200000 0 4 46449
 
 [merges]
 
+  merge: "ID3384323" 0
+  merge: "Merge-1" 600000
+  merge: "ID1" 0
+  merge: "Merge-2" 600000
+  merge: "pcb-1" 0
 
 [end]

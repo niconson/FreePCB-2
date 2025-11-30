@@ -624,6 +624,14 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 				int d = Distance(po->GetX(0), po->GetY(0), LegalBoard->GetX(0), LegalBoard->GetY(0));
 				if(d < _2540)
 					n->area[i].utility = 1; // Legal area
+				else for (int icor = 1; icor < po->GetNumCorners(); icor++)
+				{
+					if (LegalBoard->TestPointInside(po->GetX(icor), po->GetY(icor)))
+					{
+						n->area[i].utility = 1; // Legal area
+						break;
+					}
+				}
 			}
 		}
 	}
