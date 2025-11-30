@@ -8575,7 +8575,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 11: frontal 3D section for Custom\n"\
 							"           // 12: lateral 3D section for Custom\n"\
 							"           // 13: top 3D section for Custom\n"\
-							"           // 14: boolean difference.\n\n"\
+							"           // 14: boolean difference (makes\n"\
+							"           //     holes in the Custom objects\n"\
+							"           //     using 3d-models of pcb parts).\n\n"\
 							"dir = 0;   // view direction for 6...13 modes\n"\
 							"pdist = 20;// distance between projections for mode 10\n\n\n\n"\
 							"//// Drawing control\n");

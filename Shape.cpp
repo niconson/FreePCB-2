@@ -4692,11 +4692,15 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 			for (int ic = 0; ic < m_openscad_code.GetSize(); ic++)
 			{
 				CString full_code = m_openscad_code.GetAt(ic);
+				full_code = full_code.TrimLeft();
+				if (full_code.Left(2) == "//")
+					continue;
 				int iimp = full_code.Find("import");
 				if (iimp >= 0)
 				{
 					if (iimp > 0)
 						full_code = full_code.Right(full_code.GetLength()-iimp);
+					
 					iimp = full_code.Find("`");
 					if (iimp > 0)
 					{

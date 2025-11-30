@@ -39,7 +39,6 @@ void CDlgAddCode::DoDataExchange(CDataExchange* pDX)
 			///m_code_text->Add("    rotate([0,0,0])");
 			m_code_text->Add("    translate([0,0,0])");
 			m_code_text->Add("    rotate([0,0,0])");
-			//m_code_text->Add("    import(`..\\\\..\\\\..\\\\..\\\\..\\\\3D\\\\knob.stl`);");
 			m_code_text->Add("    import(`knob.stl`);");
 			m_code_text->Add( separator_str );
 			m_code_text->Add("}");
