@@ -8746,32 +8746,35 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("}\n");
 				// 11
 				Scadfile.WriteString("else if (MODE == 11)\n{\n");
-				Scadfile.WriteString(" PcbFull = 0; // make 1 for full pcb view\n difference(){\n");
+				Scadfile.WriteString("  PcbFull = 0; // make 1 for full pcb view\n");
+				Scadfile.WriteString("  if(PcbFull) Main(0);\n");
+				Scadfile.WriteString("  difference(){\n");
 				Scadfile.WriteString("  if(PcbFull) Custom();\n  else Main();\n  color(\"white\")\n");
 				str.Format("  translate([0, frozen?-originY_%s:0, frozen?(dir?-max_height_%s/2:max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  rotate([dir?90:-90, 0, 0])\n");
-				str.Format("  Draw_%s_CUBE(0, frozen);}\n", moduleName);
+				str.Format("  Draw_%s_CUBE(0, frozen);}\n}\n", moduleName);
 				Scadfile.WriteString(str);
-				Scadfile.WriteString("  if(PcbFull) Main(0);\n}\n");
 				// 12
 				Scadfile.WriteString("else if (MODE == 12)\n{\n");
-				Scadfile.WriteString(" PcbFull = 0; // make 1 for full pcb view\n difference(){\n");
+				Scadfile.WriteString("  PcbFull = 0; // make 1 for full pcb view\n");
+				Scadfile.WriteString("  if(PcbFull) Main(0);\n");
+				Scadfile.WriteString("  difference(){\n");
 				Scadfile.WriteString("  if(PcbFull) Custom();\n  else Main();\n  color(\"white\")\n");
 				str.Format("  translate([frozen?-originX_%s:0, 0, frozen?(dir?max_height_%s/2:-max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  rotate([0, dir?90:-90, 0])\n");
-				str.Format("  Draw_%s_CUBE(0, frozen);}\n", moduleName);
+				str.Format("  Draw_%s_CUBE(0, frozen);}\n}\n", moduleName);
 				Scadfile.WriteString(str);
-				Scadfile.WriteString("  if(PcbFull) Main(0);\n}\n");
 				// 13
 				Scadfile.WriteString("else if (MODE == 13)\n{\n");
-				Scadfile.WriteString(" difference(){\n");
+				Scadfile.WriteString("  Main(0);\n");
+				Scadfile.WriteString("  difference(){\n");
 				str.Format("  Custom();\n  translate([0,0,0])\n");
 				Scadfile.WriteString(str);
 				str.Format("  Draw_%s_CUBE(dir?1:0, frozen);}\n", moduleName);
 				Scadfile.WriteString(str);
-				Scadfile.WriteString(" Main(0);\n}\n");
+				Scadfile.WriteString("}\n");
 				// 14
 				Scadfile.WriteString("else if (MODE == 14)\n");
 				Scadfile.WriteString(" difference(){\n");

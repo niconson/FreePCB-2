@@ -2540,32 +2540,31 @@ void CNetList::CleanUpAllConnections( CString * logstr )
 					{
 						BOOL bError = FALSE;
 						CString no_tee_str = "";
-						CString no_ID_str = "";
 						int ci=0, vi=0;
 						if( !FindTeeVertexInNet( net, end_id, &ci, &vi ) )
 						{
-							no_tee_str = ", not in trace";
+							no_tee_str = ", not in trace! Removed";
 							bError = TRUE;
 						}
-						if( FindTeeID( end_id ) == -1 )
+						else if( FindTeeID( end_id ) == -1 )
 						{
-							no_ID_str = ", not in ID array";
-							bError = TRUE;
+							no_tee_str = ", (restored because it was not in ID array)";
+							AddTeeID(end_id);
 						}
-						if( bError && logstr )
+						if( logstr )
 						{
-							str.Format( "  tee_id %d found in branch%s%s, branch removed\r\n", 
-								end_id, no_tee_str, no_ID_str );
+							str.Format( "  tee_id %d found in branch%s\r\n", end_id, no_tee_str );
 							*logstr += str;
 						}
 						if( bError )
 						{
-							RemoveNetConnect( net, ic, FALSE );
+						//	RemoveNetConnect( net, ic, FALSE );
+							RemoveTeeID(end_id);
 							n_removed++;
 						}
 					}
 				}
-				else
+				/*else
 				{
 					for( int iv=1; iv<c->nsegs; iv++ )
 					{
@@ -2579,7 +2578,7 @@ void CNetList::CleanUpAllConnections( CString * logstr )
 							}
 						}
 					}
-				}
+				}*/
 			}
 		}
 		net = GetNextNet(/*LABEL*/);
