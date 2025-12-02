@@ -8621,7 +8621,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "drw_%s%s = E;\n", foots.GetAt(i), spc );
+					str.Format( "drw_%s%s = E; // controls Draw_%s();\n", foots.GetAt(i), spc, foots.GetAt(i));
 					Scadfile.WriteString( str );
 				}
 
@@ -8650,15 +8650,15 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    translate([0,0,0])\n"\
 							"    rotate([0,0,0])\n"\
 							"    cube(10);\n"\
-							"    */\n"\
-							"    /*\n"\
+							"    */\n\n"\
 							"    // add  any  PCB  from  the  project  folder,\n"\
 							"    // any pcb in the project folder will require\n"\
 							"    // the <.lib> header (See top) to be included:\n"\
+							"    /*\n"\
 							"    render(Convexity)\n"\
 							"    translate([0,0,%.3f])\n"\
 							"    Pcb_%s (true);\n"\
-							"    */\n", 50000000 / mu, moduleName);
+							"    */\n\n", 50000000 / mu, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of user field\n");
 				Scadfile.WriteString("  }\n");
