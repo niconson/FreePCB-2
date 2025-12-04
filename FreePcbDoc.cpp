@@ -7989,7 +7989,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				continue;
 			if(m_outline_poly.GetAt(i).GetLayer() == LAY_BOARD_OUTLINE )
 			{
-				str.Format("    render( convexity=3 )\n");
+				str.Format("    render( Convexity )\n");
 				file.WriteString(str);
 				str.Format( "      translate([ 0.0, 0.0, -board_h/2.0 ])\n" );
 				file.WriteString( str );
@@ -8639,28 +8639,44 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  if(custom) Custom();\n");
 				Scadfile.WriteString("}\n\n");
-				Scadfile.WriteString("module Custom ()\n{\n");
+				Scadfile.WriteString("module Custom (object=0)\n{\n");
 				str.Format("  translate([frozen?0:originX_%s, frozen?0:originY_%s, 0])\n  {\n", moduleName, moduleName);
 				Scadfile.WriteString(str);
-				Scadfile.WriteString(	"    // user field\n");
+				Scadfile.WriteString(	"    // custom field\n");
 				Scadfile.WriteString(	"    // add external objects here (optional)\n");
-				str.Format( "    // for example, uncomment the following:\n"\
-							"    /*\n"\
-							"    color(\"aqua\", 0.5)\n"\
-							"    translate([0,0,0])\n"\
-							"    rotate([0,0,0])\n"\
-							"    cube(10);\n"\
-							"    */\n\n"\
-							"    // add  any  PCB  from  the  project  folder,\n"\
-							"    // any pcb in the project folder will require\n"\
-							"    // the <.lib> header (See top) to be included:\n"\
-							"    /*\n"\
-							"    render(Convexity)\n"\
-							"    translate([0,0,%.3f])\n"\
-							"    Pcb_%s (true);\n"\
-							"    */\n\n", 50000000 / mu, moduleName);
+				str.Format( "    if (object == 1 || object == 0)\n"\
+							"    {\n"\
+							"      // add your object 1\n"\
+							"      // for example, uncomment the following:\n"\
+							"      /*\n"\
+							"      color(\"aqua\", 0.5)\n"\
+							"      translate([0,0,0])\n"\
+							"      rotate([0,0,0])\n"\
+							"      cube(10);\n"\
+							"      */\n"\
+							"    }\n"\
+							"    if (object == 2 || object == 0)\n"\
+							"    {\n"\
+							"      // add your object 2, for example, another PCB\n"\
+							"      // from the project folder. For any PCB, you will\n"\
+							"      // need to include the <.lib> header file(see above):\n"\
+							"      /*\n"\
+							"      render(Convexity)\n"\
+							"      translate([0,0,%.3f])\n"\
+							"      Pcb_%s (true);\n"\
+							"      */\n"\
+							"    }\n"\
+							"    if (object == 3 || object == 0)\n"\
+							"    {\n"\
+							"      // add your object 3\n\n"\
+							"    }\n"\
+							"    if (object == 4 || object == 0)\n"\
+							"    {\n"\
+							"      // add your object 4\n\n"\
+							"    }\n"\
+							"    // object 5, etc.\n", 50000000 / mu, moduleName);
 				Scadfile.WriteString(str);
-				Scadfile.WriteString(	"    // end of user field\n");
+				Scadfile.WriteString(	"    // end of custom field\n");
 				Scadfile.WriteString("  }\n");
 				Scadfile.WriteString("}\n");
 
@@ -8762,7 +8778,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("  PcbFull = 0; // make 1 for full pcb view\n");
 				Scadfile.WriteString("  //projection() rotate([-90,0,0])\n  {\n");
 				Scadfile.WriteString("    if(PcbFull) Main(0);\n");
-				Scadfile.WriteString("    difference(){\n");
+				Scadfile.WriteString("    render(Convexity) difference(){\n");
 				Scadfile.WriteString("    if(PcbFull) Custom();\n    else Main();\n    color(\"white\")\n");
 				str.Format("    translate([0, frozen?-originY_%s:0, frozen?(dir?-max_height_%s/2:max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
 				Scadfile.WriteString(str);
@@ -8774,7 +8790,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("  PcbFull = 0; // make 1 for full pcb view\n");
 				Scadfile.WriteString("  //projection() rotate([0,90,0])\n  {\n");
 				Scadfile.WriteString("    if(PcbFull) Main(0);\n");
-				Scadfile.WriteString("    difference(){\n");
+				Scadfile.WriteString("    render(Convexity) difference(){\n");
 				Scadfile.WriteString("    if(PcbFull) Custom();\n    else Main();\n    color(\"white\")\n");
 				str.Format("    translate([frozen?-originX_%s:0, 0, frozen?(dir?max_height_%s/2:-max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
 				Scadfile.WriteString(str);
@@ -8785,7 +8801,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("else if (MODE == 13)\n{\n");
 				Scadfile.WriteString("  //projection()\n  {\n");
 				Scadfile.WriteString("    Main(0);\n");
-				Scadfile.WriteString("    difference(){\n");
+				Scadfile.WriteString("    render(Convexity) difference(){\n");
 				str.Format("    Custom();\n    color(\"white\")\n    translate([0,0,0])\n");
 				Scadfile.WriteString(str);
 				str.Format("    Draw_%s_CUBE(dir?1:0, frozen, sector);}\n", moduleName);
@@ -8793,7 +8809,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("  }\n}\n");
 				// 14
 				Scadfile.WriteString("else if (MODE == 14)\n");
-				Scadfile.WriteString(" difference(){\n");
+				Scadfile.WriteString(" render(Convexity) difference(){\n");
 				Scadfile.WriteString("  Custom();\n");
 				Scadfile.WriteString("  Main(0);}\n");
 				Scadfile.Close();
