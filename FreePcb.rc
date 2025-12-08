@@ -901,8 +901,8 @@ CAPTION "О программе"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,12,20,20
-    LTEXT           "Редактор печатных плат ПлатФорм",IDC_STATIC,42,12,129,8,SS_NOPREFIX
-    LTEXT           "© Allan Wright 2003 - 2010 (Freepcb-1)",IDC_STATIC,42,24,179,8
+    LTEXT           "Редактор печатных плат",IDC_STATIC,42,12,129,8,SS_NOPREFIX
+    LTEXT           "Freepcb-1 © 2003 - 2010 Allan Wright",IDC_STATIC,42,24,179,8
     DEFPUSHBUTTON   "Готово",IDOK,209,7,50,14,WS_GROUP
     LTEXT           "Source libraries:",IDC_STATIC,19,72,51,8
     LTEXT           "© Advanced Interfaces Group, University of Manchester",IDC_STATIC,42,107,180,8
@@ -913,7 +913,7 @@ BEGIN
     LTEXT           "Executables:",IDC_STATIC,18,119,42,8
     LTEXT           "FpcROUTE © 2007 Bruce Parham (for Freepcb-1)",IDC_STATIC,30,131,185,8
     LTEXT           "Additional Copyrights:",IDC_STATIC,12,60,68,8
-    LTEXT           "© LevNikonov 2014 - 2025 (Freepcb-2, Схематор&&Платформ)",IDC_STATIC,42,36,208,8
+    LTEXT           "Freepcb-2, Схематор&&Платформ © 2014 - 2025 NICONSON®",IDC_STATIC,42,36,208,8
 END
 
 IDD_ADD_PART DIALOGEX 0, 0, 470, 333
