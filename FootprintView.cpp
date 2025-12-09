@@ -3169,7 +3169,9 @@ void CFootprintView::OnPolylineOpenScad()
 		if( isEMPTY )
 			m_fp.m_outline_poly[m_sel_id.i].SetVisible(FALSE);
 		FootprintModified( TRUE );
-		CString name = theApp.m_Doc->m_name + "_" + m_fp.m_name;
+		CString name = m_Doc->m_name + "_" + m_fp.m_name;
+		if (m_Doc->m_project_open == 0)
+			name = "open";
 		m_fp.m_scad_created = m_fp.GenerateOpenscadFileA( &name, 1 );
 		m_fp.m_outline_poly.GetAt( m_sel_id.i ).Draw( m_dlist );
 		Invalidate( FALSE );
@@ -4672,7 +4674,9 @@ void CFootprintView::OnInvalidate( CCmdUI * CMD )
 
 void CFootprintView::GenerateOpenscadFile()
 {
-	CString name = theApp.m_Doc->m_name + "_" + m_fp.m_name;
+	CString name = m_Doc->m_name + "_" + m_fp.m_name;
+	if (m_Doc->m_project_open == 0)
+		name = "open";
 	CString path = m_fp.GenerateOpenscadFileA( &name, 1 );
 	int rf = path.ReverseFind('\\');
 	if( rf == -1 )

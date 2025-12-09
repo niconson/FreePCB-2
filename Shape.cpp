@@ -4118,9 +4118,16 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 	CFreePcbDoc * doc = ((CFreePcbApp*)AfxGetApp())->m_Doc;
 	CDlg_OpenScad dlg;
 	CString str, sp="", ddSPACE="    ", sep="|";
+
 	CString path = doc->m_path_to_folder + "\\related_files\\openscad";
+	// test:
 	struct _stat buf;
-	int err = _stat( path, &buf );
+	int err = _stat(doc->m_path_to_folder, &buf);
+	if (err)
+	{
+		path = doc->m_3d_dir;
+	}
+	err = _stat( path, &buf );
 	if( err )
 	{
 		_mkdir( path );

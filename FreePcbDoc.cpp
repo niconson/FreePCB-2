@@ -468,6 +468,25 @@ void CFreePcbDoc::OnFileNew()
 		OnFileSave();
 		SaveOptions();
 	}
+	else
+	{
+		int bChang = 0;
+		struct _stat buf;
+		if(m_3d_dir != dlg.Get3dFolder())
+		{
+			m_3d_dir = dlg.Get3dFolder();
+			bChang = 1;
+		}
+		if (_stat(m_full_lib_dir, &buf))
+		{
+			m_full_lib_dir = dlg.GetLibFolder();
+			m_footlibfoldermap.SetDefaultFolder(&m_full_lib_dir);
+			m_footlibfoldermap.SetLastFolder(&m_full_lib_dir);
+			bChang = 1;
+		}
+		if (bChang)
+			SaveOptions();
+	}
 }
 
 CString CFreePcbDoc::RunFileDialog( BOOL bMODE, CString format )
