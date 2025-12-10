@@ -985,8 +985,13 @@
 #define IDC_EXTRUSION_SCALE             1555
 #define IDC_COMBO_X                     1555
 #define IDC_STATIC_EX3                  1556
+#define IDC_RADIO_90DEG                 1556
 #define IDC_HULL                        1557
 #define IDC_LIKE_CAP                    1558
+#define IDC_RADIO1X1                    1558
+#define IDC_RADIO2X1                    1559
+#define IDC_RADIO1X2                    1560
+#define IDC_RADIO2X2                    1561
 #define ID_FP_SET_ORIGIN                32757
 #define ID_FP_FIRST_VTX                 32758
 #define ID_FILE_SEL_FOLDER              32759
@@ -1228,7 +1233,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        362
 #define _APS_NEXT_COMMAND_VALUE         32944
-#define _APS_NEXT_CONTROL_VALUE         1556
+#define _APS_NEXT_CONTROL_VALUE         1562
 #define _APS_NEXT_SYMED_VALUE           106
 #endif
 #endif

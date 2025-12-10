@@ -32,6 +32,7 @@ class cnet;
 class CNetList;
  
 #define MAX_NET_NAME_SIZE 39
+#define NET_NAME_STRETCH 10
 
 // these definitions are for ImportSessionFile()
 //
@@ -105,7 +106,7 @@ struct undo_corner {
 struct undo_area {
 	int size;
 	CNetList * nlist;
-	char net_name[MAX_NET_NAME_SIZE+1];
+	char net_name[MAX_NET_NAME_SIZE+NET_NAME_STRETCH];
 	int merge;
 	int sub_merge;
 	int iarea;
@@ -138,7 +139,7 @@ struct undo_con {
 	int uid;
 	int size;
 	CNetList * nlist;
-	char net_name[MAX_NET_NAME_SIZE+1];
+	char net_name[MAX_NET_NAME_SIZE+NET_NAME_STRETCH];
 	int merge_name;
 	int start_pin, end_pin;		// indexes into net.pin array
 	//CPoint start_pt, end_pt;
@@ -154,7 +155,7 @@ struct undo_con {
 struct undo_net {
 	int size;
 	CNetList * nlist;
-	char name[MAX_NET_NAME_SIZE+1];
+	char name[MAX_NET_NAME_SIZE+NET_NAME_STRETCH];
 	int npins;
 	// array of undo_pin structs start here
 };

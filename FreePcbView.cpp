@@ -3903,6 +3903,9 @@ void CFreePcbView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		// 'd'
 		//if( m_Doc->m_dlg_log )
 		//	m_Doc->m_dlg_log->ShowWindow( SW_HIDE );
+		CWnd* pMain = AfxGetMainWnd();
+		if (pMain)
+			pMain->SetTimer(DRC_TIMER, 900000, 0);
 		m_Doc->m_drelist->MakeHollowCircles();
 		SetDrawLayer( DISABLE_CHANGE_DRAW_LAYER );
 		Invalidate( FALSE );//MakeHollowCircles

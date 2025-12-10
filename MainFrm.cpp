@@ -482,11 +482,15 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				doc->SwitchTo_ECDS( TRUE );
 			else if (nIDEvent == DRC_TIMER)
 			{
+				SetTimer(DRC_TIMER, 1500, 0);
 				static bool state = 0;
 				if (doc->m_drelist->list.GetSize() && doc->m_view->m_cursor_mode == CUR_NONE_SELECTED)
 				{
 					if (state)
-						doc->m_drelist->MakeSolidCircles(FALSE);
+					{
+						doc->m_drelist->MakeSolidCircles(1);
+						SetTimer(DRC_TIMER, 50, 0);
+					}
 					else
 						doc->m_drelist->MakeHollowCircles();
 					state = !state;

@@ -22,7 +22,12 @@ protected:
 public:
 	CComboBox m_combo_dx;
 	CComboBox m_combo_dy;
+	CButton b1x1;
+	CButton b2x1;
+	CButton b2x2;
+	CButton b90;
 	int m_var;
+	int m_90;
 	int m_dx;
 	int m_dy;
 private:
@@ -31,4 +36,8 @@ private:
 	int m_var3;
 	int m_var4;
 	int m_units;
+public:
+	afx_msg void OnBnClickedRadio4();
+	afx_msg void OnBnClickedRadio2();
+	afx_msg void OnBnClickedRadio3();
 };

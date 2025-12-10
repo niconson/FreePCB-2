@@ -9,6 +9,8 @@
 #include "mainfrm.h"
 
 #define PL_MAX_SIZE		10000		// default max. size 
+const int shift_char_pointer = MAX_NET_NAME_SIZE + NET_NAME_STRETCH;
+
 
 // globals
 BOOL g_bShow_header_28mil_hole_warning = TRUE;	
@@ -2886,7 +2888,7 @@ undo_part * CPartList::CreatePartUndoRecord( cpart * part, CString * new_ref_des
 	if( part )
 	{
 		NumPins = part->pin.GetSize();
-		size = sizeof( undo_part ) + NumPins*(CShape::MAX_PIN_NAME_SIZE+1);
+		size = sizeof( undo_part ) + NumPins*(shift_char_pointer);
 	}
 	undo_part * upart = (undo_part*)malloc( size );
 	upart->size = size;
@@ -2929,7 +2931,7 @@ undo_part * CPartList::CreatePartUndoRecord( cpart * part, CString * new_ref_des
 					strcpy( chptr, net->name );
 				else
 					*chptr = 0;
-				chptr += CShape::MAX_PIN_NAME_SIZE + 1;
+				chptr += shift_char_pointer;
 			}
 		}
 	}
@@ -3540,7 +3542,7 @@ void CPartList::PartUndoCallback( int type, void * ptr, BOOL undo )
 					}
 					else
 						part->pin[ip].net = NULL;
-					chptr += MAX_NET_NAME_SIZE + 1;
+					chptr += shift_char_pointer;
 				}
 			}
 			pl->m_dlist = old_dlist;	// turn drawing back on;
@@ -3594,7 +3596,7 @@ void CPartList::PartUndoCallback( int type, void * ptr, BOOL undo )
 					}
 					else
 						part->pin[ip].net = NULL;
-					chptr += MAX_NET_NAME_SIZE + 1;
+					chptr += shift_char_pointer;
 				}
 			}
 			// if part was renamed

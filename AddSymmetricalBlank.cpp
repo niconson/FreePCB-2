@@ -38,13 +38,21 @@ void CDlgAddSymmetricalBlank::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO_X, m_combo_dx);
 	DDX_Control(pDX, IDC_COMBO_Y, m_combo_dy);
-	DDX_Check(pDX, IDC_RADIO1, m_var1);
-	DDX_Check(pDX, IDC_RADIO2, m_var2);
-	DDX_Check(pDX, IDC_RADIO3, m_var3);
-	DDX_Check(pDX, IDC_RADIO4, m_var4);
+	DDX_Check(pDX, IDC_RADIO_90DEG, m_90);
+	DDX_Check(pDX, IDC_RADIO1X1, m_var1);
+	DDX_Check(pDX, IDC_RADIO2X1, m_var2);
+	DDX_Check(pDX, IDC_RADIO1X2, m_var3);
+	DDX_Check(pDX, IDC_RADIO2X2, m_var4);
+	DDX_Control(pDX, IDC_RADIO_90DEG, b90);
+	DDX_Control(pDX, IDC_RADIO1X1, b1x1);
+	DDX_Control(pDX, IDC_RADIO2X1, b2x1);
+	DDX_Control(pDX, IDC_RADIO2X2, b2x2);
 	if (!pDX->m_bSaveAndValidate)
 	{
 		// incoming
+
+		b1x1.SetCheck(0);
+		b2x1.SetCheck(1);
 		m_combo_dx.AddString("1mm (39mil)");
 		m_combo_dx.AddString("1.5mm (59mil)");
 		m_combo_dx.AddString("2mm (79mil)");
@@ -69,18 +77,23 @@ void CDlgAddSymmetricalBlank::DoDataExchange(CDataExchange* pDX)
 		m_combo_dx.SetWindowTextA(str);
 		::MakeCStringFromDimension(&str, m_dy, m_units, 1, 1, 0, 1);
 		m_combo_dy.SetWindowTextA(str);
+		b90.EnableWindow(0);
 	}
 	else
 	{
 		// outgoing
 		if (m_var1)
 			m_var = 1;
-		else if (m_var2)
+		if (m_var2)
 			m_var = 2;
-		else if (m_var3)
+		if (m_var3)
 			m_var = 3;
-		else if (m_var4)
+		if (m_var4)
 			m_var = 4;
+		//else
+		//	ASSERT(0);
+		//if(b2x2.GetCheck())
+		//	m_var = 4;
 		CString str;
 		//double dx, dy;
 		m_combo_dx.GetWindowTextA(str);
@@ -100,6 +113,36 @@ void CDlgAddSymmetricalBlank::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDlgAddSymmetricalBlank, CDialog)
+	ON_BN_CLICKED(IDC_RADIO2X2, &CDlgAddSymmetricalBlank::OnBnClickedRadio4)
+	ON_BN_CLICKED(IDC_RADIO2X1, &CDlgAddSymmetricalBlank::OnBnClickedRadio2)
+	ON_BN_CLICKED(IDC_RADIO1X2, &CDlgAddSymmetricalBlank::OnBnClickedRadio3)
 END_MESSAGE_MAP()
 
 
+
+
+void CDlgAddSymmetricalBlank::OnBnClickedRadio4()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (b2x2.GetCheck() == 1)
+		b90.EnableWindow(1);
+	else
+	{
+		b90.SetCheck(0);
+		b90.EnableWindow(0);
+	}
+}
+
+
+void CDlgAddSymmetricalBlank::OnBnClickedRadio2()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	OnBnClickedRadio4();
+}
+
+
+void CDlgAddSymmetricalBlank::OnBnClickedRadio3()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	OnBnClickedRadio4();
+}
