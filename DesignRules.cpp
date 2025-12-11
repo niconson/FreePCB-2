@@ -298,10 +298,10 @@ void DRErrorList::MakeSolidCircles(BOOL bCIRC)
 			{
 				if( dre->dl_el->gtype == DL_HOLLOW_CIRC )
 				{
-					if(bCIRC)
+					//if(bCIRC)
 						dre->dl_el->gtype = DL_CIRC;
-					else
-						dre->dl_el->gtype = DL_X;
+					//else
+					//	dre->dl_el->gtype = DL_X;
 					RECT Get;
 					RECT * r = m_dlist->Get_Rect( dre->dl_el, &Get );
 					dre->dl_el->el_w = (r->right - r->left) / 100;
@@ -309,12 +309,13 @@ void DRErrorList::MakeSolidCircles(BOOL bCIRC)
 						SwellRect(r, 5000);
 					else
 					{
-						int x = (r->right + r->left) / 2;
-						int y = (r->top + r->bottom) / 2;
-						r->left = x - dre->dl_el->el_w * 25;
-						r->right = x + dre->dl_el->el_w * 25;
-						r->bottom = y - dre->dl_el->el_w * 25;
-						r->top = y + dre->dl_el->el_w * 25;
+						SwellRect(r, 500);
+						//int x = (r->right + r->left) / 2;
+						//int y = (r->top + r->bottom) / 2;
+						//r->left = x - dre->dl_el->el_w * 25;
+						//r->right = x + dre->dl_el->el_w * 25;
+						//r->bottom = y - dre->dl_el->el_w * 25;
+						//r->top = y + dre->dl_el->el_w * 25;
 					}
 				}
 				else

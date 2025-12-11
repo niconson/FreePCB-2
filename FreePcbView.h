@@ -938,7 +938,7 @@ public:
 	void TracesRadiusUpDown(BOOL UP);
 	void AlignSegments( cnet * n, int ic, int iv, BOOL mirror, float ang=0.0, BOOL svUndoInfo=TRUE );
 	void AlignSides( int type, int ic, int iv);
-	void OnGroupPaste( int bwDialog, BOOL bSaveMerges=0 );
+	int OnGroupPaste( int bwDialog, BOOL bSaveMerges=0 );
 	void OnInfoBoxMess( int command, int n_str, CArray<CString> *str, BOOL bIronScale=0 );
 	CWnd * OnSendMess( CString mess, HWND Win = NULL );
 	

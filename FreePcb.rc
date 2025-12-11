@@ -643,6 +643,7 @@ BEGIN
         MENUITEM "Преобразовать в прямую",      ID_FP_CONVERTTOSTRAIGHT
         MENUITEM "Преобразовать в дугу (CW)",   ID_FP_CONVERTTOARC
         MENUITEM "Преобразовать в дугу (CCW)",  ID_FP_CONVERTTOARC32778
+        MENUITEM "Аппроксимировать дугу",       ID_APPROXIMATION_ARC
         MENUITEM SEPARATOR
         MENUITEM "Параметры 3D-объекта (OpenSCAD)", ID_FP_OPENSCAD
         MENUITEM "Установить начало координат", ID_FP_SET_ORIGIN

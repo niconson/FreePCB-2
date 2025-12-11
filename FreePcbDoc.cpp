@@ -14742,9 +14742,12 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		if(merge0 == -1)
 			merge0 = m_mlist->AddNew(m1, 0);
 		m_view->MergeGroup(merge0);
+		CPoint movOrig(0,0);
 		if (dlg.m_var == 2)
 		{
-			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
+			movOrig.x = -pcbr.right - (dlg.m_dx / 2);
+			movOrig.y = -pcbr.top - (dlg.m_dy / 2);
+			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
 			m_view->NewSelectM(NULL, merge0);
@@ -14758,7 +14761,9 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		{
 			m_view->RotateGroup(-90, 0);
 			pcbr = GetBoardRect();
-			m_view->MoveOrigin(-pcbr.right - (dlg.m_dy / 2), -pcbr.top - (dlg.m_dx / 2));
+			movOrig.x = -pcbr.right - (dlg.m_dy / 2);
+			movOrig.y = -pcbr.top - (dlg.m_dx / 2);
+			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
 			m_view->NewSelectM(NULL, merge0);
@@ -14783,12 +14788,14 @@ void CFreePcbDoc::AddSymmetricalBlank()
 				m_view->RotateGroup(90, 0);
 				pcbr = GetBoardRect();
 			}
-			m_view->MoveOrigin(-pcbr.right - (dlg.m_dx / 2), -pcbr.top - (dlg.m_dy / 2));
+			movOrig.x = -pcbr.right - (dlg.m_dx / 2);
+			movOrig.y = -pcbr.top - (dlg.m_dy / 2);
+			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
 			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
-			m_view->OnGroupPaste(2, 1);
+			int copy2 = m_view->OnGroupPaste(2, 1);
 			m_view->RotateGroup(-180, 0);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
@@ -14796,10 +14803,10 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
 			m_view->NewSelectM(NULL, merge0);
-			int merge1 = m_mlist->GetIndex(m1);
-			if (merge1 == -1)
-				ASSERT(0);
-			m_view->NewSelectM(NULL, merge1);
+			//int merge1 = m_mlist->GetIndex(m1);
+			//if (merge1 == -1)
+			//	ASSERT(0);
+			//m_view->NewSelectM(NULL, merge1);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
 			m_view->TurnGroup();
@@ -14807,12 +14814,20 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			m_view->UpdateWindow();
 			if (dlg.m_90)
 			{
-				OnEditSelectAll();
+				//OnEditSelectAll();
+				m_view->NewSelectM(NULL, merge0);
+				m_view->NewSelectM(NULL, copy2);
 				m_view->RotateGroup(-90, 0);
 			}
 		}
 		else
 			ASSERT(0);
+
+		cpart* BOARD = m_plist->GetPart("BOARD");
+		if (BOARD)
+		{
+			m_plist->Move(BOARD, 0, 0, 0, 0);
+		}
 		// restore 
 		m_netlist_completed = mem_nl_comp;
 		m_auto_interval = mem_pr_int;
@@ -15896,11 +15911,11 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 			return BOARD;
 		}
 	}
+	RECT totalRect;
 	///m_view->SaveUndoInfoForOutlinePoly( m_view->UNDO_OP, TRUE, m_undo_list ); n.u.
 	if (MakePanel) 
 		if(MakePanel->x > 1 || MakePanel->y > 1)
 		{
-			RECT totalRect;
 			totalRect.left = op_rect.left - m_panel_fields[0];
 			totalRect.right = op_rect.left + ((op_rect.right - op_rect.left) * m_n_x) + (m_space_x * (m_n_x - 1)) + m_panel_fields[0];
 			totalRect.bottom = op_rect.bottom - m_panel_fields[1];
@@ -16072,6 +16087,23 @@ RECT CFreePcbDoc::AddBoardHoles( BOOL bCANCEL, POINT * MakePanel )
 			}
 			m_view->UpdateWindow();
 			ProjectCombineBoard(LAY_BOARD_OUTLINE);
+			while ( m_outline_poly.GetSize() > (iPANEL+1) )
+			{
+				RECT R1 = m_outline_poly[iPANEL].GetCornerBounds(0);
+				RECT R2 = m_outline_poly[iPANEL+1].GetCornerBounds(0);
+				int L1 = R1.right - R1.left;
+				int L2 = R2.right - R2.left;
+				if (L1 > L2)
+				{
+					m_outline_poly[iPANEL + 1].Undraw();
+					m_outline_poly.RemoveAt(iPANEL + 1);
+				}
+				else
+				{
+					m_outline_poly[iPANEL].Undraw();
+					m_outline_poly.RemoveAt(iPANEL);
+				}
+			}
 		}
 	return BOARD;
 }

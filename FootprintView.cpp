@@ -108,6 +108,7 @@ ON_COMMAND(ID_FP_INSERTCORNER, OnPolylineSideAddCorner)
 ON_COMMAND(ID_FP_CONVERTTOSTRAIGHT, OnPolylineSideConvertToStraightLine)
 ON_COMMAND(ID_FP_CONVERTTOARC, OnPolylineSideConvertToArcCw)
 ON_COMMAND(ID_FP_CONVERTTOARC32778, OnPolylineSideConvertToArcCcw)
+ON_COMMAND(ID_APPROXIMATION_ARC, OnPolylineApproximationArc)
 ON_COMMAND(ID_FP_DELETEOUTLINE, OnPolylineDelete)
 ON_COMMAND(ID_FP_MOVE32780, OnPolylineCornerMove)
 ON_COMMAND(ID_FP_SETPOSITION, OnPolylineCornerEdit)
@@ -2903,6 +2904,7 @@ void CFootprintView::OnContextMenu(CWnd* pWnd, CPoint point )
 				pPopup->EnableMenuItem( ID_FP_CONVERTTOARC32778, MF_GRAYED );
 			}
 			pPopup->EnableMenuItem( ID_FP_CONVERTTOSTRAIGHT, MF_GRAYED );
+			pPopup->EnableMenuItem( ID_APPROXIMATION_ARC, MF_GRAYED );
 		}
 		else if( style == CPolyLine::ARC_CW )
 		{
@@ -3594,6 +3596,30 @@ void CFootprintView::OnPolylineSideConvertToArcCcw()
 	ShowSelectStatus();
 	SetFKText( m_cursor_mode );
 	FootprintModified( TRUE );
+}
+
+void CFootprintView::OnPolylineApproximationArc()
+{
+	int cnt;
+	CPoint arcs[N_SIDES_APPROX_ARC + 1];
+	int x1 = m_fp.m_outline_poly[m_sel_id.i].GetX(m_sel_id.ii);
+	int y1 = m_fp.m_outline_poly[m_sel_id.i].GetY(m_sel_id.ii);
+	int ni = m_fp.m_outline_poly[m_sel_id.i].GetIndexCornerNext(m_sel_id.ii);
+	int x2 = m_fp.m_outline_poly[m_sel_id.i].GetX(ni);
+	int y2 = m_fp.m_outline_poly[m_sel_id.i].GetY(ni);
+	cnt = Generate_Arc(x1, y1, x2, y2, m_fp.m_outline_poly[m_sel_id.i].GetSideStyle(m_sel_id.ii), arcs, N_SIDES_APPROX_ARC);
+	m_fp.m_outline_poly[m_sel_id.i].DeleteCorner(m_sel_id.ii);
+	for (int i = cnt-1; i >= 0; i--)
+	{
+		if (m_sel_id.ii >= m_fp.m_outline_poly[m_sel_id.i].GetNumCorners())
+		{
+			m_fp.m_outline_poly[m_sel_id.i].UnClose();
+			m_fp.m_outline_poly[m_sel_id.i].AppendCorner(arcs[i].x, arcs[i].y);
+		}
+		else
+			m_fp.m_outline_poly[m_sel_id.i].InsertCorner(m_sel_id.ii, arcs[i].x, arcs[i].y);
+	}
+	//m_fp.m_outline_poly[m_sel_id.i].DeleteCorner(ni);
 }
 
 void CFootprintView::OnAddPin()

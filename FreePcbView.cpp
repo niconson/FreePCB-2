@@ -16380,7 +16380,7 @@ void CFreePcbView::DeleteGroup( BOOL wMerge )
 	OnRangeCmds( NULL );
 }
 //===============================================================================================
-void CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
+int CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
 {
 #define ELEMENT_SELECTED 1
 	static int NoItems = 0;
@@ -16472,6 +16472,7 @@ void CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
 			}
 		}
 	}
+	CString cur_merge_name = "";
 	if( ret == IDOK )
 	{
 		if( !bSaveMerges )
@@ -16521,6 +16522,7 @@ void CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
 					}while( m_Doc->m_mlist->GetIndex( mstr ) >= 0 );
 			}
 			m_Doc->clip_mlist->SetMerge( gpart->m_merge, mstr );
+			cur_merge_name = mstr;
 			gpart = g_pl->GetNextPart( gpart );
 		}
 		cnet * net = nl->GetFirstNet();
@@ -17176,6 +17178,7 @@ void CFreePcbView::OnGroupPaste( int bwDialog, BOOL bSaveMerges )
 	// now destroy modified g_nl and restore links in g_pl
 	delete g_nl;
 #undef ELEMENT_SELECTED
+	return m_Doc->m_mlist->GetIndex(cur_merge_name);
 }
 //===============================================================================================
 void CFreePcbView::OnGroupStaticHighlight()

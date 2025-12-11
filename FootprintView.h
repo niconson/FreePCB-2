@@ -510,6 +510,7 @@ public:
 	afx_msg void OnPolylineSideConvertToStraightLine();
 	afx_msg void OnPolylineSideConvertToArcCw();
 	afx_msg void OnPolylineSideConvertToArcCcw();
+	afx_msg void OnPolylineApproximationArc();
 	afx_msg void OnAddPin();       
 	afx_msg void OnFootprintFileSaveAs();
 	afx_msg void OnAddPolyline();

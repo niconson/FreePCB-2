@@ -95,8 +95,8 @@ CNetList::~CNetList()
 //
 cnet * CNetList::AddNet( CString name, int def_w, int def_via_w, int def_via_hole_w )
 {
-	//////if( GetNetPtrByName( &name ) )
-	//////	ASSERT(0);
+	//if( GetNetPtrByName( &name ) )
+	//	ASSERT(0);
 
 	// create new net
 	cnet * new_net = new cnet( m_dlist );//ok
@@ -6579,8 +6579,11 @@ int CNetList::ReadNets( CStdioFile * pcb_file, double read_version, int * InLaye
 		else if( in_str.Left(4) == "net:" )
 		{
 			np = ParseKeyString( &in_str, &key_str, &p );
-			CString net_name = p[0].Left(MAX_NET_NAME_SIZE);
+			CString net_name = p[0].Left(MAX_NET_NAME_SIZE + NET_NAME_STRETCH);
 			net_name.Trim();
+			if(net_name.GetLength() > MAX_NET_NAME_SIZE)
+				if (net_name.Find("_$G") == -1)
+					net_name.Truncate(MAX_NET_NAME_SIZE);
 			CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
 			if( pMain )
 			{
