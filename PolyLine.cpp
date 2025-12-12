@@ -1371,13 +1371,21 @@ int CPolyLine::GetMerge( BOOL bSUB )
 int CPolyLine::GetLength()
 {
 	int d=0;
-	for( int i=0; i<m_ncorners; i++ )
+	for( int i=0; i<m_ncorners-1; i++ )
 	{
 		int n = GetIndexCornerNext(i);
-		d += Distance(corner[i].x, corner[i].y, corner[n].x, corner[n].y );
+		int L = Distance(corner[i].x, corner[i].y, corner[n].x, corner[n].y );
+		if (GetSideStyle(i))
+			L *= (PI / 2 / sqrt(2.0));
+		d += L;
 	}
-	if( GetClosed() )
-		d += Distance(corner[0].x, corner[0].y, corner[m_ncorners-1].x, corner[m_ncorners-1].y );
+	if (GetClosed())
+	{
+		int L = Distance(corner[0].x, corner[0].y, corner[m_ncorners - 1].x, corner[m_ncorners - 1].y);
+		if (GetSideStyle(m_ncorners - 1))
+			L *= (PI / 2 / sqrt(2.0));
+		d += L;
+	}
 	return d;
 }
 

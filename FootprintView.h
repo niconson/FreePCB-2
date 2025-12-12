@@ -326,6 +326,7 @@ public:
 
 	// for group
 	POINT m_start_point;
+	int m_group_angle;
 	int m_dx;
 	int m_dy;
 

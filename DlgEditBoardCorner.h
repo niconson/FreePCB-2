@@ -27,6 +27,7 @@ public:
 	CComboBox m_combo_units;
 	CEdit m_edit_x;
 	CEdit m_edit_y;
+	CButton m_origin;
 	afx_msg void OnCbnSelchangeComboCornerUnits();
 private:
 	int m_x;
@@ -34,4 +35,6 @@ private:
 	int m_units;
 	void GetFields();
 	void SetFields();
+public:
+	afx_msg void OnBnClickedCheckOrigin();
 };

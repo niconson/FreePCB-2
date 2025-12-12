@@ -173,6 +173,7 @@ CFootprintView::CFootprintView()
 	prevy = 0;
 	m_Doc = NULL;
 	m_dlist = NULL;
+	m_group_angle = 0;
 	m_last_mouse_point.x = 0;
 	m_last_mouse_point.y = 0;
 	m_last_cursor_point.x = 0;
@@ -577,11 +578,13 @@ void CFootprintView::MoveGroup( int dx, int dy )
 void CFootprintView::RotateGroup( int ang )
 {
 	PushUndo();
+	m_group_angle += ang;
+	m_group_angle = m_group_angle % 90;
 	int lay = 0;
-	RECT RCT = m_fp.m_dlist->GetHighlightedBounds(&lay);
+	//RECT RCT = m_fp.m_dlist->GetHighlightedBounds(&lay);
 	POINT CP;
-	CP.x = (RCT.left + RCT.right)/2;
-	CP.y = (RCT.top + RCT.bottom)/2;
+	CP.x = 0;// (RCT.left + RCT.right) / 2;
+	CP.y = 0;// (RCT.top + RCT.bottom) / 2;
 	// glueds
 	for( int i=m_fp.m_glue.GetSize()-1; i>=0; i-- )
 	{
@@ -630,6 +633,7 @@ void CFootprintView::RotateGroup( int ang )
 	m_fp.Draw( m_fp.m_dlist, m_Doc->m_smfontutil );
 	HighlightGroup();
 	FootprintModified( TRUE,0,0 );
+	ShowSelectStatus();
 }
 
 void CFootprintView::MirrorGroup()
@@ -2407,7 +2411,7 @@ void CFootprintView::SetFKText( int mode )
 		m_fkey_option[4] = FK_FP_ADD_AREA_HOLE;
 		break;
 	case CUR_FP_GROUP_SELECTED:
-		m_fkey_option[0] = FK_FP_ROTATE_45; 
+		m_fkey_option[0] = FK_FP_ROTATE__1; 
 		m_fkey_option[1] = FK_FP_ROTATE_1;
 		if( old_key_option == FK_FP_OP_MAKE_COPPER )
 			m_fkey_option[2] = FK_FP_OP_MAKE_SILK;
@@ -2611,7 +2615,11 @@ int CFootprintView::ShowSelectStatus()
 	switch( m_cursor_mode )
 	{
 	case CUR_FP_NONE_SELECTED: 
-		str.Format( "No selection" );
+		str.Format("No selection");
+		break;
+
+	case CUR_FP_GROUP_SELECTED:
+		str.Format("Group angle: %d", m_group_angle%90);
 		break;
 
 	case CUR_FP_PAD_SELECTED: 
@@ -2647,10 +2655,11 @@ int CFootprintView::ShowSelectStatus()
 			::MakeCStringFromDimension( &str2, len2, m_units,1,1,1,2);
 			::MakeCStringFromDimension( &str3, len3, m_units,1,1,1,2);
 			::MakeCStringFromDimension( &str4, len4, m_units,1,1,1,2);
+			float an = Angle(x2, y2, x1, y1);
 			if(sst)
-				str.Format( "Polyline %d, side %d, Length=%s, Total Length=%s, dx=%s, dy=%s", m_sel_id.i+1, m_sel_id.ii+1, str1, str2, str3, str4 );
+				str.Format( "Polyline %d, Length=%s, Total Length=%s, dx=%s, dy=%s", m_sel_id.i+1, str1, str2, str3, str4 );
 			else
-				str.Format( "Polyline %d, side %d, Length=%s, Total Length=%s", m_sel_id.i+1, m_sel_id.ii+1, str1, str2 );
+				str.Format( "Polyline %d, angle %.2f, Length=%s, Total Length=%s", m_sel_id.i+1, an, str1, str2 );
 		} 
 		break;
 
@@ -2844,6 +2853,8 @@ void CFootprintView::CancelSelection()
 	// glue
 	for( int i=m_fp.m_glue.GetSize()-1; i>=0; i-- )
 		m_fp.m_glue[i].selected = 0;
+
+	m_group_angle = 0;
 	SetCursorMode( CUR_FP_NONE_SELECTED );
 }
 

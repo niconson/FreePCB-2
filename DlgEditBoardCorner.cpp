@@ -27,6 +27,7 @@ void DlgEditBoardCorner::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_CORNER_UNITS, m_combo_units);
 	DDX_Control(pDX, IDC_EDIT_X, m_edit_x);
 	DDX_Control(pDX, IDC_EDIT_Y, m_edit_y);
+	DDX_Control(pDX, IDC_CHECK_ORIGIN, m_origin);
 	if( !pDX->m_bSaveAndValidate && m_title_str )
 	{
 		// incoming
@@ -56,6 +57,7 @@ void DlgEditBoardCorner::Init( CString * str, int units, int x, int y )
 
 BEGIN_MESSAGE_MAP(DlgEditBoardCorner, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_CORNER_UNITS, OnCbnSelchangeComboCornerUnits)
+	ON_BN_CLICKED(IDC_CHECK_ORIGIN, &DlgEditBoardCorner::OnBnClickedCheckOrigin)
 END_MESSAGE_MAP()
 
 
@@ -108,4 +110,24 @@ void DlgEditBoardCorner::SetFields()
 		m_edit_y.SetWindowText( str );
 	}
 
+}
+
+
+void DlgEditBoardCorner::OnBnClickedCheckOrigin()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	static CString stat1;
+	static CString stat2;
+	if (m_origin.GetCheck())
+	{
+		m_edit_x.GetWindowTextA(stat1);
+		m_edit_y.GetWindowTextA(stat2);
+		m_edit_x.SetWindowTextA("0.0");
+		m_edit_y.SetWindowTextA("0.0");
+	}
+	else
+	{
+		m_edit_x.SetWindowTextA(stat1);
+		m_edit_y.SetWindowTextA(stat2);
+	}
 }
