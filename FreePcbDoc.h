@@ -427,7 +427,7 @@ public:
 	void EnsureNotMinimized(HWND hWnd, BOOL bSwToFile=TRUE );
 	void ChannelDuplication();
 	void OnProtection();
-	RECT GetBoardRect( int* Width = NULL );
+	RECT GetBoardRect( int* Width = NULL, BOOL bSelLegalBoards = FALSE );
 	RECT AddBoardHoles( BOOL bCANCEL=FALSE, POINT * MakePanel = NULL);
 	void CancelBoardHoles( BOOL bUNDO=TRUE );
 	void ClipClear();

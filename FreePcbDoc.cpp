@@ -14734,8 +14734,8 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		m_netlist_completed = 0;
 		m_auto_interval = 0;
 		//
-		RECT pcbr = GetBoardRect();
 		MarkLegalElementsForExport(this);
+		RECT pcbr = GetBoardRect(NULL, TRUE);
 		SelectLegalElements(this);
 		CString m1 = "copy-1";
 		int merge0 = m_mlist->GetIndex(m1);
@@ -14745,6 +14745,7 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		CPoint movOrig(0,0);
 		if (dlg.m_var == 2)
 		{
+			m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
 			movOrig.x = -pcbr.right - (dlg.m_dx / 2);
 			movOrig.y = -pcbr.top - (dlg.m_dy / 2);
 			m_view->MoveOrigin(movOrig.x, movOrig.y);
@@ -14760,7 +14761,8 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		else if (dlg.m_var == 3)
 		{
 			m_view->RotateGroup(-90, 0);
-			pcbr = GetBoardRect();
+			MarkLegalElementsForExport(this);
+			pcbr = GetBoardRect(NULL, TRUE);
 			movOrig.x = -pcbr.right - (dlg.m_dy / 2);
 			movOrig.y = -pcbr.top - (dlg.m_dx / 2);
 			m_view->MoveOrigin(movOrig.x, movOrig.y);
@@ -14786,10 +14788,13 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			if (dlg.m_90)
 			{
 				m_view->RotateGroup(90, 0);
-				pcbr = GetBoardRect();
+				MarkLegalElementsForExport(this);
+				pcbr = GetBoardRect(NULL, TRUE);
 			}
-			movOrig.x = -pcbr.right - (dlg.m_dx / 2);
-			movOrig.y = -pcbr.top - (dlg.m_dy / 2);
+			else
+				m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
+			movOrig.x = -pcbr.right - (dlg.m_90?(dlg.m_dy / 2):(dlg.m_dx / 2));
+			movOrig.y = -pcbr.top - (dlg.m_90?(dlg.m_dx / 2):(dlg.m_dy / 2));
 			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
@@ -14799,7 +14804,7 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			m_view->RotateGroup(-180, 0);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
-			m_view->MoveGroup(0, pcbr.top - pcbr.bottom + dlg.m_dy, 0);
+			m_view->MoveGroup(0, (pcbr.top - pcbr.bottom + (dlg.m_90 ? (dlg.m_dx) : (dlg.m_dy))), 0);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
 			m_view->NewSelectM(NULL, merge0);
@@ -14814,7 +14819,6 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			m_view->UpdateWindow();
 			if (dlg.m_90)
 			{
-				//OnEditSelectAll();
 				m_view->NewSelectM(NULL, merge0);
 				m_view->NewSelectM(NULL, copy2);
 				m_view->RotateGroup(-90, 0);
@@ -16161,7 +16165,7 @@ BOOL CFreePcbDoc::OnSpeedFile( UINT CMD )
 	return 1;
 }
 
-RECT CFreePcbDoc::GetBoardRect( int * Width )
+RECT CFreePcbDoc::GetBoardRect( int * Width, BOOL bSelLegalBoards)
 {
 	RECT op_rect;
 	op_rect.left = op_rect.bottom = INT_MAX;
@@ -16173,6 +16177,9 @@ RECT CFreePcbDoc::GetBoardRect( int * Width )
 		id gid = m_outline_poly[ib].GetId();
 		if (gid.st != ID_BOARD)
 			continue;
+		if (bSelLegalBoards)
+			if (m_outline_poly[ib].GetUtility() == 0)
+				continue;
 		bW = m_outline_poly[ib].GetW();
 		m_outline_poly[ib].RecalcRectC(0);
 		RECT gr = m_outline_poly[ib].GetCornerBounds(0);
