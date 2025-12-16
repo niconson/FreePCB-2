@@ -3934,7 +3934,7 @@ void CFreePcbView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if( nChar == 'D' )
 	{
 		// 'd'
-		m_Doc->m_drelist->MakeSolidCircles(TRUE);
+		m_Doc->m_drelist->MakeSolidCircles(5000);
 		Invalidate( FALSE ); //OnKeyDown
 	}
 	else if( nChar == VK_SHIFT || nChar == VK_CONTROL )

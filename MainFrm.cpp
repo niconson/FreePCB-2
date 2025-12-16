@@ -482,19 +482,24 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 				doc->SwitchTo_ECDS( TRUE );
 			else if (nIDEvent == DRC_TIMER)
 			{
-				SetTimer(DRC_TIMER, 1000, 0);
-				static bool state = 0;
-				if (doc->m_drelist->list.GetSize() && doc->m_view->m_cursor_mode == CUR_NONE_SELECTED)
+				static int state = 0;
+				if(state == 0)
+					SetTimer(DRC_TIMER, 1000, 0);
+				else if (state < 0)
+					state = 1;
+				if (doc->m_drelist->list.GetSize() && 
+					doc->m_view->m_cursor_mode == CUR_NONE_SELECTED && 
+					doc->m_view->m_bLButtonDown == 0)
 				{
-					if (state)
+					if (state%2)
 					{
-						doc->m_drelist->MakeSolidCircles(0);
+						doc->m_drelist->MakeSolidCircles(doc->m_view->m_pcbu_per_pixel / 100.0);
 						SetTimer(DRC_TIMER, 50, 0);
 					}
 					else
 						doc->m_drelist->MakeHollowCircles();
-					state = !state;
-					doc->m_view->SetDrawLayer(ENABLE_CHANGE_DRAW_LAYER);
+					state--;
+					doc->m_view->SetDrawLayer(DISABLE_CHANGE_DRAW_LAYER);
 					doc->m_view->Invalidate(FALSE);
 				}
 			}
