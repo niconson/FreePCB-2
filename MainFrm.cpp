@@ -487,13 +487,15 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 					SetTimer(DRC_TIMER, 1000, 0);
 				else if (state < 0)
 					state = 1;
+				float circ = doc->m_view->m_pcbu_per_pixel / 150.0;
 				if (doc->m_drelist->list.GetSize() && 
 					doc->m_view->m_cursor_mode == CUR_NONE_SELECTED && 
-					doc->m_view->m_bLButtonDown == 0)
+					doc->m_view->m_bLButtonDown == 0 &&
+					circ > 250.0)
 				{
 					if (state%2)
 					{
-						doc->m_drelist->MakeSolidCircles(doc->m_view->m_pcbu_per_pixel / 100.0);
+						doc->m_drelist->MakeSolidCircles(circ);
 						SetTimer(DRC_TIMER, 50, 0);
 					}
 					else
