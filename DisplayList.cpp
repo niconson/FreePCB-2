@@ -1369,7 +1369,11 @@ void CDisplayList::Draw( CDC * dDC, int draw_layer )
 						pDC->SetROP2( old_ROP3 );
 					}
 					else
-						DrawArc( pDC, DL_ARC_CW, el->pts[0].x, el->pts[0].y, el->pts[1].x, el->pts[1].y );
+					{
+						if (el->transparent == TRANSPARENT_ZERO_W && layer == LAY_HILITE)
+							pDC->SelectObject(line_pen);
+						DrawArc(pDC, DL_ARC_CW, el->pts[0].x, el->pts[0].y, el->pts[1].x, el->pts[1].y);
+					}
 				}
 				else if( !ECO_TIME )
 				{
@@ -1390,7 +1394,11 @@ void CDisplayList::Draw( CDC * dDC, int draw_layer )
 						pDC->SetROP2( old_ROP3 );
 					}
 					else
-						DrawArc( pDC, DL_ARC_CCW, el->pts[0].x, el->pts[0].y, el->pts[1].x, el->pts[1].y );
+					{
+						if (el->transparent == TRANSPARENT_ZERO_W && layer == LAY_HILITE)
+							pDC->SelectObject(line_pen);
+						DrawArc(pDC, DL_ARC_CCW, el->pts[0].x, el->pts[0].y, el->pts[1].x, el->pts[1].y);
+					}
 				}
 				else if( !ECO_TIME )
 				{

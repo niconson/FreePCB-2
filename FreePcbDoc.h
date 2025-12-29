@@ -162,7 +162,7 @@ public:
 	int GetGerberPathes(CString Path);
 	int CheckUpdates();
 	cnet * DrcTestforDlElement( dl_element * el, id * ID, int * dist, int * m_cx, int * m_cy, int * wFLAG, cpart ** badP, CText ** badT, cnet ** badN );
-	BOOL RemovingZeroLengthOrColinearSides(CPolyLine* ap);
+	int RemovingZeroLengthOrColinearSides(CPolyLine* ap);
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

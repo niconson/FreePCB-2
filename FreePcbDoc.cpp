@@ -6783,9 +6783,9 @@ void CFreePcbDoc::OnViewLog()
 	m_dlg_log->BringWindowToTop();
 }
 
-BOOL CFreePcbDoc::RemovingZeroLengthOrColinearSides( CPolyLine * ap )
+int CFreePcbDoc::RemovingZeroLengthOrColinearSides( CPolyLine * ap )
 {
-	BOOL reDr = 0;
+	int reDr = 0;
 	int ccont = ap->GetNumContours();
 	for (int icont = ccont - 1; icont >= 0; icont--)
 	{
@@ -6807,7 +6807,7 @@ BOOL CFreePcbDoc::RemovingZeroLengthOrColinearSides( CPolyLine * ap )
 			if ((Colinear(xb, yb, x, y, xn, yn) && sstyle1 == CPolyLine::STRAIGHT && sstyle2 == CPolyLine::STRAIGHT) ||
 				Distance(xb, yb, x, y) < _2540)
 			{
-				reDr = 1;
+				reDr++;
 				ap->DeleteCorner(i, 1, 1, 0);
 				CString xs, ys;
 				::MakeCStringFromDimension(&xs, x, m_units, TRUE, TRUE, FALSE, (m_units == MIL ? 0 : 3));
@@ -6852,12 +6852,12 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 			{
 				CPolyLine * ap = net->area[ia].poly;
 				Total_num++;
-				BOOL reDraw = RemovingZeroLengthOrColinearSides(ap);
+				int reDraw = RemovingZeroLengthOrColinearSides(ap);
 				if (reDraw)
 				{
 					m_nlist->SetAreaHatch(net, ia); // ap->Draw();
 					new_event = TRUE;
-					Deleted_num++;
+					Deleted_num += reDraw;
 				}
 			}
 			
@@ -7978,7 +7978,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			CString fname = foots.GetAt(i);
 			str.Format( "    if( is_undef(drw_%s) )\n      Draw_%s();\n", fname, fname);
 			file.WriteString(str);
-			str.Format( "    else if( drw_%s != 0 )\n      Draw_%s();\n", fname, fname);
+			str.Format( "    else if( drw_%s )\n      Draw_%s();\n", fname, fname);
 			file.WriteString(str);
 		}
 		str.Format("    if( is_undef(drw_board_outline) )\n      Draw_BO_%s();\n", moduleName);
@@ -8458,7 +8458,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 									file.WriteString(str);
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize);
 									file.WriteString(str);
-									str.Format( "           else if( drw_%s != 0 )\n", fname );
+									str.Format( "           else if( drw_%s )\n", fname );
 									file.WriteString( str );
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize );
 									file.WriteString( str );
@@ -8565,6 +8565,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				file.Close();
 			}
 		}
+		double bh = 1500000.0 / mu;
 		BOOL bShellEx = FALSE;
 		int maxlen = 13;
 		for(int i=0; i<foots.GetSize(); i++)
@@ -8584,12 +8585,13 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 										"  \\-----------------------------------------------*/\n");
 				str.Format( "include <%s>\n", (moduleName+".lib") );
 				Scadfile.WriteString( str );
+				Scadfile.WriteString("\n// display parameter\n");
 				str.Format( "Convexity = 2;\n" );
 				Scadfile.WriteString( str );
-				double bh = 1500000.0 / mu;
+				Scadfile.WriteString("\n// pcb thickness\n");
 				str.Format( "board_h = %.3f;\n", bh );
 				Scadfile.WriteString( str );
-				str.Format( "\n\n\n//// Drawing mode\n"\
+				str.Format( "\n//// Drawing mode\n"\
 							"MODE = 1;  // 1: full 3D view\n"\
 							"           // 2: projection of top copper\n"\
 							"           // 3: projection of bottom copper\n"\
@@ -8608,11 +8610,12 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 14: boolean difference (makes\n"\
 							"           //     holes in the Custom objects\n"\
 							"           //     using 3d-models of pcb parts).\n\n"\
-							"dir = 0;   // view direction for modes 6...14\n"\
-							"sector = 0;// double-sided section for modes 4,5,11...14\n"\
-							"pdist = 20;// distance between projections for mode 10\n"\
-							"object = 0;// use positive values to isolate a custom object\n"\
-							"           // use negative values to disable a custom object\n\n\n\n"\
+							"\n// double-sided section for modes 4,5,11...14\nsector = 0;\n"\
+							"\n// distance between projections for mode 10\npdist = 20;\n"\
+							"\n// use positive values to isolate a custom object\n// use negative values to disable a custom object\nobject = 0;\n"\
+							"\n// view direction for modes 6...14\ndir= false;\n"\
+							"\n// enable PCB section for modes 11...12\npcb_section = true;\n"\
+							"           \n"\
 							"//// Drawing control\n");
 				Scadfile.WriteString(str);
 				str.Format( "E = true;\n" );
@@ -8642,24 +8645,32 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "drw_%s%s = E; // controls Draw_%s();\n", foots.GetAt(i), spc, foots.GetAt(i));
+					str.Format( "drw_%s%s = true; // controls Draw_%s();\n", foots.GetAt(i), spc, foots.GetAt(i));
 					Scadfile.WriteString( str );
 				}
+				//
+				str.Format("\n//// 3d cube for boolean operations:\n");
+				Scadfile.WriteString(str);
+				Scadfile.WriteString("\n// (cube sizeX for 4,5,11-14 modes)\ncube_scaleX = 1.0;\n");
+				Scadfile.WriteString("\n// (cube sizeY for 4,5,11-14 modes)\ncube_scaleY = 1.0;\n");
+				Scadfile.WriteString("\n// (cube sizeZ for 4,5,11-14 modes)\ncube_scaleZ = 1.0;\n");
 
 				// write module
 				str.Format("\n\n\n//// Drawing modules\n");
 				Scadfile.WriteString(str);
-				str.Format(	"/*\ncoordinates:*/frozen = false;/* Wherever you move\n"\
+				Scadfile.WriteString("//// Frozen position\n");
+				str.Format(	"frozen = false; /* coordinates: Wherever you move\n"\
 							"the PCB in the PCB editor, the position of the 3D\n"\
 							"model will remain the same. Make true if you want\n"\
-							"to use this option*/\n\n");
+							"to use this option */\n\n");
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("module Main (custom=true)\n{\n");
 				Scadfile.WriteString("  // (this module cannot be modified by the user)\n");
-				str.Format("  Pcb_%s(frozen);\n", moduleName);
+				str.Format("  if(E) Pcb_%s(frozen);\n", moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  if(custom) Custom(object);\n");
 				Scadfile.WriteString("}\n\n");
+				Scadfile.WriteString("//==================================================\n");
 				Scadfile.WriteString("module Custom (obj=0)\n{\n");
 				str.Format("  translate([frozen?0:originX_%s, frozen?0:originY_%s, 0])\n  {\n", moduleName, moduleName);
 				Scadfile.WriteString(str);
@@ -8702,13 +8713,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(	"    // end of custom field\n");
 				Scadfile.WriteString("  }\n");
 				Scadfile.WriteString("}\n");
-				//
-				str.Format("\n\n\n//// 3d cube for boolean operations\n");
-				Scadfile.WriteString(str);
-				Scadfile.WriteString("cube_scaleX = 1.0;// (cube sizeX for 4,5,11-14 modes)\n");
-				Scadfile.WriteString("cube_scaleY = 1.0;// (cube sizeY for 4,5,11-14 modes)\n");
-				Scadfile.WriteString("cube_scaleZ = 1.0;// (cube sizeZ for 4,5,11-14 modes)\n");
-
+				Scadfile.WriteString("//==================================================\n\n");
 				//XXXXXXXXXXXXXX
 				Scadfile.WriteString("module CubeX (d=dir)\n");
 				Scadfile.WriteString("{\n");
@@ -8832,18 +8837,16 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("}\n");
 				// 11
 				Scadfile.WriteString("else if (MODE == 11)\n{\n");
-				Scadfile.WriteString("  PcbFull = 0; // make 1 for full pcb view\n");
 				Scadfile.WriteString("  //projection() rotate([-90,0,0])\n  {\n");
-				Scadfile.WriteString("    if(PcbFull) Main(0);\n");
+				Scadfile.WriteString("    if(!pcb_section) Main(0);\n");
 				Scadfile.WriteString("    render(Convexity) difference(){\n");
-				Scadfile.WriteString("    if(PcbFull) Custom(object);\n    else Main();\n    CubeX();}\n  }\n}\n");
+				Scadfile.WriteString("    if(!pcb_section) Custom(object);\n    else Main();\n    CubeX();}\n  }\n}\n");
 				// 12
 				Scadfile.WriteString("else if (MODE == 12)\n{\n");
-				Scadfile.WriteString("  PcbFull = 0; // make 1 for full pcb view\n");
 				Scadfile.WriteString("  //projection() rotate([0,90,0])\n  {\n");
-				Scadfile.WriteString("    if(PcbFull) Main(0);\n");
+				Scadfile.WriteString("    if(!pcb_section) Main(0);\n");
 				Scadfile.WriteString("    render(Convexity) difference(){\n");
-				Scadfile.WriteString("    if(PcbFull) Custom(object);\n    else Main();\n    CubeY();}\n  }\n}\n");
+				Scadfile.WriteString("    if(!pcb_section) Custom(object);\n    else Main();\n    CubeY();}\n  }\n}\n");
 				// 13
 				Scadfile.WriteString("else if (MODE == 13)\n{\n");
 				Scadfile.WriteString("  //projection()\n  {\n");
@@ -8904,7 +8907,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					str.Format( "drw_%s ", foots.GetAt(i) );
 					if( edata.Find( str ) < 0 )
 					{
-						str.Format( "\ndrw_%s%s = E; // was added to the PCB", foots.GetAt(i), spc );
+						str.Format( "\ndrw_%s%s = true; // was added to the PCB", foots.GetAt(i), spc );
 						Scadfile.WriteString( str );
 					}
 				}
@@ -8957,6 +8960,73 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				bShellEx = TRUE;
 		}
 		CancelBoardHoles();
+
+		// write json file
+		CString jsonpath = path.Left(path.GetLength() - 4) + ".json";
+		err = _stat(jsonpath, &buf);
+		if (err)
+		{
+			CStdioFile Scadfile;
+			ok = Scadfile.Open(jsonpath, CFile::modeCreate | CFile::modeWrite);
+			if (ok)
+			{
+				Scadfile.WriteString("{\n");
+				Scadfile.WriteString("    \"fileFormatVersion\": \"1\", \n");
+				Scadfile.WriteString("    \"parameterSets\" : {\n");
+				for (int iset = 0; iset < 14; iset++)
+				{
+					if(iset == 0)
+						Scadfile.WriteString("        \"1: full 3D view\": {\n");
+					else if (iset == 1)
+						Scadfile.WriteString("        \"2: projection of top copper\": {\n");
+					else if (iset == 2)
+						Scadfile.WriteString("        \"3: projection of bottom copper\": {\n");
+					else if (iset == 3)
+						Scadfile.WriteString("        \"4: projection of top packages\": {\n");
+					else if (iset == 4)
+						Scadfile.WriteString("        \"5: projection of bottom packages\": {\n");
+					else if (iset == 5)
+						Scadfile.WriteString("        \"6: lateral pcb projection\": {\n");
+					else if (iset == 6)
+						Scadfile.WriteString("        \"7: frontal pcb projection\": {\n");
+					else if (iset == 7)
+						Scadfile.WriteString("        \"8: custom lateral projection\": {\n");
+					else if (iset == 8)
+						Scadfile.WriteString("        \"9: custom frontal projection\": {\n");
+					else if (iset == 9)
+						Scadfile.WriteString("        \"10: custom combo projection\": {\n");
+					else if (iset == 10)
+						Scadfile.WriteString("        \"11: frontal 3D section\": {\n");
+					else if (iset == 11)
+						Scadfile.WriteString("        \"12: lateral 3D section\": {\n");
+					else if (iset == 12)
+						Scadfile.WriteString("        \"13: top 3D section\": {\n");
+					else if (iset == 13)
+						Scadfile.WriteString("        \"14: boolean difference\": {\n");
+					Scadfile.WriteString("            \"Convexity\": \"2\", \n");
+					Scadfile.WriteString("            \"E\" : \"true\", \n");
+					str.Format("            \"MODE\" : \"%d\", \n", iset+1);
+					Scadfile.WriteString(str);
+					Scadfile.WriteString("            \"dir\" : \"false\", \n");
+					for (int i = 0; i < foots.GetSize(); i++)
+					{
+						str.Format("            \"drw_%s\" : \"true\", \n", foots.GetAt(i));
+						Scadfile.WriteString(str);
+					}
+					Scadfile.WriteString("            \"frozen\" : \"false\", \n");
+					Scadfile.WriteString("            \"object\" : \"0\", \n");
+					Scadfile.WriteString("            \"pdist\" : \"20\", \n");
+					Scadfile.WriteString("            \"sector\" : \"0\"\n");
+					if (iset == 13)
+						Scadfile.WriteString("        }\n");
+					else
+						Scadfile.WriteString("        },\n");
+				}
+				Scadfile.WriteString("    }\n");
+				Scadfile.WriteString("}\n");
+				Scadfile.Close();
+			}
+		}
 		if( bShellEx )
 			ShellExecute(	NULL, "open", newpath, NULL, NULL, SW_SHOWNORMAL);
 	}
