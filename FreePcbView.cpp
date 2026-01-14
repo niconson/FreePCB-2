@@ -4760,6 +4760,8 @@ void CFreePcbView::HandleKeyPress(UINT nChar, UINT nRepCnt, UINT nFlags)
 			CString path = m_Doc->m_pcb_full_path.Left(ip);
 			ShellExecute(	NULL,"open",path,NULL,path,SW_SHOWNORMAL);
 		}
+		else if (fk == FK_SIDE)
+			TurnGroup();
 		break;
 
 	case CUR_PART_SELECTED:
@@ -7046,6 +7048,9 @@ void CFreePcbView::SetFKText( int mode )
 				if( m_polyline_layer )
 					m_fkey_option[3] = FK_ADD_LINE;
 			}
+			else if (m_Doc->m_num_copper_layers > 1)
+				m_fkey_option[2] = FK_SIDE;
+
 			m_fkey_option[4] = FK_OPEN_FOLDER;
 			m_fkey_option[5] = FK_SHOW_M;
 			m_fkey_option[6] = FK_CHECK_TRACES;
@@ -15454,7 +15459,11 @@ void CFreePcbView::OnGroupMove()
 
 BOOL CFreePcbView::ThisGroupContainsGluedParts()
 {
-	if( GluedPartsInGroup() )
+	if (getbit(m_protected, CFreePcbDoc::PROTECT))
+	{
+		m_Doc->OnEditSelectAll();
+	}
+	else if( GluedPartsInGroup() )
 	{
 		int ret =	G_LANGUAGE==0?
 					AfxMessageBox( "This group contains glued parts. It is recommended to unselect all glued objects and continue.", MB_YESNOCANCEL ):
