@@ -1165,6 +1165,7 @@ public:
 	afx_msg void OnMobileBoardOutline10();
 	afx_msg void OnMobileBoardOutline11();
 	void MobileBoardOutline(int Frez, int n_holes, int d_holes);
+	afx_msg void OnCopperIsolate();
 	//
 	afx_msg void OnRangeCmds( CCmdUI * CMD );
 	void ProjectRunInfoBox();

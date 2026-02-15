@@ -288,6 +288,7 @@ ON_COMMAND(ID_MBO_7, OnMobileBoardOutline8)
 ON_COMMAND(ID_MBO_8, OnMobileBoardOutline9)
 ON_COMMAND(ID_MBO_9, OnMobileBoardOutline10)
 ON_COMMAND(ID_MBO_10, OnMobileBoardOutline11)
+ON_COMMAND(ID_COPPER_ISOLATE, OnCopperIsolate)
 //
 //ON_UPDATE_COMMAND_UI_RANGE(1, ID_ADD_POLYLINE, OnRangeCmds)
 //ON_UPDATE_COMMAND_UI_RANGE(ID_ADD_GRAPHICLINE, ID_MAX_NUM_COMMANDS, OnRangeCmds)
@@ -23370,4 +23371,9 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 	}
 	OnRangeCmds(NULL);
 	m_Doc->CancelBoardHoles();
+}
+
+void CFreePcbView::OnCopperIsolate()
+{
+	CopperIsolate(m_Doc);
 }

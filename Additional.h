@@ -7,6 +7,7 @@ void SavePcbViewWriteSegment(CStdioFile* f, int x, int y, int x2, int y2, int w,
 void SavePcbViewWritePolyline(CStdioFile* f, CPolyLine* p, int L);
 int MarkLegalElementsForExport( CFreePcbDoc* doc );
 void SelectLegalElements( CFreePcbDoc* doc );
+void CopperIsolate(CFreePcbDoc* doc);
 void CreateClearancesForCopperArea(	CFreePcbDoc* doc,
 									CString* crop_net_name,
 									cnet* area_net,

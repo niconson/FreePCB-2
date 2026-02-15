@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "RectArray.h"
+#include "DlgEnterStr.h"
+
 int page;
 enum CDS_LAYER
 {
@@ -1154,5 +1156,83 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 		}
 		doc->m_view->SetCursorMode(CUR_GROUP_SELECTED);
 		doc->m_view->HighlightGroup();
+	}
+}
+
+void CopperIsolate(CFreePcbDoc* doc)
+{
+	CDlgEnterStr dlg;
+	CString ini_str = "Enter value";
+	::MakeCStringFromDimension(&ini_str, doc->m_dr.trace_trace, doc->m_units);
+	CString win_str = "Copper clearance";
+	dlg.Initialize(&win_str, &ini_str);
+	int ret = dlg.DoModal();
+	if (ret == IDOK)
+	{
+		int max_w = 0;
+		int clearance = my_atof(&dlg.m_str);
+		if (doc->m_view->m_cursor_mode == CUR_SEG_SELECTED)
+		{
+			CPoint p1(	doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].x,
+						doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].y);
+			CPoint p2(	doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii+1].x,
+						doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii+1].y);
+			int w = doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].seg[doc->m_view->m_sel_id.ii].width;
+			int lay = doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].seg[doc->m_view->m_sel_id.ii].layer;
+			clearance *= 2;
+			clearance += w;
+			for (int ia = doc->m_view->m_sel_net->nareas - 1; ia >= 0; ia--)
+			{
+				CPolyLine* poly = doc->m_view->m_sel_net->area[ia].poly;
+				if (poly->GetLayer() == lay)
+				if (poly->TestPointInside(p1.x, p1.y) || poly->TestPointInside(p2.x, p2.y) || poly->TestPointInside((p1.x + p2.x)/2, (p1.y + p2.y)/2) )
+				{
+					int cl = clearance + poly->GetW();
+					if (max_w > poly->GetW())
+						cl = clearance + max_w;
+					const int npts = 30;
+					CPoint pts[npts];
+					int np = Gen_HollowLinePoly(p1.x, p1.y, p2.x, p2.y, cl, pts, npts);
+					for (int i=0; i<np; i++)
+					{
+						poly->AppendCorner(pts[i].x, pts[i].y, 0, 0);
+					}
+					poly->Close(0);
+					if (max_w < poly->GetW())
+						max_w = poly->GetW();
+					doc->m_nlist->ClipAreaPolygon(doc->m_view->m_sel_net, ia, -1, 0, 0, 1);
+				}
+			}
+		}
+		else if (doc->m_view->m_cursor_mode == CUR_VTX_SELECTED || doc->m_view->m_cursor_mode == CUR_END_VTX_SELECTED)
+		{
+			CPoint p(	doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].x,
+						doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].y);
+			int w = doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].via_w;
+			clearance += w / 2;
+			for (int ia = doc->m_view->m_sel_net->nareas-1; ia >= 0; ia--)
+			{
+				CPolyLine* poly = doc->m_view->m_sel_net->area[ia].poly;
+				int cl = clearance + (poly->GetW() / 2);
+				if (max_w > (poly->GetW() / 2))
+					cl = clearance + max_w;
+				if (poly->TestPointInside(p.x, p.y) ||
+					poly->TestPointInside(p.x, p.y + cl) ||
+					poly->TestPointInside(p.x + cl, p.y) ||
+					poly->TestPointInside(p.x, p.y - cl) ||
+					poly->TestPointInside(p.x - cl, p.y))
+				{
+					poly->AppendCorner(p.x, p.y + cl, 1, 0);
+					poly->AppendCorner(p.x + cl, p.y, 1, 0);
+					poly->AppendCorner(p.x, p.y - cl, 1, 0);
+					poly->AppendCorner(p.x - cl, p.y, 1, 0);
+					poly->Close(1);
+					if (max_w < (poly->GetW() / 2))
+						max_w = (poly->GetW() / 2);
+					doc->m_nlist->ClipAreaPolygon(doc->m_view->m_sel_net, ia, -1, 0, 0, 1);
+				}
+			}
+		}
+		doc->m_view->OnRangeCmds(NULL);
 	}
 }
