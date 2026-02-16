@@ -1187,6 +1187,7 @@ void CopperIsolate(CFreePcbDoc* doc)
 				if (poly->GetLayer() == lay)
 				if (poly->TestPointInside(p1.x, p1.y) || poly->TestPointInside(p2.x, p2.y) || poly->TestPointInside((p1.x + p2.x)/2, (p1.y + p2.y)/2) )
 				{
+					doc->m_view->SaveUndoInfoForArea(doc->m_view->m_sel_net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, doc->m_undo_list);
 					int cl = clearance + poly->GetW();
 					if (max_w > poly->GetW())
 						cl = clearance + max_w;
@@ -1222,6 +1223,7 @@ void CopperIsolate(CFreePcbDoc* doc)
 					poly->TestPointInside(p.x, p.y - cl) ||
 					poly->TestPointInside(p.x - cl, p.y))
 				{
+					doc->m_view->SaveUndoInfoForArea(doc->m_view->m_sel_net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, doc->m_undo_list);
 					poly->AppendCorner(p.x, p.y + cl, 1, 0);
 					poly->AppendCorner(p.x + cl, p.y, 1, 0);
 					poly->AppendCorner(p.x, p.y - cl, 1, 0);
@@ -1233,6 +1235,7 @@ void CopperIsolate(CFreePcbDoc* doc)
 				}
 			}
 		}
+		doc->ProjectModified(TRUE);
 		doc->m_view->OnRangeCmds(NULL);
 	}
 }
