@@ -3611,6 +3611,8 @@ void CFootprintView::OnPolylineSideConvertToArcCcw()
 
 void CFootprintView::OnPolylineApproximationArc()
 {
+	PushUndo();
+	int mem = m_fp.m_outline_poly[m_sel_id.i].GetNumCorners();
 	int cnt;
 	CPoint arcs[N_SIDES_APPROX_ARC + 1];
 	int x1 = m_fp.m_outline_poly[m_sel_id.i].GetX(m_sel_id.ii);
@@ -3619,18 +3621,20 @@ void CFootprintView::OnPolylineApproximationArc()
 	int x2 = m_fp.m_outline_poly[m_sel_id.i].GetX(ni);
 	int y2 = m_fp.m_outline_poly[m_sel_id.i].GetY(ni);
 	cnt = Generate_Arc(x1, y1, x2, y2, m_fp.m_outline_poly[m_sel_id.i].GetSideStyle(m_sel_id.ii), arcs, N_SIDES_APPROX_ARC);
-	m_fp.m_outline_poly[m_sel_id.i].DeleteCorner(m_sel_id.ii);
 	for (int i = cnt-1; i >= 0; i--)
 	{
-		if (m_sel_id.ii >= m_fp.m_outline_poly[m_sel_id.i].GetNumCorners())
+		if (m_sel_id.ii + 1 >= m_fp.m_outline_poly[m_sel_id.i].GetNumCorners())
 		{
+			int cl = m_fp.m_outline_poly[m_sel_id.i].GetClosed();
 			m_fp.m_outline_poly[m_sel_id.i].UnClose();
 			m_fp.m_outline_poly[m_sel_id.i].AppendCorner(arcs[i].x, arcs[i].y);
+			if (cl)
+				m_fp.m_outline_poly[m_sel_id.i].Close();
 		}
 		else
-			m_fp.m_outline_poly[m_sel_id.i].InsertCorner(m_sel_id.ii, arcs[i].x, arcs[i].y);
+			m_fp.m_outline_poly[m_sel_id.i].InsertCorner(m_sel_id.ii+1, arcs[i].x, arcs[i].y);
 	}
-	//m_fp.m_outline_poly[m_sel_id.i].DeleteCorner(ni);
+	m_fp.m_outline_poly[m_sel_id.i].DeleteCorner(m_sel_id.ii);
 }
 
 void CFootprintView::OnAddPin()
