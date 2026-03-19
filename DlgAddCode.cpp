@@ -72,8 +72,34 @@ void CDlgAddCode::Outgoing()
 		if (s.GetLength())
 			m_code_text->Add(s);
 	}
+
+	// SetForegroundOpenscadWindow
 	CString name = theApp.m_Doc->m_name + "_" + m_fp->m_name;
+	if (theApp.m_Doc->m_project_open == 0)
+		name = "open";
 	m_fp->m_scad_created = m_fp->GenerateOpenscadFileA(&name, 1);
+	int rf = m_fp->m_scad_created.ReverseFind('\\');
+	if (rf == -1)
+		return;
+	rf = m_fp->m_scad_created.GetLength() - rf - 1;
+	CWnd* wnd = FindWindow(NULL, m_fp->m_scad_created.Right(rf) + " - OpenSCAD");
+	if (wnd == NULL)
+		wnd = FindWindow(NULL, m_fp->m_scad_created.Right(rf) + "* - OpenSCAD");
+	if (wnd)
+	{
+		WINDOWPLACEMENT placement;
+		placement.length = sizeof(placement);
+		//
+		if (wnd->GetWindowPlacement(&placement))
+		{
+			if (placement.showCmd & SW_SHOWMINIMIZED)
+			{
+				placement.showCmd = SW_SHOWNORMAL;
+				wnd->SetWindowPlacement(&placement);
+			}
+		}
+		wnd->SetForegroundWindow();
+	}
 }
 BEGIN_MESSAGE_MAP(CDlgAddCode, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &CDlgAddCode::OnBnClickedCancel)

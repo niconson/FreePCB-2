@@ -2538,15 +2538,15 @@ void CNetList::CleanUpAllConnections( CString * logstr )
 					int end_id = c->vtx[c->nsegs].tee_ID;
 					if( end_id )
 					{
-						BOOL bError = FALSE;
+						//BOOL bError = FALSE;
 						CString no_tee_str = "";
 						int ci=0, vi=0;
-						if( !FindTeeVertexInNet( net, end_id, &ci, &vi ) )
+						/*if (!FindTeeVertexInNet(net, end_id, &ci, &vi))
 						{
 							no_tee_str = ", not in trace! Removed";
 							bError = TRUE;
 						}
-						else if( FindTeeID( end_id ) == -1 )
+						else */if( FindTeeID( end_id ) == -1 )
 						{
 							no_tee_str = ", (restored because it was not in ID array)";
 							AddTeeID(end_id);
@@ -2556,12 +2556,12 @@ void CNetList::CleanUpAllConnections( CString * logstr )
 							str.Format( "  tee_id %d found in branch%s\r\n", end_id, no_tee_str );
 							*logstr += str;
 						}
-						if( bError )
+						/*if (bError)
 						{
 						//	RemoveNetConnect( net, ic, FALSE );
 							RemoveTeeID(end_id);
 							n_removed++;
-						}
+						}*/
 					}
 				}
 				/*else

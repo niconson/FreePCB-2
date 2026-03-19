@@ -3182,11 +3182,35 @@ void CFootprintView::OnPolylineOpenScad()
 		if( isEMPTY )
 			m_fp.m_outline_poly[m_sel_id.i].SetVisible(FALSE);
 		FootprintModified( TRUE );
+		m_fp.m_outline_poly.GetAt(m_sel_id.i).Draw(m_dlist);
+
+		// SetForegroundOpenscadWindow
 		CString name = m_Doc->m_name + "_" + m_fp.m_name;
 		if (m_Doc->m_project_open == 0)
 			name = "open";
 		m_fp.m_scad_created = m_fp.GenerateOpenscadFileA( &name, 1 );
-		m_fp.m_outline_poly.GetAt( m_sel_id.i ).Draw( m_dlist );
+		int rf = m_fp.m_scad_created.ReverseFind('\\');
+		if (rf == -1)
+			return;
+		rf = m_fp.m_scad_created.GetLength() - rf - 1;
+		CWnd* wnd = FindWindow(NULL, m_fp.m_scad_created.Right(rf) + " - OpenSCAD");
+		if (wnd == NULL)
+			wnd = FindWindow(NULL, m_fp.m_scad_created.Right(rf) + "* - OpenSCAD");
+		if (wnd)
+		{
+			WINDOWPLACEMENT placement;
+			placement.length = sizeof(placement);
+			//
+			if (wnd->GetWindowPlacement(&placement))
+			{
+				if (placement.showCmd & SW_SHOWMINIMIZED)
+				{
+					placement.showCmd = SW_SHOWNORMAL;
+					wnd->SetWindowPlacement(&placement);
+				}
+			}
+			wnd->SetForegroundWindow();
+		}
 		Invalidate( FALSE );
 	}
 }
