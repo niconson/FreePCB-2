@@ -17910,9 +17910,15 @@ void CFreePcbView::FindGroupCenter()
 			CPolyLine * poly = &m_Doc->m_outline_poly[im];
 			if( poly->GetSideSel() == 0 )
 				continue;
-			RECT polyR = poly->GetCornerBounds(0);
-			SwellRect( &gr_r, polyR );
-			groupNumberItems+=1;
+			for(int ii=0; ii<poly->GetNumSides(); ii++)
+				if (poly->GetSideSel(ii))
+				{
+					int numcont = poly->GetNumContour(ii);
+					RECT polyR = poly->GetCornerBounds(numcont);
+					SwellRect(&gr_r, polyR);
+					groupNumberItems += 1;
+					ii = poly->GetContourEnd(numcont);
+				}
 		}
 	}
 
