@@ -1338,6 +1338,7 @@ int CPartList::DrawPart( cpart * part )
 	selection.right = selection.top = INT_MIN;
 
 	// draw ref designator text
+	//-------------------------
 	part->dl_ref_el = NULL;
 	part->dl_ref_sel = NULL;
 	CPoint pts[4];
@@ -1365,6 +1366,7 @@ int CPartList::DrawPart( cpart * part )
 	}
 
 	// draw value text
+	//----------------
 	npts = 0;
 	part->dl_value_el = NULL;
 	part->dl_value_sel = NULL;
@@ -1384,6 +1386,7 @@ int CPartList::DrawPart( cpart * part )
 	}
 
 	// draw part outline
+	//------------------
 	pos = 0;
 	dl_element * el_magical = NULL;
 	dl_element * el_RctGr = NULL;
@@ -1516,8 +1519,12 @@ int CPartList::DrawPart( cpart * part )
 				SwellRect( &el_rect, w/2 );
 				SwellRect(&selection, el_rect );
 				i_pts++;
-				if( poly->GetClosed() && poly->GetHatch() )
-					part->m_outline_stroke[pos] = m_dlist->Add( pid, part, lay_map, DL_POLYGON, poly->GetVisible(), &el_rect, w, PTS, i_pts );
+				if (poly->GetClosed() && poly->GetHatch())
+				{
+					part->m_outline_stroke[pos] = m_dlist->Add(pid, part, lay_map, DL_POLYGON, poly->GetVisible(), &el_rect, w, PTS, i_pts);
+					//if (poly->GetW() == 0)
+					//	part->m_outline_stroke[pos]->transparent = TRANSPARENT_BACKGND;
+				}
 				else
 					part->m_outline_stroke[pos] = m_dlist->Add( pid, part, lay_map, DL_POLYLINE, poly->GetVisible(), &el_rect, w, PTS, i_pts );
 				if( !el_RctGr )
@@ -1534,7 +1541,9 @@ int CPartList::DrawPart( cpart * part )
 		}
 	}
 	part->m_outline_stroke.SetSize(pos);
+
 	// draw text
+	//----------
 	pid.type = ID_PART_LINES;
 	pid.st = ID_TXT;
 	pid.sst = ID_STROKE;
@@ -1623,6 +1632,7 @@ int CPartList::DrawPart( cpart * part )
 	part->m_outline_stroke.SetSize(pos);
 
 	// draw padstacks and save absolute position of pins
+	//--------------------------------------------------
 	pid.type = ID_PART;
 	pid = part->m_id;
 	pid.st = ID_PAD;	

@@ -13053,7 +13053,7 @@ void CFreePcbDoc::DRC()
 																		{
 																			int d = ::GetClearanceBetweenSegments( Lx1, Ly1, Lx2, Ly2, CPolyLine::STRAIGHT, Lw, 
 																				Ax1, Ay1, Ax2, Ay2, CPolyLine::STRAIGHT, Aw, m_dr.trace_trace, &xx, &yy );
-																			if( d < m_dr.trace_trace )
+																			if( d < m_dr.trace_trace && Lw && Aw )
 																			{
 																				if( Gpart->NetPtr[io2] && Gpart->NetPtr[io2] != part->NetPtr[io] )
 																				{
@@ -13068,7 +13068,7 @@ void CFreePcbDoc::DRC()
 																						::MakeCStringFromDimension( &x_str, xx, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
 																						::MakeCStringFromDimension( &y_str, yy, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
 																						str.Format( "%ld: \"%s\" polyline side to \"%s\" polyline side = %s, x=%s, y=%s\r\n", 
-																									nerrors+1, part->NetPtr[io]->name,
+																									nerrors+1, (part->NetPtr[io] ? part->NetPtr[io]->name : "UNNAMED"),
 																									Gpart->NetPtr[io2]->name,
 																									d_str, x_str, y_str );
 																						id id1(ID_PART, ID_OUTLINE, io, ID_SIDE, io);
@@ -13156,7 +13156,7 @@ void CFreePcbDoc::DRC()
 										int Lw = m_dlist->Get_el_w( part->m_outline_stroke[io] );
 										CPoint * P = new CPoint[np];//ok
 										m_dlist->Get_Points( part->m_outline_stroke[io], P, &np );
-										for(int ipt=0; (ipt+1)<np; ipt++ )
+										if(Lw) for(int ipt=0; (ipt+1)<np; ipt++ )
 										{
 											int Lx1 = P[ipt].x;
 											int Ly1 = P[ipt].y;
@@ -13397,10 +13397,19 @@ void CFreePcbDoc::DRC()
 	}
 
 cancel_verification:
-	CString noN = "__UNCONNECTED__";
-	cnet * virtual_net_unc = m_nlist->GetNetPtrByName( &noN );
-	if( virtual_net_unc )
-		m_nlist->RemoveNet( virtual_net_unc );
+	//CString noN = "UNCONNECTED__";
+	for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
+	{
+		if (gn->name.Find("UNCONNECTED__") == 0)
+			if (gn->npins == 0)
+				if (gn->nareas == 0)
+					if (gn->nconnects == 0)
+						m_nlist->RemoveNet(gn);
+	}
+	//cnet * virtual_net_unc = m_nlist->GetNetPtrByName( &noN );
+	//if( virtual_net_unc )
+	//	m_nlist->RemoveNet( virtual_net_unc );
+	//
 	CancelBoardHoles();
 	m_project_validated = 1;
 	if( nerrors > MAXERRORS )
@@ -13620,17 +13629,14 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 {
 	cpart * part_el = *badP; //  dl_element belongs to this part
 	cpart * prev_part = NULL;
-	CString noN = "__UNCONNECTED__";
-	cnet * virtual_net_unc = m_nlist->GetNetPtrByName( &noN );
-	if( virtual_net_unc == NULL )
-		virtual_net_unc = m_nlist->AddNet( noN, 0,0,0 );
+	//
 	//
 	int MAX_CL = max( m_dr.trace_trace, m_dr.copper_copper );
 	MAX_CL = max( MAX_CL, m_dr.hole_copper );
 	MAX_CL = max( MAX_CL, m_dr.pad_trace );
 	*wFLAG = 0;
 	ID->type = ID_NONE;
-	cnet * NetPtr = NULL;
+	cnet* NetPtr = NULL;
 	if( el )
 	{
 		int LTop = getbit( el->layers_bitmap, LAY_TOP_COPPER );
@@ -13851,8 +13857,15 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 									&type, &x, &y, &w, &l, &r, &hole, &angle, &net, &connect );
 								if( bPad )
 								{
-									if( !net )
+									if (!net)
+									{
+										CString noN;
+										noN.Format("UNCONNECTED__%s", Gs->GetPinNameByIndex(ip));
+										cnet* virtual_net_unc = m_nlist->GetNetPtrByName(&noN);
+										if (virtual_net_unc == NULL)
+											virtual_net_unc = m_nlist->AddNet(noN, 0, 0, 0);
 										net = virtual_net_unc;
+									}
 									if( hole )
 									{
 										int d = ::GetClearanceBetweenSegmentAndPad( Lx1,Ly1,Lx2,Ly2, Lw,
@@ -13863,7 +13876,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 											if( NetPtr )
 											{
 												if( NetPtr != net ||
-													( NetPtr == virtual_net_unc && (Gpart != prev_part || Gpart != part_el) ))
+													( NetPtr->name.Find("UNCONNECTED__") == 0 && (Gpart != prev_part || Gpart != part_el)))
 												{
 													//if( net == 0 )
 													//{
@@ -13909,7 +13922,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 											if( NetPtr )
 											{
 												if( NetPtr != net ||
-													( NetPtr == virtual_net_unc && (Gpart != prev_part || Gpart != part_el) ))
+													( NetPtr->name.Find("UNCONNECTED__") == 0 && (Gpart != prev_part || Gpart != part_el) ))
 												{
 													//if( net == 0 )
 													//{

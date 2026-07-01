@@ -3300,7 +3300,15 @@ void CFootprintView::OnPolylineCornerDelete()
 		return;
 	}
 	m_fp.m_outline_poly[m_sel_id.i].DeleteCorner( m_sel_id.ii );
-	CancelSelection();
+	if( m_sel_id.ii == 0 )
+		m_fp.m_outline_poly[m_sel_id.i].HighlightCorner(m_sel_id.ii);
+	else if (m_sel_id.ii == m_fp.m_outline_poly[m_sel_id.i].GetNumCorners())
+	{
+		m_sel_id.ii--;
+		m_fp.m_outline_poly[m_sel_id.i].HighlightCorner(m_sel_id.ii);
+	}
+	else
+		CancelSelection();
 	FootprintModified( TRUE );
 }
 
