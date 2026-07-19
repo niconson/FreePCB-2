@@ -839,9 +839,6 @@ BOOL CFreePcbDoc::FileOpen( LPCTSTR fn, BOOL bLibrary )
 			pMain->DrawStatus( 3, &str );
 
 			// make path to library folder and index libraries
-			struct _stat buf;
-			int err = _stat(m_full_lib_dir, &buf);
-			if (err)
 			{
 				int isep = m_app_dir.ReverseFind('\\');
 				if (isep == -1)
@@ -849,9 +846,18 @@ BOOL CFreePcbDoc::FileOpen( LPCTSTR fn, BOOL bLibrary )
 				if (isep == -1)
 					ASSERT(0);		// unable to parse filename
 				CString app = m_app_dir.Left(isep + 1);
-				m_full_lib_dir = app + "fp_lib\\lib";
+
+				struct _stat buf;
+				int err = _stat(m_full_lib_dir, &buf);
+				if (err)
+					m_full_lib_dir = app + "fp_lib\\lib";
+
+				MakeLibraryMaps(&m_full_lib_dir);
+
+				err = _stat(m_3d_dir, &buf);
+				if (err)
+					m_3d_dir = app + "3D";
 			}
-			MakeLibraryMaps( &m_full_lib_dir );
 		}
 		else
 		{
