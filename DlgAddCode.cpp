@@ -19,6 +19,25 @@ CDlgAddCode::~CDlgAddCode()
 {
 }
 
+void CDlgAddCode::CodeTextIni()
+{
+	if (m_code_text->GetSize() == 0)
+	{
+		// ini code
+		m_code_text->Add("translate([0,0,0]) // (automatic adjustment when moving the footprint origin)");
+		m_code_text->Add("scale([1,1,1])     // (automatic adjustment when changing the project units)");
+		m_code_text->Add("{");
+		m_code_text->Add(separator_str);
+		m_code_text->Add("    // add your code here, for example:");
+		m_code_text->Add("    // color(`Aqua`)");
+		m_code_text->Add("    // translate([0,0,0])");
+		m_code_text->Add("    // rotate([0,0,0])");
+		m_code_text->Add("    // import(`knob.stl`);");
+		m_code_text->Add(separator_str);
+		m_code_text->Add("}");
+	}
+}
+
 void CDlgAddCode::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -27,21 +46,8 @@ void CDlgAddCode::DoDataExchange(CDataExchange* pDX)
 	{
 		// incoming
 		m_code.SetFont( &m_font );
-		if( m_code_text->GetSize() == 0 )
-		{
-			// ini code
-			m_code_text->Add("translate([0,0,0]) // (automatic adjustment when moving the footprint origin)");
-			m_code_text->Add("scale([1,1,1])     // (automatic adjustment when changing the project units)");
-			m_code_text->Add("{");
-			m_code_text->Add( separator_str );
-			m_code_text->Add("    // add your code here, for example:");
-			m_code_text->Add("    // color(`Aqua`)");
-			m_code_text->Add("    // translate([0,0,0])");
-			m_code_text->Add("    // rotate([0,0,0])");
-			m_code_text->Add("    // import(`knob.stl`);");
-			m_code_text->Add( separator_str );
-			m_code_text->Add("}");
-		}
+		// ini code
+		CodeTextIni();
 		for( int i=0; i<m_code_text->GetSize(); i++ )
 		{
 			CString s = m_code_text->GetAt(i)+"\r\n";
@@ -107,10 +113,17 @@ BEGIN_MESSAGE_MAP(CDlgAddCode, CDialog)
 	ON_BN_CLICKED(IDOK, &CDlgAddCode::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-void CDlgAddCode::Initialize(CShape* fp)
+void CDlgAddCode::Initialize(CShape* fp, CArray <CString> * iniCode)
 {
 	m_fp = fp;
 	m_code_text = &fp->m_openscad_code;
+	if (iniCode)
+		if (iniCode->GetSize())
+		{
+			// ini code
+			CodeTextIni();
+			m_code_text->InsertAt(3, iniCode);
+		}
 }
 
 

@@ -137,6 +137,7 @@ ON_COMMAND(ID_ADD_ADHESIVESPOT, OnAddAdhesive)
 ON_COMMAND(IDD_ADD_CODE, OnAdd3DCode)
 ON_COMMAND(IDD_ADD_CODE2, OnAdd3DHole)
 ON_COMMAND(IDD_ADD_CODE3, OnAdd3DModule)
+ON_COMMAND(IDD_ADD_STL, OnAdd3DObject)
 ON_COMMAND(ID_CENTROID_SETPARAMETERS, OnCentroidEdit)
 ON_COMMAND(ID_CENTROID_MOVE, OnCentroidMove)
 ON_COMMAND(ID_ADD_SLOT, OnAddSlot)
@@ -4580,6 +4581,45 @@ void CFootprintView::OnValueMove()
 	m_fp.StartDraggingValue( pDC );
 	SetCursorMode( CUR_FP_DRAG_VALUE );
 	ReleaseDC( pDC );
+}
+
+void CFootprintView::OnAdd3DObject()
+{
+	CString filename = m_Doc->RunFileDialog(1, "3D");
+	CArray <CString> iniCode;
+	if (filename.GetLength())
+	{
+		filename.MakeLower();
+		CString name = "";
+		if (filename.Find(m_Doc->m_3d_dir) == 0)
+		{
+			name = filename.Right(filename.GetLength() - m_Doc->m_3d_dir.GetLength() - 1);
+			name.Replace("\\", "\\\\");
+		}
+		else
+		{
+			int ind = filename.ReverseFind('\\');
+			if (ind > 0)
+			{
+				name = filename.Right(filename.GetLength() - ind - 1);
+				CopyFile(filename, m_Doc->m_3d_dir + "\\" + name, 0);
+			}
+		}
+		if (name.GetLength())
+		{
+			iniCode.Add("    color(\"DarkSlateGray\")");
+			iniCode.Add("    translate([0,0,0])");
+			iniCode.Add("    rotate([0,0,0])");
+			CString newstr;
+			newstr.Format("    import(\"%s\", center=true);", name);
+			iniCode.Add(newstr);
+		}
+	}
+	GenerateOpenscadFile();
+	CDlgAddCode dlg;
+	dlg.Initialize(&m_fp, &iniCode);
+	dlg.DoModal();
+	FootprintModified(TRUE);
 }
 
 void CFootprintView::OnAdd3DCode()

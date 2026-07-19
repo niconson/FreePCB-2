@@ -5,6 +5,8 @@
 #include <math.h>
 #include <time.h>
 #include "DisplayList.h" 
+#include <shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
  
 // globals for timer functions
 LARGE_INTEGER PerfFreq, tStart, tStop; 
@@ -3855,4 +3857,29 @@ CPoint * GetRepperPoint(int ipt, RECT * op_rect, int * FREZ)//int ipt, CPoint Bo
 		REP.y = (double)BoardOrigin.y - (double)(field_1 / 2) + (VERTIC ? field_1 : -swell);
 	}
 	return &REP;
+}
+
+
+bool CopyFileWithDirs(const CStringW& src, const CStringW& dst) {
+	// Ищем последний слэш, чтобы выделить путь к папке
+	int lastSlash = dst.ReverseFind(L'\\');
+	if (lastSlash == -1) {
+		lastSlash = dst.ReverseFind(L'/');
+	}
+
+	if (lastSlash == -1) {
+		// Если нет папки в пути — обрабатываем как ошибку или считаем текущей директорией
+		return false;
+	}
+
+	CStringW dstDir = dst.Left(lastSlash);
+
+	// Создаём все недостающие папки
+	HRESULT hr = SHCreateDirectoryExW(nullptr, dstDir, nullptr);
+	if (hr != S_OK && hr != ERROR_ALREADY_EXISTS) {
+		return false;
+	}
+
+	// Копируем файл
+	return !!CopyFileW(src, dst, FALSE);  // FALSE = перезаписать, если есть
 }

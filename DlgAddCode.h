@@ -10,7 +10,7 @@ class CDlgAddCode : public CDialog
 public:
 	CDlgAddCode(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgAddCode();
-	void Initialize( CShape* fp );
+	void Initialize( CShape* fp, CArray <CString> * iniCode = NULL);
 
 // Dialog Data
 	enum { IDD = IDD_ADD_CODE };
@@ -25,6 +25,7 @@ public:
 	CShape* m_fp;
 	CArray<CString> * m_code_text;
 	void Outgoing();
+	void CodeTextIni();
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnEnSetfocusCode();
 	afx_msg void OnBnClickedOk();

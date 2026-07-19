@@ -510,6 +510,8 @@ CString CFreePcbDoc::RunFileDialog( BOOL bMODE, CString format )
 			memcpy( cmd, "mod_imp", size );
 		else if( format.Find("img") >= 0 )
 			memcpy( cmd, "pic_imp", size );
+		else if (format.Find("3d") >= 0)
+			memcpy(cmd, "stl_imp", size);
 		else return "";
 	}
 	else

@@ -251,8 +251,9 @@
 #define IDD_PROTECT                     357
 #define IDD_OPENSCAD                    358
 #define IDD_ADD_CODE                    359
-#define IDD_ADD_CODE2                   361
-#define IDD_ADD_CODE3                   362
+#define IDD_ADD_CODE2                   360
+#define IDD_ADD_CODE3                   361
+#define IDD_ADD_STL						362
 #define ID_COPPER_ISOLATE				363
 #define ID_FILE_GENERATEHPGLFILE1       364
 #define ID_FILE_GENERATEHPGLFILE2       365

@@ -7,6 +7,7 @@
 #include <math.h> 
 #include "Dlg_OpenScad.h"
 
+
 #define NO_MM	// this restores backward compatibility for project files
 
 // utility function make strings for dimensions
@@ -4707,8 +4708,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 							if (full_code.GetLength())
 							{
 								CString scpy = doc->m_3d_dir + "\\" + full_code;
-								CString scpy2 = doc->m_path_to_folder + "\\related_files\\openscad\\" + full_code;;
-								CopyFile(scpy, scpy2, false);
+								CString scpy2 = doc->m_path_to_folder + "\\related_files\\openscad\\" + full_code;
+								CopyFileWithDirs((CStringW)scpy, (CStringW)scpy2);
 							}
 						}
 					}

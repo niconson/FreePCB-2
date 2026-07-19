@@ -542,6 +542,7 @@ public:
 	afx_msg void OnAdd3DCode();
 	afx_msg void OnAdd3DHole();
 	afx_msg void OnAdd3DModule();
+	afx_msg void OnAdd3DObject();
 	afx_msg void OnAdhesiveEdit();
 	afx_msg void OnAdhesiveMove();
 	afx_msg void OnAdhesiveDrag();
