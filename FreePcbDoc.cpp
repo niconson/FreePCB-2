@@ -8559,7 +8559,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				file.WriteString(str);
 
 				// drawing for double side 3d-SECTION
-				file.WriteString("    if(space > 0.01)\n");
+				file.WriteString("    if(space > 0.02)\n");
 				file.WriteString("    {\n");
 				file.WriteString("      push_direction = side ? -1 : 1;\n");
 				str.Format("      spaceAxisForCube = space + (max_height_%s * cube_scaleZ);\n", moduleName);
@@ -8597,7 +8597,10 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				str.Format( "Convexity = 3;\n" );
 				Scadfile.WriteString( str );
 				Scadfile.WriteString("\n// pcb thickness\n");
-				str.Format( "board_h = %.3f;\n", bh );
+				if( m_units == MM )
+					str.Format( "board_h = %.3f;\n", bh );
+				else
+					str.Format("board_h = %.1f;\n", bh);
 				Scadfile.WriteString( str );
 				str.Format( "\n// drawing mode\n"\
 							"MODE = 1;  // 1: full 3D view\n"\
@@ -8618,13 +8621,16 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 14: boolean difference (makes\n"\
 							"           //     holes in the Custom objects\n"\
 							"           //     using 3d-models of pcb parts).\n\n"\
-							"\n// double-sided section for modes 4,5,11...14\nsector = 0;\n"\
+							"\n// double-sided section for modes 4,5,11...13\nsector = 0.01;\n"\
 							"\n// distance between projections for mode 10\npdist = 20;\n"\
 							"\n// use positive values to isolate a custom object\n// use negative values to disable a custom object\nobject = 0;\n"\
-							"\n// cube size for 4,5,11-14 modes\ncube_scale = 1;\n"\
+							"\n// cube size for 4,5,11-13 modes\ncube_scale = 2;\n"\
 							"\n// total offset\noffset = 0.01;\n"\
+							"\n// rotate around the X axis\nrotate_x = 0;\n"\
+							"\n// rotate around the Y axis\nrotate_y = 0;\n"\
 							"\n// make projection for modes 1, 11...14\nprojection_true = false;\n"\
-							"\n// view direction for modes 6...14\nview_dir= false;\n"\
+							"\n// projection via origin for modes 1, 11...14\nvia_origin = false;\n"\
+							"\n// view direction for modes 6...13\nview_dir= false;\n"\
 							"\n// enable PCB section for modes 11...12\npcb_section = true;\n"\
 							"\n// drawing control\n");
 				Scadfile.WriteString(str);
@@ -8878,12 +8884,14 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("    Main(0);\n  }\n}\n\n\n");
 				//
 				Scadfile.WriteString("\n\n\nif (projection_true && (MODE > 10 || MODE == 1))\n{\n");
-				Scadfile.WriteString("  projection(true)\n");
+				Scadfile.WriteString("  projection(via_origin)\n");
 				Scadfile.WriteString("    translate([0,0,offset])\n");
-				Scadfile.WriteString("      Drawing();\n}\n");
+				Scadfile.WriteString("      rotate([rotate_x,rotate_y,0])\n");
+				Scadfile.WriteString("        Drawing();\n}\n");
 				Scadfile.WriteString("else\n");
 				Scadfile.WriteString("  translate([0,0,offset])\n");
-				Scadfile.WriteString("    Drawing();\n");
+				Scadfile.WriteString("    rotate([rotate_x,rotate_y,0])\n");
+				Scadfile.WriteString("      Drawing();\n");
 				Scadfile.Close();
 				bShellEx = TRUE;
 			}
@@ -9030,6 +9038,18 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					str.Format("            \"MODE\" : \"%d\", \n", iset+1);
 					Scadfile.WriteString(str);
 					
+					// rotate x
+					//if (iset == 10)
+					//	Scadfile.WriteString("            \"rotate_x\" : \"-90\", \n");
+					//else
+					//	Scadfile.WriteString("            \"rotate_x\" : \"0\", \n");
+
+					// rotate y
+					//if (iset == 11)
+					//	Scadfile.WriteString("            \"rotate_y\" : \"90\", \n");
+					//else
+					//	Scadfile.WriteString("            \"rotate_y\" : \"0\", \n");
+
 					// drw BO
 					if (iset == 3 || iset == 4 || iset == 13)
 						Scadfile.WriteString("            \"drw_board_outline\" : \"false\", \n");
