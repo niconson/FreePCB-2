@@ -4770,8 +4770,8 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					file.WriteString( str );
 					str.Format( "Convexity = 2;\n" );
 					file.WriteString( str );
-					file.WriteString( "drw_pads = 1;\n" );
-					file.WriteString( "drw_holes = 1;\n" );
+					file.WriteString( "drw_pads = true;\n" );
+					file.WriteString( "drw_holes = true;\n" );
 					file.WriteString( board_h );
 					str.Format("F%s();\n\n", *fileName );
 					file.WriteString( str );

@@ -7991,7 +7991,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		}
 		str.Format("    if( is_undef(drw_board_outline) )\n      Draw_BO_%s();\n", moduleName);
 		file.WriteString(str);
-		str.Format( "    else if( drw_board_outline != 0 )\n      Draw_BO_%s();\n", moduleName );
+		str.Format( "    else if( drw_board_outline )\n      Draw_BO_%s();\n", moduleName );
 		file.WriteString( str );
 		file.WriteString("  }\n");
 		//
@@ -8030,7 +8030,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					file.WriteString("            // traces and copper areas\n");
 					str.Format("            if( is_undef(drw_copper) )\n            {\n            }\n");
 					file.WriteString(str);
-					str.Format("            else if( drw_copper != 0 )\n            {\n");
+					str.Format("            else if( drw_copper )\n            {\n");
 					file.WriteString(str);
 					for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
 					{
@@ -8401,7 +8401,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				//
 				str.Format("          if( is_undef(drw_holes) )\n          {\n          }\n");
 				file.WriteString(str);
-				str.Format( "          else if( drw_holes != 0 )\n          {\n" );
+				str.Format( "          else if( drw_holes )\n          {\n" );
 				file.WriteString( str );
 				for (cnet* gn = m_nlist->GetFirstNet(); gn; gn = m_nlist->GetNextNet())
 				{
@@ -8621,9 +8621,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"\n// double-sided section for modes 4,5,11...14\nsector = 0;\n"\
 							"\n// distance between projections for mode 10\npdist = 20;\n"\
 							"\n// use positive values to isolate a custom object\n// use negative values to disable a custom object\nobject = 0;\n"\
+							"\n// cube size for 4,5,11-14 modes\ncube_scale = 1;\n"\
+							"\n// total offset\noffset = 0.01;\n"\
+							"\n// make projection for modes 1, 11...14\nprojection_true = false;\n"\
 							"\n// view direction for modes 6...14\nview_dir= false;\n"\
 							"\n// enable PCB section for modes 11...12\npcb_section = true;\n"\
-							"\n// projection for modes 11...14\nProjection = false;\n"\
 							"\n// drawing control\n");
 				Scadfile.WriteString(str);
 				str.Format( "E = true;\n\n" );
@@ -8631,22 +8633,22 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				CString spc = "";
 				for( int isp=13; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_board_outline%s = (MODE!=4&&MODE!=5&&MODE!=14)?1:0;\n", spc );
+				str.Format( "drw_board_outline%s = true;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for (int isp = 6; isp < maxlen; isp++)
 					spc += " ";
-				str.Format("drw_copper%s = (MODE<4||MODE>10)?1:0;\n", spc);
+				str.Format("drw_copper%s = true;\n", spc);
 				Scadfile.WriteString(str);
 				spc = "";
 				for( int isp=5; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_holes%s = (MODE<4||MODE>10)?1:0;\n", spc );
+				str.Format( "drw_holes%s = true;\n", spc );
 				Scadfile.WriteString( str );
 				spc = "";
 				for( int isp=4; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_pads%s = (MODE<4||MODE>10)?1:0;\n", spc );
+				str.Format( "drw_pads%s = true;\n", spc );
 				Scadfile.WriteString( str );
 				for(int i=0; i<foots.GetSize(); i++)
 				{
@@ -8659,9 +8661,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				//
 				str.Format("\n//// 3d cube for boolean operations:\n");
 				Scadfile.WriteString(str);
-				Scadfile.WriteString("\n// (cube sizeX for 4,5,11-14 modes)\ncube_scaleX = 1.0;\n");
-				Scadfile.WriteString("\n// (cube sizeY for 4,5,11-14 modes)\ncube_scaleY = 1.0;\n");
-				Scadfile.WriteString("\n// (cube sizeZ for 4,5,11-14 modes)\ncube_scaleZ = 1.0;\n");
+				Scadfile.WriteString("cube_scaleX = cube_scale;\n");
+				Scadfile.WriteString("cube_scaleY = cube_scale;\n");
+				Scadfile.WriteString("cube_scaleZ = cube_scale;\n");
 
 				// write module
 				str.Format("\n\n\n//// Drawing modules\n");
@@ -8678,6 +8680,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  if(custom) Custom(object);\n");
 				Scadfile.WriteString("}\n\n");
+				Scadfile.WriteString("//==================================================\n");
+				Scadfile.WriteString("//================  CUSTOM ZONE  ===================\n");
 				Scadfile.WriteString("//==================================================\n");
 				Scadfile.WriteString("module Custom (obj=0)\n{\n");
 				str.Format("  translate([frozen?0:originX_%s, frozen?0:originY_%s, 0])\n  {\n", moduleName, moduleName);
@@ -8721,6 +8725,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(	"    // end of custom field\n");
 				Scadfile.WriteString("  }\n");
 				Scadfile.WriteString("}\n");
+				Scadfile.WriteString("//==================================================\n");
+				Scadfile.WriteString("//==============  END OF CUSTOM ZONE  ==============\n");
 				Scadfile.WriteString("//==================================================\n\n");
 				//XXXXXXXXXXXXXX
 				Scadfile.WriteString("module CubeX (d=view_dir)\n");
@@ -8871,11 +8877,13 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("    //CubeZ();\n");
 				Scadfile.WriteString("    Main(0);\n  }\n}\n\n\n");
 				//
-				Scadfile.WriteString("\n\n\nif (Projection && MODE > 10)\n");
-				Scadfile.WriteString("  projection()\n");
-				Scadfile.WriteString("    Drawing();\n");
+				Scadfile.WriteString("\n\n\nif (projection_true && (MODE > 10 || MODE == 1))\n{\n");
+				Scadfile.WriteString("  projection(true)\n");
+				Scadfile.WriteString("    translate([0,0,offset])\n");
+				Scadfile.WriteString("      Drawing();\n}\n");
 				Scadfile.WriteString("else\n");
-				Scadfile.WriteString("  Drawing();\n");
+				Scadfile.WriteString("  translate([0,0,offset])\n");
+				Scadfile.WriteString("    Drawing();\n");
 				Scadfile.Close();
 				bShellEx = TRUE;
 			}
@@ -8988,6 +8996,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("    \"parameterSets\" : {\n");
 				for (int iset = 0; iset < 14; iset++)
 				{
+					// name
 					if(iset == 0)
 						Scadfile.WriteString("        \"1: full 3D view\": {\n");
 					else if (iset == 1)
@@ -9016,20 +9025,36 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 						Scadfile.WriteString("        \"13: top 3D section\": {\n");
 					else if (iset == 13)
 						Scadfile.WriteString("        \"14: boolean difference\": {\n");
-					Scadfile.WriteString("            \"Convexity\": \"2\", \n");
-					Scadfile.WriteString("            \"E\" : \"true\", \n");
+
+					// mode
 					str.Format("            \"MODE\" : \"%d\", \n", iset+1);
 					Scadfile.WriteString(str);
-					Scadfile.WriteString("            \"view_dir\" : \"false\", \n");
-					for (int i = 0; i < foots.GetSize(); i++)
-					{
-						str.Format("            \"drw_%s\" : \"true\", \n", foots.GetAt(i));
-						Scadfile.WriteString(str);
-					}
-					Scadfile.WriteString("            \"frozen\" : \"false\", \n");
-					Scadfile.WriteString("            \"object\" : \"0\", \n");
-					Scadfile.WriteString("            \"pdist\" : \"20\", \n");
-					Scadfile.WriteString("            \"sector\" : \"0\"\n");
+					
+					// drw BO
+					if (iset == 3 || iset == 4 || iset == 13)
+						Scadfile.WriteString("            \"drw_board_outline\" : \"false\", \n");
+					else
+						Scadfile.WriteString("            \"drw_board_outline\" : \"true\", \n");
+
+					// drw copper
+					if (iset < 3 || iset > 9)
+						Scadfile.WriteString("            \"drw_copper\" : \"true\", \n");
+					else
+						Scadfile.WriteString("            \"drw_copper\" : \"false\", \n");
+
+					// drw holes
+					if (iset < 3 || iset > 9)
+						Scadfile.WriteString("            \"drw_holes\" : \"true\", \n");
+					else
+						Scadfile.WriteString("            \"drw_holes\" : \"false\", \n");
+
+					// drw pads
+					if (iset < 3 || iset > 9)
+						Scadfile.WriteString("            \"drw_pads\" : \"true\" \n");
+					else
+						Scadfile.WriteString("            \"drw_pads\" : \"false\" \n");
+
+					// end
 					if (iset == 13)
 						Scadfile.WriteString("        }\n");
 					else
