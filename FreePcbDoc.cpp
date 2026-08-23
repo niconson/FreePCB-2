@@ -8628,6 +8628,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"\n// total offset\noffset = 0.01;\n"\
 							"\n// rotate around the X axis\nrotate_x = 0;\n"\
 							"\n// rotate around the Y axis\nrotate_y = 0;\n"\
+							"\n// rotate around the Z axis\nrotate_z = 0;\n"\
 							"\n// make projection for modes 1, 11...14\nprojection_true = false;\n"\
 							"\n// projection via origin for modes 1, 11...14\nvia_origin = false;\n"\
 							"\n// view direction for modes 6...13\nview_dir= false;\n"\
@@ -8720,13 +8721,35 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    }\n"\
 							"    if(hide == 3){} else if (item == 3 || item == 0)\n"\
 							"    {\n"\
-							"      // add your object 3\n\n"\
+							"      // add your object 3, for example, import STL\n"\
+							"      // Import a file from the OpenScad folder, \n"\
+							"      // located relative to the PCB file: \n"\
+							"      // <FPC_FILE>\\related_files\\openscad\\<STL_FILE>\n"\
+							"      // Use PrusaSlicer to repair STL models and \n"\
+							"      // simplify polygonal meshes.\n"\
+							"      /*\n"\
+							"      color(\"BurlyWood\")\n"\
+							"      translate([0.0,0.0,0.0])\n"\
+							"      rotate([0,0,0])\n"\
+							"      import(\"mainBody.stl\", center = true, convexity = Convexity);\n"\
+							"      */\n"\
 							"    }\n"\
 							"    if(hide == 4){} else if (item == 4 || item == 0)\n"\
 							"    {\n"\
-							"      // add your object 4\n\n"\
+							"      // add your object 4\n"\
+							"      /*\n"\
+							"      color(\"MediumTurquoise\")\n"\
+							"      translate([0.0, 0.0, 0.0])\n"\
+							"      rotate([0, 0, 0])\n"\
+							"      import(\"Part1.stl\", center = true, convexity = Convexity);\n"\
+							"      */\n"\
 							"    }\n"\
-							"    // object 5, etc.\n", 50000000 / mu, moduleName);
+							"    // object 5, etc.\n"\
+							"    // if(hide == 5){} else if (item == 5 || item == 0)\n"\
+							"    // if(hide == 6){} else if (item == 6 || item == 0)\n"\
+							"    // if(hide == 7){} else if (item == 7 || item == 0)\n"\
+							"    // if(hide == 8){} else if (item == 8 || item == 0)\n"\
+							"    // if(hide == 9){} else if (item == 9 || item == 0)\n", 50000000 / mu, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of custom field\n");
 				Scadfile.WriteString("  }\n");
@@ -8886,11 +8909,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("\n\n\nif (projection_true && (MODE > 10 || MODE == 1))\n{\n");
 				Scadfile.WriteString("  projection(via_origin)\n");
 				Scadfile.WriteString("    translate([0,0,offset])\n");
-				Scadfile.WriteString("      rotate([rotate_x,rotate_y,0])\n");
+				Scadfile.WriteString("      rotate([rotate_x,rotate_y,rotate_z])\n");
 				Scadfile.WriteString("        Drawing();\n}\n");
 				Scadfile.WriteString("else\n");
 				Scadfile.WriteString("  translate([0,0,offset])\n");
-				Scadfile.WriteString("    rotate([rotate_x,rotate_y,0])\n");
+				Scadfile.WriteString("    rotate([rotate_x,rotate_y,rotate_z])\n");
 				Scadfile.WriteString("      Drawing();\n");
 				Scadfile.Close();
 				bShellEx = TRUE;
