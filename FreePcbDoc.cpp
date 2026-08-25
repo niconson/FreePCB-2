@@ -7926,9 +7926,17 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 	{
 		_mkdir( path );
 	}
+	CString scadpath = path;
 	CString moduleName = m_name;
 	CStringToLegalFileName( &moduleName );
+	path += "\\" + moduleName;
+	err = _stat(path, &buf);
+	if (err)
+	{
+		_mkdir(path);
+	}
 	path += "\\" + moduleName + ".lib";
+	scadpath += "\\" + moduleName + ".scad";
 	CStdioFile file;
 	double mu = (m_units==MM?NM_PER_MM:NM_PER_MIL);
 	int ok = file.Open( path, CFile::modeCreate | CFile::modeWrite );
@@ -7942,7 +7950,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		foots.SetSize(0);
 		shapes.SetSize(0);
 		file.WriteString( "/* ___________________\n  |                   |\n  |     FOOTPRINTS    |\n  |___________________|\n*/\n");
-		str.Format("include <%s>\n", (moduleName + "_CUBE.lib"));
+		str.Format("include <%s_CUBE.lib>\n", moduleName);
 		file.WriteString(str);
 		for( cpart * p=m_plist->GetFirstPart(); p; p=m_plist->GetNextPart(p) )
 		{
@@ -8373,7 +8381,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				// пишем контур PCB
 				CPolyLine* bp = &m_outline_poly.GetAt(i);
 				file.WriteString("\n            // board outline\n");
-				str.Format("            color( \"green\" )\n");
+				str.Format("            color( board_color )\n");
 				file.WriteString(str);
 				CString PolyPts = bp->GetOpenscadPolyPts(m_units, 20, 23, 0, 0, 0);
 				str.Format("            linear_extrude( board_h, center=true )\n");
@@ -8518,7 +8526,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		file.Close(); 
 		{ // write CUBE for projection of packages
 			CString cube = m_path_to_folder + "\\related_files\\openscad";
-			cube += "\\" + moduleName + "_CUBE.lib";
+			cube += "\\" + moduleName + "\\" + moduleName + "_CUBE.lib";
 			ok = file.Open(cube, CFile::modeCreate | CFile::modeWrite);
 			if (ok)
 			{
@@ -8578,12 +8586,12 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		int maxlen = 13;
 		for(int i=0; i<foots.GetSize(); i++)
 			maxlen = max( maxlen, foots.GetAt(i).GetLength() );
-		CString newpath = path.Left( path.GetLength()-4 ) + ".scad";
-		err = _stat( newpath, &buf );
+		//CString newpath = path.Left( path.GetLength()-4 ) + ".scad";
+		err = _stat( scadpath, &buf );
 		if( err )
 		{
 			CStdioFile Scadfile;
-			ok = Scadfile.Open( newpath, CFile::modeCreate | CFile::modeWrite );
+			ok = Scadfile.Open( scadpath, CFile::modeCreate | CFile::modeWrite );
 			if( ok )
 			{
 				Scadfile.WriteString(	"  /*-----------------------------------------------\\\n"\
@@ -8591,8 +8599,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 										"  |  repositories https://github.com/niconson      |\n"\
 										"  |  Niconson(R), All rights reserved              |\n"\
 										"  \\-----------------------------------------------*/\n");
-				str.Format( "include <%s>\n", (moduleName+".lib") );
+				str.Format( "include <%s\\%s.lib>\n", moduleName, moduleName );
 				Scadfile.WriteString( str );
+				Scadfile.WriteString("\nboard_color = \"green\";\n");
 				Scadfile.WriteString("\n// display parameter\n");
 				str.Format( "Convexity = 3;\n" );
 				Scadfile.WriteString( str );
@@ -8601,7 +8610,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					str.Format( "board_h = %.3f;\n", bh );
 				else
 					str.Format("board_h = %.1f;\n", bh);
-				Scadfile.WriteString( str );
+				Scadfile.WriteString( str ); 
 				str.Format( "\n// drawing mode\n"\
 							"MODE = 1;  // 1: full 3D view\n"\
 							"           // 2: projection of top copper\n"\
@@ -8927,7 +8936,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			for( int iter=0; (iter<10)&&(ok==0); iter++ )
 			{
 				Sleep(50);
-				ok = Scadfile.Open( newpath, CFile::modeRead, NULL );	
+				ok = Scadfile.Open( scadpath, CFile::modeRead, NULL );
 			}
 			if( ok )
 			{
@@ -8940,13 +8949,13 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			}
 			else
 			{
-				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + newpath + "\"") : ("Невозможно открыть файл: \"" + newpath + "\""));
+				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\"") : ("Невозможно открыть файл: \"" + scadpath + "\""));
 			}
 			ok = 0; 
 			for( int iter=0; (iter<10)&&(ok==0); iter++ )
 			{
 				Sleep(50);
-				ok = Scadfile.Open( newpath, CFile::modeWrite );
+				ok = Scadfile.Open( scadpath, CFile::modeWrite );
 			}
 			if( ok )
 			{
@@ -8988,7 +8997,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			}
 			else
 			{
-				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + newpath + "\""):("Невозможно открыть файл: \"" + newpath + "\""));
+				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\""):("Невозможно открыть файл: \"" + scadpath + "\""));
 			}
 			HWND wnd = FindWindow( NULL, moduleName + ".scad - OpenSCAD" );
 			if( wnd == NULL )
@@ -9014,7 +9023,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		CancelBoardHoles();
 
 		// write json file
-		CString jsonpath = path.Left(path.GetLength() - 4) + ".json";
+		CString jsonpath = scadpath.Left(scadpath.GetLength() - 4) + "json";
 		err = _stat(jsonpath, &buf);
 		if (err)
 		{
@@ -9109,7 +9118,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			}
 		}
 		if( bShellEx )
-			ShellExecute(	NULL, "open", newpath, NULL, NULL, SW_SHOWNORMAL);
+			ShellExecute(	NULL, "open", scadpath, NULL, NULL, SW_SHOWNORMAL);
 	}
 	ResetUndoState();
 	ProjectModified( FALSE );

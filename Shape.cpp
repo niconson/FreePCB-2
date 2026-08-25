@@ -4133,8 +4133,18 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 	{
 		_mkdir( path );
 	}
+	CString scadpath = path;
 	CStringToLegalFileName( fileName ); // correct filename
+	CString moduleName = doc->m_name;
+	CStringToLegalFileName(&moduleName);
+	path += "\\" + moduleName;
+	err = _stat(path, &buf);
+	if (err)
+	{
+		_mkdir(path);
+	}
 	path += "\\" + *fileName + ".lib";
+	scadpath += "\\" + *fileName + ".scad";
 	CStdioFile file;
 	int nHoles = 0;
 	int ok = file.Open( path, CFile::modeCreate | CFile::modeWrite );
@@ -4167,9 +4177,9 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		//
 		// board
 		double b_height = 1500000.0 / mu;
-		CString board_h;
+		CString board_h, board_color;
 		board_h.Format( "board_h = %.3f;\n", b_height );
-
+		board_color.Format( "board_color = \"green\";\n" );
 		//
 		// сначала сохраняем все полилинии как модули с названием POLY_№
 		// и заодно проверяем есть ли дыры
@@ -4708,7 +4718,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 							if (full_code.GetLength())
 							{
 								CString scpy = doc->m_3d_dir + "\\" + full_code;
-								CString scpy2 = doc->m_path_to_folder + "\\related_files\\openscad\\" + full_code;
+								CString scpy2 = doc->m_path_to_folder + "\\related_files\\openscad\\" + moduleName + "\\" + full_code;
 								CopyFileWithDirs((CStringW)scpy, (CStringW)scpy2);
 							}
 						}
@@ -4758,21 +4768,20 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		file.Close();
 		if( bPreview )
 		{
-			path.Truncate( path.GetLength()-3 );
-			path += "scad";
-			DeleteFile(path);
+			DeleteFile(scadpath);
 			//if( _stat( path, &buf ) ) // если файл не существует
 			{
-				ok = file.Open( path, CFile::modeCreate | CFile::modeWrite );
+				ok = file.Open(scadpath, CFile::modeCreate | CFile::modeWrite );
 				if( ok )
 				{
-					str.Format("include <%s.lib>\n", *fileName );
+					str.Format("include <%s\\%s.lib>\n", moduleName, *fileName);
 					file.WriteString( str );
+					file.WriteString(board_color);
 					str.Format( "Convexity = 2;\n" );
 					file.WriteString( str );
-					file.WriteString( "drw_pads = true;\n" );
-					file.WriteString( "drw_holes = true;\n" );
 					file.WriteString( board_h );
+					file.WriteString("drw_pads = true;\n");
+					file.WriteString("drw_holes = true;\n");
 					str.Format("F%s();\n\n", *fileName );
 					file.WriteString( str );
 					if (m_padstack.GetSize() > 1)
@@ -4781,7 +4790,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 						file.WriteString(str);
 						file.WriteString("  color( \"green\", 0.5 )\n");
 						file.WriteString("    linear_extrude( board_h, convexity=Convexity)\n");
-						str.Format("      square( [%.2f+board_h, %.2f+board_h], center=true );\n", (double)(selection.right - selection.left) / mu, (double)(selection.top - selection.bottom) / mu);
+						str.Format("      square( [%.2f+board_h, %.2f+board_h], center=true );\n", (double)(selection.right - selection.left)*2.0 / mu, (double)(selection.top - selection.bottom)*2.0 / mu);
 						file.WriteString(str);
 					}
 					file.Close();
@@ -4790,6 +4799,9 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		}
 		
 	}
-	return path;
+	if (bPreview)
+		return scadpath;
+	else
+		return path;
 }
 
