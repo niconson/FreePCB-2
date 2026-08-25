@@ -4774,7 +4774,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 				ok = file.Open(scadpath, CFile::modeCreate | CFile::modeWrite );
 				if( ok )
 				{
-					str.Format("include <%s\\%s.lib>\n", moduleName, *fileName);
+					str.Format("include <%s/%s.lib>\n", moduleName, *fileName);
 					file.WriteString( str );
 					file.WriteString(board_color);
 					str.Format( "Convexity = 2;\n" );

@@ -8599,7 +8599,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 										"  |  repositories https://github.com/niconson      |\n"\
 										"  |  Niconson(R), All rights reserved              |\n"\
 										"  \\-----------------------------------------------*/\n");
-				str.Format( "include <%s\\%s.lib>\n", moduleName, moduleName );
+				str.Format( "\ninclude <%s/%s.lib>\n", moduleName, moduleName );
 				Scadfile.WriteString( str );
 				Scadfile.WriteString("\nboard_color = \"green\";\n");
 				Scadfile.WriteString("\n// display parameter\n");
@@ -8740,7 +8740,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"      color(\"BurlyWood\")\n"\
 							"      translate([0.0,0.0,0.0])\n"\
 							"      rotate([0,0,0])\n"\
-							"      import(\"mainBody.stl\", center = true, convexity = Convexity);\n"\
+							"      import(\"%s/mainBody.stl\", center = true, convexity = Convexity);\n"\
 							"      */\n"\
 							"    }\n"\
 							"    if(hide == 4){} else if (item == 4 || item == 0)\n"\
@@ -8750,7 +8750,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"      color(\"MediumTurquoise\")\n"\
 							"      translate([0.0, 0.0, 0.0])\n"\
 							"      rotate([0, 0, 0])\n"\
-							"      import(\"Part1.stl\", center = true, convexity = Convexity);\n"\
+							"      import(\"%s/Part1.stl\", center = true, convexity = Convexity);\n"\
 							"      */\n"\
 							"    }\n"\
 							"    // object 5, etc.\n"\
@@ -8758,7 +8758,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    // if(hide == 6){} else if (item == 6 || item == 0)\n"\
 							"    // if(hide == 7){} else if (item == 7 || item == 0)\n"\
 							"    // if(hide == 8){} else if (item == 8 || item == 0)\n"\
-							"    // if(hide == 9){} else if (item == 9 || item == 0)\n", 50000000 / mu, moduleName);
+							"    // if(hide == 9){} else if (item == 9 || item == 0)\n", 50000000 / mu, moduleName, moduleName, moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of custom field\n");
 				Scadfile.WriteString("  }\n");
