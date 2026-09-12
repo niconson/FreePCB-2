@@ -4612,6 +4612,7 @@ void CFootprintView::OnAdd3DObject()
 			iniCode.Add("    rotate([0,0,0])");
 			CString newstr;
 			newstr.Format("    import(\"%s\", center=true, convexity=Convexity);", name);
+			newstr.Replace("\\\\", "/");
 			iniCode.Add(newstr);
 		}
 	}

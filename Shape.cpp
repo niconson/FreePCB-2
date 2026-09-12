@@ -4788,7 +4788,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 					{
 						str.Format("translate( [%.2f, %.2f,-board_h] )\n", (double)m_centroid_x / mu, (double)m_centroid_y / mu);
 						file.WriteString(str);
-						file.WriteString("  color( \"green\", 0.5 )\n");
+						file.WriteString("  color( board_color, 0.5 )\n");
 						file.WriteString("    linear_extrude( board_h, convexity=Convexity)\n");
 						str.Format("      square( [%.2f+board_h, %.2f+board_h], center=true );\n", (double)(selection.right - selection.left)*2.0 / mu, (double)(selection.top - selection.bottom)*2.0 / mu);
 						file.WriteString(str);
