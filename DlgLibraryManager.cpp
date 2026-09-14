@@ -746,7 +746,7 @@ void CDlgLibraryManager::OnBnClickedButtonMakePdf()
 					if( ps->top.shape == PAD_OVAL )
 						r = min(l,w)/2.0;
 					float hole = ps->hole_size*scale/NM_PER_INCH;
-					if( step == 1 && ps->hole_size )
+					if( step == 1 )
 					{
 						cpdf_newpath( pdf );
 						if( ps->top.shape == PAD_NONE ) 
@@ -755,9 +755,12 @@ void CDlgLibraryManager::OnBnClickedButtonMakePdf()
 							cpdf_setrgbcolor( pdf, 1.0, 1.0, 0.0 );
 						else
 							cpdf_setrgbcolor( pdf, 1.0, 1.0, 1.0 );
-						cpdf_arc( pdf, x, y, hole/2, 360.0, 0.0, 1 );
-						cpdf_fill( pdf );
-						cpdf_closepath( pdf );	
+						if (ps->hole_size)
+						{
+							cpdf_arc(pdf, x, y, hole / 2, 360.0, 0.0, 1);
+							cpdf_fill(pdf);
+							cpdf_closepath(pdf);
+						}
 						continue;
 					}
 					if( ps->top.shape == PAD_NONE )
@@ -983,6 +986,8 @@ void CDlgLibraryManager::OnBnClickedButtonMakePdf()
 				float last_x, last_y;
 				CPolyLine * poly = &foot.m_outline_poly[ip];
 				if( poly->GetLayer() != LAY_FP_SILK_TOP )
+					continue;
+				if( poly->GetVisible() == 0 )
 					continue;
 				cpdf_newpath( pdf );
 				int nc = poly->GetNumCorners();
