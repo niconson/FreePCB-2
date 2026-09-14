@@ -2607,7 +2607,7 @@ void CFootprintView::DrawBottomPane()
 //
 int CFootprintView::ShowSelectStatus()
 {
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return 1;
 
@@ -2716,7 +2716,7 @@ int CFootprintView::ShowSelectStatus()
 //
 int CFootprintView::ShowCursor()
 {
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return 1;
 
@@ -4303,7 +4303,7 @@ void CFootprintView::OnFpTextDelete()
 //
 int CFootprintView::ShowActiveLayer()
 {
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return 1;
 

@@ -1511,7 +1511,7 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 	clip->hole = NULL;
 	for( int icut1=Cutouts.GetSize()-2; icut1>0; icut1-- )
 	{
-		CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+		CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 		if( pMain )
 		{
 			CString s;
@@ -6584,7 +6584,7 @@ int CNetList::ReadNets( CStdioFile * pcb_file, double read_version, int * InLaye
 			if(net_name.GetLength() > MAX_NET_NAME_SIZE)
 				if (net_name.Find("_$G") == -1)
 					net_name.Truncate(MAX_NET_NAME_SIZE);
-			CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+			CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 			if( pMain )
 			{
 				CString s;
@@ -8830,7 +8830,7 @@ int CNetList::TestAreaPolygon( cnet * net, int iarea, int test_contour, int test
 						return INT_MAX;
 				}
 			}
-			CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+			CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 			if( pMain )
 			{
 				CString s;
@@ -9120,7 +9120,7 @@ if( test == 1 )
 		SetAreaHatch( net, iarea ); // net->area[iarea].poly->Draw();
 		net->area[iarea].utility = 1;
 	}
-	//CMainFrame* pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	//CMainFrame* pMain = (CMainFrame*)AfxGetMainWnd();
 	//if (pMain)
 	//	RedrawWindow(pMain->GetSafeHwnd(), NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
 	//m_dlist->ProcessMessages();

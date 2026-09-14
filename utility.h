@@ -87,7 +87,7 @@ void ExtractComponentName( CString * Value, CString * Footprint );
 
 // math stuff for graphics
 int ccw( int angle );
-int sign(int thing);
+int pcb_sign(int thing);
 int Rnd_Func( float xn, float yn, float x2, float y2, float x1, float y1, float xb, float yb, float * PTS, int PtsMaxValue);
 BOOL Quadratic( double a, double b, double c, double *x1, double *x2 );
 void DrawArc( CDC * pDC, int shape, int xxi, int yyi, int xxf, int yyf, BOOL bMeta=FALSE );

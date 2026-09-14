@@ -340,6 +340,7 @@ void CFreePcbView::InitInstance()
 	// after the document is created
 	m_Doc = GetDocument();
 	ASSERT_VALID(m_Doc);
+	m_Doc->m_view = this;
 	m_Doc->m_edit_footprint = FALSE;
 	m_dlist = m_Doc->m_dlist;
 	InitializeView();
@@ -352,7 +353,7 @@ void CFreePcbView::InitInstance()
 		m_dlist->SetLayerRGB( i, m_Doc->m_rgb[i][0], m_Doc->m_rgb[i][1], m_Doc->m_rgb[i][2] );
 	ShowSelectStatus();
 	ShowActiveLayer(MAX_LAYERS-LAY_TOP_COPPER);
-	m_Doc->m_view = this;
+	
 	// set up array of mask ids
 	m_mask_id[SEL_MASK_PARTS].Set( ID_PART, ID_SEL_RECT );
 	m_mask_id[SEL_MASK_REF].Set( ID_PART_LINES );
@@ -6759,7 +6760,7 @@ void CFreePcbView::OnMouseMove(UINT nFlags, CPoint point)
 	
 
 
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( m_bLButtonDown )
 	{
 		CString str = "To Right - SELECT  To Left - UNSELECT";
@@ -6944,7 +6945,7 @@ void CFreePcbView::OnMouseMove(UINT nFlags, CPoint point)
 			}
 			else if( m_dlist->Get_Selected() )
 			{				
-				CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+				CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 				CString str = "No selection";
 				if( m_cursor_mode == CUR_GROUP_SELECTED )
 					str = "Cursor group selected";
@@ -7744,7 +7745,7 @@ void CFreePcbView::DrawBottomPane()
 void CFreePcbView::ShowRelativeDistance( int dx, int dy )
 {
 	CString str;
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	double d = sqrt( (double)dx*(double)dx + (double)dy*(double)dy ) + m_measure_dist; 
 	CString netInfo = "";
 	if( m_sel_net && 
@@ -7769,7 +7770,7 @@ void CFreePcbView::ShowRelativeDistance( int dx, int dy )
 void CFreePcbView::ShowRelativeDistance( int x, int y, int dx, int dy )
 {
 	CString str;
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	double d = sqrt( (double)dx*(double)dx + (double)dy*(double)dy ); 
 	CString netInfo = "";
 	if( m_sel_net && 
@@ -7805,13 +7806,13 @@ int CFreePcbView::ShowSelectStatus()
 {
 //#define SHOW_UIDS
 
+	CMainFrame* pMain = (CMainFrame*)AfxGetMainWnd();
+	if (!pMain)
+		return 1;
+
 	CString x_str, y_str, w_str, hole_str, via_w_str, via_hole_str;
 	int u = m_Doc->m_units;
 
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
-	if( !pMain )
-		return 1;
-	
 	CString str="";
 
 	switch( m_cursor_mode )
@@ -8534,7 +8535,7 @@ int CFreePcbView::ShowSelectStatus()
 //
 int CFreePcbView::ShowCursor()
 {
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return 1;
 
@@ -8565,7 +8566,7 @@ int CFreePcbView::ShowActiveLayer(int n_layers, BOOL swCASE)
 	static int CASE=0;
 	if( swCASE )
 		CASE = !CASE;
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return 1;
 	//
@@ -13302,7 +13303,7 @@ void CFreePcbView::OnViewEntireBoard()
 	m_dlist->SetMapping( &m_client_r, &screen_r, m_left_pane_w, m_bottom_pane_h, m_pcbu_per_pixel,
 		m_org_x, m_org_y );
 	// extent board outlines
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain ) return;
 	CString str, x_str, y_str;
 	::MakeCStringFromDimension( &x_str, max_x-min_x, m_Doc->m_units, FALSE, FALSE, FALSE, m_Doc->m_units==MIL?1:3 );
@@ -15233,7 +15234,7 @@ void CFreePcbView::TurnGroup ()
 				PartHasNoInterPinTraces( p );
 	if( prev_sel_count != m_sel_count )
 		SaveUndoInfoForGroup( UNDO_GROUP_MODIFY, m_Doc->m_undo_list );
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return;
 	CString str = "Mirror Parts...";
@@ -17523,7 +17524,7 @@ void CFreePcbView::RotateGroup( int angle, BOOL unroute, int x, int y )
 	}
 	else
 		FindGroupCenter();
-	CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+	CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 	if( !pMain )
 		return;
 	
@@ -20449,14 +20450,14 @@ void CFreePcbView::MoveSegment (cnet * sel_net, int sel_ic, int sel_is, int dx, 
 	int new_to_x = m_to_pt.x + dx;			
 	int new_to_y = m_to_pt.y + dy;
 
-	int old_x0_dir = sign(m_from_pt.x - m_last_pt.x);
-	int old_y0_dir = sign(m_from_pt.y - m_last_pt.y);
+	int old_x0_dir = pcb_sign(m_from_pt.x - m_last_pt.x);
+	int old_y0_dir = pcb_sign(m_from_pt.y - m_last_pt.y);
 
-	int old_x1_dir = sign(m_to_pt.x - m_from_pt.x);
-	int old_y1_dir = sign(m_to_pt.y - m_from_pt.y);
+	int old_x1_dir = pcb_sign(m_to_pt.x - m_from_pt.x);
+	int old_y1_dir = pcb_sign(m_to_pt.y - m_from_pt.y);
 
-	int old_x2_dir = sign(m_next_pt.x - m_to_pt.x);
-	int old_y2_dir = sign(m_next_pt.y - m_to_pt.y);
+	int old_x2_dir = pcb_sign(m_next_pt.x - m_to_pt.x);
+	int old_y2_dir = pcb_sign(m_next_pt.y - m_to_pt.y);
 
 	// 2. Find the intercept between the extended segment in motion and the leading segment.
 	int i_nudge_from_x, i_nudge_from_y;
@@ -20495,9 +20496,9 @@ void CFreePcbView::MoveSegment (cnet * sel_net, int sel_ic, int sel_is, int dx, 
 	
 	// If we drag too far, the line segment can reverse itself causing a little triangle to form.
 	//   That's a bad thing.
-	//if(    (sign(i_nudge_to_x - i_nudge_from_x) == old_x1_dir && sign(i_nudge_to_y - i_nudge_from_y) == old_y1_dir) 
-	//	&& (sign(i_nudge_from_x - m_last_pt.x) == old_x0_dir &&  sign(i_nudge_from_y - m_last_pt.y) == old_y0_dir) 
-	//	&& ((sign(m_next_pt.x - i_nudge_to_x) == old_x2_dir && sign(m_next_pt.y - i_nudge_to_y) == old_y2_dir) || !use_third_segment))
+	//if(    (pcb_sign(i_nudge_to_x - i_nudge_from_x) == old_x1_dir && pcb_sign(i_nudge_to_y - i_nudge_from_y) == old_y1_dir) 
+	//	&& (pcb_sign(i_nudge_from_x - m_last_pt.x) == old_x0_dir &&  pcb_sign(i_nudge_from_y - m_last_pt.y) == old_y0_dir) 
+	//	&& ((pcb_sign(m_next_pt.x - i_nudge_to_x) == old_x2_dir && pcb_sign(m_next_pt.y - i_nudge_to_y) == old_y2_dir) || !use_third_segment))
 	{
 	//	Move both vetices to the new position:
 		int d = Distance( sel_vtx.x, sel_vtx.y, i_nudge_from_x, i_nudge_from_y );

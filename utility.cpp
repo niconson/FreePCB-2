@@ -3718,7 +3718,7 @@ int GetPartAngleForReportedAngle( int angle, int cent_angle, int side )
 	return a;
 }
 
-int sign(int thing)
+int pcb_sign(int thing)
 {
 	if(thing == 0) return  0;
 	if(thing <  0) return -1;

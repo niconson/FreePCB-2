@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="afxasert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Cuid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -310,6 +307,96 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddSymmetricalBlank.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\adler32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\compress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfAnnot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfArc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfAxis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfColor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfDomain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfDomPlot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfFont.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfGstate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfImage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfImgIL.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfInit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfMarker.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfMemBuf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfOutline.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfPreview.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfRawPlot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfReadPFB.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfReadPFM.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfText.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfTextBox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfTicInt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfTime.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\cpdfUtil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\deflate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\jpegsize.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\testpdf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\trees.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpdflib\zutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -621,6 +708,57 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AddSymmetricalBlank.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\cglobals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\cpdf_private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\cpdfAFM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\cpdflib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\cpdfPFM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\cpdfPFMCJK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\deflate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\jconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\jinclude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\tiff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\tiffio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\trees.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\zconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\zlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpdflib\zutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -65,6 +65,15 @@ CFreePcbApp::CFreePcbApp()
 
 CFreePcbApp theApp;
 
+
+int MyNewHandler(size_t size)
+{
+	// Сюда программа попадет, если упадет выделение памяти.
+	// Переменная size покажет, сколько безумных байт запросил код!
+	TRACE("!!! Попытка выделить слишком много памяти: %d байт\n", size);
+	return 0;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CFreePcbApp initialization
 
@@ -132,7 +141,7 @@ BOOL CFreePcbApp::InitInstance()
 	m_view_mode = PCB;
 	//
 	m_Doc->InitializeNewProject();
-	m_Doc->CheckUpdates();
+	//m_Doc->CheckUpdates();
 	//
 	if( cmdInfo.m_nShellCommand == CCommandLineInfo::FileOpen )
 	{

@@ -747,7 +747,7 @@ BOOL CFreePcbDoc::FileOpen( LPCTSTR fn, BOOL bLibrary )
 			CString in_str;
 			CArray<CString> p;
 			int u = m_units;
-			CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+			CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 			if( !pMain ) 
 			{
 				pcb_file.Close();
@@ -7428,7 +7428,7 @@ void CFreePcbDoc::PasteFromFile( CString pathname, BOOL bwDialog )
 			return;
 		}
 		int u = m_units;
-		CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+		CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 		if( !pMain ) 
 		{
 			pcb_file.Close();
@@ -9416,7 +9416,7 @@ void CFreePcbDoc::ProjectCombineBoard( int layer )
 								//CDlgMyMessageBox dlg;
 								//dlg.Initialize( str );
 								//dlg.DoModal();
-								CMainFrame* pMain = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+								CMainFrame* pMain = (CMainFrame*)AfxGetMainWnd();
 								if (pMain)
 								{
 									pMain->DrawStatus(3, &str);
@@ -14595,7 +14595,7 @@ void CFreePcbDoc::AddViaGrid()
 				{
 					number++;
 					{
-						CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+						CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 						if( pMain )
 						{
 							CString s;

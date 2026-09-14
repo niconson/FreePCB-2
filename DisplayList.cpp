@@ -2641,14 +2641,14 @@ void CDisplayList::Drag( CDC * pDC, int x, int y )
 			int new_xf = m_drag_xf + xx - m_drag_x;
 			int new_yf = m_drag_yf + yy - m_drag_y;
 
-			int old_xb_dir = sign(m_drag_xi - m_drag_xb);
-			int old_yb_dir = sign(m_drag_yi - m_drag_yb);
+			int old_xb_dir = pcb_sign(m_drag_xi - m_drag_xb);
+			int old_yb_dir = pcb_sign(m_drag_yi - m_drag_yb);
 
-			int old_xi_dir = sign(m_drag_xf - m_drag_xi);
-			int old_yi_dir = sign(m_drag_yf - m_drag_yi);
+			int old_xi_dir = pcb_sign(m_drag_xf - m_drag_xi);
+			int old_yi_dir = pcb_sign(m_drag_yf - m_drag_yi);
 
-			int old_xe_dir = sign(m_drag_xe - m_drag_xf);
-			int old_ye_dir = sign(m_drag_ye - m_drag_yf);
+			int old_xe_dir = pcb_sign(m_drag_xe - m_drag_xf);
+			int old_ye_dir = pcb_sign(m_drag_ye - m_drag_yf);
 
 			// 2. Find the intercept between the extended segment in motion and the leading segment.
 			double d_new_xi;
@@ -2678,9 +2678,9 @@ void CDisplayList::Drag( CDC * pDC, int x, int y )
 			
 			// If we drag too far, the line segment can reverse itself causing a little triangle to form.
 			//   That's a bad thing.
-			//if(sign(i_drag_xf - i_drag_xi) == old_xi_dir && sign(i_drag_yf - i_drag_yi) == old_yi_dir &&
-			//   sign(i_drag_xi - m_drag_xb) == old_xb_dir && sign(i_drag_yi - m_drag_yb) == old_yb_dir &&
-			//   sign(m_drag_xe - i_drag_xf) == old_xe_dir && sign(m_drag_ye - i_drag_yf) == old_ye_dir   )
+			//if(pcb_sign(i_drag_xf - i_drag_xi) == old_xi_dir && pcb_sign(i_drag_yf - i_drag_yi) == old_yi_dir &&
+			//   pcb_sign(i_drag_xi - m_drag_xb) == old_xb_dir && pcb_sign(i_drag_yi - m_drag_yb) == old_yb_dir &&
+			//   pcb_sign(m_drag_xe - i_drag_xf) == old_xe_dir && pcb_sign(m_drag_ye - i_drag_yf) == old_ye_dir   )
 			//if( abs(m_drag_xi - i_drag_xi) < m_visual_grid_spacing &&
 			//	abs(m_drag_yi - i_drag_yi) < m_visual_grid_spacing &&
 			//	abs(m_drag_xf - i_drag_xf) < m_visual_grid_spacing &&

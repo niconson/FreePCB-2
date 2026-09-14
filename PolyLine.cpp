@@ -284,7 +284,7 @@ int CPolyLine::MakeGpcPoly( int icontour, CArray<CArc> * arc_array )
 	int iarc = 0;
 	for( int icont=first_contour; icont<=last_contour; icont++ )
 	{
-		CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+		CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 		if( pMain && last_contour > 2 && icont%10 == 0 )
 		{
 			CString s;
@@ -1831,7 +1831,7 @@ void CPolyLine::Hatch()
 			dl_element * el_magical = NULL;
 			for( int a=min_a; a<max_a; a+=spacing )
 			{
-				CMainFrame * pMain = (CMainFrame*) AfxGetApp()->m_pMainWnd;
+				CMainFrame * pMain = (CMainFrame*) AfxGetMainWnd();
 				if( pMain )
 				{
 					CString s;

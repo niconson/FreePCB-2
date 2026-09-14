@@ -73,7 +73,7 @@ public:
 	int x, y, inode;
 } cpath_pt;
 
-typedef class {
+typedef class cpath {
 public:
 	// return inode at end of path
 	int GetInode( int iend )
