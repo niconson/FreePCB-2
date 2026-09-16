@@ -136,7 +136,7 @@ BOOL CFreePcbApp::InitInstance()
 	m_Doc = (CFreePcbDoc*)pMainWnd->GetActiveDocument();
 	m_View = (CFreePcbView*)pMainWnd->GetActiveView();
 	m_View->InitInstance();
-	//
+
 	// set initial view mode
 	m_view_mode = PCB;
 	//

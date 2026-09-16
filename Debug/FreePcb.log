@@ -143,4 +143,5 @@ D:\FreePCBDev\FreePCB-2\stdafx.h(58,1): warning C4005: ASSERT: изменени�
   trees.c
   zutil.c
   Создание кода...
+Additional.obj : warning LNK4075: не учитывается "/EDITANDCONTINUE" из-за спецификации "/SAFESEH"
   FreePcb.vcxproj -> D:\FreePCBDev\FreePCB-2\Debug\ПлатФорм.exe

@@ -340,7 +340,6 @@ void CFreePcbView::InitInstance()
 	// after the document is created
 	m_Doc = GetDocument();
 	ASSERT_VALID(m_Doc);
-	m_Doc->m_view = this;
 	m_Doc->m_edit_footprint = FALSE;
 	m_dlist = m_Doc->m_dlist;
 	InitializeView();
@@ -349,21 +348,23 @@ void CFreePcbView::InitInstance()
 	GetClientRect( &m_client_r );
 	m_dlist->SetMapping( &m_client_r, &screen_r, m_left_pane_w, m_bottom_pane_h,
 		m_pcbu_per_pixel, m_org_x, m_org_y );
-	for(int i=0; i<m_Doc->m_num_layers; i++ )
-		m_dlist->SetLayerRGB( i, m_Doc->m_rgb[i][0], m_Doc->m_rgb[i][1], m_Doc->m_rgb[i][2] );
+	for(int i=0; i<MAX_LAYERS; i++ )
+		m_dlist->SetLayerRGB( i, 255, 255, 255 );
+
+	// set up array of mask ids
+	m_mask_id[SEL_MASK_PARTS].Set(ID_PART, ID_SEL_RECT);
+	m_mask_id[SEL_MASK_REF].Set(ID_PART_LINES);
+	m_mask_id[SEL_MASK_PINS].Set(ID_PART, ID_PAD);
+	m_mask_id[SEL_MASK_CON].Set(ID_NET, ID_CONNECT, 0, ID_SEG);
+	m_mask_id[SEL_MASK_VIA].Set(ID_NET, ID_CONNECT, 0, ID_VERTEX);
+	m_mask_id[SEL_MASK_AREAS].Set(ID_NET, ID_AREA);
+	m_mask_id[SEL_MASK_TEXT].Set(ID_TEXT);
+	m_mask_id[SEL_MASK_OP].Set(ID_POLYLINE);
+	m_mask_id[SEL_MASK_DRC].Set(ID_DRC);
+
 	ShowSelectStatus();
 	ShowActiveLayer(MAX_LAYERS-LAY_TOP_COPPER);
-	
-	// set up array of mask ids
-	m_mask_id[SEL_MASK_PARTS].Set( ID_PART, ID_SEL_RECT );
-	m_mask_id[SEL_MASK_REF].Set( ID_PART_LINES );
-	m_mask_id[SEL_MASK_PINS].Set( ID_PART, ID_PAD );
-	m_mask_id[SEL_MASK_CON].Set( ID_NET, ID_CONNECT, 0, ID_SEG );
-	m_mask_id[SEL_MASK_VIA].Set( ID_NET, ID_CONNECT, 0, ID_VERTEX );
-	m_mask_id[SEL_MASK_AREAS].Set( ID_NET, ID_AREA );
-	m_mask_id[SEL_MASK_TEXT].Set( ID_TEXT );
-	m_mask_id[SEL_MASK_OP].Set( ID_POLYLINE );
-	m_mask_id[SEL_MASK_DRC].Set( ID_DRC );
+	m_Doc->m_view = this;
 }
 //===============================================================================================
 // initialize view with defaults for a new project
@@ -22987,7 +22988,7 @@ void CFreePcbView::OnMobileBoardOutline11()
 }
 void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 {
-	RECT op_rect, totalRect;
+	RECT op_rect, totalRect{};
 	int bW = 0;
 	op_rect = m_Doc->GetBoardRect(&bW);
 	if (op_rect.right == op_rect.left)

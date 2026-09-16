@@ -179,6 +179,7 @@ CFreePcbDoc::CFreePcbDoc()
 	DWORD dwWindowsMajorVersion =  (DWORD)(LOBYTE(LOWORD(dwVersion)));
 	if( dwWindowsMajorVersion > 4 )
 		m_pcbu_per_wu = _2540;		// if Win2000 or XP or vista*/
+	m_num_layers = 0;
 	m_dlist = new CDisplayList();// CFreePcbDoc()
 	m_dlist_fp = new CDisplayList();// CFreePcbDoc()
 	m_plist = new CPartList( m_dlist, m_smfontutil );// CFreePcbDoc()
@@ -437,6 +438,7 @@ void CFreePcbDoc::OnFileNew()
 		{
 			m_vis[i] = 1;
 			m_dlist->SetLayerRGB( i, m_rgb[i][0], m_rgb[i][1], m_rgb[i][2] );
+			m_dlist->SetLayerVisible(i, m_vis[i]);
 		}
 
 		CRect screen_r;
@@ -3999,6 +4001,7 @@ void CFreePcbDoc::InitializeNewProject()
 		{
 			// read global default file options
 			ReadOptions( &file, 1, TRUE );
+			file.Close();
 			// make path to library folder and index libraries
 			if( m_full_lib_dir.GetLength() == 0 )
 			{
@@ -4007,6 +4010,12 @@ void CFreePcbDoc::InitializeNewProject()
 				if( fullpath[fullpath.GetLength()-1] == '\\' )	
 					fullpath = fullpath.Left(fullpath.GetLength()-1);
 				m_full_lib_dir = fullpath;
+			}
+			// now set layer visibility
+			for (int i = 0; i < m_num_layers; i++)
+			{
+				m_dlist->SetLayerRGB(i, m_rgb[i][0], m_rgb[i][1], m_rgb[i][2]);
+				m_dlist->SetLayerVisible(i, m_vis[i]);
 			}
 		}
 		catch( CString * err_str )
