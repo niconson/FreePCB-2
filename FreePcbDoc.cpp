@@ -206,8 +206,8 @@ CFreePcbDoc::CFreePcbDoc()
 	m_footprint_modified = FALSE;
 	m_footprint_name_changed = FALSE;
 	theApp.m_Doc = this;
-	m_undo_list = new CUndoList( 9999, 35 );// CFreePcbDoc()
-	m_redo_list = new CUndoList( 9999, 35 );// CFreePcbDoc()
+	m_undo_list = new CUndoList( 99999, 35 );// CFreePcbDoc()
+	m_redo_list = new CUndoList( 99999, 35 );// CFreePcbDoc()
 	this_Doc = this;
 	m_auto_interval = 0;
 	m_auto_elapsed = 0;
@@ -14940,15 +14940,18 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		if(merge0 == -1)
 			merge0 = m_mlist->AddNew(m1, 0);
 		m_view->MergeGroup(merge0);
+		m_view->SetCursorMode(CUR_GROUP_SELECTED);
 		CPoint movOrig(0,0);
 		if (dlg.m_var == 2)
 		{
+			OnEditSelectAll();
 			m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
 			movOrig.x = -pcbr.right - (dlg.m_dx / 2);
 			movOrig.y = -pcbr.top - (dlg.m_dy / 2);
 			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
+			m_view->CancelSelection(0);
 			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
@@ -14963,9 +14966,12 @@ void CFreePcbDoc::AddSymmetricalBlank()
 			pcbr = GetBoardRect(NULL, TRUE);
 			movOrig.x = -pcbr.right - (dlg.m_dy / 2);
 			movOrig.y = -pcbr.top - (dlg.m_dx / 2);
+			OnEditSelectAll();
+			m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
 			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
+			m_view->CancelSelection(0);
 			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
 			m_view->OnGroupPaste(2, 1);
@@ -14990,12 +14996,16 @@ void CFreePcbDoc::AddSymmetricalBlank()
 				pcbr = GetBoardRect(NULL, TRUE);
 			}
 			else
+			{
+				OnEditSelectAll();
 				m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
+			}
 			movOrig.x = -pcbr.right - (dlg.m_90?(dlg.m_dy / 2):(dlg.m_dx / 2));
 			movOrig.y = -pcbr.top - (dlg.m_90?(dlg.m_dx / 2):(dlg.m_dy / 2));
 			m_view->MoveOrigin(movOrig.x, movOrig.y);
 			m_view->OnViewAllElements();
 			m_view->UpdateWindow();
+			m_view->CancelSelection(0);
 			m_view->NewSelectM(NULL, merge0);
 			m_view->OnGroupCopy();
 			int copy2 = m_view->OnGroupPaste(2, 1);
@@ -15028,7 +15038,11 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		cpart* BOARD = m_plist->GetPart("BOARD");
 		if (BOARD)
 		{
+			m_view->CancelSelection(0);
+			OnEditSelectAll();
+			m_view->SaveUndoInfoForGroup(CFreePcbView::UNDO_GROUP_MODIFY, m_undo_list);
 			m_view->MoveOrigin(-BOARD->x, -BOARD->y);
+			m_view->OnViewAllElements();
 		}
 		// restore 
 		m_netlist_completed = mem_nl_comp;

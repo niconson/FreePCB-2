@@ -14193,8 +14193,8 @@ void CFreePcbView::OnToolsMoveOrigin()
 //
 void CFreePcbView::MoveOrigin( int x_off, int y_off )
 {
-	for( int ib=0; ib<m_Doc->m_outline_poly.GetSize(); ib++ )
-		m_Doc->m_outline_poly[ib].MoveOrigin( x_off, y_off );
+	for (int ib = 0; ib < m_Doc->m_outline_poly.GetSize(); ib++)
+		m_Doc->m_outline_poly[ib].MoveOrigin(x_off, y_off);
 	m_Doc->m_plist->MoveOrigin( x_off, y_off );
 	m_Doc->m_nlist->MoveOrigin( x_off, y_off );
 	m_Doc->m_tlist->MoveOrigin( x_off, y_off );
