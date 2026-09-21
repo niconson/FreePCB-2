@@ -531,21 +531,17 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 	doc->m_tlist->MarkAllTexts(0);
 	
 	// find legal board outline
-	int nonLegalBoard = 0, n_bo = 0, i_bo = -1;
+	int nonLegalBoard = ~0, n_bo = 0, i_bo = -1;
 	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
 	{
 		if (i >= 32)
 			break;
 		CPolyLine* po = &doc->m_outline_poly.GetAt(i);
-		if (po->GetLayer() != LAY_BOARD_OUTLINE)
-			setbit(nonLegalBoard, i);
-		else if( po->GetClosed() == 0)
-			setbit(nonLegalBoard, i);
-		else 
+		if (po->GetLayer() == LAY_BOARD_OUTLINE && po->GetClosed())
 		{
 			n_bo++;
 			i_bo = i;
-			for (cpart* p = doc->m_plist->GetFirstPart(); p;)
+			for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
 			{
 				if (p->shape)
 				{
@@ -554,15 +550,14 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 						{
 							if (po->TestPointInside(p->x, p->y))
 							{
-								if (p->ref_des.Find("|") >= 0)
-									setbit(nonLegalBoard, i);
-								break;
+								if (p->ref_des.Find("|") == -1)
+								{
+									clrbit(nonLegalBoard, i);
+									break;
+								}
 							}
 						}
 				}
-				p = doc->m_plist->GetNextPart(p);
-				if (p == NULL)
-					setbit(nonLegalBoard, i);
 			}
 		}
 	}
