@@ -15028,7 +15028,7 @@ void CFreePcbDoc::AddSymmetricalBlank()
 		cpart* BOARD = m_plist->GetPart("BOARD");
 		if (BOARD)
 		{
-			m_plist->Move(BOARD, 0, 0, 0, 0);
+			m_view->MoveOrigin(-BOARD->x, -BOARD->y);
 		}
 		// restore 
 		m_netlist_completed = mem_nl_comp;

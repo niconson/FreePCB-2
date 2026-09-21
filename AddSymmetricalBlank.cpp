@@ -52,6 +52,8 @@ void CDlgAddSymmetricalBlank::DoDataExchange(CDataExchange* pDX)
 		// incoming
 
 		b1x1.SetCheck(0);
+		b2x1.SetCheck(0);
+		b2x2.SetCheck(0);
 		b2x1.SetCheck(1);
 		m_combo_dx.AddString("1mm (39mil)");
 		m_combo_dx.AddString("1.5mm (59mil)");
