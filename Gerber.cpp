@@ -5,6 +5,8 @@
 #include <math.h>
 #include <afxcoll.h>
 #include <afxtempl.h>
+#include "Additional.h"
+extern CFreePcbApp theApp;
 
 #define pi  3.14159265359
 int THERMAL_W;
@@ -1159,6 +1161,8 @@ int LPD = 0;
 		//=============================================================================
 		// ********************** draw objects of panelization ************************
 		//=============================================================================
+		MarkLegalElementsForExport(theApp.m_Doc); 
+
 		if (n_x > 1 || n_y > 1)
 		{
 			if (PASS1)
@@ -1560,6 +1564,8 @@ int LPD = 0;
 			int pL = poly->GetLayer();
 			if (pL != LAY_BOARD_OUTLINE)
 				continue;
+			if (poly->GetUtility() == 0)
+				continue;
 			int pCl = poly->GetClosed();
 			BOOL poly_OK = (layer == poly->GetLayer() || (flags & GERBER_BOARD_OUTLINE));
 
@@ -1851,6 +1857,8 @@ int LPD = 0;
 			for( int ia=0; ia<net->nareas; ia++ )
 			{
 				CPolyLine * p = net->area[ia].poly;
+				if (net->area[ia].utility == 0)
+					continue;
 				if( p->GetHatch() == CPolyLine::DIAGONAL_FULL )
 				{
 				}
@@ -1884,7 +1892,7 @@ int LPD = 0;
 		//=============================================================================
 		// ********************** draw areas hsNone and hsEdge ************************
 		//=============================================================================
-		nl->MarkAllNets(0);
+		// nl->MarkAllNets(0); это не надо
 		BOOL bYES = TRUE;
 		long long maxS;
 		while (bYES)
@@ -1900,7 +1908,7 @@ int LPD = 0;
 				for( int ia=0; ia<net->nareas; ia++ )
 				{
 					carea * a = &net->area[ia];
-					if (a->utility || a->poly->GetLayer() != layer ) 
+					if (a->utility == 0 || a->utility == 2 || a->poly->GetLayer() != layer )
 						continue;
 					int hs = a->poly->GetHatch();
 					if( hs == CPolyLine::NO_HATCH && a->poly->GetW() == 0 )
@@ -1925,7 +1933,7 @@ int LPD = 0;
 			{
 				carea * a = &best_net->area[best_ia];
 				int a_w = a->poly->GetW();
-				a->utility = 1;
+				a->utility = 2;
 				// draw outline polygon
 				if ( PASS1 )
 				{
@@ -2017,7 +2025,10 @@ int LPD = 0;
 				for( cpart * part = pl->m_start.next; part->next != 0; part = part->next ) 
 				{			
 					CShape * s = part->shape;
-					if( s )
+					if (s == NULL)
+						continue;
+					if (part->utility == 0)
+						continue;
 					{
 						RECT pr;
 						pl->GetPartBoundingRect( part, &pr );
@@ -2348,6 +2359,8 @@ int LPD = 0;
 					{
 						int nsegs = net->connect[ic].nsegs;
 						cconnect * c = &net->connect[ic]; 
+						if (c->utility == 0)
+							continue;
 
 						// clearance
 						int _clearance = fill_clearance;
@@ -2557,6 +2570,9 @@ int LPD = 0;
 				for( int it=0; it<tl->text_ptr.GetSize(); it++ )
 				{
 					CText * t = tl->text_ptr[it];
+					if (t->m_utility == 0)
+						continue;
+
 					RECT tr;
 					tl->GetTextRectOnPCB(t,&tr);
 					if( RectsIntersection( areas_rect, tr ) == -1 )
@@ -2600,7 +2616,7 @@ int LPD = 0;
 		//=============================================================================
 		// ********************** draw areas hs Full **********************************
 		//=============================================================================
-		nl->MarkAllNets(0);
+		// nl->MarkAllNets(0); это не надо
 		bYES = TRUE;
 		//long long maxS;
 		while (bYES)
@@ -2616,7 +2632,7 @@ int LPD = 0;
 				for( int ia=0; ia<net->nareas; ia++ )
 				{
 					carea * a = &net->area[ia];
-					if (a->utility || a->poly->GetLayer() != layer ) 
+					if (a->utility == 0 || a->utility == 2 || a->poly->GetLayer() != layer )
 						continue;
 					if (a->poly->GetHatch() != CPolyLine::DIAGONAL_FULL)
 						continue;
@@ -2637,7 +2653,7 @@ int LPD = 0;
 			{
 				carea * a = &best_net->area[best_ia];
 				int a_w = a->poly->GetW();
-				a->utility = 1;
+				a->utility = 2;
 				// draw outline polygon
 				areas_present = TRUE;
 				if ( abs(a_w) > _2540 )
@@ -2742,204 +2758,207 @@ int LPD = 0;
 			while( part->next != 0 )
 			{
 				CShape * s = part->shape;
-				if( s )
+				if (part->utility)
 				{
-					if( PASS1 )
+					if (s)
 					{
-						//ERROR IF '*' INCLUDED
-						//line.Format( "G04 Draw part %s *\n", part->ref_des ); 
-						//f->WriteString( line );
-					}
-					for( int ip=0; ip<s->GetNumPins(); ip++ )
-					{
-						// get pad info
-						int pad_x;
-						int pad_y;
-						int pad_w;
-						int pad_l;
-						int pad_r;
-						int pad_type;
-						int pad_hole;
-						int pad_connect;
-						int pad_angle;
-						cnet * pad_net;
-						BOOL bPad = pl->GetPadDrawInfo( part, ip, layer,
-							0, 0,
-							mask_clearance, paste_mask_shrink,
-							&pad_type, &pad_x, &pad_y, &pad_w, &pad_l, &pad_r, &pad_hole, &pad_angle,
-							&pad_net, &pad_connect );
+						if (PASS1)
+						{
+							//ERROR IF '*' INCLUDED
+							//line.Format( "G04 Draw part %s *\n", part->ref_des ); 
+							//f->WriteString( line );
+						}
+						for (int ip = 0; ip < s->GetNumPins(); ip++)
+						{
+							// get pad info
+							int pad_x;
+							int pad_y;
+							int pad_w;
+							int pad_l;
+							int pad_r;
+							int pad_type;
+							int pad_hole;
+							int pad_connect;
+							int pad_angle;
+							cnet* pad_net;
+							BOOL bPad = pl->GetPadDrawInfo(part, ip, layer,
+								0, 0,
+								mask_clearance, paste_mask_shrink,
+								&pad_type, &pad_x, &pad_y, &pad_w, &pad_l, &pad_r, &pad_hole, &pad_angle,
+								&pad_net, &pad_connect);
 
-						// draw pad
-						if( bPad && pad_type != PAD_NONE && pad_w > 0 )
-						{
-							int type, size1, size2, size3;
-							if( pad_type == PAD_ROUND || pad_type == PAD_SQUARE 
-								|| pad_type == PAD_OCTAGON || pad_type == PAD_OVAL
-								|| pad_type == PAD_RECT || pad_type == PAD_RRECT )
+							// draw pad
+							if (bPad && pad_type != PAD_NONE && pad_w > 0)
 							{
-								type = CAperture::AP_CIRCLE;
-								size1 = pad_w;
-								size2 = 0;
-								size3 = 0;
-								if( pad_type == PAD_SQUARE )
-									type = CAperture::AP_SQUARE;
-								else if( pad_type == PAD_OCTAGON )
-									type = CAperture::AP_OCTAGON;
-								else if( pad_type == PAD_OVAL || pad_type == PAD_RECT || pad_type == PAD_RRECT )
+								int type, size1, size2, size3;
+								if (pad_type == PAD_ROUND || pad_type == PAD_SQUARE
+									|| pad_type == PAD_OCTAGON || pad_type == PAD_OVAL
+									|| pad_type == PAD_RECT || pad_type == PAD_RRECT)
 								{
-									if( pad_type == PAD_OVAL )
-										type = CAperture::AP_OVAL;
-									if( pad_type == PAD_RECT )
-										type = CAperture::AP_RECT;
-									if( pad_type == PAD_RRECT )
-										type = CAperture::AP_RRECT;
-									size1 = pad_l; 
-									size2 = pad_w; 
-									size3 = pad_r;
-									if( pad_angle%90 == 0 && pad_angle%180 )
+									type = CAperture::AP_CIRCLE;
+									size1 = pad_w;
+									size2 = 0;
+									size3 = 0;
+									if (pad_type == PAD_SQUARE)
+										type = CAperture::AP_SQUARE;
+									else if (pad_type == PAD_OCTAGON)
+										type = CAperture::AP_OCTAGON;
+									else if (pad_type == PAD_OVAL || pad_type == PAD_RECT || pad_type == PAD_RRECT)
 									{
-										int temp = size1;
-										size1 = size2;
-										size2 = temp;
-										pad_angle = 0;
+										if (pad_type == PAD_OVAL)
+											type = CAperture::AP_OVAL;
+										if (pad_type == PAD_RECT)
+											type = CAperture::AP_RECT;
+										if (pad_type == PAD_RRECT)
+											type = CAperture::AP_RRECT;
+										size1 = pad_l;
+										size2 = pad_w;
+										size3 = pad_r;
+										if (pad_angle % 90 == 0 && pad_angle % 180)
+										{
+											int temp = size1;
+											size1 = size2;
+											size2 = temp;
+											pad_angle = 0;
+										}
 									}
-								}
-								CAperture pad_ap( type, size1, size2, size3 ); 
-								ChangeAperture( &pad_ap, &current_ap, &ap_array, PASS0, f );
-								if( PASS1 )
-								{
-									if( pad_angle%90 && type != CAperture::AP_CIRCLE )
-										WriteTiltPolygon( pad_x, pad_y, type, size1, size2, size3, 0, pad_r, pad_angle, f );
-									else
-										// now flash the pad
-										::WriteMoveTo( f, pad_x, pad_y, LIGHT_FLASH );
+									CAperture pad_ap(type, size1, size2, size3);
+									ChangeAperture(&pad_ap, &current_ap, &ap_array, PASS0, f);
+									if (PASS1)
+									{
+										if (pad_angle % 90 && type != CAperture::AP_CIRCLE)
+											WriteTiltPolygon(pad_x, pad_y, type, size1, size2, size3, 0, pad_r, pad_angle, f);
+										else
+											// now flash the pad
+											::WriteMoveTo(f, pad_x, pad_y, LIGHT_FLASH);
+									}
 								}
 							}
 						}
 					}
-				}
-				// now draw silkscreen items
-				if( layer == LAY_SILK_TOP || layer == LAY_SILK_BOTTOM ||
-					layer == LAY_REFINE_TOP || layer == LAY_REFINE_BOT ||
-					layer == LAY_TOP_COPPER || layer == LAY_BOTTOM_COPPER )
-				{
-					// draw part outline
-					if( PASS1 )
+					// now draw silkscreen items
+					if (layer == LAY_SILK_TOP || layer == LAY_SILK_BOTTOM ||
+						layer == LAY_REFINE_TOP || layer == LAY_REFINE_BOT ||
+						layer == LAY_TOP_COPPER || layer == LAY_BOTTOM_COPPER)
 					{
-						//ERROR IF '*' INCLUDED
-						//line.Format( "G04 draw part outline for part %s*\n", part->ref_des ); 
-						//f->WriteString( line );
-					}
-					int nstrokes = part->m_outline_stroke.GetSize();
-					if( nstrokes )
-					{
-						for( int ips=0; ips<nstrokes; ips++ )
+						// draw part outline
+						if (PASS1)
 						{
-							if( !part->m_outline_stroke[ips] )
-								continue;
-							if( !part->m_outline_stroke[ips]->visible )
-								continue;
-							dl_element * h_el = part->m_outline_stroke[ips];
-							int lm = h_el->layers_bitmap;
-							if( getbit(lm,layer) )
+							//ERROR IF '*' INCLUDED
+							//line.Format( "G04 draw part outline for part %s*\n", part->ref_des ); 
+							//f->WriteString( line );
+						}
+						int nstrokes = part->m_outline_stroke.GetSize();
+						if (nstrokes)
+						{
+							for (int ips = 0; ips < nstrokes; ips++)
 							{
-								int s_w = part->m_outline_stroke[ips]->dlist->Get_el_w(part->m_outline_stroke[ips]);
-								if( layer == LAY_SILK_TOP || layer == LAY_SILK_BOTTOM )
-									s_w = max( s_w, min_silkscreen_stroke_wid );
-								if (s_w < (NM_PER_MIL/10) && layer >= LAY_TOP_COPPER )
+								if (!part->m_outline_stroke[ips])
 									continue;
-								CAperture outline_ap( CAperture::AP_CIRCLE, s_w, 0 );
-								ChangeAperture( &outline_ap, &current_ap, &ap_array, PASS0, f );
-								// move to start of stroke
-								if( PASS1 )
+								if (!part->m_outline_stroke[ips]->visible)
+									continue;
+								dl_element* h_el = part->m_outline_stroke[ips];
+								int lm = h_el->layers_bitmap;
+								if (getbit(lm, layer))
 								{
-									CArray<CPoint> * PA = dl->Get_Points( h_el, NULL, 0 );
-									int np = PA->GetSize();
-									if( h_el->gtype == DL_LINES_ARRAY )
-									{	
-										CPoint * PT = new CPoint[np];//ok
-										dl->Get_Points( h_el, PT, &np );
-										for( int ih=0; ih<np-1; ih+=2 )
+									int s_w = part->m_outline_stroke[ips]->dlist->Get_el_w(part->m_outline_stroke[ips]);
+									if (layer == LAY_SILK_TOP || layer == LAY_SILK_BOTTOM)
+										s_w = max(s_w, min_silkscreen_stroke_wid);
+									if (s_w < (NM_PER_MIL / 10) && layer >= LAY_TOP_COPPER)
+										continue;
+									CAperture outline_ap(CAperture::AP_CIRCLE, s_w, 0);
+									ChangeAperture(&outline_ap, &current_ap, &ap_array, PASS0, f);
+									// move to start of stroke
+									if (PASS1)
+									{
+										CArray<CPoint>* PA = dl->Get_Points(h_el, NULL, 0);
+										int np = PA->GetSize();
+										if (h_el->gtype == DL_LINES_ARRAY)
 										{
-											::WriteMoveTo( f, PT[ih].x, PT[ih].y, LIGHT_OFF );
-											::WritePolygonSide( f, PT[ih].x, PT[ih].y, PT[ih+1].x,PT[ih+1].y,
-																CPolyLine::STRAIGHT, N_SIDES_APPROX_ARC, LIGHT_ON );
-										}
-										delete PT;
-									}
-									if( h_el->gtype == DL_POLYGON || h_el->gtype == DL_POLYLINE )
-									{	
-										CPoint * PT = new CPoint[np];//ok
-										dl->Get_Points( h_el, PT, &np );
-										if( np >= 2 )
-										{
-											::WriteMoveTo( f, PT[0].x, PT[0].y, LIGHT_OFF );
-											for( int ih=1; ih<np; ih++ )
-												::WriteMoveTo( f, PT[ih].x, PT[ih].y, LIGHT_ON );
-											if( h_el->gtype == DL_POLYGON )
+											CPoint* PT = new CPoint[np];//ok
+											dl->Get_Points(h_el, PT, &np);
+											for (int ih = 0; ih < np - 1; ih += 2)
 											{
-												::WriteMoveTo( f, PT[0].x, PT[0].y, LIGHT_ON );
-												f->WriteString( "G36*\n" );
-												::WriteMoveTo( f, PT[0].x, PT[0].y, LIGHT_OFF );
-												for( int ih=1; ih<np; ih++ )
-													::WriteMoveTo( f, PT[ih].x, PT[ih].y, LIGHT_ON );
-												::WriteMoveTo( f, PT[0].x, PT[0].y, LIGHT_ON );
-												f->WriteString( "G37*\n" );
+												::WriteMoveTo(f, PT[ih].x, PT[ih].y, LIGHT_OFF);
+												::WritePolygonSide(f, PT[ih].x, PT[ih].y, PT[ih + 1].x, PT[ih + 1].y,
+													CPolyLine::STRAIGHT, N_SIDES_APPROX_ARC, LIGHT_ON);
 											}
+											delete PT;
 										}
-										delete PT;
+										if (h_el->gtype == DL_POLYGON || h_el->gtype == DL_POLYLINE)
+										{
+											CPoint* PT = new CPoint[np];//ok
+											dl->Get_Points(h_el, PT, &np);
+											if (np >= 2)
+											{
+												::WriteMoveTo(f, PT[0].x, PT[0].y, LIGHT_OFF);
+												for (int ih = 1; ih < np; ih++)
+													::WriteMoveTo(f, PT[ih].x, PT[ih].y, LIGHT_ON);
+												if (h_el->gtype == DL_POLYGON)
+												{
+													::WriteMoveTo(f, PT[0].x, PT[0].y, LIGHT_ON);
+													f->WriteString("G36*\n");
+													::WriteMoveTo(f, PT[0].x, PT[0].y, LIGHT_OFF);
+													for (int ih = 1; ih < np; ih++)
+														::WriteMoveTo(f, PT[ih].x, PT[ih].y, LIGHT_ON);
+													::WriteMoveTo(f, PT[0].x, PT[0].y, LIGHT_ON);
+													f->WriteString("G37*\n");
+												}
+											}
+											delete PT;
+										}
 									}
 								}
 							}
 						}
-					}
-					if( (layer == LAY_SILK_TOP && part->side == 0) || (layer == LAY_SILK_BOTTOM && part->side == 1) )
-					{
-						// draw reference designator text
-						if( part->m_ref_size && part->m_ref_vis )
+						if ((layer == LAY_SILK_TOP && part->side == 0) || (layer == LAY_SILK_BOTTOM && part->side == 1))
 						{
-							if( PASS1 )
+							// draw reference designator text
+							if (part->m_ref_size && part->m_ref_vis)
 							{
-								//ERROR IF '*' INCLUDED
-								//line.Format( "G04 draw reference designator for part %s*\n", part->ref_des ); 
-								//f->WriteString( line );
-							}
-							int s_w = max( part->m_ref_w, min_silkscreen_stroke_wid );
-							CAperture ref_ap( CAperture::AP_CIRCLE, s_w, 0 );
-							ChangeAperture( &ref_ap, &current_ap, &ap_array, PASS0, f );
-							if( PASS1 )
-							{
-								CArray<CPoint> * pts = dl->Get_Points( part->dl_ref_el, NULL, 0 );
-								for( int istroke=0; istroke<pts->GetSize(); istroke+=2 )
+								if (PASS1)
 								{
-									::WriteMoveTo( f,	(*pts)[istroke].x*m_pcbu_per_wu, 
-														(*pts)[istroke].y*m_pcbu_per_wu, LIGHT_OFF );
-									::WriteMoveTo( f,	(*pts)[istroke+1].x*m_pcbu_per_wu, 
-														(*pts)[istroke+1].y*m_pcbu_per_wu, LIGHT_ON );
+									//ERROR IF '*' INCLUDED
+									//line.Format( "G04 draw reference designator for part %s*\n", part->ref_des ); 
+									//f->WriteString( line );
+								}
+								int s_w = max(part->m_ref_w, min_silkscreen_stroke_wid);
+								CAperture ref_ap(CAperture::AP_CIRCLE, s_w, 0);
+								ChangeAperture(&ref_ap, &current_ap, &ap_array, PASS0, f);
+								if (PASS1)
+								{
+									CArray<CPoint>* pts = dl->Get_Points(part->dl_ref_el, NULL, 0);
+									for (int istroke = 0; istroke < pts->GetSize(); istroke += 2)
+									{
+										::WriteMoveTo(f, (*pts)[istroke].x * m_pcbu_per_wu,
+											(*pts)[istroke].y * m_pcbu_per_wu, LIGHT_OFF);
+										::WriteMoveTo(f, (*pts)[istroke + 1].x * m_pcbu_per_wu,
+											(*pts)[istroke + 1].y * m_pcbu_per_wu, LIGHT_ON);
+									}
 								}
 							}
-						}
-						// draw value text
-						if( part->m_value_size && part->m_value_vis && part->value.GetLength() )
-						{
-							if( PASS1 )
+							// draw value text
+							if (part->m_value_size && part->m_value_vis && part->value.GetLength())
 							{
-								//ERROR IF '*' INCLUDED
-								//line.Format( "G04 draw value for part %s*\n", part->ref_des ); 
-								//f->WriteString( line );
-							}
-							int s_w = max( part->m_value_w, min_silkscreen_stroke_wid );
-							CAperture value_ap( CAperture::AP_CIRCLE, s_w, 0 );
-							ChangeAperture( &value_ap, &current_ap, &ap_array, PASS0, f );
-							if( PASS1 )
-							{
-								CArray<CPoint> * pts = dl->Get_Points( part->dl_value_el, NULL, 0 );
-								for( int istroke=0; istroke<pts->GetSize(); istroke+=2 )
+								if (PASS1)
 								{
-									::WriteMoveTo( f,	(*pts)[istroke].x*m_pcbu_per_wu, 
-														(*pts)[istroke].y*m_pcbu_per_wu, LIGHT_OFF );
-									::WriteMoveTo( f,	(*pts)[istroke+1].x*m_pcbu_per_wu, 
-														(*pts)[istroke+1].y*m_pcbu_per_wu, LIGHT_ON );
+									//ERROR IF '*' INCLUDED
+									//line.Format( "G04 draw value for part %s*\n", part->ref_des ); 
+									//f->WriteString( line );
+								}
+								int s_w = max(part->m_value_w, min_silkscreen_stroke_wid);
+								CAperture value_ap(CAperture::AP_CIRCLE, s_w, 0);
+								ChangeAperture(&value_ap, &current_ap, &ap_array, PASS0, f);
+								if (PASS1)
+								{
+									CArray<CPoint>* pts = dl->Get_Points(part->dl_value_el, NULL, 0);
+									for (int istroke = 0; istroke < pts->GetSize(); istroke += 2)
+									{
+										::WriteMoveTo(f, (*pts)[istroke].x * m_pcbu_per_wu,
+											(*pts)[istroke].y * m_pcbu_per_wu, LIGHT_OFF);
+										::WriteMoveTo(f, (*pts)[istroke + 1].x * m_pcbu_per_wu,
+											(*pts)[istroke + 1].y * m_pcbu_per_wu, LIGHT_ON);
+									}
 								}
 							}
 						}
@@ -2966,6 +2985,9 @@ int LPD = 0;
 				cnet * net = (cnet*)ptr;
 				for( int ic=0; ic<net->nconnects; ic++ )
 				{
+					if (net->connect[ic].utility == 0)
+						continue;
+
 					int nsegs = net->connect[ic].nsegs;
 					for( int is=0; is<nsegs; is++ )
 					{
@@ -3033,6 +3055,9 @@ int LPD = 0;
 			for( int it=0; it<tl->text_ptr.GetSize(); it++ )
 			{
 				CText * t = tl->text_ptr[it];
+				if (t->m_utility == 0)
+					continue;
+
 				if( !t->m_bNegative && t->m_font_size )
 				{
 					if( t->m_layer == layer )
@@ -3070,6 +3095,9 @@ int LPD = 0;
 			if(layer != LAY_BOARD_OUTLINE) for( int i=0; i<op->GetSize(); i++ )
 			{
 				CPolyLine * poly = &(*op)[i];
+				if (poly->GetUtility() == 0)
+					continue;
+
 				int pW = poly->GetW();
 				int pL = poly->GetLayer();
 				int pCl = poly->GetClosed();
@@ -3191,7 +3219,7 @@ int LPD = 0;
 					while (part->next != 0)
 					{
 						CShape* s = part->shape;
-						if (s)
+						if (s && part->utility)
 						{
 							if (PASS1)
 							{
@@ -3238,6 +3266,9 @@ int LPD = 0;
 						cnet* net = (cnet*)ptr;
 						for (int ic = 0; ic < net->nconnects; ic++)
 						{
+							if (net->connect[ic].utility == 0)
+								continue;
+
 							int nsegs = net->connect[ic].nsegs;
 							for (int is = 0; is < nsegs; is++)
 							{
@@ -3298,6 +3329,9 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 	CArray<int,int> diameter;
 	diameter.SetSize(0);
 	CPoint RET(0,0);
+
+	MarkLegalElementsForExport(theApp.m_Doc);
+
 	// first, find all hole diameters for parts
 	if( pl )
 	{
@@ -3306,7 +3340,7 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 		while( part->next != 0 )
 		{
 			CShape * s = part->shape;
-			if( s )
+			if( s && part->utility )
 			{
 				// get all pins
 				for( int ip=0; ip<s->GetNumPins(); ip++ )
@@ -3340,6 +3374,8 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 			cnet * net = (cnet*)ptr;
 			for( int ic=0; ic<net->nconnects; ic++ )
 			{
+				if (net->connect[ic].utility == 0)
+					continue;
 				int nsegs = net->connect[ic].nsegs;
 				for( int is=0; is<nsegs; is++ )
 				{
@@ -3472,7 +3508,7 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 					while( part->next != 0 )
 					{
 						CShape * s = part->shape;
-						if( s )
+						if( s && part->utility )
 						{
 							if( n_x <= 1 && n_y <= 1)
 								if (s->m_outline_poly.GetSize())
@@ -3518,6 +3554,8 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 						cnet * net = (cnet*)ptr;
 						for( int ic=0; ic<net->nconnects; ic++ )
 						{
+							if (net->connect[ic].utility == 0)
+								continue;
 							int nsegs = net->connect[ic].nsegs;
 							for( int is=0; is<nsegs; is++ )
 							{

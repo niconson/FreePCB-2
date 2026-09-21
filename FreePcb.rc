@@ -429,7 +429,7 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "Модули",                      IDD_ADD_CODE3
         END
-        MENUITEM "Файл сеточного 3D-объекта",          IDD_ADD_STL
+        MENUITEM "Файл сеточного 3D-объекта",   IDD_ADD_STL
     END
     POPUP "Инструменты"
     BEGIN
@@ -1496,14 +1496,14 @@ CAPTION "Генерировать гербера и файлы сверления"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Отверстия",IDC_CHECK_DRILL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,61,10
-    CONTROL         "Контур платы",IDC_CHECK_BD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,27,63,10
-    CONTROL         "Шёлк верх",IDC_CHECK_TOP_SILK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,36,61,10
+    CONTROL         "Контур платы",IDC_CHECK_BD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,27,74,10
+    CONTROL         "Шёлк верх",IDC_CHECK_TOP_SILK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,36,68,10
     CONTROL         "Шёлк низ",IDC_CHECK_BOTTOM_SILK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,45,71,11
     CONTROL         "Маска верх",IDC_CHECK_TOP_SOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,54,67,11
     CONTROL         "Маска низ",IDC_CHECKBOTTOM_SOLDER_MASK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,64,78,10
     CONTROL         "Паста верх",IDC_CHECK_TOP_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,74,69,9
     CONTROL         "Паста низ",IDC_CHECK_BOTTOM_PASTE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,82,82,11
-    CONTROL         "Медь верх",IDC_CHECK_TOP_COPPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,93,52,8
+    CONTROL         "Медь верх",IDC_CHECK_TOP_COPPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,93,61,8
     CONTROL         "Медь низ",IDC_CHECK_BOTTOM_COPPER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,101,63,10
     CONTROL         "Внутр. 1",IDC_CHECK_INNER1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,110,63,10
     CONTROL         "Внутр. 2",IDC_CHECK_INNER2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,119,63,11
@@ -1583,7 +1583,7 @@ BEGIN
     LTEXT           "Сглаживание",IDC_STATIC,147,242,48,8
     EDITTEXT        IDC_EDIT_DPI,225,225,30,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PNG_AA,225,240,30,12,ES_AUTOHSCROLL
-    CONTROL         "Слой подсветки",IDC_CHECK_HILITE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,267,64,10
+    CONTROL         "Слой подсветки",IDC_CHECK_HILITE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,267,76,10
     EDITTEXT        IDC_EDIT_FIELD1,496,114,51,12,ES_AUTOHSCROLL
     GROUPBOX        "Технологические поля",IDC_STATIC,470,102,160,29
     EDITTEXT        IDC_EDIT_FIELD2,573,114,51,12,ES_AUTOHSCROLL
@@ -2199,10 +2199,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Вставить группу объектов"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "Использовать следующий доступный номер для каждой детали",IDC_RADIO_USE_NEXT_REF,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,24,42,239,10
     CONTROL         "Попробовать сохранить обозначения, изменить с уведомлением",IDC_RADIO_USE_GROUP_REF,
-                    "Button",BS_AUTORADIOBUTTON,24,54,256,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,24,54,256,10
+    CONTROL         "Использовать следующий доступный номер для каждой детали",IDC_RADIO_USE_NEXT_REF,
+                    "Button",BS_AUTORADIOBUTTON,24,42,239,10
     CONTROL         "Добавить фиксированное смещение",IDC_RADIO_ADD_REF_OFFSET,
                     "Button",BS_AUTORADIOBUTTON,24,66,140,10
     EDITTEXT        IDC_EDIT_REF_OFFSET,168,66,39,12,ES_AUTOHSCROLL
@@ -2217,10 +2217,10 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON,315,33,238,10
     CONTROL         "",IDC_LIST_SELECT_GROUP_NETS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,312,51,247,121
     LTEXT           "Переименовать невыделенные эл.цепи:",IDC_STATIC,317,180,82,8
-    CONTROL         "Добавить суффикс «_$Gn», где n увеличивается для каждой группы",IDC_RADIO_USE_SUFFIX,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,317,192,249,10
     CONTROL         "Генерировать новые имена в формате «Nxxxxx»",IDC_RADIO_MAKE_NEW_NAMES,
-                    "Button",BS_AUTORADIOBUTTON,317,206,209,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,317,206,209,10
+    CONTROL         "Добавить суффикс «_$Gn», где n увеличивается для каждой группы",IDC_RADIO_USE_SUFFIX,
+                    "Button",BS_AUTORADIOBUTTON,317,192,249,10
     CONTROL         "Перемещать",IDC_RADIO_DRAG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,61,155,67,10
     CONTROL         "Сместить от исходного положения: X",IDC_RADIO_OFFSET,
                     "Button",BS_AUTORADIOBUTTON,61,168,174,10

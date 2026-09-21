@@ -567,15 +567,9 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 		}
 	}
 	int iLegal = -1;
-	for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+	if (nonLegalBoard == 0)
 	{
-		if (i >= 32)
-			break;
-		if (getbit(nonLegalBoard, i) == 0)
-			iLegal = i;
-	}
-	if (iLegal == -1)
-	{
+		// All boards are legal
 		if (n_bo == 1)
 			iLegal = i_bo;
 		else
@@ -587,7 +581,29 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 			return iLegal;
 		}
 	}
-		
+	else
+	{
+		for (int i = 0; i < doc->m_outline_poly.GetSize(); i++)
+		{
+			if (i >= 32)
+				break;
+			if (getbit(nonLegalBoard, i) == 0)
+				iLegal = i;
+		}
+		if (iLegal == -1)
+		{
+			if (n_bo == 1)
+				iLegal = i_bo;
+			else
+			{
+				doc->m_view->MarkAllOutlinePoly(1, -1);
+				doc->m_plist->MarkAllParts(1);
+				doc->m_nlist->MarkAllNets(1);
+				doc->m_tlist->MarkAllTexts(1);
+				return iLegal;
+			}
+		}
+	}
 	CPolyLine* LegalBoard = &doc->m_outline_poly.GetAt(iLegal);
 	RECT LegalRect = LegalBoard->GetCornerBounds(0);
 	for (cpart* p = doc->m_plist->GetFirstPart(); p; p = doc->m_plist->GetNextPart(p))
@@ -624,13 +640,17 @@ int MarkLegalElementsForExport(CFreePcbDoc* doc)
 			else
 			{
 				int d = Distance(po->GetX(0), po->GetY(0), LegalBoard->GetX(0), LegalBoard->GetY(0));
-				if(d < _2540)
+				if (d < _2540)
+				{
 					n->area[i].utility = 1; // Legal area
+					n->area[i].poly->SetUtility(1);
+				}
 				else for (int icor = 1; icor < po->GetNumCorners(); icor++)
 				{
 					if (LegalBoard->TestPointInside(po->GetX(icor), po->GetY(icor)))
 					{
 						n->area[i].utility = 1; // Legal area
+						n->area[i].poly->SetUtility(1);
 						break;
 					}
 				}

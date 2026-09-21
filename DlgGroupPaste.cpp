@@ -133,8 +133,8 @@ void CDlgGroupPaste::DoDataExchange(CDataExchange* pDX)
 		// incoming
 		m_sort_type = 0;
 		m_radio_use_selected_nets.SetCheck(1);
-		m_radio_use_next_ref.SetCheck(1); 
-		m_radio_use_suffix.SetCheck(1);
+		m_radio_use_next_ref.SetCheck(1);
+		m_radio_make_new_names.SetCheck(1);
 		m_radio_drag.SetCheck(1);
 		m_radio_retain_all_nets.SetCheck(1);
 		m_combo_units.AddString( "MM" );

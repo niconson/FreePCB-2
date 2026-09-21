@@ -4058,8 +4058,8 @@ void CFreePcbDoc::ProjectModified( BOOL flag, BOOL b_clear_redo )
 			m_project_modified_since_autosave = TRUE;
 			m_window_title = m_window_title + "*";
 			pMain->SetWindowText( m_window_title );
+			m_project_validated = FALSE;
 		}
-		m_project_validated = FALSE;
 	}
 	else
 	{
@@ -5766,7 +5766,13 @@ BOOL CFreePcbDoc::OnFileGenerateDXFFile(UINT CMD)
 
 	int LEGAL_BOARD = MarkLegalElementsForExport(this);
 	if (LEGAL_BOARD == -1)
+	{
+		if (G_LANGUAGE)
+			AfxMessageBox("Эта функция доступна только для единого контура печатной платы");
+		else
+			AfxMessageBox("This function is available only for a single PCB outline");
 		return 0;
+	}
 	RECT TR = m_outline_poly.GetAt(LEGAL_BOARD).GetBounds();
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
@@ -5974,7 +5980,13 @@ void CFreePcbDoc::Generate_GCODE(CStdioFile* f, float swell, int hatch, BOOL bHO
 
 	int iLegalBoard = MarkLegalElementsForExport(this);
 	if (iLegalBoard == -1)
+	{
+		if (G_LANGUAGE)
+			AfxMessageBox("Эта функция доступна только для единого контура печатной платы");
+		else
+			AfxMessageBox("This function is available only for a single PCB outline");
 		return;
+	}
 	RECT TR = m_outline_poly.GetAt(iLegalBoard).GetBounds();
 	int iar = m_nlist->AddArea(laser_net, LAY_TOP_COPPER, TR.left, TR.bottom, hatch);
 	m_nlist->AppendAreaCorner(laser_net, iar, TR.left, TR.top, 0, 0);
