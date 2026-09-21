@@ -6,7 +6,7 @@
 #include "DlgReport.h"
 #include "FreePcbDoc.h"
 #include "Gerber.h"
-
+#include "Additional.h"
 
 // CDlgReport dialog
 
@@ -614,10 +614,19 @@ void CDlgReport::OnBnClickedOk()
 			}
 		}
 		int bREAL = 0;
+		BOOL bPANEL = (m_doc->m_n_x > 1 || m_doc->m_n_y > 1);
+		if (!bPANEL)
+			MarkLegalElementsForExport(m_doc);
 		for( int ip=0; ip<ref_des.GetSize(); ip++ )
 		{
 			if (package[ip] == "MILLING_BOARD_OUTLINE")
 				continue;
+
+			part = m_pl->GetPart(ref_des[ip]);
+			if (!bPANEL)
+				if (part->utility == 0)
+					continue;
+
 			CString pad_ref_des;
 			str1.Format( format_str, ref_des[ip], package[ip], value[ip], footprint[ip],
 				pins[ip], holes[ip], side[ip], angle[ip], c_x[ip], c_y[ip], p1_x[ip], p1_y[ip] );
@@ -637,7 +646,6 @@ void CDlgReport::OnBnClickedOk()
 				// MULTIPLICATION
 				if (m_doc->m_n_x >= 1 || m_doc->m_n_y >= 1)
 				{
-					part = m_pl->GetPart(ref_des[ip]);
 					for (int iy = 0; iy < m_doc->m_n_y; iy++)
 					{
 						int sh_y = iy * (all_board_bounds.top - all_board_bounds.bottom + m_doc->m_space_y);
@@ -663,13 +671,18 @@ void CDlgReport::OnBnClickedOk()
 								::MakeCStringFromDimension(&pt1y, pt1.y + sh_y, m_units, FALSE, FALSE, TRUE, dp);
 							}
 							CString addsuff="";
-							if (ref_des[ip].Find("|") == -1)
-								addsuff = "|0";
+							if(bPANEL)
+								if (ref_des[ip].Find("|") == -1)
+									addsuff = "|0";
 							CString uid_str = ""; 
 							if( value[ip].GetLength() && package[ip].GetLength() )
 								uid_str = value[ip] + "@" + package[ip];
-							str1.Format("%s%s%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], addsuff, iy, ix, uid_str, package[ip], value[ip], footprint[ip],
-								pins[ip], holes[ip], side[ip].Trim(), angle[ip], cent_x, cent_y, pt1x, pt1y);
+							if (bPANEL)
+								str1.Format("%s%s%d%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], addsuff, iy, ix, uid_str, package[ip], value[ip], footprint[ip],
+									pins[ip], holes[ip], side[ip].Trim(), angle[ip], cent_x, cent_y, pt1x, pt1y);
+							else
+								str1.Format("%s%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;", ref_des[ip], addsuff, uid_str, package[ip], value[ip], footprint[ip],
+									pins[ip], holes[ip], side[ip].Trim(), angle[ip], cent_x, cent_y, pt1x, pt1y);
 
 							// glue_pt
 							for (int idot = 0; idot < g_w_str->GetSize(); idot++)
