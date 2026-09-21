@@ -3330,7 +3330,13 @@ CPoint WriteDrillFile( CStdioFile * file, CPartList * pl, CNetList * nl, CArray<
 	diameter.SetSize(0);
 	CPoint RET(0,0);
 
-	MarkLegalElementsForExport(theApp.m_Doc);
+	if (n_x > 1 || n_y > 1)
+	{
+		pl->MarkAllParts(1);
+		nl->MarkAllNets(1);
+	}
+	else
+		MarkLegalElementsForExport(theApp.m_Doc);
 
 	// first, find all hole diameters for parts
 	if( pl )
