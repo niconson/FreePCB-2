@@ -2057,6 +2057,13 @@ void * CDisplayList::TestSelect( int x, int y, id * sel_id, int * sel_layer,
 					hit_order[nhits] = order;
 					if( el->id.type == ID_DRC ) //getbit( el->layers_bitmap, LAY_DRC_ERROR ) )
 						hit_order[nhits] = 0;//HIGH PRIORITY
+					else if (el->id.type == ID_NET && el->id.st == ID_AREA)
+					{
+						cnet* getn = (cnet*)el->ptr;
+						if(getn)
+							if(getn->area[el->id.i].poly->GetHatch())
+								hit_order[nhits] = MAX_LAYERS - 1;//LOW PRIORITY
+					}
 					else if((layer == LAY_PAD_THRU && theApp.m_view_mode == theApp.PCB ) ||
 					   (layer == LAY_FP_PAD_THRU && theApp.m_view_mode == theApp.FOOTPRINT ))
 						hit_order[nhits] = m_order_for_layer[m_top_layer];
