@@ -8626,6 +8626,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("\n// display parameter\n");
 				str.Format( "Convexity = 3;\n" );
 				Scadfile.WriteString( str );
+				Scadfile.WriteString("\n// color option for import\n");
+				str.Format("transparent = 0.5;\n");
+				Scadfile.WriteString(str);
 				Scadfile.WriteString("\n// pcb thickness\n");
 				if( m_units == MM )
 					str.Format( "board_h = %.3f;\n", bh );
@@ -8713,7 +8716,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("module Main (custom=true)\n{\n");
 				Scadfile.WriteString("  // (this module cannot be modified by the user)\n");
-				str.Format("  if(E) Pcb_%s(frozen);\n", moduleName);
+				str.Format("  if(E) render(Convexity) Pcb_%s(frozen);\n", moduleName);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  if(custom) Custom(object);\n");
 				Scadfile.WriteString("}\n\n");
@@ -8758,7 +8761,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"      // Use PrusaSlicer to repair STL models and \n"\
 							"      // simplify polygonal meshes.\n"\
 							"      /*\n"\
-							"      color(\"BurlyWood\")\n"\
+							"      color(\"LightGrey\", alpha = transparent)\n"\
 							"      translate([0.0,0.0,0.0])\n"\
 							"      rotate([0,0,0])\n"\
 							"      import(\"%s/mainBody.stl\", center = true, convexity = Convexity);\n"\
@@ -8768,7 +8771,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    {\n"\
 							"      // add your object 4\n"\
 							"      /*\n"\
-							"      color(\"MediumTurquoise\")\n"\
+							"      color(\"MediumTurquoise\", alpha = transparent)\n"\
 							"      translate([0.0, 0.0, 0.0])\n"\
 							"      rotate([0, 0, 0])\n"\
 							"      import(\"%s/Part1.stl\", center = true, convexity = Convexity);\n"\
@@ -8912,24 +8915,24 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("else if (MODE == 11)\n{\n");
 				Scadfile.WriteString("  //projection() rotate([-90,0,0])\n  {\n");
 				Scadfile.WriteString("    if(!pcb_section) Main(0);\n");
-				Scadfile.WriteString("    render(Convexity) difference(){\n");
+				Scadfile.WriteString("    difference(){\n");
 				Scadfile.WriteString("    if(!pcb_section) Custom(object);\n    else Main();\n    CubeX();}\n  }\n}\n");
 				// 12
 				Scadfile.WriteString("else if (MODE == 12)\n{\n");
 				Scadfile.WriteString("  //projection() rotate([0,90,0])\n  {\n");
 				Scadfile.WriteString("    if(!pcb_section) Main(0);\n");
-				Scadfile.WriteString("    render(Convexity) difference(){\n");
+				Scadfile.WriteString("    difference(){\n");
 				Scadfile.WriteString("    if(!pcb_section) Custom(object);\n    else Main();\n    CubeY();}\n  }\n}\n");
 				// 13
 				Scadfile.WriteString("else if (MODE == 13)\n{\n");
 				Scadfile.WriteString("  //projection()\n  {\n");
 				Scadfile.WriteString("    Main(0);\n");
-				Scadfile.WriteString("    render(Convexity) difference(){\n");
+				Scadfile.WriteString("    difference(){\n");
 				Scadfile.WriteString("    Custom(object);\n    CubeZ();}\n  }\n}\n");
 				// 14
 				Scadfile.WriteString("else if (MODE == 14)\n{\n");
 				Scadfile.WriteString("  //projection() translate([0,0,0]) rotate([0,0,0])\n");
-				Scadfile.WriteString("  render(Convexity) difference()\n  {\n");
+				Scadfile.WriteString("  difference()\n  {\n");
 				Scadfile.WriteString("    Custom(object);\n");
 				Scadfile.WriteString("    //CubeX();\n");
 				Scadfile.WriteString("    //CubeY();\n");

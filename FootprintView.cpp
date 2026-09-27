@@ -4607,6 +4607,7 @@ void CFootprintView::OnAdd3DObject()
 		}
 		if (name.GetLength())
 		{
+			iniCode.Add("    render(Convexity)");
 			iniCode.Add("    color(\"DarkSlateGray\")");
 			iniCode.Add("    translate([0,0,0])");
 			iniCode.Add("    rotate([0,0,0])");

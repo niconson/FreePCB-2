@@ -4715,6 +4715,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 						if (iimp > 0)
 						{
 							full_code = full_code.Left(iimp);
+							full_code.Replace("/", "\\");
 							if (full_code.GetLength())
 							{
 								CString scpy = doc->m_3d_dir + "\\" + full_code;
