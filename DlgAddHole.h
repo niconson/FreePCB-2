@@ -29,4 +29,13 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnEnSetfocusCode();
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnEnChangeCode();
+	afx_msg void OnBnClickedScadTranslate();
+	afx_msg void OnBnClickedScadRotate();
+	afx_msg void OnBnClickedScadCube();
+	afx_msg void OnBnClickedScadCylinder();
+	afx_msg void OnBnClickedScadYellow();
+	afx_msg void OnBnClickedScadCrimson();
+	afx_msg void OnBnClickedScadAqua();
+	afx_msg void OnBnClickedScadRosy();
 };

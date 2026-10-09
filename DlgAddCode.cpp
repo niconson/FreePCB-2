@@ -111,6 +111,15 @@ BEGIN_MESSAGE_MAP(CDlgAddCode, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &CDlgAddCode::OnBnClickedCancel)
 	ON_EN_SETFOCUS(IDC_CODE, &CDlgAddCode::OnEnSetfocusCode)
 	ON_BN_CLICKED(IDOK, &CDlgAddCode::OnBnClickedOk)
+	ON_EN_CHANGE(IDC_CODE, &CDlgAddCode::OnEnChangeCode)
+	ON_BN_CLICKED(IDC_SCAD_TRANSLATE, &CDlgAddCode::OnBnClickedScadTranslate)
+	ON_BN_CLICKED(IDC_SCAD_ROTATE, &CDlgAddCode::OnBnClickedScadRotate)
+	ON_BN_CLICKED(IDC_SCAD_CUBE, &CDlgAddCode::OnBnClickedScadCube)
+	ON_BN_CLICKED(IDC_SCAD_CYLINDER, &CDlgAddCode::OnBnClickedScadCylinder)
+	ON_BN_CLICKED(IDC_SCAD_YELLOW, &CDlgAddCode::OnBnClickedScadYellow)
+	ON_BN_CLICKED(IDC_SCAD_CRIMSON, &CDlgAddCode::OnBnClickedScadCrimson)
+	ON_BN_CLICKED(IDC_SCAD_AQUA, &CDlgAddCode::OnBnClickedScadAqua)
+	ON_BN_CLICKED(IDC_SCAD_ROSY, &CDlgAddCode::OnBnClickedScadRosy)
 END_MESSAGE_MAP()
 
 void CDlgAddCode::Initialize(CShape* fp, CArray <CString> * iniCode)
@@ -157,4 +166,118 @@ void CDlgAddCode::OnBnClickedOk()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	Outgoing();
+}
+
+
+void CDlgAddCode::OnEnChangeCode()
+{
+	// TODO:  Если это элемент управления RICHEDIT, то элемент управления не будет
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// функция и вызов CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Добавьте код элемента управления
+	static CString prev_str = "0";
+	if (prev_str.GetLength() == 0)
+		return;
+	CString str;
+	m_code.GetWindowTextA(str);
+	int curStart = 0;
+	int curEnd = 0;
+	m_code.GetSel(curStart, curEnd);
+	str.Truncate(curEnd);
+	int count = 0;
+	int pos = 0;
+	// Ищем символ, начиная с текущей позиции pos
+	while ((pos = str.Find("{", pos)) != -1)
+	{
+		count++;
+		pos++; // Сдвигаемся на один символ вперед, чтобы не зациклиться
+	}
+	CString space = "";
+	for (int i=0; i<count; i++)
+		space += "    ";
+	if (space.GetLength() == 0)
+		return;
+	pos = 0;
+	while ((pos = prev_str.Find("}", pos)) != -1)
+	{
+		count--;
+		pos++; // Сдвигаемся на один символ вперед, чтобы не зациклиться
+	}
+	if (count > 0)
+	{
+		space.Truncate(count * 4);
+	}
+	if (str.Right(1) == "\n" && prev_str.Right(2) != "\n ")
+	{
+		prev_str = "";
+		if (count > 0)
+			m_code.ReplaceSel(space);
+	}
+	else if (str.Right(1) == "}" && prev_str.Right(space.GetLength()) == space)
+	{
+		prev_str = "";
+		m_code.SetSel(curEnd - 5, curEnd);
+		m_code.ReplaceSel("}");
+	}
+	m_code.GetWindowTextA(prev_str);
+	m_code.GetSel(curStart, curEnd);
+	prev_str.Truncate(curEnd);
+}
+
+
+void CDlgAddCode::OnBnClickedScadTranslate()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("translate([0,0,0])");
+}
+
+
+void CDlgAddCode::OnBnClickedScadRotate()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("rotate([0,0,0])");
+}
+
+
+void CDlgAddCode::OnBnClickedScadCube()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("cube([10,10,10], center = true);");
+}
+
+
+void CDlgAddCode::OnBnClickedScadCylinder()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("cylinder(h=10, d1=10, d2=10, center = true);");
+}
+
+
+void CDlgAddCode::OnBnClickedScadYellow()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("linear_extrude(0.5)text(\"txt\",size=10,font=\"arial\",direction=\"ltr\",language=\"en\",script=\"latin\",halign=\"left\",valign=\"center\",spacing=1.0);");
+}
+
+
+void CDlgAddCode::OnBnClickedScadCrimson()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("color(\"Crimson\", 1.0)");
+}
+
+
+void CDlgAddCode::OnBnClickedScadAqua()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("color(\"Aquamarine\", 1.0)");
+}
+
+
+void CDlgAddCode::OnBnClickedScadRosy()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	m_code.ReplaceSel("color(\"RosyBrown\", 1.0)");
 }

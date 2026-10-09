@@ -253,8 +253,8 @@
 #define IDD_ADD_CODE                    359
 #define IDD_ADD_CODE2                   360
 #define IDD_ADD_CODE3                   361
-#define IDD_ADD_STL						362
-#define ID_COPPER_ISOLATE				363
+#define IDD_ADD_STL                     362
+#define ID_COPPER_ISOLATE               363
 #define ID_FILE_GENERATEHPGLFILE1       364
 #define ID_FILE_GENERATEHPGLFILE2       365
 #define ID_FILE_GENERATEHPGLFILE3       366
@@ -426,8 +426,16 @@
 #define IDC_CHECK_ADD_NEW               1052
 #define IDC_BUTTON_SET_W                1053
 #define IDC_BUTTON_CANCEL_W             1054
+#define IDC_SCAD_TRANSLATE              1054
 #define IDC_BUTTON_SELECT_ALL           1055
+#define IDC_SCAD_ROTATE                 1055
+#define IDC_SCAD_CUBE                   1056
+#define IDC_SCAD_CYLINDER               1057
+#define IDC_SCAD_YELLOW                 1058
+#define IDC_SCAD_CRIMSON                1059
+#define IDC_SCAD_AQUA                   1060
 #define IDC_EDIT_NUM_LAYERS             1061
+#define IDC_SCAD_ROSY                   1061
 #define IDC_EDIT_DEF_TRACE_W            1062
 #define IDC_EDIT_DEF_VIA_W              1063
 #define IDC_EDIT_DEF_VIA_HOLE           1064

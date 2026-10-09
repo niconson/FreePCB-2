@@ -2313,7 +2313,7 @@ HENHMETAFILE CShape::CreateMetafile( CMetaFileDC * mfDC, CDC * pDC, int x_size, 
 		for( int ic=0; ic<t_str.GetLength(); ic++ )
 		{
 			// get stroke info for character
-			int xi, yi, xf, yf;
+			//int xi, yi, xf, yf;
 			double coord[64][4];
 			double min_x, min_y, max_x, max_y;
 			int nstrokes = smfontutil->GetCharStrokes( t_str[ic], smfontutil->m_font_number, 
@@ -4114,7 +4114,7 @@ BOOL CShape::SyncOpenscadGlobalParameters( CString * g_rot, CString * g_lift, in
 	return F3;
 }
 
-CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
+CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL bNoDiff )
 {
 	CFreePcbDoc * doc = ((CFreePcbApp*)AfxGetApp())->m_Doc;
 	CDlg_OpenScad dlg;
@@ -4342,7 +4342,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		//
 		if( nHoles )
 		{
-			str.Format("difference()\n%s{\n%s", sp, sp+ddSPACE );
+			str.Format("difference()\n%s{\n%s", sp, sp + ddSPACE);
 			file.WriteString( str );
 			sp += ddSPACE;
 		}
@@ -4489,7 +4489,10 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview )
 		str.Format("module F%s ()\n{\n%s", *fileName, sp+ddSPACE );
 		file.WriteString( str );
 		sp += ddSPACE;
-		str.Format("difference()\n%s{\n%s", sp, sp+ddSPACE );
+		if (bNoDiff)
+			str.Format("//difference()\n%s{\n%s", sp, sp + ddSPACE);
+		else
+			str.Format("difference()\n%s{\n%s", sp, sp + ddSPACE );
 		file.WriteString(str);
 		sp += ddSPACE;
 		str.Format("union()\n%s{\n%s", sp, sp+ddSPACE );

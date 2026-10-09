@@ -176,7 +176,7 @@ public:
 	int Scale3dObject( CArray<CString>* Astr, double scale );
 	HENHMETAFILE CreateMetafile( CMetaFileDC * mfDC, CDC * pDC, int x_size, int y_size );
 	HENHMETAFILE CreateWarningMetafile( CMetaFileDC * mfDC, CDC * pDC, int x_size, int y_size );
-	CString GenerateOpenscadFileA( CString * fileName, BOOL bPreview );
+	CString GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL bNoDiff=FALSE);
 	BOOL SyncOpenscadGlobalParameters( CString * g_rot, CString * g_lift, int * bHULL = NULL );
 
 	// CShape class represents a footprint whose elements can be edited
