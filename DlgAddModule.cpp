@@ -38,25 +38,56 @@ BOOL CDlgAddModule::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	CString inc = "include <scadmodules.txt>";
-	int m_code_text_start = 0;
 	if (m_code_text->GetSize())
 	{
 		CString s = m_code_text->GetAt(0);
 		if (s.Find(inc) != -1)
-			m_code_text_start = 1;
+			m_code_text->RemoveAt(0);
 	}
 
 	CString totalText = _T("");
-	totalText += inc + _T("\r\n");
+	totalText += inc + "\r\n";
 
 	CFileFind finder;
 	CString mod_prj_name = theApp.m_Doc->m_name;
 	CStringToLegalFileName(&mod_prj_name);
 	if (mod_prj_name.Right(3) == "fpc")
-		mod_prj_name.Truncate(mod_prj_name.GetLength() - 3);
-	else
-		mod_prj_name += ".";
-	CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*.scad";
+		mod_prj_name.Truncate(mod_prj_name.GetLength() - 4);
+
+	CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\" + mod_prj_name + "\\scadmodules.txt";
+	//search_str = theApp.m_Doc->m_app_dir + "\\scadmodules.txt";
+	CStdioFile file;
+	BOOL ok = file.Open(search_str, CFile::modeRead, NULL);
+	if (ok)
+	{
+		BOOL bFirst = TRUE;
+		while (file.ReadString(search_str))
+			if (search_str.Trim().Left(7) == "module ")
+			{
+				if (bFirst)
+				{
+					bFirst = FALSE;
+					CString fromScadModules = "/*  from scadmodules.txt:";
+					for (int i = m_code_text->GetSize() - 1; i >= 0; i--)
+					{
+						CString s = m_code_text->GetAt(i);
+						if (s.Find(fromScadModules) != -1)
+							m_code_text->RemoveAt(i);
+						if (s.Find("    module") != -1)
+							m_code_text->RemoveAt(i);
+						if (s.Find("****/") != -1)
+							m_code_text->RemoveAt(i);
+					}
+					totalText += fromScadModules + "\r\n";
+				}
+				totalText += "    " + search_str + "\r\n";
+			}
+		if (!bFirst)
+			totalText += "****/\r\n";
+		file.Close();
+	}
+
+	search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*";
 	BOOL bWorking = finder.FindFile(search_str);
 	while (bWorking)
 	{
@@ -64,51 +95,26 @@ BOOL CDlgAddModule::OnInitDialog()
 		CString fn = finder.GetFileName();
 		if (!finder.IsDirectory())
 		{
+			
+		}
+		else if (!finder.IsDots() && mod_prj_name.CompareNoCase(fn) )
+		{
 			CString scad = fn;
-			scad.Truncate(fn.GetLength() - 4);
-			if (scad.CompareNoCase(mod_prj_name) == 0)
-				continue;
-			if (scad.Find(m_fp->m_name + ".") > 0) // Тут проверка на > 0 допустима, если ищем не с начала строки, но лучше тоже ставить != -1
-				continue;
-
-			CFootLibFolder* libfolder = theApp.m_Doc->m_footlibfoldermap.GetFolder(&theApp.m_Doc->m_full_lib_dir, theApp.m_Doc->m_dlg_log);
-			BOOL bFail = 0;
-			for (int ilib = 0; ilib < libfolder->GetNumLibs(); ilib++)
-				if (bFail == 0) for (int i = 0; i < libfolder->GetNumFootprints(ilib); i++)
-				{
-					CString* str = libfolder->GetFootprintName(ilib, i);
-					CString footName = *str;
-					CStringToLegalFileName(&footName);
-					if (scad.Find(footName) > 0)
-					{
-						bFail = 1;
-						break;
-					}
-				}
-			if (bFail)
-				continue;
-			CString funcName = scad;
-			funcName.Truncate(scad.GetLength() - 1);
-			funcName = " // hint: call Pcb_" + funcName + "(true);";
-			CString include = "include <" + scad + "lib>" + funcName;
-			BOOL bIncludeFound = 0;
-			for (int i = 0; i < m_code_text->GetSize(); i++)
+			BOOL bIncludeFound = FALSE;
+			for (int i = m_code_text->GetSize() - 1; i >= 0; i--)
 			{
 				CString s = m_code_text->GetAt(i);
-				// ИСПРАВЛЕНО: Теперь поиск работает корректно, возвращая != -1 если строка найдена
-				if (s.Find(include) != -1)
-				{
-					bIncludeFound = 1;
-					break;
-				}
+				if (s.Find(scad + "/" + scad) != -1)
+					m_code_text->RemoveAt(i);
 			}
-			if (bIncludeFound == 0)
-				totalText += "// " + include + "\r\n";
+			CString hint = " // hint: call Pcb_" + scad + "(true);";
+			CString include = "include <../" + scad + "/" + scad + ".lib>" + hint;
+			totalText += "// " + include + "\r\n";
 		}
 	}
 	finder.Close();
 
-	for (int i = m_code_text_start; i < m_code_text->GetSize(); i++)
+	for (int i = 0; i < m_code_text->GetSize(); i++)
 	{
 		CString s = m_code_text->GetAt(i) + "\r\n";
 		s.Replace("`", "\"");
