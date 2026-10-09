@@ -422,14 +422,11 @@ BEGIN
         MENUITEM "Текст",                       ID_ADD_TEXT32805
         MENUITEM "Клей",                        ID_ADD_ADHESIVESPOT
         MENUITEM SEPARATOR
-        POPUP "Код 3D-объектов (язык OpenSCAD)"
-        BEGIN
-            MENUITEM "Тело",                        IDD_ADD_CODE
-            MENUITEM "Дыра",                        IDD_ADD_CODE2
-            MENUITEM SEPARATOR
-            MENUITEM "Модули",                      IDD_ADD_CODE3
-        END
-        MENUITEM "Файл сеточного 3D-объекта",   IDD_ADD_STL
+        MENUITEM "OpenSCAD body",               IDD_ADD_CODE
+        MENUITEM "OpenSCAD hole",               IDD_ADD_CODE2
+        MENUITEM "OpenSCAD module",             IDD_ADD_CODE3
+        MENUITEM SEPARATOR
+        MENUITEM "3D-объект (STL)",             IDD_ADD_STL
     END
     POPUP "Инструменты"
     BEGIN

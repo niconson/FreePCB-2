@@ -4,6 +4,39 @@
 
 #define ILLEGAL_FILENAME	"\\/:*?\"<>|"
 
+#include <string>
+
+class CStdioFileUtf8 : public CStdioFile
+{
+public:
+	// Переопределяем метод WriteString
+	virtual void WriteString(LPCTSTR lpsz)
+	{
+		if (lpsz == NULL) return;
+
+		// 1. Конвертируем входящую ASCII (CP_ACP) строку в UTF-16
+		int wlen = ::MultiByteToWideChar(CP_ACP, 0, lpsz, -1, NULL, 0);
+		std::wstring wstr(wlen, 0);
+		::MultiByteToWideChar(CP_ACP, 0, lpsz, -1, &wstr[0], wlen);
+
+		// 2. Конвертируем UTF-16 в UTF-8
+		int u8len = ::WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
+		std::string u8str(u8len, 0);
+		::WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &u8str[0], u8len, NULL, NULL);
+
+		// Убираем нуль-терминатор, если он записался в конец строки
+		if (!u8str.empty() && u8str.back() == '\0') {
+			u8str.pop_back();
+		}
+
+		// 3. Записываем "сырые" UTF-8 байты в файл с помощью базового класса CFile
+		if (!u8str.empty()) {
+			this->CFile::Write(u8str.c_str(), (UINT)u8str.size());
+		}
+	}
+};
+
+
 typedef struct PointTag
 {
 	double X,Y;

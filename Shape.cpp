@@ -4143,13 +4143,18 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL b
 	{
 		_mkdir(path);
 	}
+	CopyFile(doc->m_app_dir + "\\scadmodules.txt", path + "\\scadmodules.txt", TRUE);
 	path += "\\" + *fileName + ".lib";
 	scadpath += "\\" + *fileName + ".scad";
-	CStdioFile file;
+	CStdioFileUtf8 file;
 	int nHoles = 0;
-	int ok = file.Open( path, CFile::modeCreate | CFile::modeWrite );
+	int ok = file.Open( path, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary);
 	if( ok )
 	{
+		// UTF-8
+		unsigned char bom[] = { 0xEF, 0xBB, 0xBF };
+		file.Write(bom, 3);
+
 		CString global_r="", global_z="";
 		BOOL bHull = SyncOpenscadGlobalParameters( &global_r, &global_z );
 		CArray<CString> t_OpenScadData;
@@ -4775,9 +4780,13 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL b
 			DeleteFile(scadpath);
 			//if( _stat( path, &buf ) ) // если файл не существует
 			{
-				ok = file.Open(scadpath, CFile::modeCreate | CFile::modeWrite );
+				ok = file.Open(scadpath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary);
 				if( ok )
 				{
+					// UTF-8
+					unsigned char bom[] = { 0xEF, 0xBB, 0xBF };
+					file.Write(bom, 3);
+
 					str.Format("include <%s/%s.lib>\n", moduleName, *fileName);
 					file.WriteString( str );
 					file.WriteString(board_color);

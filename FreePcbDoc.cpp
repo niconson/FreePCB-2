@@ -7956,6 +7956,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 	{
 		_mkdir(path);
 	}
+	CopyFile(m_app_dir + "\\scadmodules.txt", path + "\\scadmodules.txt", TRUE);
 	path += "\\" + moduleName + ".lib";
 	scadpath += "\\" + moduleName + ".scad";
 	CStdioFile file;

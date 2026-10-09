@@ -25,76 +25,102 @@ void CDlgAddModule::DoDataExchange(CDataExchange* pDX)
 	if (!pDX->m_bSaveAndValidate)
 	{
 		// incoming
-		CFileFind finder;
-		CString mod_prj_name = theApp.m_Doc->m_name;
-		CStringToLegalFileName(&mod_prj_name);
-		if (mod_prj_name.Right(3) == "fpc")
-			mod_prj_name.Truncate(mod_prj_name.GetLength() - 3);
-		else
-			mod_prj_name += ".";
-		CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*.scad";
-		BOOL bWorking = finder.FindFile(search_str);
-		while (bWorking)
-		{
-			bWorking = finder.FindNextFile();
-			CString fn = finder.GetFileName();
-			if (!finder.IsDirectory())
-			{
-				// found a file
-				CString scad = fn;
-				scad.Truncate(fn.GetLength() - 4);
-				if(scad.CompareNoCase(mod_prj_name) == 0)
-					continue;
-				// loop through footprints in heading
-				CFootLibFolder* libfolder = theApp.m_Doc->m_footlibfoldermap.GetFolder(&theApp.m_Doc->m_full_lib_dir, theApp.m_Doc->m_dlg_log);
-				BOOL bFail = 0;
-				for (int ilib = 0; ilib < libfolder->GetNumLibs(); ilib++)
-					if (bFail == 0) for (int i = 0; i < libfolder->GetNumFootprints(ilib); i++)
-					{
-						CString* str = libfolder->GetFootprintName(ilib, i);
-						CString footName = *str;
-						CStringToLegalFileName(&footName);
-						if (scad.Find(footName) > 0)
-						{
-							bFail = 1;
-							break;
-						}
-					}
-				if (bFail)
-					continue;
-				CString funcName = scad;
-				funcName.Truncate(scad.GetLength() - 1);
-				funcName = " // hint: call Pcb_" + funcName + "(1);";
-				CString include = "include <" + scad + "lib>" + funcName;
-				BOOL bIncludeFound = 0;
-				for (int i = 0; i < m_code_text->GetSize(); i++)
-				{
-					CString s = m_code_text->GetAt(i);
-					if (s.Find(include) >= 0)
-					{
-						bIncludeFound = 1;
-						break;
-					}
-				}
-				if(bIncludeFound == 0)
-					m_code.ReplaceSel("// " + include + "\r\n");
-			}
-		}
-		finder.Close();
-
-		m_code.SetFont(&m_font);
-		for (int i = 0; i < m_code_text->GetSize(); i++)
-		{
-			CString s = m_code_text->GetAt(i) + "\r\n";
-			s.Replace("`", "\"");
-			m_code.ReplaceSel(s);
-		}
+		
 	}
 	else
 	{
 		Outgoing();
 	}
 }
+
+BOOL CDlgAddModule::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	CString inc = "include <scadmodules.txt>";
+	int m_code_text_start = 0;
+	if (m_code_text->GetSize())
+	{
+		CString s = m_code_text->GetAt(0);
+		if (s.Find(inc) != -1)
+			m_code_text_start = 1;
+	}
+
+	CString totalText = _T("");
+	totalText += inc + _T("\r\n");
+
+	CFileFind finder;
+	CString mod_prj_name = theApp.m_Doc->m_name;
+	CStringToLegalFileName(&mod_prj_name);
+	if (mod_prj_name.Right(3) == "fpc")
+		mod_prj_name.Truncate(mod_prj_name.GetLength() - 3);
+	else
+		mod_prj_name += ".";
+	CString search_str = theApp.m_Doc->m_path_to_folder + "\\related_files\\openscad\\*.scad";
+	BOOL bWorking = finder.FindFile(search_str);
+	while (bWorking)
+	{
+		bWorking = finder.FindNextFile();
+		CString fn = finder.GetFileName();
+		if (!finder.IsDirectory())
+		{
+			CString scad = fn;
+			scad.Truncate(fn.GetLength() - 4);
+			if (scad.CompareNoCase(mod_prj_name) == 0)
+				continue;
+			if (scad.Find(m_fp->m_name + ".") > 0) // Тут проверка на > 0 допустима, если ищем не с начала строки, но лучше тоже ставить != -1
+				continue;
+
+			CFootLibFolder* libfolder = theApp.m_Doc->m_footlibfoldermap.GetFolder(&theApp.m_Doc->m_full_lib_dir, theApp.m_Doc->m_dlg_log);
+			BOOL bFail = 0;
+			for (int ilib = 0; ilib < libfolder->GetNumLibs(); ilib++)
+				if (bFail == 0) for (int i = 0; i < libfolder->GetNumFootprints(ilib); i++)
+				{
+					CString* str = libfolder->GetFootprintName(ilib, i);
+					CString footName = *str;
+					CStringToLegalFileName(&footName);
+					if (scad.Find(footName) > 0)
+					{
+						bFail = 1;
+						break;
+					}
+				}
+			if (bFail)
+				continue;
+			CString funcName = scad;
+			funcName.Truncate(scad.GetLength() - 1);
+			funcName = " // hint: call Pcb_" + funcName + "(true);";
+			CString include = "include <" + scad + "lib>" + funcName;
+			BOOL bIncludeFound = 0;
+			for (int i = 0; i < m_code_text->GetSize(); i++)
+			{
+				CString s = m_code_text->GetAt(i);
+				// ИСПРАВЛЕНО: Теперь поиск работает корректно, возвращая != -1 если строка найдена
+				if (s.Find(include) != -1)
+				{
+					bIncludeFound = 1;
+					break;
+				}
+			}
+			if (bIncludeFound == 0)
+				totalText += "// " + include + "\r\n";
+		}
+	}
+	finder.Close();
+
+	for (int i = m_code_text_start; i < m_code_text->GetSize(); i++)
+	{
+		CString s = m_code_text->GetAt(i) + "\r\n";
+		s.Replace("`", "\"");
+		totalText += s;
+	}
+
+	m_code.SetFont(&m_font);
+	m_code.SetWindowText(totalText);
+
+	return TRUE;
+}
+
 
 void CDlgAddModule::Outgoing()
 {
