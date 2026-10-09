@@ -4795,6 +4795,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL b
 					file.WriteString( board_h );
 					file.WriteString("drw_pads = true;\n");
 					file.WriteString("drw_holes = true;\n");
+					file.WriteString("drw_copper = true;\n");
 					str.Format("F%s();\n\n", *fileName );
 					file.WriteString( str );
 					if (m_padstack.GetSize() > 1)
