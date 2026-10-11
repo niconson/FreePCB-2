@@ -4495,12 +4495,25 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL b
 		file.WriteString( str );
 		sp += ddSPACE;
 		if (bNoDiff)
+		{
 			str.Format("//difference()\n%s{\n%s", sp, sp + ddSPACE);
+			file.WriteString(str);
+			for (int ic = 0; ic < m_openscad_hole.GetSize(); ic++)
+			{
+				if (ic == 0)
+					file.WriteString("\n" + sp);
+				str = (m_openscad_hole.GetAt(ic) + "\n" + sp);
+				str.Replace("`", "\"");
+				file.WriteString(str);
+			}
+		}
 		else
-			str.Format("difference()\n%s{\n%s", sp, sp + ddSPACE );
-		file.WriteString(str);
+		{
+			str.Format("difference()\n%s{\n%s", sp, sp + ddSPACE);
+			file.WriteString(str);
+		}
 		sp += ddSPACE;
-		str.Format("union()\n%s{\n%s", sp, sp+ddSPACE );
+		str.Format("union()\n%s{\n%s", sp, (sp+ddSPACE) );
 		file.WriteString(str);
 		sp += ddSPACE;
 
@@ -4746,14 +4759,15 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL b
 		//
 		// добавляем доп. код HOLE, если есть
 		//
-		for (int ic = 0; ic < m_openscad_hole.GetSize(); ic++)
-		{
-			if (ic == 0)
-				file.WriteString("\n" + sp);
-			str = (m_openscad_hole.GetAt(ic) + "\n" + sp);
-			str.Replace("`", "\"");
-			file.WriteString(str);
-		}
+		if (!bNoDiff)
+			for (int ic = 0; ic < m_openscad_hole.GetSize(); ic++)
+			{
+				if (ic == 0)
+					file.WriteString("\n" + sp);
+				str = (m_openscad_hole.GetAt(ic) + "\n" + sp);
+				str.Replace("`", "\"");
+				file.WriteString(str);
+			}
 		//
 		// закрываем DIFFERENCE
 		//
