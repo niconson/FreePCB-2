@@ -8492,11 +8492,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 								{
 									double HoleSize = ((double)p->shape->m_padstack[ipin].hole_size*cos(22.5*M_PI/180.0)-100000) / mu;
 									CString fname = foots.GetAt(ok1);
-									str.Format( "           if( is_undef(drw_%s) )\n", fname );
+									str.Format( "           if( is_undef(drw_%s) )\n", fname.GetBuffer());
 									file.WriteString(str);
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize);
 									file.WriteString(str);
-									str.Format( "           else if( drw_%s )\n", fname );
+									str.Format( "           else if( drw_%s )\n", fname.GetBuffer());
 									file.WriteString( str );
 									str.Format( "            translate([ %.3f, %.3f, 0.0 ])\n              cube([ %.3f, %.3f, board_h*2.0 ], center=true );\n", pinX, pinY, HoleSize, HoleSize );
 									file.WriteString( str );
@@ -8524,7 +8524,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		for( int i=0; i<foots.GetSize(); i++ )
 		{
 			CString fname = foots.GetAt(i);
-			str.Format( "module Draw_%s ()\n{\n", fname);
+			str.Format( "module Draw_%s ()\n{\n", fname.GetBuffer());
 			file.WriteString( str );
 			for( cpart * pp=m_plist->GetFirstPart(); pp; pp=m_plist->GetNextPart(pp) )
 			{
@@ -8536,9 +8536,9 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					double py = pp->y / mu;
 					double rot = pp->angle;
 					if( pp->side )
-						str.Format( "    translate([ %.3f, %.3f, -board_h ])\n      rotate([ 0.0, 180.0, 0.0 ])\n        rotate([ 0.0, 0.0, %.3f ])\n          F%s();\n", px, py, rot, fname);
+						str.Format( "    translate([ %.3f, %.3f, -board_h ])\n      rotate([ 0.0, 180.0, 0.0 ])\n        rotate([ 0.0, 0.0, %.3f ])\n          F%s();\n", px, py, rot, fname.GetBuffer());
 					else
-						str.Format( "    translate([ %.3f, %.3f, 0.0 ])\n      rotate([ 0.0, 0.0, %.3f ])\n        F%s();\n", px, py, -rot, fname);
+						str.Format( "    translate([ %.3f, %.3f, 0.0 ])\n      rotate([ 0.0, 0.0, %.3f ])\n        F%s();\n", px, py, -rot, fname.GetBuffer());
 					file.WriteString( str );
 				}
 			}
@@ -8560,42 +8560,44 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					"//  top - side parts, subtract the bottom - side parts, and vice versa.\n\n");
 				float cub = max(pcbrct.right - pcbrct.left, pcbrct.top - pcbrct.bottom) + (20 * NM_PER_MM);
 				//origin
-				str.Format("originX_%s = %.3f;\n", moduleName, (float)(pcbrct.left - (10 * NM_PER_MM)) / mu);
+				str.Format("originX_%s = %.3f;\n", moduleName.GetBuffer(), (float)(pcbrct.left - (10 * NM_PER_MM)) / mu);
 				file.WriteString(str);
-				str.Format("originY_%s = %.3f;\n", moduleName, (float)(pcbrct.bottom - (10 * NM_PER_MM)) / mu);
+				str.Format("originY_%s = %.3f;\n", moduleName.GetBuffer(), (float)(pcbrct.bottom - (10 * NM_PER_MM)) / mu);
 				file.WriteString(str);
 				//
-				str.Format("max_height_%s = %.3f;\n", moduleName, cub / mu);
+				str.Format("max_height_%s = %.3f;\n", moduleName.GetBuffer(), cub / mu);
 				file.WriteString(str);
-				str.Format("module Draw_%s_CUBE(side, frozen, space)\n{\n", moduleName);
+				str.Format("module Draw_%s_CUBE(side, frozen, space)\n{\n", moduleName.GetBuffer());
 				file.WriteString(str);
 				file.WriteString("  if (is_undef(cube_scaleX) || is_undef(cube_scaleY) || is_undef(cube_scaleZ))\n");
 				file.WriteString("  {\n");
-				str.Format("    translate([max_height_%s/2, max_height_%s/2, 0])\n", moduleName, moduleName);
+				str.Format("    translate([max_height_%s/2, max_height_%s/2, 0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				file.WriteString(str);
-				str.Format("    translate([frozen?0:originX_%s, frozen?0:originY_%s, side?max_height_%s/2-board_h:-max_height_%s/2])\n", moduleName, moduleName, moduleName, moduleName);
+				str.Format("    translate([frozen?0:originX_%s, frozen?0:originY_%s, side?max_height_%s/2-board_h:-max_height_%s/2])\n", 
+					moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer());
 				file.WriteString(str);
-				str.Format("    cube(max_height_%s, center=true); \n", moduleName);
+				str.Format("    cube(max_height_%s, center=true); \n", moduleName.GetBuffer());
 				file.WriteString(str);
 				file.WriteString("  }\n");
 				file.WriteString("  else\n");
 				file.WriteString("  {\n");
-				str.Format("    translate([max_height_%s/2, max_height_%s/2, 0])\n", moduleName, moduleName);
+				str.Format("    translate([max_height_%s/2, max_height_%s/2, 0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				file.WriteString(str);
-				str.Format("    translate([frozen?0:originX_%s, frozen?0:originY_%s, side?(max_height_%s/2*cube_scaleZ)-board_h:(-max_height_%s/2*cube_scaleZ) ])\n", moduleName, moduleName, moduleName, moduleName);
+				str.Format("    translate([frozen?0:originX_%s, frozen?0:originY_%s, side?(max_height_%s/2*cube_scaleZ)-board_h:(-max_height_%s/2*cube_scaleZ) ])\n", 
+					moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer());
 				file.WriteString(str);
 				file.WriteString("    scale([cube_scaleX, cube_scaleY, cube_scaleZ])\n");
-				str.Format("    cube(max_height_%s, center=true); \n", moduleName);
+				str.Format("    cube(max_height_%s, center=true); \n", moduleName.GetBuffer());
 				file.WriteString(str);
 
 				// drawing for double side 3d-SECTION
 				file.WriteString("    if(space > 0.02)\n");
 				file.WriteString("    {\n");
 				file.WriteString("      push_direction = side ? -1 : 1;\n");
-				str.Format("      spaceAxisForCube = space + (max_height_%s * cube_scaleZ);\n", moduleName);
+				str.Format("      spaceAxisForCube = space + (max_height_%s * cube_scaleZ);\n", moduleName.GetBuffer());
 				file.WriteString(str);
 				file.WriteString("      translate([0, 0, push_direction * spaceAxisForCube])\n");
-				str.Format("      Draw_%s_CUBE(side, frozen, 0);\n", moduleName);
+				str.Format("      Draw_%s_CUBE(side, frozen, 0);\n", moduleName.GetBuffer());
 				file.WriteString(str);
 				file.WriteString("    }\n");
 				file.WriteString("  }\n");
@@ -8608,7 +8610,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		int maxlen = 13;
 		for(int i=0; i<foots.GetSize(); i++)
 			maxlen = max( maxlen, foots.GetAt(i).GetLength() );
-		//CString newpath = path.Left( path.GetLength()-4 ) + ".scad";
+		CString marker = "//// 3d cube for boolean operations";
 		err = _stat( scadpath, &buf );
 		if( err )
 		{
@@ -8621,11 +8623,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 										"  |  repositories https://github.com/niconson      |\n"\
 										"  |  Niconson(R), All rights reserved              |\n"\
 										"  \\-----------------------------------------------*/\n");
-				str.Format( "\ninclude <%s/%s.lib>\n", moduleName, moduleName );
+				str.Format( "\ninclude <%s/%s.lib>\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString( str );
 				Scadfile.WriteString("\nboard_color = \"green\";\n");
 				Scadfile.WriteString("\n// display parameter\n");
-				str.Format( "Convexity = 3;\n" );
+				str.Format( "Convexity = 10;\n" );
 				Scadfile.WriteString( str );
 				Scadfile.WriteString("\n// color option for import\n");
 				str.Format("transparent = 0.5;\n");
@@ -8674,40 +8676,40 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				CString spc = "";
 				for( int isp=13; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_board_outline%s = true;\n", spc );
+				str.Format( "drw_board_outline%s = true;\n", spc.GetBuffer());
 				Scadfile.WriteString( str );
 				spc = "";
 				for (int isp = 6; isp < maxlen; isp++)
 					spc += " ";
-				str.Format("drw_copper%s = true;\n", spc);
+				str.Format("drw_copper%s = true;\n", spc.GetBuffer());
 				Scadfile.WriteString(str);
 				spc = "";
 				for( int isp=5; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_holes%s = true;\n", spc );
+				str.Format( "drw_holes%s = true;\n", spc.GetBuffer());
 				Scadfile.WriteString( str );
 				spc = "";
 				for( int isp=4; isp<maxlen; isp++ )
 					spc += " ";
-				str.Format( "drw_pads%s = true;\n", spc );
+				str.Format( "drw_pads%s = true;\n", spc.GetBuffer());
 				Scadfile.WriteString( str );
 				for(int i=0; i<foots.GetSize(); i++)
 				{
 					spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "drw_%s%s = true; // controls Draw_%s();\n", foots.GetAt(i), spc, foots.GetAt(i));
+					str.Format( "drw_%s%s = true; // controls Draw_%s();\n", foots.GetAt(i).GetBuffer(), spc, foots.GetAt(i).GetBuffer());
 					Scadfile.WriteString( str );
 				}
 				//
-				str.Format("\n//// 3d cube for boolean operations:\n");
+				str.Format("\n%s:\n", marker);
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("cube_scaleX = cube_scale;\n");
 				Scadfile.WriteString("cube_scaleY = cube_scale;\n");
 				Scadfile.WriteString("cube_scaleZ = cube_scale;\n");
 
 				// write module
-				str.Format("\n\n\n//// Drawing modules\n");
+				str.Format("\n");
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("// frozen position\n");
 				str.Format(	"frozen = false; /* coordinates: Wherever you move\n"\
@@ -8715,9 +8717,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"model will remain the same. Make true if you want\n"\
 							"to use this option */\n\n");
 				Scadfile.WriteString(str);
+				str.Format("\n\n\n//// Drawing modules\n");
+				Scadfile.WriteString(str);
 				Scadfile.WriteString("module Main (custom=true)\n{\n");
 				Scadfile.WriteString("  // (this module cannot be modified by the user)\n");
-				str.Format("  if(E) render(Convexity) Pcb_%s(frozen);\n", moduleName);
+				str.Format("  if(E) render(Convexity) Pcb_%s(frozen);\n", moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  if(custom) Custom(object);\n");
 				Scadfile.WriteString("}\n\n");
@@ -8725,7 +8729,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("//================  CUSTOM ZONE  ===================\n");
 				Scadfile.WriteString("//==================================================\n");
 				Scadfile.WriteString("module Custom (obj=0)\n{\n");
-				str.Format("  translate([frozen?0:originX_%s, frozen?0:originY_%s, 0])\n  {\n", moduleName, moduleName);
+				str.Format("  translate([frozen?0:originX_%s, frozen?0:originY_%s, 0])\n  {\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // custom field\n");
 				Scadfile.WriteString(	"    // add external objects here (optional)\n");
@@ -8783,7 +8787,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"    // if(hide == 6){} else if (item == 6 || item == 0)\n"\
 							"    // if(hide == 7){} else if (item == 7 || item == 0)\n"\
 							"    // if(hide == 8){} else if (item == 8 || item == 0)\n"\
-							"    // if(hide == 9){} else if (item == 9 || item == 0)\n", 50000000 / mu, moduleName, moduleName, moduleName);
+							"    // if(hide == 9){} else if (item == 9 || item == 0)\n", 50000000 / mu, moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString(	"    // end of custom field\n");
 				Scadfile.WriteString("  }\n");
@@ -8792,33 +8796,33 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("//==============  END OF CUSTOM ZONE  ==============\n");
 				Scadfile.WriteString("//==================================================\n\n");
 				//XXXXXXXXXXXXXX
-				Scadfile.WriteString("module CubeX (d=view_dir)\n");
+				Scadfile.WriteString("module CubeX (d=view_dir, s=sector)\n");
 				Scadfile.WriteString("{\n");
 				Scadfile.WriteString("    color(\"white\")\n");
-				str.Format("    translate([0, frozen?-originY_%s:0, frozen?(d?-max_height_%s/2:max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
+				str.Format("    translate([0, frozen?-originY_%s:0, frozen?(d?-max_height_%s/2:max_height_%s/2):0])\n", moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("    rotate([d?90:-90, 0, 0])\n");
-				str.Format("    Draw_%s_CUBE(0, frozen, sector);\n", moduleName);
+				str.Format("    Draw_%s_CUBE(0, frozen, s);\n", moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("}\n");
 
 				//YYYYYYYYYYYYYY
-				Scadfile.WriteString("module CubeY (d=view_dir)\n");
+				Scadfile.WriteString("module CubeY (d=view_dir, s=sector)\n");
 				Scadfile.WriteString("{\n");
 				Scadfile.WriteString("    color(\"white\")\n");
-				str.Format("    translate([frozen?-originX_%s:0, 0, frozen?(d?max_height_%s/2:-max_height_%s/2):0])\n", moduleName, moduleName, moduleName);
+				str.Format("    translate([frozen?-originX_%s:0, 0, frozen?(d?max_height_%s/2:-max_height_%s/2):0])\n", moduleName.GetBuffer(), moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("    rotate([0, d?90:-90, 0])\n");
-				str.Format("    Draw_%s_CUBE(0, frozen, sector);\n", moduleName);
+				str.Format("    Draw_%s_CUBE(0, frozen, s);\n", moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("}\n");
 
 				//ZZZZZZZZZZZZZZ
-				Scadfile.WriteString("module CubeZ (d=view_dir)\n");
+				Scadfile.WriteString("module CubeZ (d=view_dir, s=sector)\n");
 				Scadfile.WriteString("{\n");
 				str.Format("    color(\"white\")\n    translate([0,0,0])\n");
 				Scadfile.WriteString(str);
-				str.Format("    Draw_%s_CUBE(d?1:0, frozen, sector);\n", moduleName);
+				str.Format("    Draw_%s_CUBE(d?1:0, frozen, s);\n", moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("}\n");
 				//
@@ -8847,7 +8851,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(" projection()difference(){\n");
 				str.Format("  Main(0);\n");
 				Scadfile.WriteString(str);
-				str.Format("  CubeZ(0);}\n", moduleName);
+				str.Format("  CubeZ(0);}\n", moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				// 5
 				Scadfile.WriteString("else if (MODE == 5)\n");
@@ -8855,7 +8859,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("  projection()difference(){\n");
 				str.Format("   Main(0);\n");
 				Scadfile.WriteString(str);
-				str.Format("   CubeZ(1);}\n", moduleName);
+				str.Format("   CubeZ(1);}\n", moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				// 6
 				Scadfile.WriteString("else if (MODE == 6)\n");
@@ -8872,26 +8876,26 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				// 8
 				Scadfile.WriteString("else if (MODE == 8)\n");
 				Scadfile.WriteString(" projection(true)\n");
-				str.Format("  translate([0, 0, frozen?(view_dir?originX_%s:-originX_%s):0])\n", moduleName, moduleName);
+				str.Format("  translate([0, 0, frozen?(view_dir?originX_%s:-originX_%s):0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("   rotate([0, view_dir?-90:90, 0])\n");
 				Scadfile.WriteString("    Main();\n");
 				// 9
 				Scadfile.WriteString("else if (MODE == 9)\n");
 				Scadfile.WriteString(" projection(true)\n");
-				str.Format("  translate([0, 0, frozen?(view_dir?originY_%s:-originY_%s):0])\n", moduleName, moduleName);
+				str.Format("  translate([0, 0, frozen?(view_dir?originY_%s:-originY_%s):0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("   rotate([view_dir?90:-90, 0, 0])\n");
 				Scadfile.WriteString("    Main();\n");
 				// 10
 				Scadfile.WriteString("else if (MODE == 10)\n");
 				Scadfile.WriteString("{\n");
-				str.Format("  translate([frozen?-pdist:(originX_%s+originY_%s-pdist), 0, 0])\n", moduleName, moduleName);
+				str.Format("  translate([frozen?-pdist:(originX_%s+originY_%s-pdist), 0, 0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("  rotate(90)\n");
 				Scadfile.WriteString("  {\n");
 				Scadfile.WriteString("    projection(true)\n");
-				str.Format("    translate([0, 0, frozen?(view_dir?originX_%s:-originX_%s):0])\n", moduleName, moduleName);
+				str.Format("    translate([0, 0, frozen?(view_dir?originX_%s:-originX_%s):0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("    rotate([0, view_dir?-90:90, 0])\n");
 				Scadfile.WriteString("    Custom(object); \n");
@@ -8900,7 +8904,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("    Main(0); \n");
 				Scadfile.WriteString("  }\n  render()// (combines intersecting projections)\n  {\n");
 				Scadfile.WriteString("    projection(true)\n");
-				str.Format("    translate([0, 0, frozen?(view_dir?originY_%s:-originY_%s):0])\n", moduleName, moduleName);
+				str.Format("    translate([0, 0, frozen?(view_dir?originY_%s:-originY_%s):0])\n", moduleName.GetBuffer(), moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("    rotate([view_dir?90:-90, 0, 0])\n");
 				Scadfile.WriteString("    Custom(object); \n");
@@ -8908,37 +8912,48 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("    rotate([view_dir?90:-90, 0, 0])\n");
 				Scadfile.WriteString("    Main(0);\n  }\n");
 				Scadfile.WriteString("  projection(true)\n");
-				str.Format("   translate([0, frozen?%.3f-pdist:(%.3f+pdist-originY_%s), board_h/2])\n", 10000000 / mu, 10000000 / mu, moduleName);
+				str.Format("   translate([0, frozen?%.3f-pdist:(%.3f+pdist-originY_%s), board_h/2])\n", 10000000 / mu, 10000000 / mu, moduleName.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("    Main();\n");
 				Scadfile.WriteString("}\n");
 				// 11
 				Scadfile.WriteString("else if (MODE == 11)\n{\n");
-				Scadfile.WriteString("  //projection() rotate([-90,0,0])\n  {\n");
-				Scadfile.WriteString("    if(!pcb_section) Main(0);\n");
-				Scadfile.WriteString("    difference(){\n");
-				Scadfile.WriteString("    if(!pcb_section) Custom(object);\n    else Main();\n    CubeX();}\n  }\n}\n");
+				//Scadfile.WriteString("  //projection() rotate([-90,0,0])\n  {\n");
+				Scadfile.WriteString("  if(!pcb_section) Main(0);\n");
+				Scadfile.WriteString("  difference(){\n");
+				Scadfile.WriteString("  if(!pcb_section) Custom(object);\n  else Main();\n  CubeX();}\n}\n");
 				// 12
 				Scadfile.WriteString("else if (MODE == 12)\n{\n");
-				Scadfile.WriteString("  //projection() rotate([0,90,0])\n  {\n");
-				Scadfile.WriteString("    if(!pcb_section) Main(0);\n");
-				Scadfile.WriteString("    difference(){\n");
-				Scadfile.WriteString("    if(!pcb_section) Custom(object);\n    else Main();\n    CubeY();}\n  }\n}\n");
+				//Scadfile.WriteString("  //projection() rotate([0,90,0])\n  {\n");
+				Scadfile.WriteString("  if(!pcb_section) Main(0);\n");
+				Scadfile.WriteString("  difference(){\n");
+				Scadfile.WriteString("  if(!pcb_section) Custom(object);\n  else Main();\n  CubeY();}\n}\n");
 				// 13
 				Scadfile.WriteString("else if (MODE == 13)\n{\n");
-				Scadfile.WriteString("  //projection()\n  {\n");
-				Scadfile.WriteString("    Main(0);\n");
-				Scadfile.WriteString("    difference(){\n");
-				Scadfile.WriteString("    Custom(object);\n    CubeZ();}\n  }\n}\n");
+				//Scadfile.WriteString("  //projection()\n  {\n");
+				Scadfile.WriteString("  Main(0);\n");
+				Scadfile.WriteString("  difference(){\n");
+				Scadfile.WriteString("  Custom(object);\n  CubeZ();}\n}\n");
 				// 14
 				Scadfile.WriteString("else if (MODE == 14)\n{\n");
-				Scadfile.WriteString("  //projection() translate([0,0,0]) rotate([0,0,0])\n");
+				//Scadfile.WriteString("  //projection() translate([0,0,0]) rotate([0,0,0])\n");
 				Scadfile.WriteString("  difference()\n  {\n");
 				Scadfile.WriteString("    Custom(object);\n");
 				Scadfile.WriteString("    //CubeX();\n");
 				Scadfile.WriteString("    //CubeY();\n");
 				Scadfile.WriteString("    //CubeZ();\n");
-				Scadfile.WriteString("    Main(0);\n  }\n}\n\n\n");
+				Scadfile.WriteString("    Main(0);\n  }\n}\n");
+				// 15, 16
+				Scadfile.WriteString("else // EDGE\n");
+				Scadfile.WriteString("{\n");
+				Scadfile.WriteString("  if (!pcb_section) Main(0);\n");
+				Scadfile.WriteString("  difference() {\n");
+				Scadfile.WriteString("    if (!pcb_section) Custom(object);\n");
+				Scadfile.WriteString("    else Main();\n");
+				Scadfile.WriteString("    CubeX();\n");
+				Scadfile.WriteString("    CubeY(MODE == 16 ? true : false);\n");
+				Scadfile.WriteString("  }\n");
+				Scadfile.WriteString("}\n");
 				//
 				Scadfile.WriteString("\n\n\nif (projection_true && (MODE > 10 || MODE == 1))\n{\n");
 				Scadfile.WriteString("  projection(via_origin)\n");
@@ -8956,6 +8971,120 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 		else
 		{
 			CString edata = "";
+			CArray<CString> fileLines;	// контейнер MFC для хранения всех строк файла
+			int insertIndex = -1;		// Индекс строки, куда будем вставлять
+			CStdioFile Scadfile;
+			ok = 0;
+			for (int iter = 0; (iter < 10) && (ok == 0); iter++)
+			{
+				Sleep(50);
+				ok = Scadfile.Open(scadpath, CFile::modeRead | CFile::typeText, NULL);
+			}
+
+			if (ok)
+			{
+				while (Scadfile.ReadString(str))
+				{
+					// Сохраняем абсолютно все строки файла
+					fileLines.Add(str);
+
+					// Запоминаем строки с "drw_" для последующих проверок Find()
+					if (str.Find("drw_") >= 0)
+						edata += str + "\n";
+
+					// Ищем индекс строки-маркера
+					if (str.Find(marker) >= 0)
+					{
+						insertIndex = fileLines.GetSize() - 1; // Запоминаем позицию маркера
+					}
+				}
+				Scadfile.Close();
+			}
+			else
+			{
+				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\"") : ("Невозможно открыть файл: \"" + scadpath + "\""));
+				return;
+			}
+
+			// Формируем блок новых строк во временный массив
+			CArray<CString> newLines;
+
+			for (int i = 0; i < foots.GetSize(); i++)
+			{
+				CString spc = "";
+				for (int isp = foots.GetAt(i).GetLength(); isp < maxlen; isp++)
+					spc += " ";
+
+				str.Format("drw_%s ", foots.GetAt(i).GetBuffer());
+				if (edata.Find(str) < 0)
+				{
+					str.Format("drw_%s%s = true; // was added to the PCB", foots.GetAt(i).GetBuffer(), spc.GetBuffer());
+					newLines.Add(str);
+				}
+			}
+
+			if (edata.Find("drw_board_outline") < 0)
+				newLines.Add("drw_board_outline = E;");
+
+			if (edata.Find("drw_copper") < 0)
+				newLines.Add("drw_copper = E;");
+
+			if (edata.Find("drw_holes") < 0)
+				newLines.Add("drw_holes = E;");
+
+			if (edata.Find("drw_pads") < 0)
+				newLines.Add("drw_pads = E;");
+
+
+			// Вставляем новые строки в массив файла
+			if (insertIndex != -1)
+			{
+				// Вставляем ПЕРЕД маркером. 
+				if (insertIndex > 0 && fileLines.GetAt(insertIndex - 1).IsEmpty())
+				{
+					insertIndex--; 
+				}
+
+				// Метод InsertAt(индекс, элемент, количество_повторений) раздвигает массив автоматически
+				for (int i = 0; i < newLines.GetSize(); i++)
+				{
+					fileLines.InsertAt(insertIndex + i, newLines.GetAt(i));
+				}
+			}
+			else
+			{
+				// Если маркер вдруг не нашли, просто добавляем в конец массива
+				for (int i = 0; i < newLines.GetSize(); i++)
+				{
+					fileLines.Add(newLines.GetAt(i));
+				}
+			}
+
+			// Открываем файл на запись с флагом modeCreate (он полностью очистит старый файл)
+			ok = 0;
+			for (int iter = 0; (iter < 10) && (ok == 0); iter++)
+			{
+				Sleep(50);
+				ok = Scadfile.Open(scadpath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
+			}
+
+			if (ok)
+			{
+				// Записываем весь обновленный массив обратно в файл
+				for (int i = 0; i < fileLines.GetSize(); i++)
+				{
+					Scadfile.WriteString(fileLines.GetAt(i) + "\n");
+				}
+
+				Scadfile.WriteString(" "); // костыль для openscad
+				Scadfile.Close();
+			}
+			else
+			{
+				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\"") : ("Невозможно открыть файл: \"" + scadpath + "\""));
+			}
+			// OLD CODE
+			/*CString edata = "";
 			CStdioFile Scadfile;
 			ok = 0; 
 			for( int iter=0; (iter<10)&&(ok==0); iter++ )
@@ -8990,10 +9119,10 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					CString spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "drw_%s ", foots.GetAt(i) );
+					str.Format( "drw_%s ", foots.GetAt(i).GetBuffer());
 					if( edata.Find( str ) < 0 )
 					{
-						str.Format( "\ndrw_%s%s = true; // was added to the PCB", foots.GetAt(i), spc );
+						str.Format( "\ndrw_%s%s = true; // was added to the PCB", foots.GetAt(i).GetBuffer(), spc );
 						Scadfile.WriteString( str );
 					}
 				}
@@ -9023,7 +9152,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			else
 			{
 				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\""):("Невозможно открыть файл: \"" + scadpath + "\""));
-			}
+			}*/
 			HWND wnd = FindWindow( NULL, moduleName + ".scad - OpenSCAD" );
 			if( wnd == NULL )
 				wnd = FindWindow( NULL, moduleName + ".scad* - OpenSCAD" );
@@ -9059,7 +9188,8 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("{\n");
 				Scadfile.WriteString("    \"fileFormatVersion\": \"1\", \n");
 				Scadfile.WriteString("    \"parameterSets\" : {\n");
-				for (int iset = 0; iset < 14; iset++)
+				int nsets = 16;
+				for (int iset = 0; iset < nsets; iset++)
 				{
 					// name
 					if(iset == 0)
@@ -9090,6 +9220,10 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 						Scadfile.WriteString("        \"13: top 3D section\": {\n");
 					else if (iset == 13)
 						Scadfile.WriteString("        \"14: boolean difference\": {\n");
+					else if (iset == 14)
+						Scadfile.WriteString("        \"15: double-left 3d section\": {\n");
+					else if (iset == 15)
+						Scadfile.WriteString("        \"16: double-right 3d section\": {\n");
 
 					// mode
 					str.Format("            \"MODE\" : \"%d\", \n", iset+1);
@@ -9132,7 +9266,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 						Scadfile.WriteString("            \"drw_pads\" : \"false\" \n");
 
 					// end
-					if (iset == 13)
+					if (iset == nsets-1)
 						Scadfile.WriteString("        }\n");
 					else
 						Scadfile.WriteString("        },\n");

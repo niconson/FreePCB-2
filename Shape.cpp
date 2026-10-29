@@ -4804,7 +4804,7 @@ CString CShape::GenerateOpenscadFileA( CString * fileName, BOOL bPreview, BOOL b
 					str.Format("include <%s/%s.lib>\n", moduleName, *fileName);
 					file.WriteString( str );
 					file.WriteString(board_color);
-					str.Format( "Convexity = 2;\n" );
+					str.Format( "Convexity = 20;\n" );
 					file.WriteString( str );
 					file.WriteString( board_h );
 					file.WriteString("drw_pads = true;\n");
