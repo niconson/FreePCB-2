@@ -8648,27 +8648,28 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 							"           // 7: frontal pcb projection.\n"\
 							"           // Set the origin in the pcb editor to the\n"\
 							"           // location where you want the cut to be:\n"\
-							"           // 8: custom lateral projection\n"\
-							"           // 9: custom frontal projection\n"\
+							"           // 8: lateral projection via origin\n"\
+							"           // 9: frontal projection\n"\
 							"           // 10: custom combo projection\n"\
 							"           // 11: frontal 3D section \n"\
 							"           // 12: lateral 3D section \n"\
 							"           // 13: top 3D section \n"\
 							"           // 14: boolean difference (makes\n"\
 							"           //     holes in the Custom objects\n"\
-							"           //     using 3d-models of pcb parts).\n\n"\
-							"\n// double-sided section for modes 4,5,11...13\nsector = 0.01;\n"\
+							"           //     using 3d-models of pcb parts)\n"\
+							"           // 15-20: double-sided 3D sections.\n\n"\
+							"\n// double-sided for section modes\nsector = 0.01;\n"\
 							"\n// distance between projections for mode 10\npdist = 20;\n"\
 							"\n// use positive values to isolate a custom object\n// use negative values to disable a custom object\nobject = 0;\n"\
-							"\n// cube size for 4,5,11-13 modes\ncube_scale = 2;\n"\
+							"\n// cube size for section modes\ncube_scale = 2;\n"\
 							"\n// total offset\noffset = 0.01;\n"\
 							"\n// rotate around the X axis\nrotate_x = 0;\n"\
 							"\n// rotate around the Y axis\nrotate_y = 0;\n"\
 							"\n// rotate around the Z axis\nrotate_z = 0;\n"\
-							"\n// make projection for modes 1, 11...14\nprojection_true = false;\n"\
-							"\n// projection via origin for modes 1, 11...14\nvia_origin = false;\n"\
-							"\n// view direction for modes 6...13\nview_dir= false;\n"\
-							"\n// enable PCB section for modes 11...12\npcb_section = true;\n"\
+							"\n// make projection for modes 1, 11...20\nprojection_true = false;\n"\
+							"\n// projection via origin for modes 1, 11...20\nvia_origin = false;\n"\
+							"\n// view direction for section modes\nview_dir= false;\n"\
+							"\n// enable PCB for section modes\npcb_section = true;\n"\
 							"\n// drawing control\n");
 				Scadfile.WriteString(str);
 				str.Format( "E = true;\n\n" );
@@ -8698,11 +8699,11 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					spc = "";
 					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
 						spc += " ";
-					str.Format( "drw_%s%s = true; // controls Draw_%s();\n", foots.GetAt(i).GetBuffer(), spc, foots.GetAt(i).GetBuffer());
+					str.Format( "drw_%s%s = true; // controls Draw_%s();\n", foots.GetAt(i).GetBuffer(), spc.GetBuffer(), foots.GetAt(i).GetBuffer());
 					Scadfile.WriteString( str );
 				}
 				//
-				str.Format("\n%s:\n", marker);
+				str.Format("\n%s:\n", marker.GetBuffer());
 				Scadfile.WriteString(str);
 				Scadfile.WriteString("cube_scaleX = cube_scale;\n");
 				Scadfile.WriteString("cube_scaleY = cube_scale;\n");
@@ -8851,7 +8852,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString(" projection()difference(){\n");
 				str.Format("  Main(0);\n");
 				Scadfile.WriteString(str);
-				str.Format("  CubeZ(0);}\n", moduleName.GetBuffer());
+				str.Format("  CubeZ(0);}\n");
 				Scadfile.WriteString(str);
 				// 5
 				Scadfile.WriteString("else if (MODE == 5)\n");
@@ -8859,7 +8860,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("  projection()difference(){\n");
 				str.Format("   Main(0);\n");
 				Scadfile.WriteString(str);
-				str.Format("   CubeZ(1);}\n", moduleName.GetBuffer());
+				str.Format("   CubeZ(1);}\n");
 				Scadfile.WriteString(str);
 				// 6
 				Scadfile.WriteString("else if (MODE == 6)\n");
@@ -8918,40 +8919,52 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("}\n");
 				// 11
 				Scadfile.WriteString("else if (MODE == 11)\n{\n");
-				//Scadfile.WriteString("  //projection() rotate([-90,0,0])\n  {\n");
 				Scadfile.WriteString("  if(!pcb_section) Main(0);\n");
 				Scadfile.WriteString("  difference(){\n");
 				Scadfile.WriteString("  if(!pcb_section) Custom(object);\n  else Main();\n  CubeX();}\n}\n");
 				// 12
 				Scadfile.WriteString("else if (MODE == 12)\n{\n");
-				//Scadfile.WriteString("  //projection() rotate([0,90,0])\n  {\n");
 				Scadfile.WriteString("  if(!pcb_section) Main(0);\n");
 				Scadfile.WriteString("  difference(){\n");
 				Scadfile.WriteString("  if(!pcb_section) Custom(object);\n  else Main();\n  CubeY();}\n}\n");
 				// 13
 				Scadfile.WriteString("else if (MODE == 13)\n{\n");
-				//Scadfile.WriteString("  //projection()\n  {\n");
 				Scadfile.WriteString("  Main(0);\n");
 				Scadfile.WriteString("  difference(){\n");
 				Scadfile.WriteString("  Custom(object);\n  CubeZ();}\n}\n");
 				// 14
 				Scadfile.WriteString("else if (MODE == 14)\n{\n");
-				//Scadfile.WriteString("  //projection() translate([0,0,0]) rotate([0,0,0])\n");
 				Scadfile.WriteString("  difference()\n  {\n");
 				Scadfile.WriteString("    Custom(object);\n");
 				Scadfile.WriteString("    //CubeX();\n");
 				Scadfile.WriteString("    //CubeY();\n");
 				Scadfile.WriteString("    //CubeZ();\n");
 				Scadfile.WriteString("    Main(0);\n  }\n}\n");
+				// 17, 18, 19, 20
+				Scadfile.WriteString("else if (MODE > 16)\n");
+				Scadfile.WriteString("{\n");
+				Scadfile.WriteString("  if (!pcb_section) Main(0);\n");
+				Scadfile.WriteString("  difference() {\n");
+				Scadfile.WriteString("    union() {\n");
+				Scadfile.WriteString("      if (pcb_section) Main(0);\n");
+				Scadfile.WriteString("      difference() {\n");
+				Scadfile.WriteString("        Custom(object);\n");
+				Scadfile.WriteString("        CubeZ(MODE % 2 == 0 ? true : false);\n");
+				Scadfile.WriteString("      }\n");
+				Scadfile.WriteString("    }\n");
+				Scadfile.WriteString("    if (MODE > 18) CubeY();\n");
+				Scadfile.WriteString("    else CubeX();\n");
+				Scadfile.WriteString("  }\n");
+				Scadfile.WriteString("}\n");
 				// 15, 16
-				Scadfile.WriteString("else // EDGE\n");
+				Scadfile.WriteString("else \n");
 				Scadfile.WriteString("{\n");
 				Scadfile.WriteString("  if (!pcb_section) Main(0);\n");
 				Scadfile.WriteString("  difference() {\n");
 				Scadfile.WriteString("    if (!pcb_section) Custom(object);\n");
 				Scadfile.WriteString("    else Main();\n");
 				Scadfile.WriteString("    CubeX();\n");
-				Scadfile.WriteString("    CubeY(MODE == 16 ? true : false);\n");
+				Scadfile.WriteString("    CubeY(MODE%2 == 0 ? true : false);\n");
 				Scadfile.WriteString("  }\n");
 				Scadfile.WriteString("}\n");
 				//
@@ -9083,76 +9096,7 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 			{
 				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\"") : ("Невозможно открыть файл: \"" + scadpath + "\""));
 			}
-			// OLD CODE
-			/*CString edata = "";
-			CStdioFile Scadfile;
-			ok = 0; 
-			for( int iter=0; (iter<10)&&(ok==0); iter++ )
-			{
-				Sleep(50);
-				ok = Scadfile.Open( scadpath, CFile::modeRead, NULL );
-			}
-			if( ok )
-			{
-				while( Scadfile.ReadString( str ) )
-				{
-					if( str.Find( "drw_" ) >= 0 )
-						edata += str;
-				}
-				Scadfile.Close();
-			}
-			else
-			{
-				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\"") : ("Невозможно открыть файл: \"" + scadpath + "\""));
-			}
-			ok = 0; 
-			for( int iter=0; (iter<10)&&(ok==0); iter++ )
-			{
-				Sleep(50);
-				ok = Scadfile.Open( scadpath, CFile::modeWrite );
-			}
-			if( ok )
-			{
-				Scadfile.SeekToEnd();
-				for(int i=0; i<foots.GetSize(); i++)
-				{
-					CString spc = "";
-					for( int isp=foots.GetAt(i).GetLength(); isp<maxlen; isp++ )
-						spc += " ";
-					str.Format( "drw_%s ", foots.GetAt(i).GetBuffer());
-					if( edata.Find( str ) < 0 )
-					{
-						str.Format( "\ndrw_%s%s = true; // was added to the PCB", foots.GetAt(i).GetBuffer(), spc );
-						Scadfile.WriteString( str );
-					}
-				}
-				if (edata.Find("drw_board_outline") < 0)
-				{
-					str.Format("\ndrw_board_outline = E;");
-					Scadfile.WriteString(str);
-				}
-				if (edata.Find("drw_copper") < 0)
-				{
-					str.Format("\ndrw_copper = E;");
-					Scadfile.WriteString(str);
-				}
-				if (edata.Find("drw_holes") < 0)
-				{
-					str.Format("\ndrw_holes = E;");
-					Scadfile.WriteString(str);
-				}
-				if (edata.Find("drw_pads") < 0)
-				{
-					str.Format("\ndrw_pads = E;");
-					Scadfile.WriteString(str);
-				}
-				Scadfile.WriteString( " " ); // openscad not work without this
-				Scadfile.Close();
-			}
-			else
-			{
-				AfxMessageBox(G_LANGUAGE == 0 ? ("Unable to open file: \"" + scadpath + "\""):("Невозможно открыть файл: \"" + scadpath + "\""));
-			}*/
+			//
 			HWND wnd = FindWindow( NULL, moduleName + ".scad - OpenSCAD" );
 			if( wnd == NULL )
 				wnd = FindWindow( NULL, moduleName + ".scad* - OpenSCAD" );
@@ -9188,12 +9132,12 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 				Scadfile.WriteString("{\n");
 				Scadfile.WriteString("    \"fileFormatVersion\": \"1\", \n");
 				Scadfile.WriteString("    \"parameterSets\" : {\n");
-				int nsets = 16;
+				int nsets = 20;
 				for (int iset = 0; iset < nsets; iset++)
 				{
 					// name
 					if(iset == 0)
-						Scadfile.WriteString("        \"1: full 3D view\": {\n");
+						Scadfile.WriteString("        \"1: full 3d view\": {\n");
 					else if (iset == 1)
 						Scadfile.WriteString("        \"2: projection of top copper\": {\n");
 					else if (iset == 2)
@@ -9207,23 +9151,31 @@ void CFreePcbDoc::OnFileGenerate3DFile()
 					else if (iset == 6)
 						Scadfile.WriteString("        \"7: frontal pcb projection\": {\n");
 					else if (iset == 7)
-						Scadfile.WriteString("        \"8: custom lateral projection\": {\n");
+						Scadfile.WriteString("        \"8: lateral projection via origin\": {\n");
 					else if (iset == 8)
-						Scadfile.WriteString("        \"9: custom frontal projection\": {\n");
+						Scadfile.WriteString("        \"9: frontal projection via origin\": {\n");
 					else if (iset == 9)
 						Scadfile.WriteString("        \"10: custom combo projection\": {\n");
 					else if (iset == 10)
-						Scadfile.WriteString("        \"11: frontal 3D section\": {\n");
+						Scadfile.WriteString("        \"11: frontal 3d section\": {\n");
 					else if (iset == 11)
-						Scadfile.WriteString("        \"12: lateral 3D section\": {\n");
+						Scadfile.WriteString("        \"12: lateral 3d section\": {\n");
 					else if (iset == 12)
-						Scadfile.WriteString("        \"13: top 3D section\": {\n");
+						Scadfile.WriteString("        \"13: top/bottom 3d section\": {\n");
 					else if (iset == 13)
-						Scadfile.WriteString("        \"14: boolean difference\": {\n");
+						Scadfile.WriteString("        \"14: boolean difference with pcb\": {\n");
 					else if (iset == 14)
-						Scadfile.WriteString("        \"15: double-left 3d section\": {\n");
+						Scadfile.WriteString("        \"15: double-left 3d section (Z-axis)\": {\n");
 					else if (iset == 15)
-						Scadfile.WriteString("        \"16: double-right 3d section\": {\n");
+						Scadfile.WriteString("        \"16: double-right 3d section (Z-axis)\": {\n");
+					else if (iset == 16)
+						Scadfile.WriteString("        \"17: double-top 3d section (X-axis)\": {\n");
+					else if (iset == 17)
+						Scadfile.WriteString("        \"18: double-bottom 3d section (X-axis)\": {\n");
+					else if (iset == 18)
+						Scadfile.WriteString("        \"19: double-top 3d section (Y-axis)\": {\n");
+					else if (iset == 19)
+						Scadfile.WriteString("        \"20: double-bottom 3d section (Y-axis)\": {\n");
 
 					// mode
 					str.Format("            \"MODE\" : \"%d\", \n", iset+1);
