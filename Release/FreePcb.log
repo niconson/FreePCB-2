@@ -1,3 +1,7 @@
-﻿  FreePcbView.cpp
+﻿  Additional.cpp
+  FreePcbDoc.cpp
+  FreePcbView.cpp
+  NetList.cpp
+  Создание кода...
   FreePcb.vcxproj -> D:\FreePCBDev\FreePCB-2\Release\ПлатФорм.exe
   Скопировано файлов:         1.

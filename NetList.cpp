@@ -9117,6 +9117,18 @@ if( test == 1 )
 		delete del_cont;
 		for( int c=(net->area[iarea].poly->GetNumContours()-1); c>=0; c-- )
 			net->area[iarea].poly->RecalcRectC(c);
+
+		// тест на дурака
+		int x0 = net->area[iarea].poly->GetX(0);
+		int y0 = net->area[iarea].poly->GetY(0);
+		for (int icont = 1; icont < net->area[iarea].poly->GetNumContours(); icont++)
+		{
+			if (net->area[iarea].poly->TestPointInside(x0, y0, icont))
+			{
+				RemoveArea(net, iarea);
+				return test; // collapse area
+			}
+		}
 		SetAreaHatch( net, iarea ); // net->area[iarea].poly->Draw();
 		net->area[iarea].utility = 1;
 	}
@@ -9150,6 +9162,8 @@ int CNetList::AreaPolygonModified( cnet * net, int iarea, BOOL bMessageBoxArc, B
 {	
 	// clip polygon against itself
 	int test = ClipAreaPolygon( net, iarea, corner, bMessageBoxArc, bMessageBoxInt );
+	iarea = min(iarea, net->nareas - 1); // update index!
+
 	if( test == -1 )
 		return test;
 	// now see if we need to clip against other areas

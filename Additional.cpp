@@ -844,6 +844,7 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 	{
 		int nAreas = 0;
 		doc->m_nlist->ClipAreaPolygon(area_net, iar, -1, FALSE, FALSE, TRUE, &nAreas);
+		// iar = min(iar, area_net->nareas - 1); // update index!
 		doc->ProjectModified(TRUE);
 	}
 	// delete new areas
@@ -1211,13 +1212,14 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 				int dist = poly->GetDistance(p1.x, p1.y, p2.x, p2.y);
 
 				BOOL bSucsess = FALSE;
+				int cl = clearance + pw;
+				if (max_w > pw)
+					cl = clearance + max_w;
 				if (poly->GetLayer() == lay)
-				if (poly->TestPointInside(p1.x, p1.y) || poly->TestPointInside(p2.x, p2.y) || dist < abs(clearance/2 + pw/2))
+				if (poly->TestPointInside(p1.x, p1.y) || poly->TestPointInside(p2.x, p2.y) || dist < abs(cl/2))
 				{
 					doc->m_view->SaveUndoInfoForArea(doc->m_view->m_sel_net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, doc->m_undo_list);
-					int cl = clearance + pw;
-					if (max_w > pw)
-						cl = clearance + max_w;
+					cl += NM_PER_MIL;
 					const int npts = 30;
 					CPoint pts[npts];
 					int np = Gen_HollowLinePoly(p1.x, p1.y, p2.x, p2.y, cl, pts, npts);
@@ -1229,8 +1231,8 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 					if (max_w < pw)
 						max_w = pw;
 					doc->m_nlist->ClipAreaPolygon(doc->m_view->m_sel_net, ia, -1, 0, 0, 1);
+					ia = min(ia, doc->m_view->m_sel_net->nareas); // update index!
 					bSucsess = TRUE;
-					ia = min(ia, doc->m_view->m_sel_net->nareas - 1);
 				}
 				if (bSucsess)
 					doc->m_dlg_log->AddLine("+");
@@ -1243,8 +1245,9 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 			CPoint p(	doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].x,
 						doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].y);
 			int w = doc->m_view->m_sel_net->connect[doc->m_view->m_sel_id.i].vtx[doc->m_view->m_sel_id.ii].via_w;
+
 			clearance += w / 2;
-			for (int ia = doc->m_view->m_sel_net->nareas-1; ia >= 0; ia--)
+			for (int ia = doc->m_view->m_sel_net->nareas - 1; ia >= 0; ia--)
 			{
 				CPolyLine* poly = doc->m_view->m_sel_net->area[ia].poly;
 				int pw = poly->GetW();
@@ -1252,9 +1255,10 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 				if (max_w > (pw / 2))
 					cl = clearance + max_w;
 				int dist = poly->GetDistance(p.x, p.y, p.x + 10, p.y + 10);
-				if (dist < abs(cl))
+				if (w && dist < abs(cl))
 				{
 					doc->m_view->SaveUndoInfoForArea(doc->m_view->m_sel_net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, doc->m_undo_list);
+					cl += NM_PER_MIL;
 					poly->AppendCorner(p.x, p.y + cl, 1, 0);
 					poly->AppendCorner(p.x + cl, p.y, 1, 0);
 					poly->AppendCorner(p.x, p.y - cl, 1, 0);
@@ -1263,8 +1267,8 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 					if (max_w < (pw / 2))
 						max_w = (pw / 2);
 					doc->m_nlist->ClipAreaPolygon(doc->m_view->m_sel_net, ia, -1, 0, 0, 1);
+					ia = min(ia, doc->m_view->m_sel_net->nareas); // update index!
 					doc->m_dlg_log->AddLine("+");
-					ia = min(ia, doc->m_view->m_sel_net->nareas - 1);
 				}
 				else
 					doc->m_dlg_log->AddLine("--");

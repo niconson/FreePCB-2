@@ -7054,6 +7054,7 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 				m_dlg_log->AddLine( str );
 				m_dlg_log->UpdateWindow();
 				int ret = m_nlist->ClipAreaPolygon( net, ia, -1, FALSE, FALSE, TRUE );
+				ia = min(ia, net->nareas - 1); // update index!
 				if( ret == 1 )
 				{
 					str.Format( "\r\n    area %d is self-intersecting, areas will be renumbered", ia+1 );
@@ -7110,6 +7111,7 @@ void CFreePcbDoc::OnToolsCheckCopperAreas()
 				}
 				int nAreas = 0;
 				ret = m_nlist->ClipAreaPolygon( net, ia, -1, FALSE, FALSE, TRUE, &nAreas );
+				ia = min(ia, net->nareas - 1); // update index!
 				if( ret == INT_MAX )
 				{
 					str.Format( ": incomplete check" );

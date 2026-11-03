@@ -2424,9 +2424,14 @@ void CFreePcbView::OnLButtonUp(UINT nFlags, CPoint point)
 					m_Doc->m_dlist->StopDragging();
 					int n_old_areas = m_sel_net->area.GetSize();
 					int m_old_merge = poly->GetMerge();
+
+					// ClipAreaPolygon
 					int ret = m_Doc->m_nlist->ClipAreaPolygon( m_sel_net, m_sel_ia, -1, FALSE, FALSE  );
+					m_sel_ia = min(m_sel_ia, m_sel_net->nareas - 1); // update index!
+
 					// update pointer
 					poly = m_sel_net->area[m_sel_ia].poly;
+
 					// set merge
 					poly->SetMerge( m_old_merge );
 					if( fRepour )
@@ -3754,10 +3759,14 @@ void CFreePcbView::OnRButtonDown(UINT nFlags, CPoint point)
 		m_Doc->m_nlist->CompleteArea( m_sel_net, m_sel_ia, m_polyline_style );
 		CPolyLine * poly = m_sel_net->area[m_sel_id.i].poly;
 		int m_old_merge = poly->GetMerge();
+
 		// ClipAreaPolygon
 		int ret = m_Doc->m_nlist->ClipAreaPolygon( m_sel_net, m_sel_ia, -1, FALSE, FALSE  );
+		m_sel_ia = min(m_sel_ia, m_sel_net->nareas - 1); // update index!
+
 		// update pointer
 		poly = m_sel_net->area[m_sel_ia].poly;
+
 		// set merge
 		poly->SetMerge( m_old_merge );
 		if( fRepour )
@@ -23384,6 +23393,7 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 
 void CFreePcbView::OnCopperIsolate()
 {
+	m_Doc->m_dlg_log->AddLine("\r\n");
 	CopperIsolate(m_Doc);
 	m_Doc->m_dlg_log->AddLine(" (On Copper Isolate)\r\n");
 }
@@ -23392,13 +23402,13 @@ void CFreePcbView::OnCopperIsolateConnect()
 {
 	int gap = 0;
 	CString str;
+	m_Doc->m_dlg_log->AddLine("\r\n");
 	for (int i = 0; i < m_sel_con.nsegs; i++)
 	{
 		m_sel_id.ii = i;
 		gap = CopperIsolate(m_Doc, gap);
 		if (i == 0)
 		{
-			m_Doc->m_dlg_log->AddLine("\r\n");
 			m_Doc->m_dlg_log->ShowWindow(SW_SHOW);
 			m_Doc->m_dlg_log->BringWindowToTop();
 		}
