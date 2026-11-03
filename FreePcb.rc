@@ -497,7 +497,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Режим статической подсветки", ID_STATIC_HIGHLIGHT
         MENUITEM SEPARATOR
-        MENUITEM "Изолировать от медного полигона", ID_COPPER_ISOLATE
+        MENUITEM "Изолировать сегмент от медного полигона", ID_COPPER_ISOLATE
+        MENUITEM "Изолировать коннект от медного полигона", ID_COPPER_ISOLATE_CONN
     END
     POPUP "Ratline"
     BEGIN

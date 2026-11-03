@@ -106,6 +106,7 @@ public:
 	void ApproximateAllArcSides();
 
 	// access functions
+	int GetDistance(int x, int y, int xn, int yn);
 	int GetLength();
 	int GetSel(int i=-1);
 	int GetSideSel();

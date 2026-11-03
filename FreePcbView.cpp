@@ -289,6 +289,7 @@ ON_COMMAND(ID_MBO_8, OnMobileBoardOutline9)
 ON_COMMAND(ID_MBO_9, OnMobileBoardOutline10)
 ON_COMMAND(ID_MBO_10, OnMobileBoardOutline11)
 ON_COMMAND(ID_COPPER_ISOLATE, OnCopperIsolate)
+ON_COMMAND(ID_COPPER_ISOLATE_CONN, OnCopperIsolateConnect)
 //
 //ON_UPDATE_COMMAND_UI_RANGE(1, ID_ADD_POLYLINE, OnRangeCmds)
 //ON_UPDATE_COMMAND_UI_RANGE(ID_ADD_GRAPHICLINE, ID_MAX_NUM_COMMANDS, OnRangeCmds)
@@ -23384,4 +23385,37 @@ void CFreePcbView::MobileBoardOutline(int Frez, int n_holes, int d_holes)
 void CFreePcbView::OnCopperIsolate()
 {
 	CopperIsolate(m_Doc);
+	m_Doc->m_dlg_log->AddLine(" (On Copper Isolate)\r\n");
+}
+
+void CFreePcbView::OnCopperIsolateConnect()
+{
+	int gap = 0;
+	CString str;
+	for (int i = 0; i < m_sel_con.nsegs; i++)
+	{
+		m_sel_id.ii = i;
+		gap = CopperIsolate(m_Doc, gap);
+		if (i == 0)
+		{
+			m_Doc->m_dlg_log->AddLine("\r\n");
+			m_Doc->m_dlg_log->ShowWindow(SW_SHOW);
+			m_Doc->m_dlg_log->BringWindowToTop();
+		}
+		str.Format(" processing segment %d of %d\r\n", i, m_sel_con.nsegs);
+		m_Doc->m_dlg_log->AddLine(str);
+		m_Doc->m_dlg_log->UpdateWindow();
+	}
+	m_sel_id.sst = ID_VERTEX;
+	m_cursor_mode = CUR_VTX_SELECTED;
+	for (int i = 0; i < m_sel_con.nsegs; i++)
+	{
+		m_sel_id.ii = i+1;
+		gap = CopperIsolate(m_Doc, gap);
+		str.Format(" processing vertex %d of %d\r\n", i, m_sel_con.nsegs);
+		m_Doc->m_dlg_log->AddLine(str);
+		m_Doc->m_dlg_log->UpdateWindow();
+	}
+	m_Doc->m_dlg_log->AddLine("************ SUCCESSFULLY **********\r\n");
+	m_Doc->m_dlg_log->UpdateWindow();
 }

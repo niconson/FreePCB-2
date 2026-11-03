@@ -1389,6 +1389,26 @@ int CPolyLine::GetLength()
 	return d;
 }
 
+int CPolyLine::GetDistance(int x, int y, int xn, int yn)
+{
+	int out = INT_MAX;
+	int m_nsides = GetClosed() ? m_ncorners : (m_ncorners - 1);
+	for (int i = 0; i < m_nsides; i++)
+	{
+		int n = GetIndexCornerNext(i);
+		int st = GetSideStyle(i);
+		int w = GetW();
+		int gx1 = corner[i].x;
+		int gy1 = corner[i].y;
+		int gx2 = corner[n].x;
+		int gy2 = corner[n].y;
+		int p1 = 0, p2 = 0;
+		int d = GetClearanceBetweenSegments(gx1,gy1,gx2,gy2,st,w,x,y,xn,yn,0,0,INT_MAX/10, &p1,&p2);
+		out = min(out, d);
+	}
+	return out;
+}
+
 int CPolyLine::GetSel(int i)
 {
 	if( i >= select_c.GetSize() )
