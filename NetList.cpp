@@ -800,6 +800,15 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 	int aW =	thisPoly->GetW();
 	int aM =	thisPoly->GetMerge();
 	int aM_cl = m_ml->GetClearance(aM);
+	if (aM_cl)
+	{
+		int ret = AfxMessageBox(G_LANGUAGE == 0?"This copper area is part of a Merge, which has its "\
+			"own clearance settings.Do you want to use these clearances during the pour ? ":\
+			"Ёта медна€ область €вл€етс€ частью объединени€ (Merge), дл€ которого заданы "\
+			"собственные параметры зазоров. ’отите ли вы использовать эти зазоры при заливке?", MB_YESNO);
+		if (ret == IDNO)
+			aM_cl = 0;
+	}
 	if( getbit( selection_flags, MC_VALIDATE ) )
 	{
 		aW = 0;
@@ -855,7 +864,7 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 						SwellRect( &gR, Clearance );
 						if( RectsIntersection( aR, gR ) != -1 )
 						{
-							if( crop_p->GetMerge() >= 0 )
+							if( crop_p->GetMerge() >= 0 && crop_p->GetMerge() != aM)
 							{
 								int mer_cl = m_ml->GetClearance(crop_p->GetMerge());
 								if( mer_cl > 0 )
@@ -915,7 +924,7 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 					int mer_cl = m_ml->GetClearance(n->connect[i].m_merge);
 					if( mer_cl < 0 )
 						mer_cl = 0;
-					if( aM_cl > 0 )
+					if( aM_cl > 0 || n->connect[i].m_merge == aM )
 						mer_cl = aM_cl;
 					//CArray<CPoint> polyconn;
 					//if( GenPolygonConnect( n, i, aL, mer_cl?mer_cl:seg_cl, &polyconn ) > 2 )
@@ -1064,7 +1073,7 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 			int mer_cl = m_ml->GetClearance(p->m_merge);
 			if( p->m_merge < 0 )
 				mer_cl = 0;
-			if( aM_cl > 0 )
+			if( aM_cl > 0 || p->m_merge == aM )
 				mer_cl = aM_cl;
 			if( getbit( selection_flags, MC_PADS ) || getbit( selection_flags, MC_HOLES ) )
 			{
@@ -1346,8 +1355,12 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 			{
 				int mer_cl = 0;
 				cpart * dl_p = (cpart*)dl->ptr;
-				if( dl_p )
-					mer_cl = m_ml->GetClearance( dl_p->m_merge );
+				if (dl_p)
+				{
+					mer_cl = m_ml->GetClearance(dl_p->m_merge);
+					if (dl_p->m_merge == aM)
+						mer_cl = 0;
+				}
 				if( aM_cl > 0 )
 					mer_cl = aM_cl;
 				int npts = arr->GetSize();
@@ -1423,8 +1436,12 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 			{
 				int mer_cl = 0;
 				CText * dl_p = (CText*)dl->ptr;
-				if( dl_p )
-					mer_cl = m_ml->GetClearance( dl_p->m_merge );
+				if (dl_p)
+				{
+					mer_cl = m_ml->GetClearance(dl_p->m_merge);
+					if (dl_p->m_merge == aM)
+						mer_cl = 0;
+				}
 				if( aM_cl > 0 )
 					mer_cl = aM_cl;
 				int npts = arr->GetSize();
