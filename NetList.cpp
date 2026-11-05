@@ -5825,8 +5825,7 @@ void CNetList::SetAreaConnections( cnet * net, int iarea, BOOL HIGHLIGHT)
 	area->vcon.SetSize(0);
 	area->vtx.SetSize(0);
 	area->dl_via_thermal.SetSize(0);
-	if( area->poly->GetHatch() == CPolyLine::NO_HATCH && area->poly->GetW() == 0 )
-		return;//  area Ghost
+
 	// test all pins in net for being inside copper area 
 	id id( ID_NET, ID_AREA, iarea, ID_PIN_X );
 	int area_layer = area->poly->GetLayer();	// layer of copper area
@@ -5835,9 +5834,10 @@ void CNetList::SetAreaConnections( cnet * net, int iarea, BOOL HIGHLIGHT)
 	CString part_pin_name;
 	RECT A;
 	A =	area->poly->GetBounds();
-	int bEnableChangeMerge = !(area->poly->GetMerge() + 1);
+	BOOL  bEnableChangeMerge = !(area->poly->GetMerge() + 1);
 	//if( area->poly->GetHatch() == CPolyLine::DIAGONAL_FULL )
-		bEnableChangeMerge = 0;
+	//	bEnableChangeMerge = FALSE;
+	int np = 0;
 	for( int ip=0; ip<net->npins; ip++ )
 	{
 		part = (cpart*)net->pin[ip].part;
@@ -5875,6 +5875,18 @@ void CNetList::SetAreaConnections( cnet * net, int iarea, BOOL HIGHLIGHT)
 					// see if pad is inside copper area
 					if( m_dlist && area->poly->TestPointInside( p.x, p.y ) )
 					{
+						np++;
+						// set merge
+						if (area_layer <= LAY_BOTTOM_COPPER && bEnableChangeMerge)
+						{
+							if (np == 1)
+								area->poly->SetMerge(part->m_merge);
+							if (area->poly->GetMerge() != part->m_merge)
+								area->poly->SetMerge(-1);
+						}
+						if (area->poly->GetHatch() == CPolyLine::NO_HATCH && area->poly->GetW() == 0)
+							continue;
+
 						// pin is inside copper area
 						cnet * part_pin_net = part->pin[pin_index].net;
 						if (HIGHLIGHT) 
@@ -5907,20 +5919,13 @@ void CNetList::SetAreaConnections( cnet * net, int iarea, BOOL HIGHLIGHT)
 							dl->visible = 0;	
 						area->dl_thermal.SetAtGrow(area->npins, dl );
 						area->npins++;
-						
-						// set merge
-						if( area_layer <= LAY_BOTTOM_COPPER && bEnableChangeMerge )
-						{
-							if( area->npins == 1 )
-								area->poly->SetMerge( part->m_merge );
-							if( area->poly->GetMerge() != part->m_merge )
-								area->poly->SetMerge( -1 );
-						}
 					}
 				}
 			}
 		}
 	}
+	if( area->poly->GetHatch() == CPolyLine::NO_HATCH && area->poly->GetW() == 0 )
+		return;//  area Ghost
 	// test all vias in traces for being inside copper area,
 	// also test all end-vertices of non-branch stubs for being on same layer
 	id.sst = ID_STUB_X;
