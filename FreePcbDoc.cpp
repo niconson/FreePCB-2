@@ -13170,7 +13170,7 @@ void CFreePcbDoc::DRC()
 				if(pad_wng)
 				{
 					// WARNING
-					str.Format( "is Warning: The polyline connects unconnected pin to net \"%s\".\r\n", part->NetPtr[io]->name );
+					str.Format( "is Warning: The polyline connects unconnected pin to net \"%s\".\r\n", part->NetPtr[io]->name.GetBuffer() );
 					if( m_dlg_log )
 						m_dlg_log->AddLine( str );
 				}
@@ -13186,7 +13186,7 @@ void CFreePcbDoc::DRC()
 					if( GID.type == ID_NET )
 					{
 						dre = m_drelist->Add( nerrors, DRError::SEG_OP, &str, 
-											&part->NetPtr[io]->name, &part->ref_des, 
+											&badN->name, &part->ref_des, 
 											GID, id_op, xx, yy, xx, yy, 0, LAY_DRC_ERROR );
 						//
 						if( GID.st == ID_AREA )
