@@ -5813,18 +5813,22 @@ int CPartList::GetPinMerge(cpart* part, int pin)
 	cnet* n = part->pin[pin].net;
 	for (int i = 0; i < n->nconnects; i++)
 	{
+		if (n->connect[i].m_merge == m)
+			continue;
 		if (n->npins < n->connect[i].start_pin || n->npins < n->connect[i].end_pin)
 			continue;
 
 		// test
 		if(n->pin[n->connect[i].start_pin].part == part)
 			if (n->connect[i].start_pin_shape == pin)
-				if (n->connect[i].m_merge != m)
-					return -1;
+				return -1;
+
+		if (n->connect[i].end_pin < 0)
+			continue;
+
 		if (n->pin[n->connect[i].end_pin].part == part)
 			if( n->connect[i].end_pin_shape == pin)
-				if (n->connect[i].m_merge != m)
-					return -1;
+				return -1;
 	}
 	return m;
 }
