@@ -24,18 +24,18 @@ m_client_rect_left: 110
 m_client_rect_right: 1504
 m_client_rect_bottom: 673
 m_client_rect_top: 0
-m_org_x: 82019
-m_org_y: 6062
-m_scale_factor: 64786
+m_org_x: 86742
+m_org_y: 9844
+m_scale_factor: 49835
 part_line_visible: 1
 merge_shown: 1
 pdf_pin1: -0.700000
 pdf_use_font: -635000 635000 -635000
 units: MM
 
-m_sel_mask: 2147483645
-m_visible_layers: 482175
-m_top_layer: 14
+m_sel_mask: 2147483647
+m_visible_layers: 440063
+m_top_layer: 13
 m_grid_style: 0
 visible_grid_spacing: 25000000.000000
   visible_grid_item: 100mil
@@ -182,7 +182,7 @@ annular_ring_for_pins: 200000
 annular_ring_for_vias: 200000
 shrink_paste_mask: 0
 cam_flags: 96
-crop_flags: 27903
+crop_flags: 25855
 cam_layers: 1048639
 cam_drill_file: 1
 cam_units: 1
@@ -202,7 +202,7 @@ drc_trace_trace: 199000
 drc_hole_copper: 200000
 drc_annular_ring_pins: 199000
 drc_annular_ring_vias: 199000
-drc_board_edge_copper: 400000
+drc_board_edge_copper: 300000
 drc_board_edge_hole: 0
 drc_hole_hole: 600000
 drc_copper_copper: 200000
@@ -224,16 +224,16 @@ n_copper_layers: 2
   layer_info: "тестирование" 4 255 0 0 1 128 64 0 0
   layer_info: "контур платы" 5 0 115 60 1 0 0 0 1
   layer_info: "скрайбинг (V)" 6 255 0 128 1 127 127 127 0
-  layer_info: "заметки верх" 7 128 64 0 0 255 0 0 0
-  layer_info: "заметки низ" 8 128 64 0 1 128 128 128 0
+  layer_info: "заметки верх" 7 128 64 0 1 255 0 0 0
+  layer_info: "заметки низ" 8 128 64 0 0 128 128 128 0
   layer_info: "эл. связи" 9 0 0 128 1 0 0 160 0
-  layer_info: "шёлк верх" 10 178 178 178 0 255 255 255 1
-  layer_info: "шёлк низ" 11 255 170 170 1 255 255 255 0
+  layer_info: "шёлк верх" 10 178 178 178 1 255 255 255 1
+  layer_info: "шёлк низ" 11 255 170 170 0 255 255 255 0
   layer_info: "отверстия" 12 235 235 235 1 255 255 255 0
-  layer_info: "вид верх" 13 77 77 122 0 230 230 230 0
-  layer_info: "вид низ" 14 222 111 111 1 127 127 127 0
-  layer_info: "медь верх" 15 40 165 90 0 47 255 182 1
-  layer_info: "медь низ" 16 30 90 50 1 10 100 20 0
+  layer_info: "вид верх" 13 77 77 122 1 230 230 230 0
+  layer_info: "вид низ" 14 222 111 111 0 127 127 127 0
+  layer_info: "медь верх" 15 40 165 90 1 47 255 182 1
+  layer_info: "медь низ" 16 30 90 50 0 10 100 20 0
 
 [footprints]
 
@@ -250,20 +250,15 @@ n_copper_layers: 2
 
 [nets]
 
-net: "GND_B" 0 0 1 0 0 0 1
-  area: 1 4 16 0 0 2 -1 0
-    corner: 1 157194870 18394667 0 0
-    corner: 2 133380463 18394667 0 0
-    corner: 3 133380463 38215597 0 0
-    corner: 4 157194864 38215596 0 1
-
 [texts]
+
+text: "123" 135000000 20000000 15 0 0 1000000 100000 0 -1 3473465
 
 [merges]
 
-  merge: "220" 3000000
+  merge: "220" 5000000
   merge: "1V6" 0
-  merge: "MODBUS" 6000000
+  merge: "MODBUS" 7000000
   merge: "ТРОС2" 0
   merge: "ТРОС3" 0
   merge: "Tenz-1" 0

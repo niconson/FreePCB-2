@@ -5802,3 +5802,29 @@ CPoint CPartList::AlignByRatline( cpart * PART, int i, BOOL Validate, CPoint EN4
 	}
 	return CPoint(0,0);
 }
+
+int CPartList::GetPinMerge(cpart* part, int pin)
+{
+	int m = part->m_merge;
+	if (pin >= part->pin.GetSize())
+		return m;
+	if (part->pin[pin].net == NULL)
+		return m;
+	cnet* n = part->pin[pin].net;
+	for (int i = 0; i < n->nconnects; i++)
+	{
+		if (n->npins < n->connect[i].start_pin || n->npins < n->connect[i].end_pin)
+			continue;
+
+		// test
+		if(n->pin[n->connect[i].start_pin].part == part)
+			if (n->connect[i].start_pin_shape == pin)
+				if (n->connect[i].m_merge != m)
+					return -1;
+		if (n->pin[n->connect[i].end_pin].part == part)
+			if( n->connect[i].end_pin_shape == pin)
+				if (n->connect[i].m_merge != m)
+					return -1;
+	}
+	return m;
+}

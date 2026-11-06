@@ -258,6 +258,7 @@ public:
 	CPoint GetCentroidPoint(  cpart * part );
 	CPoint GetGluePoint(  cpart * part, int iglue );
 	int GetPinLayer( cpart * part, int pin_index );
+	int GetPinMerge( cpart* part, int pin );
 	cnet * GetPinNet( cpart * part, CString * pin_name );
 	cnet * GetPinNet( cpart * part, int pin_index );
 	void SetPinAnnularRing( int ring ){ m_annular_ring = ring; };

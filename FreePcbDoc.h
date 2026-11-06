@@ -161,7 +161,7 @@ public:
 	void DRC();
 	int GetGerberPathes(CString Path);
 	int CheckUpdates();
-	cnet * DrcTestforDlElement( dl_element * el, id * ID, int * dist, int * m_cx, int * m_cy, int * wFLAG, cpart ** badP, CText ** badT, cnet ** badN );
+	cnet * DrcTestforDlElement( dl_element * el, id * ID, int m_m, int * dist, int * m_cx, int * m_cy, int * wFLAG, cpart ** badP, CText ** badT, cnet ** badN );
 	int RemovingZeroLengthOrColinearSides(CPolyLine* ap);
 
 #ifdef _DEBUG

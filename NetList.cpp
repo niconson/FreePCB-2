@@ -790,7 +790,7 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 									int cam_flags, 
 									int selection_flags )
 {	
-	int PERCENT = 50;
+	int PERCENT = 30;
 	//
 	CPolyLine * thisPoly = area_net->area[ia].poly;
 	//
@@ -1070,15 +1070,18 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 	{
 		if( p->shape )
 		{
-			int mer_cl = m_ml->GetClearance(p->m_merge);
-			if( p->m_merge < 0 )
-				mer_cl = 0;
-			if( aM_cl > 0 || p->m_merge == aM )
-				mer_cl = aM_cl;
 			if( getbit( selection_flags, MC_PADS ) || getbit( selection_flags, MC_HOLES ) )
 			{
 				for( int ip=0; ip<p->shape->GetNumPins(); ip++ )
 				{
+					int mer_cl = m_ml->GetClearance(m_plist->GetPinMerge(p, ip));
+					if (p->m_merge < 0)
+						mer_cl = 0;
+					if (aM_cl > 0 || p->m_merge == aM)
+						mer_cl = aM_cl;
+					//
+					// 
+					// 
 					//
 					RECT pb = p->pin[ip].bounds;
 					if( mer_cl > 0 )
@@ -1184,12 +1187,13 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 									if( pad_w )
 									{
 										if( pad_r )
-											pad_r -= (pad_r/20);
-								 		CPoint CONT[20];
+											pad_r -= (pad_r/10);
+										int mid_wid = (abs(pad_l + (Clearance * 2)) + abs(pad_w + (Clearance * 2))) / 2;
+								 		CPoint CONT[40];
 										int npo = Gen_RndRectPoly(	pad_x, pad_y, pad_l+Clearance*2, pad_w+Clearance*2, 
-																	(pad_r+Clearance<=NM_PER_MIL)?0:(pad_type==PAD_OCTAGON?pad_r+Clearance/2.0:pad_r+Clearance), 
-																	-pad_angle, CONT, 
-																	(pad_r+Clearance<=NM_PER_MIL)?4:(pad_type==PAD_OCTAGON?8:20) );
+											(pad_r+Clearance<=NM_PER_MIL)?0:(pad_type==PAD_OCTAGON?pad_r+Clearance/2.0:pad_r+Clearance), 
+											-pad_angle, CONT, 
+											(pad_r + Clearance <= NM_PER_MIL) ? 4 : (pad_type == PAD_OCTAGON ? 8 : min(38, 20 + (mid_wid / NM_PER_MM))));
 										//
 										g_v_list->num_vertices = npo;
 										g_v_list->vertex = (gpc_vertex*)calloc( npo, 2*sizeof(double) );	
@@ -1257,6 +1261,12 @@ int CNetList::AddCutoutsForArea(	cnet * area_net,
 			}
 			if( getbit( selection_flags, MC_SEGS ) )
 			{
+				int mer_cl = m_ml->GetClearance(p->m_merge);
+				if (p->m_merge < 0)
+					mer_cl = 0;
+				if (aM_cl > 0 || p->m_merge == aM)
+					mer_cl = aM_cl;
+				//
 				for( int io=0; io<p->m_outline_stroke.GetSize(); io++ )
 				{
 					RECT dl_r;

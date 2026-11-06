@@ -9954,6 +9954,11 @@ void CFreePcbDoc::DRC()
 	MAX_CL = max( m_dr.copper_copper, MAX_CL );
 	MAX_CL = max( m_dr.board_edge_hole, MAX_CL );
 	MAX_CL = max( m_dr.board_edge_copper, MAX_CL );
+	for (int itm = 0; itm < m_mlist->GetSize(); itm++)
+	{
+		int g_cl = m_mlist->GetClearance(itm);
+		MAX_CL = max(g_cl, MAX_CL);
+	}
 	MAX_CL *= 2;
 	CArray<int> ArHoles;
 	ArHoles.SetSize(0);
@@ -11390,6 +11395,10 @@ void CFreePcbDoc::DRC()
 			for( int ic=0; ic<net->nconnects; ic++ )
 			{
 				cconnect * c = &net->connect[ic];
+				int connM = c->m_merge;
+				int m_cl = 0;
+				if( connM >= 0 )
+					m_cl = m_mlist->GetClearance(connM);
 				//
 				// iterate through all nets again
 				//
@@ -11411,13 +11420,13 @@ void CFreePcbDoc::DRC()
 					{
 						RECT arct2;
 						arct2 = net2->area[iar].poly->GetBounds();
+						SwellRect(&arct2, MAX_CL);
 						carea * area = &net2->area[iar];
 
 						// merge clearance
 						int areaM = area->poly->GetMerge();
-						int m_cl = 0;
-						if( areaM >= 0 )
-							m_cl = m_mlist->GetClearance( areaM );
+						int a_cl = m_mlist->GetClearance(areaM);
+						int max_m_cl = max(m_cl, a_cl);
 
 						// look for possible clearance violations between c and arct2
 						if( c->min_x     - arct2.right > cl )
@@ -11504,7 +11513,7 @@ void CFreePcbDoc::DRC()
 									int d = GetClearanceBetweenSegments( xc1, yc1, xc2, yc2, side_style, a_w,
 										xs1, ys1, xs2, ys2, CPolyLine::STRAIGHT, seg_w, MAX_CL, &x, &y );
 									AreaCopperHsFull = min( AreaCopperHsFull, d );
-									if( d < (m_cl?m_cl:m_dr.copper_copper) )
+									if( d < ((max_m_cl && connM != areaM) ? max_m_cl :m_dr.copper_copper) )
 									{
 										::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
 										::MakeCStringFromDimension( &x_str, x, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -11520,6 +11529,7 @@ void CFreePcbDoc::DRC()
 											nerrors++;
 											if( m_dlg_log )
 												m_dlg_log->AddLine( str );
+											break;
 										}
 									}
 								}
@@ -11545,7 +11555,7 @@ void CFreePcbDoc::DRC()
 									int d = GetClearanceBetweenSegments( xc1, yc1, xc2, yc2, side_style, a_w,
 										xs2, ys2, xs2, ys2, CPolyLine::STRAIGHT, via_w, MAX_CL, &x, &y );
 									AreaCopperHsFull = min( AreaCopperHsFull, d );
-									if( d < (m_cl?m_cl:m_dr.copper_copper) )
+									if( d < ((max_m_cl && connM != areaM) ? max_m_cl :m_dr.copper_copper) )
 									{
 										::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
 										::MakeCStringFromDimension( &x_str, x, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -11560,6 +11570,7 @@ void CFreePcbDoc::DRC()
 											nerrors++;
 											if( m_dlg_log )
 												m_dlg_log->AddLine( str );
+											break;
 										}
 									}
 								}
@@ -11572,7 +11583,7 @@ void CFreePcbDoc::DRC()
 									int d = GetClearanceBetweenSegments( xc1, yc1, xc2, yc2, side_style, a_w,
 										xs2, ys2, xs2, ys2, CPolyLine::STRAIGHT, vh, MAX_CL, &x, &y );
 									HoleCopper = min( HoleCopper, d );
-									if( d < (m_cl?m_cl:m_dr.hole_copper) )
+									if( d < ((max_m_cl && connM != areaM) ? max_m_cl :m_dr.hole_copper) )
 									{
 										::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
 										::MakeCStringFromDimension( &x_str, x, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -11588,10 +11599,19 @@ void CFreePcbDoc::DRC()
 											nerrors++;
 											if( m_dlg_log )
 												m_dlg_log->AddLine( str );
+											break;
 										}
 									}
 								}
 							}
+							if (nerrors > MAXERRORS)
+							{
+								goto cancel_verification;
+							}
+						}
+						if (nerrors > MAXERRORS)
+						{
+							goto cancel_verification;
 						}
 					} 
 					//
@@ -11997,6 +12017,7 @@ void CFreePcbDoc::DRC()
 				carea * a = &net->area[ia];
 				RECT aRect;
 				aRect = a->poly->GetBounds();
+				SwellRect(&aRect, MAX_CL);
 				int a_w = a->poly->GetW();
 
 				// ignore 
@@ -12026,6 +12047,7 @@ void CFreePcbDoc::DRC()
 					{
 						RECT a2Rect;
 						a2Rect = a2->poly->GetBounds();
+						SwellRect( &a2Rect, MAX_CL);
 						int a2_w = a2->poly->GetW();
 						// ignore 
 						if( a2->poly->GetHatch() == CPolyLine::NO_HATCH && a2_w == 0 )
@@ -12117,6 +12139,10 @@ void CFreePcbDoc::DRC()
 						for( int ic=0; ic<net2->nconnects; ic++ )
 						{
 							cconnect * c = &net2->connect[ic];
+							int connM = c->m_merge;
+							int c_cl = m_mlist->GetClearance(connM);
+							int max_m_cl = max(m_cl, c_cl);
+
 							// look for possible clearance violations between c and arct2
 							if( c->min_x     - aRect.right > cl )
 								continue;	// no, next area
@@ -12197,7 +12223,7 @@ void CFreePcbDoc::DRC()
 										int d = GetClearanceBetweenSegments( xc1, yc1, xc2, yc2, side_style, a_w,
 											xs1, ys1, xs2, ys2, CPolyLine::STRAIGHT, seg_w, MAX_CL, &x, &y );
 										AreaCopperHsFull = min( AreaCopperHsFull, d );
-										if( d < (m_cl?m_cl:m_dr.copper_copper) )
+										if( d < ((max_m_cl && connM != areaM) ? max_m_cl :m_dr.copper_copper) )
 										{
 											::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
 											::MakeCStringFromDimension( &x_str, x, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -12213,6 +12239,7 @@ void CFreePcbDoc::DRC()
 												nerrors++;
 												if( m_dlg_log )
 													m_dlg_log->AddLine( str );
+												break;
 											}
 										}
 									}
@@ -12238,7 +12265,7 @@ void CFreePcbDoc::DRC()
 										int d = GetClearanceBetweenSegments( xc1, yc1, xc2, yc2, side_style, a_w,
 											xs2, ys2, xs2, ys2, CPolyLine::STRAIGHT, via_w, MAX_CL, &x, &y );
 										AreaCopperHsFull = min( AreaCopperHsFull, d );
-										if( d < (m_cl?m_cl:m_dr.copper_copper) )
+										if( d < ((max_m_cl && connM != areaM) ? max_m_cl :m_dr.copper_copper) )
 										{
 											::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
 											::MakeCStringFromDimension( &x_str, x, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -12253,6 +12280,7 @@ void CFreePcbDoc::DRC()
 												nerrors++;
 												if( m_dlg_log )
 													m_dlg_log->AddLine( str );
+												break;
 											}
 										}
 									}
@@ -12265,7 +12293,7 @@ void CFreePcbDoc::DRC()
 										int d = GetClearanceBetweenSegments( xc1, yc1, xc2, yc2, side_style, a_w,
 											xs2, ys2, xs2, ys2, CPolyLine::STRAIGHT, vh, MAX_CL, &x, &y );
 										HoleCopper = min( HoleCopper, d );
-										if( d < (m_cl?m_cl:m_dr.hole_copper) )
+										if( d < ((max_m_cl && connM != areaM) ? max_m_cl :m_dr.hole_copper) )
 										{
 											::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
 											::MakeCStringFromDimension( &x_str, x, m_units, FALSE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -12281,10 +12309,19 @@ void CFreePcbDoc::DRC()
 												nerrors++;
 												if( m_dlg_log )
 													m_dlg_log->AddLine( str );
+												break;
 											}
 										}
 									}
 								}
+								if (nerrors > MAXERRORS)
+								{
+									goto cancel_verification;
+								}
+							}
+							if (nerrors > MAXERRORS)
+							{
+								goto cancel_verification;
 							}
 						}
 					}
@@ -12315,6 +12352,12 @@ void CFreePcbDoc::DRC()
 						// test for same layer
 						if( a2Layer == a_layer ) 
 						{
+							// merge clearance
+							int areaM2 = a2->poly->GetMerge();
+							int m_cl2 = 0;
+							if (areaM2 >= 0)
+								m_cl2 = m_mlist->GetClearance(areaM2);
+
 							// test for unpoured polygons inside cutouts of filled polygon
 							if( a->poly->GetHatch() == CPolyLine::DIAGONAL_FULL &&
 								a2->poly->GetHatch() != CPolyLine::DIAGONAL_FULL &&
@@ -12481,7 +12524,8 @@ void CFreePcbDoc::DRC()
 												if (a->poly->GetHatch() == CPolyLine::DIAGONAL_FULL)
 													AreaCopperHsFull = min( AreaCopperHsFull, d );
 											}
-											if( d < (m_cl?m_cl:m_dr.copper_copper) )
+											int max_m_cl = max(m_cl, m_cl2);
+											if (d < ((max_m_cl && areaM != areaM2) ? max_m_cl : m_dr.copper_copper))
 											{
 												// COPPERAREA_COPPERAREA error
 												::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -12543,6 +12587,7 @@ void CFreePcbDoc::DRC()
 						{
 							RECT rct;
 							m_plist->GetPartBoundingRect(prt, &rct);
+							SwellRect(&rct, MAX_CL);
 							if ( rct.left - aRect.right > m_dr.copper_copper+a_w )
 								continue;
 							if ( aRect.left - rct.right > m_dr.copper_copper+a_w )
@@ -12554,6 +12599,10 @@ void CFreePcbDoc::DRC()
 							int npins = prt->shape->GetNumPins();
 							for (int ipin=0; ipin<npins; ipin++)
 							{
+								int p_m = m_plist->GetPinMerge(prt, ipin);
+								int p_cl = m_mlist->GetClearance(p_m);
+								int max_m_cl = max(m_cl, p_cl);
+
 								// get test pad info
 								int xp, yp, wp, lp, rp, typep, holep, connectp, anglep;
 								cnet * padnet;
@@ -12603,7 +12652,7 @@ void CFreePcbDoc::DRC()
 											int d = ::GetClearanceBetweenSegmentAndPad(	arcs[nc].x, arcs[nc].y, arcs[nc+1].x, arcs[nc+1].y, a_w,
 																						typep, xp, yp, wp,lp, rp, anglep);
 											AreaCopperHsFull = min( AreaCopperHsFull, d );
-											if( d < (m_cl?m_cl:m_dr.copper_copper) )
+											if( d < ((max_m_cl && prt->m_merge != areaM)? max_m_cl :m_dr.copper_copper) )
 											{
 												// COPPERAREAFULL_COPPER error
 												::MakeCStringFromDimension( &d_str, d, m_units, TRUE, TRUE, TRUE, (m_units==MIL?1:3) );
@@ -12899,7 +12948,7 @@ void CFreePcbDoc::DRC()
 				CText * badT;
 				it->net_Ptr = NULL;
 				cnet * badN = NULL;
-				cnet * tn = DrcTestforDlElement( it->dl_el, &GID, &d, &xx, &yy, &pad_wng, &badP, &badT, &badN );
+				cnet * tn = DrcTestforDlElement( it->dl_el, &GID, it->m_merge, &d, &xx, &yy, &pad_wng, &badP, &badT, &badN );
 				if( tn )
 				{
 					it->net_Ptr = tn;
@@ -13115,7 +13164,7 @@ void CFreePcbDoc::DRC()
 				cpart * badP = part;
 				cnet *  badN = NULL;
 				CText * badT = NULL;
-				part->NetPtr[io] = DrcTestforDlElement( part->m_outline_stroke[io], &GID, &d, &xx, &yy, &pad_wng, &badP, &badT, &badN );
+				part->NetPtr[io] = DrcTestforDlElement( part->m_outline_stroke[io], &GID, part->m_merge, &d, &xx, &yy, &pad_wng, &badP, &badT, &badN );
 				if( part->NetPtr[io] )
 					part->utility = 1;
 				if(pad_wng)
@@ -13828,7 +13877,7 @@ int CFreePcbDoc::GetGerberPathes(CString Path)
 	return imenu;
 }
 
-cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, int * m_cx, int * m_cy, int * wFLAG, cpart ** badP, CText ** badT, cnet ** badN )
+cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int m_m, int * dist, int * m_cx, int * m_cy, int * wFLAG, cpart ** badP, CText ** badT, cnet ** badN )
 {
 	cpart * part_el = *badP; //  dl_element belongs to this part
 	cpart * prev_part = NULL;
@@ -13837,6 +13886,9 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 	int MAX_CL = max( m_dr.trace_trace, m_dr.copper_copper );
 	MAX_CL = max( MAX_CL, m_dr.hole_copper );
 	MAX_CL = max( MAX_CL, m_dr.pad_trace );
+	int m_cl = m_mlist->GetClearance(m_m);
+	MAX_CL = max(MAX_CL, m_cl);
+
 	*wFLAG = 0;
 	ID->type = ID_NONE;
 	cnet* NetPtr = NULL;
@@ -13872,19 +13924,30 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 						ipt++;
 					RECT LR = rect( Lx1, Ly1, Lx2, Ly2 );
 					SwellRect( &LR, (Lw/2)+m_dr.trace_trace );
+					SwellRect(&LR, m_cl);
+
 					// scanning connects
 					for( cnet * n = m_nlist->GetFirstNet(); n; n = m_nlist->GetNextNet() ) 
 					{
 						for( int ic=0; ic<n->nconnects; ic++ )
 						{
-							if( n->connect[ic].min_x - LRECT.right > m_dr.trace_trace )
+							// merge clearance
+							int connM = n->connect[ic].m_merge;
+							int c_cl = 0;
+							if (connM >= 0)
+								c_cl = m_mlist->GetClearance(connM);
+							c_cl = max(c_cl, m_cl);
+							c_cl = max(c_cl, m_dr.trace_trace);
+
+							if( n->connect[ic].min_x - LRECT.right > c_cl)
 								continue;
-							if( LRECT.left - n->connect[ic].max_x > m_dr.trace_trace )
+							if( LRECT.left - n->connect[ic].max_x > c_cl)
 								continue;
-							if( n->connect[ic].min_y - LRECT.top > m_dr.trace_trace )
+							if( n->connect[ic].min_y - LRECT.top > c_cl)
 								continue;
-							if( LRECT.bottom - n->connect[ic].max_y > m_dr.trace_trace )
+							if( LRECT.bottom - n->connect[ic].max_y > c_cl)
 								continue;
+
 							for( int iv=0; iv<n->connect[ic].nsegs; iv++ )
 							{
 								int CLay = n->connect[ic].seg[iv].layer; 
@@ -13905,6 +13968,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 										RECT vR = rect( Cx2-vW/2,Cy2-vW/2,Cx2+vW/2,Cy2+vW/2 );
 										SwellRect( &CR, vR );
 									}
+									SwellRect(&CR, MAX_CL);
 									if( RectsIntersection( LR, CR ) >= 0 )
 									{
 										// test seg
@@ -13925,7 +13989,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 													d = 0;
 											}
 										}
-										if( d < m_dr.trace_trace )
+										if( d < ((c_cl && m_m != connM) ? c_cl : m_dr.trace_trace) )
 										{
 											if( NetPtr )
 											{
@@ -13967,15 +14031,17 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 
 								// merge clearance
 								int areaM = po->GetMerge();
-								int m_cl = 0;
-								if( areaM >= 0 )
-									m_cl = m_mlist->GetClearance( areaM );
+								int a_cl = 0;
+								if (areaM >= 0)
+									a_cl = m_mlist->GetClearance(areaM);
+								a_cl = max(a_cl, m_cl);
 
 								int AL = po->GetLayer();
 								if( ( LTop && AL == LAY_TOP_COPPER ) ||
 									( LBot && AL == LAY_BOTTOM_COPPER ) )
 								{
 									RECT PR = po->GetBounds();
+									SwellRect(&PR, MAX_CL);
 									if( RectsIntersection( LR, PR ) >= 0 )
 									{
 										for( int ico=0; ico<po->GetNumCorners(); ico++ )
@@ -13989,7 +14055,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 											int xx, yy; 
 											int d = ::GetClearanceBetweenSegments( Lx1, Ly1, Lx2, Ly2, CPolyLine::STRAIGHT, Lw, 
 												Ax1, Ay1, Ax2, Ay2, st, Aw, MAX_CL, &xx, &yy );
-											if( d < (m_cl?m_cl:m_dr.copper_copper) )
+											if( d < ((a_cl && m_m != areaM)? a_cl :m_dr.copper_copper) )
 											{
 												if( NetPtr )
 												{
@@ -14036,6 +14102,13 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 								continue;
 							if( LRECT.bottom - Gpart->max_y > MAX_CL )
 								continue;
+
+							int partM = Gpart->m_merge;
+							int p_cl = 0;
+							if (partM >= 0)
+								p_cl = m_mlist->GetClearance(partM);
+							p_cl = max(p_cl, m_cl);
+
 							for( int ip=0; ip<Gs->GetNumPins(); ip++ )
 							{
 								// get pad rect
@@ -14074,7 +14147,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 										int d = ::GetClearanceBetweenSegmentAndPad( Lx1,Ly1,Lx2,Ly2, Lw,
 										PAD_ROUND, x, y, hole, hole, 0, 0 );
 										//
-										if( d < m_dr.hole_copper )
+										if( d < ((p_cl && m_m != partM) ? p_cl : m_dr.hole_copper) )
 										{
 											if( NetPtr )
 											{
@@ -14120,7 +14193,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 										int d = ::GetClearanceBetweenSegmentAndPad( Lx1,Ly1,Lx2,Ly2, Lw,
 											type, x, y, w, l, r, angle );
 										//
-										if( d < m_dr.pad_trace )
+										if( d < ((p_cl && m_m != partM) ? p_cl : m_dr.pad_trace) )
 										{
 											if( NetPtr )
 											{
@@ -14172,8 +14245,15 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 								if( ( t->m_layer == LAY_TOP_COPPER && LTop ) ||
 									( t->m_layer == LAY_BOTTOM_COPPER && LBot ))
 							 	{
+									int textM = t->m_merge;
+									int t_cl = 0;
+									if (textM >= 0)
+										t_cl = m_mlist->GetClearance(textM);
+									t_cl = max(t_cl, m_cl);
+
 									RECT tr;
 									m_dlist->Get_Rect( t->dl_sel, &tr );
+									SwellRect(&tr, MAX_CL);
 									if( RectsIntersection( LR, tr ) >= 0 )
 									{
 										int np = 4;
@@ -14188,7 +14268,7 @@ cnet * CFreePcbDoc::DrcTestforDlElement( dl_element * el, id * ID, int * dist, i
 											int d = ::GetClearanceBetweenSegmentAndPad( Lx1,Ly1,Lx2,Ly2, Lw,
 												PAD_RECT, x, y, w, l, 0, t->m_angle );
 											//
-											if( d < m_dr.trace_trace )
+											if( d < ((t_cl && m_m != textM) ? t_cl : m_dr.trace_trace) )
 											{
 												// ERROR
 												ID->Set(ID_TEXT_DEF);

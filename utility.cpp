@@ -741,8 +741,9 @@ int Gen_HollowLinePoly (int xi, int yi, int xf, int yf, int w, CPoint * OutPut, 
 
 int Gen_RndRectPoly (int x, int y, int dx, int dy, float rad, float ang, CPoint * OutPut, int npoints, float th_w )
 {
-	if( npoints%4 )
-		return 0;
+	//if( npoints%4 )
+	//	return 0;
+	npoints -= npoints % 4;
 	int npo = 0;
 	double angle = 0.0;
 	if( th_w == 0 )
