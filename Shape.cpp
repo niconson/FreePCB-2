@@ -131,7 +131,7 @@ void CShape::Clear()
 	m_author = "";
 	m_package = "";
 	m_desc = "";
-	m_units = MIL;
+	m_units = MM;
 	selection.left = selection.bottom = INT_MAX;
 	selection.right = selection.top = INT_MIN;
 	m_ref_size = 100*NM_PER_MIL;
