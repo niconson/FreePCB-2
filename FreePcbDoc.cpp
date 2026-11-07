@@ -14726,6 +14726,13 @@ void CFreePcbDoc::AddViaGrid()
 		int ok = dlg.DoModal();
 		if( ok == IDOK )
 		{
+			m_dlg_log->ShowWindow(SW_SHOW);
+			m_dlg_log->BringWindowToTop();
+			CString log;
+			log.Format("\r\nVia grid for copper area:\r\n");
+			m_dlg_log->AddLine(log);
+			m_dlg_log->UpdateWindow();
+
 			static_space_x = dlg.m_out_x;
 			static_space_y = dlg.m_out_y;
 			static_via_w = dlg.m_def_via_w;
@@ -14774,8 +14781,15 @@ void CFreePcbDoc::AddViaGrid()
 			int count = 0;
 			int Line = 0;
 			int number = 0;
+			int step = 0;
 			int X_start_value = ( totalRect.left+dlg.m_def_via_w/2+_2540*10 );
 			int x_max_step_count = ( totalRect.right-dlg.m_def_via_w/2 - X_start_value )/dlg.m_out_x + 1;
+			int total_steps = ((totalRect.right - totalRect.left - dlg.m_def_via_w) / dlg.m_out_x + 1) * ((totalRect.top - totalRect.bottom - dlg.m_def_via_w) / dlg.m_out_y + 1);
+			if (dlg.chess == 2)
+			{
+				total_steps *= 116;
+				total_steps /= 96;
+			}
 			cpart * pStart = NULL;
 			for( int currX=X_start_value; currX<totalRect.right-dlg.m_def_via_w/2; currX+=dlg.m_out_x )
 			{
@@ -14989,6 +15003,9 @@ void CFreePcbDoc::AddViaGrid()
 								break;
 							}
 						}
+						log.Format("Via %d from %d added\r\n", ++step, total_steps);
+						m_dlg_log->AddLine(log);
+						m_dlg_log->UpdateWindow();
 						if( fail )
 							continue;
 						if( dlg.as_part == 0 )
@@ -15016,6 +15033,12 @@ void CFreePcbDoc::AddViaGrid()
 							pstack.y_rel = currY - totalRect.top;
 							footprint->m_padstack.Add( pstack );
 						}
+					}
+					else
+					{
+						log.Format("Via %d from %d failed\r\n", ++step, total_steps);
+						m_dlg_log->AddLine(log);
+						m_dlg_log->UpdateWindow();
 					}
 				}
 			}

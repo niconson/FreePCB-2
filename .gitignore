@@ -7,4 +7,9 @@ Debug/Component/*
 Debug/Backups/*
 Debug/FPC_EXE/*
 Debug/related_files/*
+Release/Autosave/*
+Release/Component/*
+Release/Backups/*
+Release/FPC_EXE/*
+Release/related_files/*
 .vs/*
