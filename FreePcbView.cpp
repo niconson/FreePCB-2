@@ -6950,7 +6950,7 @@ void CFreePcbView::OnMouseMove(UINT nFlags, CPoint point)
 						CString pin = m_sel_part_pin->ref_des + "." + m_sel_part_pin->shape->m_padstack[sid.i].name;
 						OnSendMess("part_list " + pin + " \"" + net + "\"");
 					}
-					JumpToPin( m_sel_part_pin, sid );
+					JumpToPin( m_sel_part_pin, sid, FALSE );
 					bPinShown = 1;
 				}
 			}
@@ -21966,7 +21966,7 @@ int CFreePcbView::NewSelect( void * ptr, id * sid, BOOL bSet_cursor_mode, BOOL b
 						}
 					}
 					OnSendMess("part_list " + pin + " \"" + net + "\"");
-					JumpToPin( m_sel_part, *sid );
+					JumpToPin( m_sel_part, *sid, TRUE );
 				}
 				else if( sid->st == ID_SEL_REF_TXT )
 				{
@@ -22931,7 +22931,7 @@ BOOL CFreePcbView::SetDrawLayer( int L )
 	return TRUE;
 }
 
-void CFreePcbView::JumpToPin( cpart * sel_p, id sid )
+void CFreePcbView::JumpToPin( cpart * sel_p, id sid, BOOL bSwToFile)
 {
 	CString name = PROGRAM_CAP2 + m_Doc->m_cds_filename;
 	CWnd * wnd = FindWindow(NULL,name);
@@ -22946,7 +22946,7 @@ void CFreePcbView::JumpToPin( cpart * sel_p, id sid )
 		cpart * m_p = m_sel_part;
 		m_sel_id = sid;
 		m_sel_part = sel_p;
-		m_Doc->EnsureNotMinimized( wnd->GetSafeHwnd(), 0 );
+		m_Doc->EnsureNotMinimized( wnd->GetSafeHwnd(), bSwToFile);
 		m_sel_part = m_p;
 		m_sel_id = m_id;
 		SetForegroundWindow();

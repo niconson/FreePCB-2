@@ -879,7 +879,7 @@ public:
 	void VertexMoved();
 	void ForceVia();
 	void ShowPinState(cpart * p, int pin);
-	void JumpToPin( cpart * sel_p, id sid );
+	void JumpToPin( cpart * sel_p, id sid, BOOL bSwToFile);
 
 	int MoveAreaToLayer( int NewLayer=0 ) ;
 	BOOL ShowMerges( int iTRANSPARENT=0 );
