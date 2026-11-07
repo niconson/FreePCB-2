@@ -1178,8 +1178,9 @@ void CreateClearancesForCopperArea(	CFreePcbDoc * doc,
 int CopperIsolate(CFreePcbDoc* doc, int gap)
 {
 	CDlgEnterStr dlg;
-	CString ini_str = "Enter value";
-	::MakeCStringFromDimension(&ini_str, doc->m_dr.trace_trace, doc->m_units);
+	static CString ini_str = "";
+	if(ini_str.GetLength() < 3)
+		::MakeCStringFromDimension(&ini_str, doc->m_dr.trace_trace, doc->m_units);
 	CString win_str = "Copper clearance";
 	dlg.Initialize(&win_str, &ini_str);
 	int ret = IDOK;
@@ -1189,6 +1190,7 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 	else
 	{
 		ret = dlg.DoModal();
+		ini_str = dlg.m_str;
 		clearance = my_atof(&dlg.m_str);
 	}
 	int out = clearance;
@@ -1255,7 +1257,7 @@ int CopperIsolate(CFreePcbDoc* doc, int gap)
 				if (max_w > (pw / 2))
 					cl = clearance + max_w;
 				int dist = poly->GetDistance(p.x, p.y, p.x + 10, p.y + 10);
-				if (w && dist < abs(cl))
+				if (w && (dist < abs(cl) || poly->TestPointInside(p.x, p.y)))
 				{
 					doc->m_view->SaveUndoInfoForArea(doc->m_view->m_sel_net, ia, CNetList::UNDO_AREA_MODIFY, TRUE, doc->m_undo_list);
 					cl += NM_PER_MIL;
