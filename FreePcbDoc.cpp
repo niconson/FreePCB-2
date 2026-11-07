@@ -14927,12 +14927,6 @@ void CFreePcbDoc::AddViaGrid()
 									if( ap->GetHatch() != CPolyLine::DIAGONAL_FULL )
 										continue;
 
-									// merge clearance
-									int areaM = ap->GetMerge();
-									int m_cl = 0;
-									if( areaM >= 0 )
-										m_cl = m_mlist->GetClearance( areaM );
-
 									int w = ap->GetW();
 									for( int icr=0; icr<ap->GetNumCorners(); icr++ )
 									{
@@ -14945,8 +14939,8 @@ void CFreePcbDoc::AddViaGrid()
 										int xc=0, yc=0;
 										int d = GetClearanceBetweenSegments(x1, y1, x2, y2, ss, w, 
 																			currX, currY, currX+10, currY+10, CPolyLine::STRAIGHT, dlg.m_def_via_w, 
-																			m_dr.pad_trace*2, &xc, &yc );
-										if( d < (m_cl?m_cl:m_dr.copper_copper) )
+																			m_dr.copper_copper*2, &xc, &yc );
+										if( d < m_dr.copper_copper )
 											fail = 1;
 										if( fail == 0 )
 											if( ap->TestPointInside( currX, currY ) )
@@ -14989,7 +14983,7 @@ void CFreePcbDoc::AddViaGrid()
 								if( fail )
 									break;
 							}
-							if( fail )
+							if (fail)
 							{
 								m_nlist->CancelNextNet();
 								break;

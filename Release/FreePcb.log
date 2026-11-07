@@ -4,8 +4,8 @@ D:\FreePCBDev\FreePCB-2\stdafx.h(58,1): warning C4005: ASSERT: изменени�
   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\atlmfc\include\afx.h(366,1):
   см. предыдущее определение "ASSERT"
   
-  AddSymmetricalBlank.cpp
   Additional.cpp
+  AddSymmetricalBlank.cpp
   Cuid.cpp
   DesignRules.cpp
   DisplayList.cpp
@@ -57,8 +57,8 @@ D:\FreePCBDev\FreePCB-2\stdafx.h(58,1): warning C4005: ASSERT: изменени�
   DlgMyMessageBox2.cpp
   DlgNetCombine.cpp
   DlgNetlist.cpp
-  DlgPDFColors.cpp
   DlgPartlist.cpp
+  DlgPDFColors.cpp
   DlgProjectOptions.cpp
   DlgProtection.cpp
   DlgReassignLayers.cpp
@@ -79,36 +79,69 @@ D:\FreePCBDev\FreePCB-2\stdafx.h(58,1): warning C4005: ASSERT: изменени�
   DlgViaGrig.cpp
   DlgWizQuad.cpp
   Dlg_OpenScad.cpp
+  file_io.cpp
   FootprintLib.cpp
   FootprintView.cpp
   FreePcb.cpp
   FreePcbDoc.cpp
   FreePcbView.cpp
   Gerber.cpp
+  gpc_232.cpp
+  ivex_mod_file.cpp
   MainFrm.cpp
   MyToolBar.cpp
-  NetList.cpp
-  Net_iter.cpp
-  PartList.cpp
   Создание кода...
   Компиляция...
+  Net_iter.cpp
+  NetList.cpp
+  PartList.cpp
   PathDialog.cpp
+  php_polygon.cpp
+  php_polygon_vertex.cpp
   PolyLine.cpp
   QAFDebug.cpp
-  RTcall.cpp
   RectArray.cpp
+  RTcall.cpp
   Shape.cpp
+  smcharacter.cpp
+  smfontutil.cpp
   SpeedFiles.cpp
   TextList.cpp
   UndoList.cpp
-  file_io.cpp
-  gpc_232.cpp
-  ivex_mod_file.cpp
-  php_polygon.cpp
-  php_polygon_vertex.cpp
-  smcharacter.cpp
-  smfontutil.cpp
   utility.cpp
+  Создание кода...
+  adler32.c
+  compress.c
+  cpdfAnnot.c
+  cpdfArc.c
+  cpdfAxis.c
+  cpdfColor.c
+  cpdfDomain.c
+  cpdfDomPlot.c
+  cpdfFont.c
+  cpdfGstate.c
+  cpdfImage.c
+  cpdfImgIL.c
+  cpdfInit.c
+  cpdfMarker.c
+  cpdfMemBuf.c
+  cpdfOutline.c
+  cpdfPreview.c
+  cpdfRawPlot.c
+  cpdfReadPFB.c
+  cpdfReadPFM.c
+  Создание кода...
+  Компиляция...
+  cpdfText.c
+  cpdfTextBox.c
+  cpdfTicInt.c
+  cpdfTime.c
+  cpdfUtil.c
+  deflate.c
+  jpegsize.c
+  testpdf.c
+  trees.c
+  zutil.c
   Создание кода...
   FreePcb.vcxproj -> D:\FreePCBDev\FreePCB-2\Release\ПлатФорм.exe
   Скопировано файлов:         1.
