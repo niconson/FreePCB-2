@@ -1403,7 +1403,7 @@ int CPolyLine::GetDistance(int x, int y, int xn, int yn)
 		int gx2 = corner[n].x;
 		int gy2 = corner[n].y;
 		int p1 = 0, p2 = 0;
-		int d = GetClearanceBetweenSegments(gx1,gy1,gx2,gy2,st,w,x,y,xn,yn,0,0,INT_MAX/10, &p1,&p2);
+		int d = GetClearanceBetweenSegments(gx1,gy1,gx2,gy2,st,0,x,y,xn,yn,0,0,INT_MAX/10, &p1,&p2);
 		out = min(out, d);
 	}
 	return out;

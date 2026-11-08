@@ -601,7 +601,7 @@ public:
 	int CancelDraggingInsertedAreaCorner( cnet * net, int iarea, int icorner );
 	void RenumberAreas( cnet * net );
 	int TestAreaPolygon( cnet * net, int iarea, int test_contour, int test_corner );
-	int TestAreaPolygon( cnet * net, int iarea );
+	//int TestAreaPolygon( cnet * net, int iarea );
 	int ClipAreaPolygon( cnet * net, int iarea, int corner,  
 		BOOL bMessageBoxArc, BOOL bMessageBoxInt, BOOL bRetainArcs=TRUE, int*nContours=NULL );
 	int AreaPolygonModified( cnet * net, int iarea, BOOL bMessageBoxArc, BOOL bMessageBoxInt, int corner=0 );

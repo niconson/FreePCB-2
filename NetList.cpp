@@ -8725,7 +8725,7 @@ int CNetList::CheckConnectivity( CString * logstr )
 //	 1 if intersecting sides, but no intersecting arcs
 // Also sets utility2 flag of area with return value
 //
-int CNetList::TestAreaPolygon( cnet * net, int iarea )
+/*int CNetList::TestAreaPolygon(cnet* net, int iarea)
 {	
 	CPolyLine * p = net->area[iarea].poly;
 	// first, check for sides intersecting other sides, especially arcs 
@@ -8817,8 +8817,15 @@ int CNetList::TestAreaPolygon( cnet * net, int iarea )
 	else 
 		net->area[iarea].utility2 = 0;
 	return net->area[iarea].utility2;
-}
+}*/
 
+// Test an area for self-intersection.
+// Returns:
+//	-1 if arcs intersect other sides
+//	 0 if no intersecting sides
+//	 1 if intersecting sides, but no intersecting arcs
+// Also sets utility2 flag of area with return value
+//
 int CNetList::TestAreaPolygon( cnet * net, int iarea, int test_contour, int test_corner )
 {	
 	CPolyLine * p = net->area[iarea].poly;
@@ -8882,7 +8889,19 @@ int CNetList::TestAreaPolygon( cnet * net, int iarea, int test_contour, int test
 			{
 				if( nc != nc2 )
 				{
-					RECT r2 = p->GetCornerBounds(nc2);	
+					RECT r2 = p->GetCornerBounds(nc2);
+					if (nc == 0)
+					{
+						if (r2.left < r.left ||
+							r2.right > r.right ||
+							r2.top > r.top ||
+							r2.bottom < r.bottom)
+						{
+							bOut = TRUE;
+							p->SetUtility(i, 1);
+							p->SetUtility(i2, 1);
+						}
+					}	
 					if ( RectsIntersection(r,r2) != -1 )
 					{
 						BOOL bInt = FALSE;
@@ -9090,6 +9109,23 @@ if( test == 1 )
 						net->area[ia].poly->Close(del_cont->GetSideStyle(end),FALSE);
 					}
 				}
+				{ // сомнительный кусок кода, если что можно удалить
+					numc = new_p->GetNumContours();
+					int xc0 = new_p->GetX(0);
+					int yc0 = new_p->GetY(0);
+					for (int con = numc - 1; con > 0; con--)
+					{
+						int st = new_p->GetContourStart(con);
+						if (new_p->TestPointInside(new_p->GetX(st), new_p->GetY(st), 0) == 0)
+						{
+							new_p->RemoveContour(con, FALSE);
+						}
+						//if (new_p->TestPointInside(xc0, yc0, con))
+						//{
+						//	// Collapse area
+						//}
+					}
+				}
 				net->area[ia].poly->SetDisplayList( net->m_dlist );
 				net->area[ia].poly->SetLayer( layer );
 				net->area[ia].poly->SetMerge( a_merge );
@@ -9134,12 +9170,15 @@ if( test == 1 )
 		delete pa;
 		delete net->area[iarea].poly;
 		net->area[iarea].poly = ok_cont;
+		int x0 = net->area[iarea].poly->GetX(0);
+		int y0 = net->area[iarea].poly->GetY(0);
 		int numc = del_cont->GetNumContours();
 		for( int con=0; con<numc; con++ )
 		{
 			int st = del_cont->GetContourStart(con);
 			int end = del_cont->GetContourEnd(con);
-			if ( ok_cont->TestPointInside( del_cont->GetX(st),del_cont->GetY(st) ))
+			if ( ok_cont->TestPointInside( del_cont->GetX(st),del_cont->GetY(st) ) ||
+				del_cont->TestPointInside(x0, y0, con))
 			{
 				for (int ic=st; ic<=end; ic++)
 					net->area[iarea].poly->AppendCorner(del_cont->GetX(ic),del_cont->GetY(ic),del_cont->GetSideStyle(del_cont->GetIndexCornerBack(ic)),FALSE);
@@ -9151,14 +9190,21 @@ if( test == 1 )
 			net->area[iarea].poly->RecalcRectC(c);
 
 		// тест на дурака
-		int x0 = net->area[iarea].poly->GetX(0);
-		int y0 = net->area[iarea].poly->GetY(0);
-		for (int icont = 1; icont < net->area[iarea].poly->GetNumContours(); icont++)
+		for (int icont = net->area[iarea].poly->GetNumContours()-1; icont > 0; icont--)
 		{
 			if (net->area[iarea].poly->TestPointInside(x0, y0, icont))
 			{
 				RemoveArea(net, iarea);
 				return test; // collapse area
+			}
+			{ // сомнительный кусок кода, если что можно удалить
+				int ics = net->area[iarea].poly->GetContourStart(icont);
+				int xc = net->area[iarea].poly->GetX(ics);
+				int yc = net->area[iarea].poly->GetY(ics);
+				if (net->area[iarea].poly->TestPointInside(xc, yc, 0) == 0)
+				{
+					net->area[iarea].poly->RemoveContour(icont, FALSE);
+				}
 			}
 		}
 		SetAreaHatch( net, iarea ); // net->area[iarea].poly->Draw();
